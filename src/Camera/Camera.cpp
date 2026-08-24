@@ -1,6 +1,5 @@
 #include "Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 
 ZY::Camera::Camera(const Window& window, const glm::vec3& position) :
 	position{ position },

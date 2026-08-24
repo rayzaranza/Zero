@@ -2,6 +2,9 @@
 
 int main(int argc, char* argv[])
 {
+
+	ZY::Logger::init();
+
 	ZY::Window window{ 1920, 1080 };
 	ZY::Camera camera{ window };
 	ZY::VertexBuffer quadVertexBuffer{ {

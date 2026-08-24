@@ -1,3 +1,4 @@
+#include "../Logger/Logger.h"
 #include "Renderer.h"
 
 void ZY::Renderer::setViewport(unsigned int width, unsigned int height)
@@ -8,6 +9,7 @@ void ZY::Renderer::setViewport(unsigned int width, unsigned int height)
 void ZY::Renderer::loadAPI(GLADloadproc addressCallback)
 {
 	gladLoadGLLoader((GLADloadproc)addressCallback);
+	LOG("OpenGL loaded");
 }
 
 void ZY::Renderer::clear()

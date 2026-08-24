@@ -1,8 +1,8 @@
 #include "../Asset/Asset.h"
+#include "../Logger/Logger.h"
 #include "Shader.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
-#include <iostream>
 
 static const char* SHADERS_FOLDER{ "../../../assets/shaders/" };
 
@@ -21,25 +21,28 @@ ZY::Shader::Shader(const std::string& name)
 
 	glLinkProgram(id);
 
-	// TODO: implement better debugging/logging
 	int success;
 	char infoLog[512];
 	glGetProgramiv(id, GL_LINK_STATUS, &success);
+
 	if (!success)
 	{
-		std::cerr << "Error linking shader program" << std::endl;
 		glGetProgramInfoLog(id, 512, NULL, infoLog);
-		throw "Error linking shader program";
+		LOG_ERROR("Error linking shader program #{}. Details: {}", id, infoLog);
 	}
 
+	LOG("Shader #{} created: {}", id, name);
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
+
 	bind();
+
 }
 
 ZY::Shader::~Shader()
 {
 	glDeleteProgram(id);
+	LOG("Shader #{} destroyed.", id);
 }
 
 void ZY::Shader::bind() const
@@ -97,7 +100,7 @@ unsigned int ZY::Shader::compileShader(const std::string& source, GLenum type) c
 	if (!success)
 	{
 		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		std::cerr << "Failed to compile shader" << infoLog << std::endl;
+		LOG_ERROR("Error compiling shader #{}. Details: {}", id, infoLog);
 	}
 
 	glAttachShader(id, shader);
