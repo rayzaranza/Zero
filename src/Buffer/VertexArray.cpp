@@ -1,3 +1,4 @@
+#include "../Logger/Logger.h"
 #include "VertexArray.h"
 #include <glad/glad.h>
 
@@ -6,12 +7,13 @@ ZY::VertexArray::VertexArray()
 	: indicesCount{ 0 }
 {
 	glGenVertexArrays(1, &id);
+	LOG("Vertex Array #{} created.", id);
 }
 
 ZY::VertexArray::~VertexArray()
 {
 	glDeleteVertexArrays(1, &id);
-
+	LOG("Vertex Array #{} destroyed.", id);
 }
 
 void ZY::VertexArray::bind() const

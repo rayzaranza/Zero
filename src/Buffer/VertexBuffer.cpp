@@ -1,3 +1,4 @@
+#include "../Logger/Logger.h"
 #include "VertexBuffer.h"
 
 ZY::VertexBuffer::VertexBuffer(const VertexBufferData& data, GLenum usage)
@@ -6,11 +7,13 @@ ZY::VertexBuffer::VertexBuffer(const VertexBufferData& data, GLenum usage)
 	glGenBuffers(1, &id);
 	bind();
 	glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), data.data(), usage);
+	LOG("Vertex Buffer #{} created.", id);
 }
 
 ZY::VertexBuffer::~VertexBuffer()
 {
 	glDeleteBuffers(1, &id);
+	LOG("Vertex Buffer #{} destroyed.", id);
 }
 
 void ZY::VertexBuffer::bind() const

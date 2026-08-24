@@ -1,8 +1,8 @@
 #include "Window.h"
 #define GLFW_INCLUDE_NONE
+#include "../Logger/Logger.h"
 #include "../Renderer/Renderer.h"
 #include <GLFW/glfw3.h>
-#include <iostream>
 
 
 ZY::Window::Window(unsigned int width, unsigned int height) :
@@ -11,12 +11,14 @@ ZY::Window::Window(unsigned int width, unsigned int height) :
 {
 	initializeGLFW();
 	create();
+	LOG("Window created.");
 }
 
 ZY::Window::~Window()
 {
 	glfwDestroyWindow(id);
 	glfwTerminate();
+	LOG("Window destroyed.");
 }
 
 bool ZY::Window::isOpen() const
@@ -41,7 +43,7 @@ void ZY::Window::initializeGLFW() const
 	const int initStatus{ glfwInit() };
 	if (initStatus == GLFW_FALSE)
 	{
-		std::cerr << "Error initializing GLFW" << std::endl;
+		LOG_CRITICAL("Error initializing GLFW.");
 	}
 }
 
@@ -54,19 +56,20 @@ void ZY::Window::create()
 	id = glfwCreateWindow(width, height, "", nullptr, nullptr);
 	if (id == NULL)
 	{
-		std::cerr << "Error creating GLFW window" << std::endl;
+		LOG_CRITICAL("Error creating GLFW window");
 		glfwTerminate();
 	}
 
 	glfwMakeContextCurrent(id);
 	glfwSetFramebufferSizeCallback(id, framebufferSizeCallback);
+	glfwSetErrorCallback(errorCallback);
 
 	ZY::Renderer::loadAPI((GLADloadproc)glfwGetProcAddress);
 }
 
 inline void ZY::Window::errorCallback(int error, const char* description)
 {
-	std::cerr << "Error: " << description << std::endl;
+	LOG_ERROR(description);
 }
 
 inline void ZY::Window::framebufferSizeCallback(GLFWwindow* window, int width, int height)
