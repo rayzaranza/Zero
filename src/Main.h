@@ -8,3 +8,5 @@
 #include "Camera/Camera.h"
 #include "Renderer/Renderer.h"
 #include "Shader/Shader.h"
+
+#include "Logger/Logger.h"
