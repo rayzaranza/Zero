@@ -1,0 +1,7 @@
+# applies to every file EXCEPT the one below (default behavior stays on)
+[*.h]
+cpp_include_cleanup_remove_unused_error_tag_type = warning
+
+# override just for Main.h
+[Main.h]
+cpp_include_cleanup_remove_unused_error_tag_type = none
