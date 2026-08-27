@@ -32,6 +32,13 @@ add_executable (ZY
 	"src/Camera/Camera.cpp"
 	"src/Logger/Logger.h"
 	"src/Logger/Logger.cpp"
+	"src/ECS/ECS.h"
+	"src/ECS/ECS.cpp"
+	"src/ECS/Components/RigidBodyComponent.h"
+	"src/ECS/Components/TransformComponent.h"
+	"src/ECS/Components/SpriteComponent.h"
+	"src/ECS/Systems/MovementSystem/MovementSystem.h"
+	"src/ECS/Systems/MovementSystem/MovementSystem.cpp"
  )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
