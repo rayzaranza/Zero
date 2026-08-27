@@ -4,20 +4,34 @@
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
-static const char* SHADERS_FOLDER{ "../../../assets/shaders/" };
+const std::string SHADERS_FOLDER{ "../../../assets/shaders/" };
 
-ZY::Shader::Shader(const std::string& name)
-	: id{ glCreateProgram() }
+ZY::Shader::Shader(const std::string& name) :
+	id{ glCreateProgram() },
+	name{ name }
+{
+	compileAndLinkShader(name);
+	LOG("Shader #{} created: {}", id, name);
+	bind();
+}
+
+ZY::Shader::~Shader()
+{
+	glDeleteProgram(id);
+	LOG("Shader #{} destroyed: {}.", id, name);
+}
+
+void ZY::Shader::compileAndLinkShader(const std::string& name)
 {
 	const std::string vertexShaderPath{ SHADERS_FOLDER + name + ".vert" };
-	const std::string vertexSourceString{ Asset::getFileContent(vertexShaderPath) };
+	const std::string vertexSourceString{ ZY::Asset::getFileContent(vertexShaderPath) };
 	const char* vertexSource{ vertexSourceString.c_str() };
-	unsigned int vertex{ compileShader(vertexSource, GL_VERTEX_SHADER) };
+	unsigned int vertex{ createShader(vertexSource, GL_VERTEX_SHADER) };
 
 	const std::string fragmentShaderPath{ SHADERS_FOLDER + name + ".frag" };
-	const std::string fragmentSourceString{ Asset::getFileContent(fragmentShaderPath) };
+	const std::string fragmentSourceString{ ZY::Asset::getFileContent(fragmentShaderPath) };
 	const char* fragmentSource{ fragmentSourceString.c_str() };
-	unsigned int fragment{ compileShader(fragmentSource, GL_FRAGMENT_SHADER) };
+	unsigned int fragment{ createShader(fragmentSource, GL_FRAGMENT_SHADER) };
 
 	glLinkProgram(id);
 
@@ -31,18 +45,8 @@ ZY::Shader::Shader(const std::string& name)
 		LOG_ERROR("Error linking shader program #{}. Details: {}", id, infoLog);
 	}
 
-	LOG("Shader #{} created: {}", id, name);
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
-
-	bind();
-
-}
-
-ZY::Shader::~Shader()
-{
-	glDeleteProgram(id);
-	LOG("Shader #{} destroyed.", id);
 }
 
 void ZY::Shader::bind() const
@@ -85,7 +89,7 @@ void ZY::Shader::setUniform(const std::string& name, const glm::mat4& matrix) co
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
-unsigned int ZY::Shader::compileShader(const std::string& source, GLenum type) const
+unsigned int ZY::Shader::createShader(const std::string& source, GLenum type) const
 {
 	const char* sourceChar{ source.c_str() };
 	unsigned int shader{ glCreateShader(type) };
