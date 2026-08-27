@@ -5,8 +5,22 @@ int main(int argc, char* argv[])
 
 	ZY::Logger::init();
 
-	ZY::Window window{ 1920, 1080 };
-	ZY::Camera camera{ window };
+	ZY::Window window{ 1800, 960 };
+
+	ZY::Registry registry;
+
+	ZY::Entity truck{ registry.createEntity() };
+	ZY::Entity tank{ registry.createEntity() };
+
+	truck.addComponent<ZY::TransformComponent>();
+	truck.addComponent<ZY::RigidBodyComponent>(glm::vec2{ 0.0f, 1.0f });
+
+	registry.addSystem<ZY::Movement>();
+
+	window.sendToSecondMonitor();
+
+	ZY::Camera camera{ window, glm::vec3(0.0f, 0.0f, -1.5f) };
+
 	ZY::VertexBuffer quadVertexBuffer{ {
 		 0.5f,  0.5f,	1.0f, 1.0f,
 		 0.5f, -0.5f,	1.0f, 0.0f,
@@ -30,6 +44,8 @@ int main(int argc, char* argv[])
 		window.processEvents();
 		ZY::Renderer::clear();
 		ZY::Renderer::draw(quadVertexArray, defaultShader);
+		registry.getSystem<ZY::Movement>().update();
+		registry.update();
 		window.update();
 	}
 }
