@@ -31,6 +31,18 @@ void ZY::Window::processEvents() const
 	glfwPollEvents();
 }
 
+void ZY::Window::sendToSecondMonitor() const
+{
+	int monitorCount;
+	GLFWmonitor** monitors{ glfwGetMonitors(&monitorCount) };
+
+	const GLFWvidmode* mode{ glfwGetVideoMode(monitors[1]) };
+	int x;
+	int y;
+	glfwGetMonitorPos(monitors[1], &x, &y);
+	glfwSetWindowPos(id, x + (mode->width - width) / 2, y + (mode->height - height) / 2 - 24);
+}
+
 void ZY::Window::update() const
 {
 	glfwSwapBuffers(id);

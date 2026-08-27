@@ -22,6 +22,8 @@ namespace ZY
 		// TODO: decouple events from windows
 		void processEvents() const;
 
+		void sendToSecondMonitor() const;
+
 	private:
 		void initializeGLFW() const;
 		void create();
