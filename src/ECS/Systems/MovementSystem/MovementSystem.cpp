@@ -8,6 +8,7 @@ ZY::Movement::Movement()
 {
 	requireComponent<ZY::TransformComponent>();
 	requireComponent<ZY::RigidBodyComponent>();
+	LOG("Movement system created.");
 }
 
 void ZY::Movement::update() const
@@ -16,9 +17,8 @@ void ZY::Movement::update() const
 	{
 		ZY::TransformComponent& transform{ entity.getComponent<ZY::TransformComponent>() };
 		const ZY::RigidBodyComponent& rigidBody{ entity.getComponent<ZY::RigidBodyComponent>() };
-
 		transform.position += rigidBody.velocity;
 
-		LOG("Transform position is x: {}, y: {}.", transform.position.x, transform.position.y);
+		LOG_TRACE("Transform position is x: {}, y: {}.", transform.position.x, transform.position.y);
 	}
 }

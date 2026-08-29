@@ -39,6 +39,8 @@ add_executable (ZY
 	"src/ECS/Components/SpriteComponent.h"
 	"src/ECS/Systems/MovementSystem/MovementSystem.h"
 	"src/ECS/Systems/MovementSystem/MovementSystem.cpp"
+	"src/ECS/Systems/RenderSystem/RenderSystem.h"
+	"src/ECS/Systems/RenderSystem/RenderSystem.cpp"
  )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
