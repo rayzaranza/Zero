@@ -6,12 +6,12 @@
 
 namespace ZY
 {
-	class RenderSystem : public System
-	{
-	public:
-		RenderSystem();
+    class RenderSystem : public System
+    {
+    public:
+        RenderSystem();
 
-	public:
-		void draw(const VertexArray& vertexArray, const Shader& shader) const;
-	};
+    public:
+        void draw(const VertexArray& vertexArray, const Shader& shader) const;
+    };
 }

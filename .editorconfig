@@ -1,7 +1,43 @@
-# applies to every file EXCEPT the one below (default behavior stays on)
-[*.h]
+[*]
+end_of_line = lf               
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.{cpp,h,hpp,inl,ipp}]
 cpp_include_cleanup_remove_unused_error_tag_type = warning
 
-# override just for Main.h
+cpp_new_line_close_brace_same_line_empty_function = true
+cpp_new_line_close_brace_same_line_empty_type = true
+
+cpp_new_line_before_open_brace_namespace = new_line
+cpp_new_line_before_open_brace_type = new_line
+cpp_new_line_before_open_brace_function = new_line
+cpp_new_line_before_open_brace_block = new_line
+
+cpp_space_before_function_open_parenthesis = remove
+cpp_space_between_empty_parameter_list_parentheses = false
+cpp_space_within_control_flow_statement_parentheses = false
+cpp_space_between_empty_braces = false
+cpp_space_before_initializer_list_open_brace = true
+cpp_space_within_initializer_list_braces = true
+cpp_space_preserve_in_initializer_list = true
+
+cpp_space_before_open_square_bracket = false
+cpp_space_within_square_brackets = false
+cpp_space_before_empty_square_brackets = false
+cpp_space_between_empty_square_brackets = false
+
+cpp_space_before_comma = false
+cpp_space_after_comma = true
+cpp_space_remove_around_member_operators = false
+cpp_space_remove_before_semicolon = true
+
+cpp_space_around_assignment_operator = insert
+cpp_space_pointer_reference_alignment = left
+
+cpp_wrap_preserve_blocks = never
+
 [Main.h]
 cpp_include_cleanup_remove_unused_error_tag_type = none

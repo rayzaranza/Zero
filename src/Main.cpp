@@ -2,32 +2,21 @@
 
 int main(int argc, char* argv[])
 {
+    ZY::Logger::init();
 
-	ZY::Logger::init();
+    ZY::Window window { 1800, 960 };
 
-	ZY::Window window{ 1800, 960 };
+    ZY::VertexAttribute attribute { .count { 2 }, .type { GL_FLOAT } };
 
-	ZY::Registry registry;
+    int x { 5 };
+    float v { 0.0f };
+    double wage {};
 
-	ZY::Entity truck{ registry.createEntity() };
-	ZY::Entity tank{ registry.createEntity() };
+    while (window.isOpen())
+    {
+        window.processEvents();
 
-	truck.addComponent<ZY::TransformComponent>();
-	truck.addComponent<ZY::RigidBodyComponent>(glm::vec2{ 0.0f, 1.0f });
-
-	registry.addSystem<ZY::Movement>();
-
-	window.sendToSecondMonitor();
-
-	while (window.isOpen())
-	{
-		window.processEvents();
-
-		ZY::Renderer::clear();
-
-		registry.getSystem<ZY::Movement>().update();
-		registry.update();
-
-		window.update();
-	}
+        ZY::Renderer::clear();
+        window.update();
+    }
 }

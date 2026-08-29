@@ -4,16 +4,16 @@
 
 namespace ZY
 {
-	struct SpriteComponent
-	{
-		float width;
-		float height;
+    struct SpriteComponent
+    {
+        float width;
+        float height;
 
-		SpriteComponent(float width = 1.0f, float height = 1.0f) :
-			width{ width },
-			height{ height }
-		{
-			LOG("Sprite componente created.");
-		}
-	};
+        SpriteComponent(float width = 1.0f, float height = 1.0f) :
+            width { width },
+            height { height }
+        {
+            LOG("Sprite componente created.");
+        }
+    };
 }

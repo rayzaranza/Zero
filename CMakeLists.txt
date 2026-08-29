@@ -13,34 +13,36 @@ find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
 add_executable (ZY 
-	"src/Main.cpp"
-	"src/Window/Window.h"
-	"src/Window/Window.cpp"
-	"src/Renderer/Renderer.h"
-	"src/Renderer/Renderer.cpp"
-	"src/Buffer/VertexBuffer.h"
-	"src/Buffer/VertexBuffer.cpp"
-	"src/Buffer/IndexBuffer.cpp"
-	"src/Buffer/IndexBuffer.cpp"
-	"src/Buffer/VertexArray.h"
-	"src/Buffer/VertexArray.cpp"
-	"src/Shader/Shader.h"
-	"src/Shader/Shader.cpp"
-	"src/Asset/Asset.h"
-	"src/Asset/Asset.cpp"
-	"src/Camera/Camera.h"
-	"src/Camera/Camera.cpp"
-	"src/Logger/Logger.h"
-	"src/Logger/Logger.cpp"
-	"src/ECS/ECS.h"
-	"src/ECS/ECS.cpp"
-	"src/ECS/Components/RigidBodyComponent.h"
-	"src/ECS/Components/TransformComponent.h"
-	"src/ECS/Components/SpriteComponent.h"
-	"src/ECS/Systems/MovementSystem/MovementSystem.h"
-	"src/ECS/Systems/MovementSystem/MovementSystem.cpp"
-	"src/ECS/Systems/RenderSystem/RenderSystem.h"
-	"src/ECS/Systems/RenderSystem/RenderSystem.cpp"
+    "src/Main.cpp"
+    "src/Window/Window.h"
+    "src/Window/Window.cpp"
+    "src/Renderer/Renderer.h"
+    "src/Renderer/Renderer.cpp"
+    "src/Buffer/VertexBuffer.h"
+    "src/Buffer/VertexBuffer.cpp"
+    "src/Buffer/IndexBuffer.cpp"
+    "src/Buffer/IndexBuffer.cpp"
+    "src/Buffer/VertexArray.h"
+    "src/Buffer/VertexArray.cpp"
+    "src/Shader/Shader.h"
+    "src/Shader/Shader.cpp"
+    "src/Asset/Asset.h"
+    "src/Asset/Asset.cpp"
+    "src/Camera/Camera.h"
+    "src/Camera/Camera.cpp"
+    "src/Logger/Logger.h"
+    "src/Logger/Logger.cpp"
+    "src/ECS/ECS.h"
+    "src/ECS/ECS.cpp"
+    "src/ECS/Components/RigidBodyComponent.h"
+    "src/ECS/Components/TransformComponent.h"
+    "src/ECS/Components/SpriteComponent.h"
+    "src/ECS/Systems/MovementSystem/MovementSystem.h"
+    "src/ECS/Systems/MovementSystem/MovementSystem.cpp"
+    "src/ECS/Systems/RenderSystem/RenderSystem.h"
+    "src/ECS/Systems/RenderSystem/RenderSystem.cpp"
+    "src/Mesh/Mesh.h"
+    "src/Mesh/Mesh.cpp"
  )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
@@ -48,8 +50,8 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 target_link_libraries(ZY PRIVATE 
-	glm::glm 
-	glad::glad 
-	glfw
-	spdlog::spdlog
+    glm::glm 
+    glad::glad 
+    glfw
+    spdlog::spdlog
 )

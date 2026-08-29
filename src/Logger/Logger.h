@@ -5,12 +5,12 @@
 
 namespace ZY
 {
-	class Logger
-	{
-	public:
-		static void init();
-		static std::shared_ptr<spdlog::logger> logger;
-	};
+    class Logger
+    {
+    public:
+        static void init();
+        static std::shared_ptr<spdlog::logger> logger;
+    };
 }
 
 #define LOG(...) ::ZY::Logger::logger->info(__VA_ARGS__)

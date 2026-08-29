@@ -3,12 +3,12 @@
 
 namespace ZY
 {
-	class Movement : public System
-	{
-	public:
-		Movement();
+    class Movement : public System
+    {
+    public:
+        Movement();
 
-	public:
-		void update() const;
-	};
+    public:
+        void update() const;
+    };
 }

@@ -4,20 +4,20 @@
 
 namespace ZY
 {
-	using IndexBufferData = std::vector<unsigned int>;
+    using IndexBufferData = std::vector<unsigned int>;
 
-	class IndexBuffer
-	{
-	private:
-		unsigned int id;
+    class IndexBuffer
+    {
+    private:
+        unsigned int id;
 
-	public:
-		unsigned int count;
+    public:
+        unsigned int count;
 
-	public:
-		IndexBuffer(const IndexBufferData& data, GLenum usage = GL_STATIC_DRAW);
-		~IndexBuffer();
+    public:
+        IndexBuffer(const IndexBufferData& data, GLenum usage = GL_STATIC_DRAW);
+        ~IndexBuffer();
 
-		void bind() const;
-	};
+        void bind() const;
+    };
 }

@@ -4,20 +4,20 @@
 
 namespace ZY
 {
-	class VertexArray
-	{
-	private:
-		unsigned int id;
+    class VertexArray
+    {
+    private:
+        unsigned int id;
 
-	public:
-		unsigned int indicesCount;
+    public:
+        unsigned int indicesCount;
 
-	public:
-		VertexArray();
-		~VertexArray();
+    public:
+        VertexArray();
+        ~VertexArray();
 
-		inline void bind() const;
+        inline void bind() const;
 
-		void addBuffer(const VertexBuffer& buffer, const IndexBuffer& indexBuffer);
-	};
+        void addBuffer(const VertexBuffer& buffer, const IndexBuffer& indexBuffer);
+    };
 }

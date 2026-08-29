@@ -7,22 +7,22 @@
 
 ZY::RenderSystem::RenderSystem()
 {
-	requireComponent<ZY::TransformComponent>();
-	requireComponent<ZY::SpriteComponent>();
-	LOG("Renderer system created.");
+    requireComponent<ZY::TransformComponent>();
+    requireComponent<ZY::SpriteComponent>();
+    LOG("Renderer system created.");
 }
 
 void ZY::RenderSystem::draw(const ZY::VertexArray& vertexArray, const ZY::Shader& shader) const
 {
-	for (ZY::Entity entity : entities)
-	{
-		const ZY::TransformComponent& transform{ entity.getComponent<ZY::TransformComponent>() };
-		const ZY::SpriteComponent& sprite{ entity.getComponent<ZY::SpriteComponent>() };
+    for (ZY::Entity entity : entities)
+    {
+        const ZY::TransformComponent& transform { entity.getComponent<ZY::TransformComponent>() };
+        const ZY::SpriteComponent& sprite { entity.getComponent<ZY::SpriteComponent>() };
 
-		VertexBuffer vertexBuffer{ { transform.position.x, transform.position.y } };
-		IndexBuffer indexBuffer{ { } };
+        VertexBuffer vertexBuffer { { transform.position.x, transform.position.y } };
+        IndexBuffer indexBuffer { { } };
 
-		ZY::Renderer::draw(vertexArray, shader);
-	}
+        ZY::Renderer::draw(vertexArray, shader);
+    }
 }
 
