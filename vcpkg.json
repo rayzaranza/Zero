@@ -1,4 +1,6 @@
 {
+  "name": "zero",
+  "version": "0.1.0",
   "dependencies": [
     "glad",
     "glfw3",

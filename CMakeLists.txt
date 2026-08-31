@@ -1,46 +1,23 @@
-﻿cmake_minimum_required (VERSION 3.10)
+﻿cmake_minimum_required(VERSION 3.20)
 
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project ("ZY")
+project(Zero LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED <CONFIG>_OUTPUT_NAME)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
-add_executable (ZY 
-	"src/Main.cpp"
-	"src/Window/Window.h"
-	"src/Window/Window.cpp"
-	"src/Renderer/Renderer.h"
-	"src/Renderer/Renderer.cpp"
-	"src/Buffer/VertexBuffer.h"
-	"src/Buffer/VertexBuffer.cpp"
-	"src/Buffer/IndexBuffer.cpp"
-	"src/Buffer/IndexBuffer.cpp"
-	"src/Buffer/VertexArray.h"
-	"src/Buffer/VertexArray.cpp"
-	"src/Shader/Shader.h"
-	"src/Shader/Shader.cpp"
-	"src/Asset/Asset.h"
-	"src/Asset/Asset.cpp"
-	"src/Camera/Camera.h"
-	"src/Camera/Camera.cpp"
-	"src/Logger/Logger.h"
-	"src/Logger/Logger.cpp"
- )
+add_subdirectory(Zero)
+add_subdirectory(Sandbox)
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET ZY PROPERTY CXX_STANDARD 23)
-endif()
-
-target_link_libraries(ZY PRIVATE 
-	glm::glm 
-	glad::glad 
-	glfw
-	spdlog::spdlog
-)
