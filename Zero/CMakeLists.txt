@@ -5,10 +5,12 @@ find_package(spdlog CONFIG REQUIRED)
 
 add_library(Zero SHARED
 	"src/Zero.h"
-	"src/Zero/Core.h"
-	"src/Zero/EntryPoint.h"
-    "src/Zero/Application.h"
-	"src/Zero/Application.cpp"
+	"src/Core.h"
+	"src/EntryPoint.h"
+    "src/Application/Application.h"
+	"src/Application/Application.cpp"
+    "src/Logger/Logger.h"
+    "src/Logger/Logger.cpp"
 )
 
 target_include_directories(Zero PUBLIC

@@ -45,5 +45,5 @@ cpp_space_pointer_reference_alignment = left
 cpp_wrap_preserve_blocks = never
 
 cpp_indent_namespace_contents = true
-cpp_indent_access_specifiers = true
+cpp_indent_access_specifiers = false
 

@@ -1,4 +1,6 @@
 #pragma once
 
-#include "Zero/Application.h"
-#include "Zero/EntryPoint.h"
+#include "Application/Application.h"
+#include "Logger/Logger.h"
+
+#include "EntryPoint.h"
