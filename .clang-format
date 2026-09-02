@@ -14,5 +14,24 @@ NamespaceIndentation: All
 PointerAlignment: Left
 ReferenceAlignment: Left
 IndentAccessModifiers: false
-AccessModifierOffset: -4
 FixNamespaceComments: false
+
+IndentCaseLabels: true
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterNamespace: true
+    AfterClass: true
+    AfterStruct: true
+    AfterUnion: true
+    AfterFunction: true
+    AfterControlStatement: Always
+    BeforeCatch: true
+    BeforeElse: true
+    BeforeWhile: true
+    IndentBraces: false
+    SplitEmptyFunction: false 
+    SplitEmptyRecord: false
+    AfterCaseLabel: true
+
+SeparateDefinitionBlocks: Always

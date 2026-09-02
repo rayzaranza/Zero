@@ -10,7 +10,7 @@ int main(int argc, char** argv)
     ZERO_CORE_LOG("Test");
     ZERO_WARN("Test from client");
 
-    Zero::Application* application{ Zero::CreateApplication() };
+    Zero::Application* application { Zero::CreateApplication() };
     application->Run();
     delete application;
 }

@@ -2,14 +2,12 @@
 
 class Sandbox : public Zero::Application
 {
-public:
+  public:
     Sandbox()
-    {
-    }
+    {}
 
     ~Sandbox()
-    {
-    }
+    {}
 };
 
 Zero::Application* Zero::CreateApplication()

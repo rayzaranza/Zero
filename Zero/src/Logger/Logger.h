@@ -9,11 +9,11 @@ namespace Zero
 
     class ZERO_API Logger
     {
-    private:
+      private:
         static LoggerPointer s_CoreLogger;
         static LoggerPointer s_ClientLogger;
 
-    public:
+      public:
         static void Init();
         static LoggerPointer& GetCoreLogger();
         static LoggerPointer& GetClientLogger();
