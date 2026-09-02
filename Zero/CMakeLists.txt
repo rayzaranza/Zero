@@ -14,17 +14,14 @@ add_library(Zero SHARED
     "src/Logger/Logger.h"
     "src/Logger/Logger.cpp"
 
-    "src/Events/Event/Event.h"
-    "src/Events/Event/Event.cpp"
-
-    "src/Events/KeyEvent/KeyEvent.h"
-    "src/Events/KeyEvent/KeyEvent.cpp"
-
-    "src/Events/MouseEvent/MouseEvent.h"
-    "src/Events/MouseEvent/MouseEvent.cpp"
-
-    "src/Events/ApplicationEvent/ApplicationEvent.h"
-    "src/Events/ApplicationEvent/ApplicationEvent.cpp"
+    "src/Events/Event.h"
+    "src/Events/Event.cpp"
+    "src/Events/KeyEvent.h"
+    "src/Events/KeyEvent.cpp"
+    "src/Events/MouseEvent.h"
+    "src/Events/MouseEvent.cpp"
+    "src/Events/ApplicationEvent.h"
+    "src/Events/ApplicationEvent.cpp"
 
     "src/Window/Window.h"
     "src/Window/Window.cpp"
@@ -52,5 +49,5 @@ target_compile_definitions(Zero PRIVATE
 )
 
 target_precompile_headers(Zero PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/zrpch.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Zero/zrpch.h"
 )
