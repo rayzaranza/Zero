@@ -1,11 +1,7 @@
 #pragma once
+
+#include "Logger/Logger.h"
 #include "Zero/Core.h"
-#include <fmt/format.h>
-#include <functional>
-#include <ostream>
-#include <spdlog/fmt/fmt.h>
-#include <spdlog/spdlog.h>
-#include <string>
 
 namespace Zero
 {
@@ -63,10 +59,7 @@ namespace Zero
         bool IsInCategory(EventCategory category) const;
     };
 
-    inline std::string format_as(const Event& event)
-    {
-        return event.ToString();
-    }
+    std::string format_as(const Event& event);
 
 
     //················································································································
@@ -90,11 +83,11 @@ namespace Zero
     };
 
     template <typename T>
-    inline bool EventDispatcher::Dispatch(EventCallback<T> function)
+    inline bool EventDispatcher::Dispatch(EventCallback<T> callback)
     {
         if (m_Event.GetEventType() == T::GetStaticType())
         {
-            m_Event.m_IsHandled = function(*(T*)&m_Event);
+            m_Event.m_IsHandled = callback(*(T*)&m_Event);
             return true;
         }
 

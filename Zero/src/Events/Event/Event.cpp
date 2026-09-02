@@ -16,8 +16,8 @@ namespace Zero
         return GetName();
     }
 
-    std::ostream& operator << (std::ostream& stream, Event& event)
+    std::string format_as(const Event& event)
     {
-        return stream << event.ToString();
+        return event.ToString();
     }
 }

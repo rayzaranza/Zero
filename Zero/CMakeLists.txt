@@ -39,5 +39,14 @@ target_link_libraries(Zero PUBLIC
 	spdlog::spdlog
 )
 
-target_compile_definitions(Zero PUBLIC ZERO_PLATFORM_WINDOWS)
-target_compile_definitions(Zero PRIVATE ZERO_BUILD_DLL)
+target_compile_definitions(Zero PUBLIC
+    ZERO_PLATFORM_WINDOWS
+)
+
+target_compile_definitions(Zero PRIVATE
+    ZERO_BUILD_DLL
+)
+
+target_precompile_headers(Zero PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zrpch.h"
+)

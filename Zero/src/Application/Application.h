@@ -1,10 +1,9 @@
 #pragma once
-#include "Zero/Core.h"
 
+#include "Zero/Core.h"
 
 namespace Zero
 {
-
     class ZERO_API Application
     {
     public:
