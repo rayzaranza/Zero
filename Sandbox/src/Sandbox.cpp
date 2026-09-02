@@ -2,7 +2,7 @@
 
 class Sandbox : public Zero::Application
 {
-public:
+    public:
     Sandbox()
     {}
 

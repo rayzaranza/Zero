@@ -1,6 +1,4 @@
 #include "Application.h"
-#include "Events/ApplicationEvent/ApplicationEvent.h"
-#include "Logger/Logger.h"
 
 namespace Zero
 {
@@ -12,9 +10,6 @@ namespace Zero
 
     void Application::Run()
     {
-        WindowResizedEvent event { 1280, 720 };
-        ZR_LOG(event);
-
         while (true);
     }
 }
