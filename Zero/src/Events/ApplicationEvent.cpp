@@ -7,8 +7,7 @@ namespace Zero
     // ················································································································
     WindowResizedEvent::WindowResizedEvent(unsigned int width, unsigned int height)
         : m_Width { width }, m_Height { height }
-    {
-    }
+    {}
 
     inline unsigned int WindowResizedEvent::GetWidth() const
     {

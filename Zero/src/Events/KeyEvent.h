@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Events/Event/Event.h"
+#include "Events/Event.h"
 #include "Zero/Core.h"
 
 namespace Zero
@@ -10,14 +10,14 @@ namespace Zero
     // ················································································································
     class ZERO_API KeyEvent : public Event
     {
-    public:
+      public:
         inline int GetKeyCode() const;
         virtual int GetCategoryFlags() const override;
 
-    protected:
+      protected:
         KeyEvent(int keyCode);
 
-    protected:
+      protected:
         int m_KeyCode {};
     };
 
@@ -26,17 +26,17 @@ namespace Zero
     // ················································································································
     class ZERO_API KeyPressedEvent : public KeyEvent
     {
-    public:
+      public:
         KeyPressedEvent(int keyCode, int repeatCount);
 
-    public:
+      public:
         inline int GetRepeatCount() const;
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
         virtual const char* GetName() const override;
 
-    private:
+      private:
         int m_RepeatCount {};
     };
 
@@ -45,10 +45,10 @@ namespace Zero
     // ················································································································
     class ZERO_API KeyReleasedEvent : public KeyEvent
     {
-    public:
+      public:
         KeyReleasedEvent(int keyCode);
 
-    public:
+      public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;

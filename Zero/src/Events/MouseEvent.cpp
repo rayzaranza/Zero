@@ -6,8 +6,7 @@ namespace Zero
     //  Mouse Moved Event
     // ················································································································
     MouseMovedEvent::MouseMovedEvent(float x, float y) : m_MouseX { x }, m_MouseY { y }
-    {
-    }
+    {}
 
     inline float MouseMovedEvent::GetX() const
     {
@@ -22,7 +21,7 @@ namespace Zero
     std::string MouseMovedEvent::ToString() const
     {
         std::stringstream stream {};
-        stream << "MouseMovementEvent: " << m_MouseX << ", " << m_MouseY;
+        stream << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
         return stream.str();
     }
 
@@ -50,8 +49,7 @@ namespace Zero
     //  Mouse Scrolled Event
     // ················································································································
     MouseScrolledEvent::MouseScrolledEvent(float xOffset, float yOffset) : m_XOffset { xOffset }, m_YOffset { yOffset }
-    {
-    }
+    {}
 
     inline float MouseScrolledEvent::GetXOffset() const
     {
@@ -66,7 +64,7 @@ namespace Zero
     std::string MouseScrolledEvent::ToString() const
     {
         std::stringstream stream {};
-        stream << "MouseMovementEvent: " << m_XOffset << ", " << m_YOffset;
+        stream << "MouseScrolledEvent: " << m_XOffset << ", " << m_YOffset;
         return stream.str();
     }
 
@@ -94,8 +92,7 @@ namespace Zero
     //  Mouse Button Event
     // ················································································································
     MouseButtonEvent::MouseButtonEvent(int button) : m_Button { button }
-    {
-    }
+    {}
 
     inline int MouseButtonEvent::GetMouseButton() const
     {
@@ -111,8 +108,7 @@ namespace Zero
     // Mouse Button Pressed Event
     // ················································································································
     MouseButtonPressedEvent::MouseButtonPressedEvent(int button) : MouseButtonEvent { button }
-    {
-    }
+    {}
 
     std::string MouseButtonPressedEvent::ToString() const
     {
@@ -131,12 +127,16 @@ namespace Zero
         return GetStaticType();
     }
 
+    const char* MouseButtonPressedEvent::GetName() const
+    {
+        return "MouseButtonPressed";
+    }
+
     // ················································································································
     //  Mouse Button Released Event
     // ················································································································
     MouseButtonReleasedEvent::MouseButtonReleasedEvent(int button) : MouseButtonEvent { button }
-    {
-    }
+    {}
 
     std::string MouseButtonReleasedEvent::ToString() const
     {
@@ -153,5 +153,10 @@ namespace Zero
     EventType MouseButtonReleasedEvent::GetEventType() const
     {
         return GetStaticType();
+    }
+
+    const char* MouseButtonReleasedEvent::GetName() const
+    {
+        return "MouseButtonReleased";
     }
 }

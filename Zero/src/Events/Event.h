@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Logger/Logger.h"
 #include "Zero/Core.h"
 
 namespace Zero
@@ -45,16 +44,16 @@ namespace Zero
     // ················································································································
     class ZERO_API Event
     {
-    protected:
+      protected:
         bool m_IsHandled { false };
         friend class EventDispatcher;
 
-    public:
+      public:
         virtual EventType GetEventType() const = 0;
         virtual const char* GetName() const = 0;
         virtual int GetCategoryFlags() const = 0;
 
-    public:
+      public:
         virtual std::string ToString() const;
         bool IsInCategory(EventCategory category) const;
     };
@@ -66,16 +65,16 @@ namespace Zero
     // ················································································································
     class EventDispatcher
     {
-    private:
+      private:
         Event& m_Event;
 
-    protected:
+      protected:
         template <typename T> using EventCallback = std::function<bool(T&)>;
 
-    public:
+      public:
         EventDispatcher(Event& event);
 
-    public:
+      public:
         template <typename T> bool Dispatch(EventCallback<T> function);
     };
 

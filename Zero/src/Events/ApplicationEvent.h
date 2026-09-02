@@ -1,5 +1,6 @@
 #pragma once
-#include "Events/Event/Event.h"
+
+#include "Events/Event.h"
 #include "Zero/Core.h"
 
 namespace Zero
@@ -9,10 +10,10 @@ namespace Zero
     // ················································································································
     class ZERO_API WindowResizedEvent : public Event
     {
-    public:
+      public:
         WindowResizedEvent(unsigned int width, unsigned int height);
 
-    public:
+      public:
         inline unsigned int GetWidth() const;
         inline unsigned int GetHeight() const;
 
@@ -23,7 +24,7 @@ namespace Zero
         virtual const char* GetName() const override;
         virtual int GetCategoryFlags() const override;
 
-    private:
+      private:
         unsigned int m_Width;
         unsigned int m_Height;
     };
@@ -33,10 +34,10 @@ namespace Zero
     // ················································································································
     class ZERO_API WindowClosedEvent : public Event
     {
-    public:
+      public:
         WindowClosedEvent() = default;
 
-    public:
+      public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
@@ -49,10 +50,10 @@ namespace Zero
     // ················································································································
     class ZERO_API ApplicationTickedEvent : public Event
     {
-    public:
+      public:
         ApplicationTickedEvent() = default;
 
-    public:
+      public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
@@ -65,10 +66,10 @@ namespace Zero
     // ················································································································
     class ZERO_API ApplicationUpdatedEvent : public Event
     {
-    public:
+      public:
         ApplicationUpdatedEvent() = default;
 
-    public:
+      public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
@@ -81,10 +82,10 @@ namespace Zero
     // ················································································································
     class ZERO_API ApplicationRenderedEvent : public Event
     {
-    public:
+      public:
         ApplicationRenderedEvent() = default;
 
-    public:
+      public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;

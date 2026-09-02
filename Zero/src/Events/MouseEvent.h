@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Events/Event/Event.h"
+#include "Events/Event.h"
 #include "Zero/Core.h"
 
 namespace Zero
@@ -10,10 +10,10 @@ namespace Zero
     // ················································································································
     class ZERO_API MouseMovedEvent : public Event
     {
-    public:
+      public:
         MouseMovedEvent(float x, float y);
 
-    public:
+      public:
         inline float GetX() const;
         inline float GetYOffset() const;
         std::string ToString() const override;
@@ -22,7 +22,7 @@ namespace Zero
         virtual const char* GetName() const override;
         virtual int GetCategoryFlags() const override;
 
-    private:
+      private:
         float m_MouseX {};
         float m_MouseY {};
     };
@@ -32,10 +32,10 @@ namespace Zero
     // ················································································································
     class ZERO_API MouseScrolledEvent : public Event
     {
-    public:
+      public:
         MouseScrolledEvent(float xOffset, float yOffset);
 
-    public:
+      public:
         inline float GetXOffset() const;
         inline float GetYOffset() const;
         std::string ToString() const override;
@@ -44,7 +44,7 @@ namespace Zero
         virtual const char* GetName() const override;
         virtual int GetCategoryFlags() const override;
 
-    private:
+      private:
         float m_XOffset {};
         float m_YOffset {};
     };
@@ -54,14 +54,14 @@ namespace Zero
     // ················································································································
     class ZERO_API MouseButtonEvent : public Event
     {
-    public:
+      public:
         inline int GetMouseButton() const;
         virtual int GetCategoryFlags() const override;
 
-    protected:
+      protected:
         MouseButtonEvent(int button);
 
-    protected:
+      protected:
         int m_Button {};
     };
 
@@ -70,13 +70,14 @@ namespace Zero
     // ················································································································
     class ZERO_API MouseButtonPressedEvent : public MouseButtonEvent
     {
-    public:
+      public:
         MouseButtonPressedEvent(int button);
 
-    public:
+      public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
+        virtual const char* GetName() const override;
     };
 
     // ················································································································
@@ -84,12 +85,13 @@ namespace Zero
     // ················································································································
     class ZERO_API MouseButtonReleasedEvent : public MouseButtonEvent
     {
-    public:
+      public:
         MouseButtonReleasedEvent(int button);
 
-    public:
+      public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
+        virtual const char* GetName() const override;
     };
 }

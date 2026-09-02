@@ -6,8 +6,7 @@ namespace Zero
     //  Key Event
     // ················································································································
     KeyEvent::KeyEvent(int keyCode) : m_KeyCode { keyCode }
-    {
-    }
+    {}
 
     inline int KeyEvent::GetKeyCode() const
     {
@@ -23,8 +22,7 @@ namespace Zero
     //  Key Pressed Event
     // ················································································································
     KeyPressedEvent::KeyPressedEvent(int keyCode, int repeatCount) : KeyEvent { keyCode }, m_RepeatCount { repeatCount }
-    {
-    }
+    {}
 
     inline int KeyPressedEvent::GetRepeatCount() const
     {
@@ -57,8 +55,7 @@ namespace Zero
     // Key Released Event
     // ················································································································
     KeyReleasedEvent::KeyReleasedEvent(int keyCode) : KeyEvent { keyCode }
-    {
-    }
+    {}
 
     std::string KeyReleasedEvent::ToString() const
     {
