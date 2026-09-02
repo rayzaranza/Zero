@@ -2,9 +2,9 @@
 
 namespace Zero
 {
-    EventDispatcher::EventDispatcher(Event& event)
-        : m_Event { event }
-    {}
+    EventDispatcher::EventDispatcher(Event& event) : m_Event { event }
+    {
+    }
 
     bool Event::IsInCategory(EventCategory category) const
     {

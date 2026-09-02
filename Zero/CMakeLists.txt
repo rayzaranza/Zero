@@ -25,6 +25,9 @@ add_library(Zero SHARED
 
     "src/Events/ApplicationEvent/ApplicationEvent.h"
     "src/Events/ApplicationEvent/ApplicationEvent.cpp"
+
+    "src/Window/Window.h"
+    "src/Window/Window.cpp"
 )
 
 target_include_directories(Zero PUBLIC
@@ -41,6 +44,7 @@ target_link_libraries(Zero PUBLIC
 
 target_compile_definitions(Zero PUBLIC
     ZERO_PLATFORM_WINDOWS
+    ZERO_ENABLE_ASSERTS
 )
 
 target_compile_definitions(Zero PRIVATE

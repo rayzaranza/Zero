@@ -2,13 +2,12 @@
 
 namespace Zero
 {
-    //················································································································
-    // Mouse Moved Event
-    //················································································································
-    MouseMovedEvent::MouseMovedEvent(float x, float y)
-        : m_MouseX { x }
-        , m_MouseY { y }
-    {}
+    // ················································································································
+    //  Mouse Moved Event
+    // ················································································································
+    MouseMovedEvent::MouseMovedEvent(float x, float y) : m_MouseX { x }, m_MouseY { y }
+    {
+    }
 
     inline float MouseMovedEvent::GetX() const
     {
@@ -47,13 +46,12 @@ namespace Zero
         return EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput;
     }
 
-    //················································································································
-    // Mouse Scrolled Event
-    //················································································································
-    MouseScrolledEvent::MouseScrolledEvent(float xOffset, float yOffset)
-        : m_XOffset { xOffset }
-        , m_YOffset { yOffset }
-    {}
+    // ················································································································
+    //  Mouse Scrolled Event
+    // ················································································································
+    MouseScrolledEvent::MouseScrolledEvent(float xOffset, float yOffset) : m_XOffset { xOffset }, m_YOffset { yOffset }
+    {
+    }
 
     inline float MouseScrolledEvent::GetXOffset() const
     {
@@ -92,12 +90,12 @@ namespace Zero
         return EventCategory::EventCategoryMouse | EventCategory::EventCategoryInput;
     }
 
-    //················································································································
-    // Mouse Button Event
-    //················································································································
-    MouseButtonEvent::MouseButtonEvent(int button)
-        : m_Button { button }
-    {}
+    // ················································································································
+    //  Mouse Button Event
+    // ················································································································
+    MouseButtonEvent::MouseButtonEvent(int button) : m_Button { button }
+    {
+    }
 
     inline int MouseButtonEvent::GetMouseButton() const
     {
@@ -109,13 +107,12 @@ namespace Zero
         return EventCategory::EventCategoryMouseButton | EventCategory::EventCategoryInput;
     }
 
-
-    //················································································································
-   // Mouse Button Pressed Event
-    //················································································································
-    MouseButtonPressedEvent::MouseButtonPressedEvent(int button)
-        : MouseButtonEvent { button }
-    {}
+    // ················································································································
+    // Mouse Button Pressed Event
+    // ················································································································
+    MouseButtonPressedEvent::MouseButtonPressedEvent(int button) : MouseButtonEvent { button }
+    {
+    }
 
     std::string MouseButtonPressedEvent::ToString() const
     {
@@ -134,12 +131,12 @@ namespace Zero
         return GetStaticType();
     }
 
-    //················································································································
-    // Mouse Button Released Event
-    //················································································································
-    MouseButtonReleasedEvent::MouseButtonReleasedEvent(int button)
-        : MouseButtonEvent { button }
-    {}
+    // ················································································································
+    //  Mouse Button Released Event
+    // ················································································································
+    MouseButtonReleasedEvent::MouseButtonReleasedEvent(int button) : MouseButtonEvent { button }
+    {
+    }
 
     std::string MouseButtonReleasedEvent::ToString() const
     {

@@ -2,12 +2,12 @@
 
 namespace Zero
 {
-    //················································································································
-    // Key Event
-    //················································································································
-    KeyEvent::KeyEvent(int keyCode)
-        : m_KeyCode { keyCode }
-    {}
+    // ················································································································
+    //  Key Event
+    // ················································································································
+    KeyEvent::KeyEvent(int keyCode) : m_KeyCode { keyCode }
+    {
+    }
 
     inline int KeyEvent::GetKeyCode() const
     {
@@ -19,13 +19,12 @@ namespace Zero
         return EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput;
     }
 
-    //················································································································
-    // Key Pressed Event
-    //················································································································
-    KeyPressedEvent::KeyPressedEvent(int keyCode, int repeatCount)
-        : KeyEvent { keyCode }
-        , m_RepeatCount { repeatCount }
-    {}
+    // ················································································································
+    //  Key Pressed Event
+    // ················································································································
+    KeyPressedEvent::KeyPressedEvent(int keyCode, int repeatCount) : KeyEvent { keyCode }, m_RepeatCount { repeatCount }
+    {
+    }
 
     inline int KeyPressedEvent::GetRepeatCount() const
     {
@@ -54,12 +53,12 @@ namespace Zero
         return "KeyPressed";
     }
 
-    //················································································································
-   // Key Released Event
-   //················································································································
-    KeyReleasedEvent::KeyReleasedEvent(int keyCode)
-        : KeyEvent { keyCode }
-    {}
+    // ················································································································
+    // Key Released Event
+    // ················································································································
+    KeyReleasedEvent::KeyReleasedEvent(int keyCode) : KeyEvent { keyCode }
+    {
+    }
 
     std::string KeyReleasedEvent::ToString() const
     {

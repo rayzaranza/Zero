@@ -5,16 +5,19 @@
 namespace Zero
 {
     Application::Application()
-    {}
+    {
+    }
 
     Application::~Application()
-    {}
+    {
+    }
 
     void Application::Run()
     {
         WindowResizedEvent event { 1280, 720 };
-        ZR_LOG(event);
+        ZERO_LOG(event);
 
-        while (true);
+        while (true)
+            ;
     }
 }
