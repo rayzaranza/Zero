@@ -1,0 +1,139 @@
+#include "Window.h"
+
+#include "Events/ApplicationEvent.h"
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
+
+namespace Zero
+{
+    static void errorCallback(int error, const char* description)
+    {
+        ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description);
+    }
+
+    Window::Window(const std::string& title, unsigned int width, unsigned int height) : m_Data { title, width, height }
+    {
+        Initialize();
+    }
+
+    Window::~Window()
+    {
+        Destroy();
+    }
+
+    void Window::Initialize()
+    {
+        ZERO_CORE_LOG("Window created: {} ({}, {})", m_Data.Title, m_Data.Width, m_Data.Height);
+
+        int glfwInitSuccess { glfwInit() };
+        ZERO_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
+        glfwSetErrorCallback(errorCallback);
+
+        m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+        glfwMakeContextCurrent(m_Window);
+        glfwSetWindowUserPointer(m_Window, &m_Data);
+        glfwSwapInterval(1);
+
+        setCallbacks();
+    }
+
+    void Window::Destroy()
+    {
+        glfwDestroyWindow(m_Window);
+        glfwTerminate();
+    }
+
+    void Window::setCallbacks()
+    {
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+            WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
+            data.Width = width;
+            data.Height = height;
+            WindowResizedEvent event { static_cast<unsigned int>(width), static_cast<unsigned int>(height) };
+            data.EventCallback(event);
+        });
+
+        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
+            WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
+            WindowClosedEvent event {};
+            data.EventCallback(event);
+        });
+
+        glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset) {
+            WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
+            MouseScrolledEvent event { static_cast<float>(xOffset), static_cast<float>(yOffset) };
+            data.EventCallback(event);
+        });
+
+        glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double x, double y) {
+            WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
+            MouseMovedEvent event { static_cast<float>(x), static_cast<float>(y) };
+            data.EventCallback(event);
+        });
+
+        glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scanCode, int action, int mods) {
+            WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
+            switch (action)
+            {
+                case GLFW_PRESS:
+                {
+                    KeyPressedEvent event { key, 0 };
+                    data.EventCallback(event);
+                    break;
+                }
+                case GLFW_RELEASE:
+                {
+                    KeyReleasedEvent event { key };
+                    data.EventCallback(event);
+                    break;
+                }
+                case GLFW_REPEAT:
+                {
+                    KeyPressedEvent event { key, 1 };
+                    data.EventCallback(event);
+                    break;
+                }
+            }
+        });
+
+        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
+            WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
+            switch (action)
+            {
+                case GLFW_PRESS:
+                {
+                    MouseButtonPressedEvent event { button };
+                    data.EventCallback(event);
+                    break;
+                }
+                case GLFW_RELEASE:
+                {
+                    MouseButtonReleasedEvent event { button };
+                    data.EventCallback(event);
+                    break;
+                }
+            }
+        });
+    }
+
+    unsigned int Window::GetWidth() const
+    {
+        return m_Data.Width;
+    }
+
+    unsigned int Window::GetHeight() const
+    {
+        return m_Data.Height;
+    }
+
+    void Window::SetEventCallback(const EventCallback& callback)
+    {
+        m_Data.EventCallback = callback;
+    }
+
+    void Window::OnUpdate()
+    {
+        glfwPollEvents();
+        glfwSwapBuffers(m_Window);
+    }
+}

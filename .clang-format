@@ -1,0 +1,37 @@
+BasedOnStyle: Microsoft
+Language: Cpp
+
+IndentWidth: 4
+UseTab: Never
+
+IndentPPDirectives: BeforeHash
+
+SpaceBeforeCpp11BracedList: true
+Cpp11BracedListStyle: Block
+SpaceBeforeAssignmentOperators: true
+
+NamespaceIndentation: All
+PointerAlignment: Left
+ReferenceAlignment: Left
+IndentAccessModifiers: false
+FixNamespaceComments: false
+
+IndentCaseLabels: true
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterNamespace: true
+    AfterClass: true
+    AfterStruct: true
+    AfterUnion: true
+    AfterFunction: true
+    AfterControlStatement: Always
+    BeforeCatch: true
+    BeforeElse: true
+    BeforeWhile: true
+    IndentBraces: false
+    SplitEmptyFunction: false 
+    SplitEmptyRecord: false
+    AfterCaseLabel: true
+
+SeparateDefinitionBlocks: Always

@@ -11,5 +11,7 @@
 #include <vector>
 
 #ifdef ZERO_PLATFORM_WINDOWS
-#include <Windows.h>
+    #include <Windows.h>
 #endif
+
+#include "Logger/Logger.h"
