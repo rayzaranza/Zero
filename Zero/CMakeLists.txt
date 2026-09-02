@@ -3,6 +3,8 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebugDLL")
+
 add_library(Zero SHARED
 	"src/Zero/Zero.h"
 	"src/Zero/Core.h"
@@ -25,12 +27,18 @@ add_library(Zero SHARED
 
     "src/Window/Window.h"
     "src/Window/Window.cpp"
+
+    "src/Layer/Layer.h"
+    "src/Layer/Layer.cpp"
+    "src/Layer/LayerStack.h"
+    "src/Layer/LayerStack.cpp"
 )
 
 target_include_directories(Zero PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/Zero"
 )
+
 
 target_link_libraries(Zero PUBLIC
 	glm::glm 
