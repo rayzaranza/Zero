@@ -56,9 +56,13 @@ namespace Zero
       public:
         virtual std::string ToString() const;
         bool IsInCategory(EventCategory category) const;
+        bool IsHandled() const;
     };
 
-    std::string format_as(const Event& event);
+    inline std::ostream& operator<<(std::ostream& stream, const Event& event)
+    {
+        return stream << event.ToString();
+    }
 
     // ················································································································
     //  Event Dispatcher
@@ -88,4 +92,8 @@ namespace Zero
 
         return false;
     }
+
 }
+
+template <> struct fmt::formatter<Zero::Event> : fmt::ostream_formatter
+{};

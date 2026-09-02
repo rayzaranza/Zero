@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zero/Core.h"
+#include <spdlog/fmt/ostr.h>
 #include <spdlog/spdlog.h>
 
 namespace Zero

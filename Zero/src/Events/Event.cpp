@@ -10,13 +10,13 @@ namespace Zero
         return GetCategoryFlags() & category;
     }
 
+    bool Event::IsHandled() const
+    {
+        return m_IsHandled;
+    }
+
     std::string Event::ToString() const
     {
         return GetName();
-    }
-
-    std::string format_as(const Event& event)
-    {
-        return event.ToString();
     }
 }
