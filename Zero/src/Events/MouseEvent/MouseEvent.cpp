@@ -1,5 +1,4 @@
 #include "MouseEvent.h"
-#include <sstream>
 
 namespace Zero
 {
