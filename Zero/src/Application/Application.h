@@ -1,8 +1,10 @@
 #pragma once
-#include "../Core.h"
+#include "Zero/Core.h"
+
 
 namespace Zero
 {
+
     class ZERO_API Application
     {
     public:
@@ -11,8 +13,8 @@ namespace Zero
 
     public:
         void Run();
-
     };
 
     Application* CreateApplication();
 }
+
