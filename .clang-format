@@ -1,0 +1,18 @@
+BasedOnStyle: Microsoft
+Language: Cpp
+
+IndentWidth: 4
+UseTab: Never
+
+IndentPPDirectives: BeforeHash
+
+SpaceBeforeCpp11BracedList: true
+Cpp11BracedListStyle: Block
+SpaceBeforeAssignmentOperators: true
+
+NamespaceIndentation: All
+PointerAlignment: Left
+ReferenceAlignment: Left
+IndentAccessModifiers: false
+AccessModifierOffset: -4
+FixNamespaceComments: false
