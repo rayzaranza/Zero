@@ -135,6 +135,11 @@ namespace Zero
         return m_Data.Height;
     }
 
+    GLFWwindow* Window::GetGLFWWindow() const
+    {
+        return m_Window;
+    }
+
     void Window::SetEventCallback(const EventCallback& callback)
     {
         m_Data.EventCallback = callback;

@@ -26,6 +26,7 @@ namespace Zero
       public:
         unsigned int GetWidth() const;
         unsigned int GetHeight() const;
+        GLFWwindow* GetGLFWWindow() const;
         void SetEventCallback(const EventCallback& callback);
         void OnUpdate();
         void Initialize();
