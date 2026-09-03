@@ -37,10 +37,10 @@ add_library(Zero SHARED
     "src/UI/UILayer.h"
     "src/UI/UILayer.cpp"
 
-    "src/ImGui/imgui_impl_glfw.h"
-    "src/ImGui/imgui_impl_glfw.cpp"
-    "src/ImGui/imgui_impl_opengl3.h"
-    "src/ImGui/imgui_impl_opengl3.cpp"
+    "src/UI/ImGui/imgui_impl_glfw.h"
+    "src/UI/ImGui/imgui_impl_glfw.cpp"
+    "src/UI/ImGui/imgui_impl_opengl3.h"
+    "src/UI/ImGui/imgui_impl_opengl3.cpp"
 )
 
 target_include_directories(Zero PUBLIC
