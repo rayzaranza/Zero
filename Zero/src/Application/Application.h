@@ -26,6 +26,9 @@ namespace Zero
         std::unique_ptr<Window> m_Window {};
         bool m_IsRunning {};
         LayerStack m_LayerStack {};
+
+      private:
+        static Application* s_Instance;
     };
 
     Application* CreateApplication();

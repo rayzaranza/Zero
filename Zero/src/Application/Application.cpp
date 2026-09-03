@@ -5,8 +5,12 @@
 
 namespace Zero
 {
+    Application* Application::s_Instance { nullptr };
+
     Application::Application() : m_Window { std::make_unique<Window>() }, m_IsRunning { true }
     {
+        ZERO_ASSERT(s_Instance == nullptr, "Application already exists");
+        s_Instance = this;
         m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
     }
 
