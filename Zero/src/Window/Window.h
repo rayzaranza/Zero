@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core.h"
-#include "Events/ApplicationEvent.h"
+#include "Event/ApplicationEvent.h"
 
 #include <GLFW/glfw3.h>
 

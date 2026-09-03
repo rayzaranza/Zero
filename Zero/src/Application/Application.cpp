@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "Events/ApplicationEvent.h"
+#include "Event/ApplicationEvent.h"
 
 #include <glad/glad.h>
 

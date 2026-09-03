@@ -1,97 +1,95 @@
 #pragma once
 
-#include "Events/Event.h"
+#include "Event.h"
 #include "Zero/Core.h"
 
 namespace Zero
 {
     // ················································································································
-    //  Mouse Moved Event
+    //  Window Resized Event
     // ················································································································
-    class ZERO_API MouseMovedEvent : public Event
+    class ZERO_API WindowResizedEvent : public Event
     {
       public:
-        MouseMovedEvent(float x, float y);
+        WindowResizedEvent(unsigned int width, unsigned int height);
 
       public:
-        inline float GetX() const;
-        inline float GetYOffset() const;
+        inline unsigned int GetWidth() const;
+        inline unsigned int GetHeight() const;
+
         std::string ToString() const override;
+
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
         virtual const char* GetName() const override;
         virtual int GetCategoryFlags() const override;
 
       private:
-        float m_MouseX {};
-        float m_MouseY {};
+        unsigned int m_Width;
+        unsigned int m_Height;
     };
 
     // ················································································································
-    //  Mouse Scrolled Event
+    //  Window Closed Event
     // ················································································································
-    class ZERO_API MouseScrolledEvent : public Event
+    class ZERO_API WindowClosedEvent : public Event
     {
       public:
-        MouseScrolledEvent(float xOffset, float yOffset);
+        WindowClosedEvent() = default;
 
       public:
-        inline float GetXOffset() const;
-        inline float GetYOffset() const;
+        std::string ToString() const override;
+        static EventType GetStaticType();
+        virtual EventType GetEventType() const override;
+        virtual const char* GetName() const override;
+        virtual int GetCategoryFlags() const override;
+    };
+
+    // ················································································································
+    //  Application Ticked Event
+    // ················································································································
+    class ZERO_API ApplicationTickedEvent : public Event
+    {
+      public:
+        ApplicationTickedEvent() = default;
+
+      public:
+        std::string ToString() const override;
+        static EventType GetStaticType();
+        virtual EventType GetEventType() const override;
+        virtual const char* GetName() const override;
+        virtual int GetCategoryFlags() const override;
+    };
+
+    // ················································································································
+    //  Application Updated Event
+    // ················································································································
+    class ZERO_API ApplicationUpdatedEvent : public Event
+    {
+      public:
+        ApplicationUpdatedEvent() = default;
+
+      public:
+        std::string ToString() const override;
+        static EventType GetStaticType();
+        virtual EventType GetEventType() const override;
+        virtual const char* GetName() const override;
+        virtual int GetCategoryFlags() const override;
+    };
+
+    // ················································································································
+    //  Application Rendered Event
+    // ················································································································
+    class ZERO_API ApplicationRenderedEvent : public Event
+    {
+      public:
+        ApplicationRenderedEvent() = default;
+
+      public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
         virtual const char* GetName() const override;
         virtual int GetCategoryFlags() const override;
-
-      private:
-        float m_XOffset {};
-        float m_YOffset {};
-    };
-
-    // ················································································································
-    //  Mouse Button Event
-    // ················································································································
-    class ZERO_API MouseButtonEvent : public Event
-    {
-      public:
-        inline int GetMouseButton() const;
-        virtual int GetCategoryFlags() const override;
-
-      protected:
-        MouseButtonEvent(int button);
-
-      protected:
-        int m_Button {};
-    };
-
-    // ················································································································
-    //  Mouse Button Pressed Event
-    // ················································································································
-    class ZERO_API MouseButtonPressedEvent : public MouseButtonEvent
-    {
-      public:
-        MouseButtonPressedEvent(int button);
-
-      public:
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
-    };
-
-    // ················································································································
-    //  Mouse Button Released Event
-    // ················································································································
-    class ZERO_API MouseButtonReleasedEvent : public MouseButtonEvent
-    {
-      public:
-        MouseButtonReleasedEvent(int button);
-
-      public:
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
     };
 }
