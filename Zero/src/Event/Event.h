@@ -20,6 +20,7 @@ namespace Zero
         ApplicationRendered,
         KeyPressed,
         KeyReleased,
+        KeyTyped,
         MouseButtonPressed,
         MouseButtonReleased,
         MouseMoved,

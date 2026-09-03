@@ -78,4 +78,32 @@ namespace Zero
     {
         return "KeyReleased";
     }
+
+    // ················································································································
+    // Key Typed Event
+    // ················································································································
+    KeyTypedEvent::KeyTypedEvent(int keyCode) : KeyEvent { keyCode }
+    {}
+
+    std::string KeyTypedEvent::ToString() const
+    {
+        std::stringstream stream {};
+        stream << "KeyTypedEvent: " << m_KeyCode;
+        return stream.str();
+    }
+
+    EventType KeyTypedEvent::GetStaticType()
+    {
+        return EventType::KeyTyped;
+    }
+
+    EventType KeyTypedEvent::GetEventType() const
+    {
+        return GetStaticType();
+    }
+
+    const char* KeyTypedEvent::GetName() const
+    {
+        return "KeyTyped";
+    }
 }
