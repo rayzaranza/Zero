@@ -14,4 +14,5 @@
     #include <Windows.h>
 #endif
 
+#include "Core.h"
 #include "Logger/Logger.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Events/Event.h"
+#include "Event.h"
 #include "Zero/Core.h"
 
 namespace Zero
@@ -15,7 +15,7 @@ namespace Zero
 
       public:
         inline float GetX() const;
-        inline float GetYOffset() const;
+        inline float GetY() const;
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;

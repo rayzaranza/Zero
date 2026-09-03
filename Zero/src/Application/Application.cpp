@@ -1,13 +1,17 @@
 #include "Application.h"
-#include "Events/ApplicationEvent.h"
+#include "Event/ApplicationEvent.h"
 
 #include <glad/glad.h>
 
 namespace Zero
 {
+    Application* Application::s_Instance { nullptr };
+
     Application::Application() : m_Window { std::make_unique<Window>() }, m_IsRunning { true }
     {
-        m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+        ZERO_ASSERT(s_Instance == nullptr, "Application already exists");
+        s_Instance = this;
+        m_Window->SetEventCallback(ZERO_BIND_FUNCTION(Application::OnEvent));
     }
 
     Application::~Application()
@@ -16,7 +20,7 @@ namespace Zero
     void Application::OnEvent(Event& event)
     {
         EventDispatcher dispatcher { event };
-        dispatcher.Dispatch<WindowClosedEvent>(std::bind(&Application::onWindowClosed, this, std::placeholders::_1));
+        dispatcher.Dispatch<WindowClosedEvent>(ZERO_BIND_FUNCTION(Application::onWindowClosed));
 
         for (LayerPointerArray::iterator iterator { m_LayerStack.end() }; iterator != m_LayerStack.begin();)
         {
@@ -31,11 +35,23 @@ namespace Zero
     void Application::PushLayer(Layer* layer)
     {
         m_LayerStack.PushLayer(layer);
+        layer->OnAttach();
     }
 
     void Application::PushOverlay(Layer* overlay)
     {
         m_LayerStack.PushOverlay(overlay);
+        overlay->OnAttach();
+    }
+
+    Window& Application::GetWindow() const
+    {
+        return *m_Window;
+    }
+
+    Application& Application::Get()
+    {
+        return *s_Instance;
     }
 
     void Application::Run()

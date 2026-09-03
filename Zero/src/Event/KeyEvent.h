@@ -1,95 +1,71 @@
 #pragma once
 
-#include "Events/Event.h"
-#include "Zero/Core.h"
+#include "Event.h"
 
 namespace Zero
 {
     // ················································································································
-    //  Window Resized Event
+    //  Key Event
     // ················································································································
-    class ZERO_API WindowResizedEvent : public Event
+    class ZERO_API KeyEvent : public Event
     {
       public:
-        WindowResizedEvent(unsigned int width, unsigned int height);
+        inline int GetKeyCode() const;
+        virtual int GetCategoryFlags() const override;
+
+      protected:
+        KeyEvent(int keyCode);
+
+      protected:
+        int m_KeyCode {};
+    };
+
+    // ················································································································
+    //  Key Pressed Event
+    // ················································································································
+    class ZERO_API KeyPressedEvent : public KeyEvent
+    {
+      public:
+        KeyPressedEvent(int keyCode, int repeatCount);
 
       public:
-        inline unsigned int GetWidth() const;
-        inline unsigned int GetHeight() const;
-
+        inline int GetRepeatCount() const;
         std::string ToString() const override;
-
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
         virtual const char* GetName() const override;
-        virtual int GetCategoryFlags() const override;
 
       private:
-        unsigned int m_Width;
-        unsigned int m_Height;
+        int m_RepeatCount {};
     };
 
     // ················································································································
-    //  Window Closed Event
+    //  Key Released Event
     // ················································································································
-    class ZERO_API WindowClosedEvent : public Event
+    class ZERO_API KeyReleasedEvent : public KeyEvent
     {
       public:
-        WindowClosedEvent() = default;
+        KeyReleasedEvent(int keyCode);
 
       public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
         virtual const char* GetName() const override;
-        virtual int GetCategoryFlags() const override;
     };
 
     // ················································································································
-    //  Application Ticked Event
+    //  Key Typed Event
     // ················································································································
-    class ZERO_API ApplicationTickedEvent : public Event
+    class ZERO_API KeyTypedEvent : public KeyEvent
     {
       public:
-        ApplicationTickedEvent() = default;
+        KeyTypedEvent(int keyCode);
 
       public:
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
         virtual const char* GetName() const override;
-        virtual int GetCategoryFlags() const override;
-    };
-
-    // ················································································································
-    //  Application Updated Event
-    // ················································································································
-    class ZERO_API ApplicationUpdatedEvent : public Event
-    {
-      public:
-        ApplicationUpdatedEvent() = default;
-
-      public:
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
-        virtual int GetCategoryFlags() const override;
-    };
-
-    // ················································································································
-    //  Application Rendered Event
-    // ················································································································
-    class ZERO_API ApplicationRenderedEvent : public Event
-    {
-      public:
-        ApplicationRenderedEvent() = default;
-
-      public:
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
-        virtual int GetCategoryFlags() const override;
     };
 }

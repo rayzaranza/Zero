@@ -2,6 +2,7 @@
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
 
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDebugDLL")
 
@@ -16,14 +17,14 @@ add_library(Zero SHARED
     "src/Logger/Logger.h"
     "src/Logger/Logger.cpp"
 
-    "src/Events/Event.h"
-    "src/Events/Event.cpp"
-    "src/Events/KeyEvent.h"
-    "src/Events/KeyEvent.cpp"
-    "src/Events/MouseEvent.h"
-    "src/Events/MouseEvent.cpp"
-    "src/Events/ApplicationEvent.h"
-    "src/Events/ApplicationEvent.cpp"
+    "src/Event/Event.h"
+    "src/Event/Event.cpp"
+    "src/Event/KeyEvent.h"
+    "src/Event/KeyEvent.cpp"
+    "src/Event/MouseEvent.h"
+    "src/Event/MouseEvent.cpp"
+    "src/Event/ApplicationEvent.h"
+    "src/Event/ApplicationEvent.cpp"
 
     "src/Window/Window.h"
     "src/Window/Window.cpp"
@@ -32,6 +33,14 @@ add_library(Zero SHARED
     "src/Layer/Layer.cpp"
     "src/Layer/LayerStack.h"
     "src/Layer/LayerStack.cpp"
+
+    "src/UI/UILayer.h"
+    "src/UI/UILayer.cpp"
+
+    "src/UI/ImGui/imgui_impl_glfw.h"
+    "src/UI/ImGui/imgui_impl_glfw.cpp"
+    "src/UI/ImGui/imgui_impl_opengl3.h"
+    "src/UI/ImGui/imgui_impl_opengl3.cpp"
 )
 
 target_include_directories(Zero PUBLIC
@@ -45,6 +54,7 @@ target_link_libraries(Zero PUBLIC
 	glad::glad 
 	glfw
 	spdlog::spdlog
+    imgui::imgui
 )
 
 target_compile_definitions(Zero PUBLIC
@@ -55,6 +65,7 @@ target_compile_definitions(Zero PUBLIC
 target_compile_definitions(Zero PRIVATE
     ZERO_BUILD_DLL
     GLFW_INCLUDE_NONE
+    IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 )
 
 target_precompile_headers(Zero PUBLIC

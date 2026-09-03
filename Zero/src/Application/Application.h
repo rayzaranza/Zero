@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core.h"
-#include "Events/Event.h"
+#include "Event/Event.h"
 #include "Layer/LayerStack.h"
 #include "Window/Window.h"
 
@@ -18,6 +18,8 @@ namespace Zero
         void OnEvent(Event& event);
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* overlay);
+        Window& GetWindow() const;
+        static Application& Get();
 
       private:
         bool onWindowClosed(WindowClosedEvent& event);
@@ -26,6 +28,9 @@ namespace Zero
         std::unique_ptr<Window> m_Window {};
         bool m_IsRunning {};
         LayerStack m_LayerStack {};
+
+      private:
+        static Application* s_Instance;
     };
 
     Application* CreateApplication();

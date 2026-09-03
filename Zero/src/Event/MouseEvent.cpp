@@ -13,7 +13,7 @@ namespace Zero
         return m_MouseX;
     }
 
-    inline float MouseMovedEvent::GetYOffset() const
+    inline float MouseMovedEvent::GetY() const
     {
         return m_MouseY;
     }

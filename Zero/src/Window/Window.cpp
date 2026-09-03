@@ -1,8 +1,8 @@
 #include "Window.h"
 
-#include "Events/ApplicationEvent.h"
-#include "Events/KeyEvent.h"
-#include "Events/MouseEvent.h"
+#include "Event/ApplicationEvent.h"
+#include "Event/KeyEvent.h"
+#include "Event/MouseEvent.h"
 
 #include <glad/glad.h>
 
@@ -31,7 +31,10 @@ namespace Zero
         ZERO_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
         glfwSetErrorCallback(errorCallback);
 
-        m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+        int monitorCount;
+        GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+
+        m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), monitors[1], nullptr);
         glfwMakeContextCurrent(m_Window);
 
         int gladLoadSuccess { gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
@@ -102,6 +105,12 @@ namespace Zero
             }
         });
 
+        glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keyCode) {
+            WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
+            KeyTypedEvent event { static_cast<int>(keyCode) };
+            data.EventCallback(event);
+        });
+
         glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             switch (action)
@@ -130,6 +139,11 @@ namespace Zero
     unsigned int Window::GetHeight() const
     {
         return m_Data.Height;
+    }
+
+    GLFWwindow* Window::GetGLFWWindow() const
+    {
+        return m_Window;
     }
 
     void Window::SetEventCallback(const EventCallback& callback)

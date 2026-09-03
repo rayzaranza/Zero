@@ -20,6 +20,7 @@ namespace Zero
         ApplicationRendered,
         KeyPressed,
         KeyReleased,
+        KeyTyped,
         MouseButtonPressed,
         MouseButtonReleased,
         MouseMoved,
@@ -32,11 +33,11 @@ namespace Zero
     enum EventCategory
     {
         None,
-        EventCategoryApplication = BIT(0),
-        EventCategoryInput = BIT(1),
-        EventCategoryKeyboard = BIT(2),
-        EventCategoryMouse = BIT(3),
-        EventCategoryMouseButton = BIT(4)
+        EventCategoryApplication = ZERO_BIT_SHIFT(0),
+        EventCategoryInput = ZERO_BIT_SHIFT(1),
+        EventCategoryKeyboard = ZERO_BIT_SHIFT(2),
+        EventCategoryMouse = ZERO_BIT_SHIFT(3),
+        EventCategoryMouseButton = ZERO_BIT_SHIFT(4)
     };
 
     // ················································································································
@@ -44,19 +45,19 @@ namespace Zero
     // ················································································································
     class ZERO_API Event
     {
-      protected:
-        bool m_IsHandled { false };
-        friend class EventDispatcher;
-
       public:
         virtual EventType GetEventType() const = 0;
         virtual const char* GetName() const = 0;
         virtual int GetCategoryFlags() const = 0;
+        virtual std::string ToString() const;
 
       public:
-        virtual std::string ToString() const;
         bool IsInCategory(EventCategory category) const;
         bool IsHandled() const;
+
+      protected:
+        bool m_IsHandled { false };
+        friend class EventDispatcher;
     };
 
     inline std::ostream& operator<<(std::ostream& stream, const Event& event)
@@ -69,17 +70,17 @@ namespace Zero
     // ················································································································
     class EventDispatcher
     {
-      private:
-        Event& m_Event;
+      public:
+        EventDispatcher(Event& event);
 
       protected:
         template <typename T> using EventCallback = std::function<bool(T&)>;
 
       public:
-        EventDispatcher(Event& event);
-
-      public:
         template <typename T> bool Dispatch(EventCallback<T> function);
+
+      private:
+        Event& m_Event;
     };
 
     template <typename T> inline bool EventDispatcher::Dispatch(EventCallback<T> callback)
