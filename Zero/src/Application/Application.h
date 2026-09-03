@@ -18,6 +18,8 @@ namespace Zero
         void OnEvent(Event& event);
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* overlay);
+        Window& GetWindow() const;
+        static Application& Get();
 
       private:
         bool onWindowClosed(WindowClosedEvent& event);

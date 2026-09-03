@@ -40,6 +40,17 @@ namespace Zero
     void Application::PushOverlay(Layer* overlay)
     {
         m_LayerStack.PushOverlay(overlay);
+        overlay->OnAttach();
+    }
+
+    Window& Application::GetWindow() const
+    {
+        return *m_Window;
+    }
+
+    Application& Application::Get()
+    {
+        return *s_Instance;
     }
 
     void Application::Run()
