@@ -11,7 +11,7 @@ namespace Zero
     {
         ZERO_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;
-        m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+        m_Window->SetEventCallback(ZERO_BIND_FUNCTION(Application::OnEvent));
     }
 
     Application::~Application()
@@ -20,7 +20,7 @@ namespace Zero
     void Application::OnEvent(Event& event)
     {
         EventDispatcher dispatcher { event };
-        dispatcher.Dispatch<WindowClosedEvent>(std::bind(&Application::onWindowClosed, this, std::placeholders::_1));
+        dispatcher.Dispatch<WindowClosedEvent>(ZERO_BIND_FUNCTION(Application::onWindowClosed));
 
         for (LayerPointerArray::iterator iterator { m_LayerStack.end() }; iterator != m_LayerStack.begin();)
         {
