@@ -54,6 +54,7 @@ target_compile_definitions(Zero PUBLIC
 
 target_compile_definitions(Zero PRIVATE
     ZERO_BUILD_DLL
+    GLFW_INCLUDE_NONE
 )
 
 target_precompile_headers(Zero PUBLIC

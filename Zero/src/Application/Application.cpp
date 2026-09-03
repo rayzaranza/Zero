@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
 
+#include <glad/glad.h>
+
 namespace Zero
 {
     Application::Application() : m_Window { std::make_unique<Window>() }, m_IsRunning { true }
@@ -40,6 +42,9 @@ namespace Zero
     {
         while (m_IsRunning)
         {
+            glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+
             for (Layer* layer : m_LayerStack)
             {
                 layer->OnUpdate();

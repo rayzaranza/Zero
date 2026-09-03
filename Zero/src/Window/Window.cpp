@@ -4,6 +4,8 @@
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
 
+#include <glad/glad.h>
+
 namespace Zero
 {
     static void errorCallback(int error, const char* description)
@@ -31,6 +33,10 @@ namespace Zero
 
         m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+
+        int gladLoadSuccess { gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
+        ZERO_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
+
         glfwSetWindowUserPointer(m_Window, &m_Data);
         glfwSwapInterval(1);
 
