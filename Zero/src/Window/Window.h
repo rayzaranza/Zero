@@ -7,14 +7,20 @@
 
 namespace Zero
 {
+    using EventCallback = std::function<void(Event&)>;
+
+    struct WindowData
+    {
+        std::string Title {};
+        unsigned int Width {};
+        unsigned int Height {};
+        EventCallback EventCallback {};
+    };
 
     class ZERO_API Window
     {
       public:
-        using EventCallback = std::function<void(Event&)>;
-
-      public:
-        Window(const std::string& title = "ZERO", unsigned int width = 1280, unsigned int height = 720);
+        Window(const std::string& title = "ZERO", unsigned int width = 1920, unsigned int height = 1080);
         ~Window();
 
       public:
@@ -26,14 +32,6 @@ namespace Zero
         void Destroy();
 
       private:
-        struct WindowData
-        {
-            std::string Title {};
-            unsigned int Width {};
-            unsigned int Height {};
-            EventCallback EventCallback {};
-        };
-
         GLFWwindow* m_Window {};
         WindowData m_Data {};
 

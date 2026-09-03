@@ -31,7 +31,10 @@ namespace Zero
         ZERO_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
         glfwSetErrorCallback(errorCallback);
 
-        m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+        int monitorCount;
+        GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+
+        m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), monitors[1], nullptr);
         glfwMakeContextCurrent(m_Window);
 
         int gladLoadSuccess { gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
