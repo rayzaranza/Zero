@@ -15,7 +15,7 @@ namespace Zero
 
       public:
         inline float GetX() const;
-        inline float GetYOffset() const;
+        inline float GetY() const;
         std::string ToString() const override;
         static EventType GetStaticType();
         virtual EventType GetEventType() const override;
