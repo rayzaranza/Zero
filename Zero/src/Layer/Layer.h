@@ -16,7 +16,9 @@ namespace Zero
         virtual void OnDetach();
         virtual void OnUpdate();
         virtual void OnEvent(Event& event);
+        virtual void OnUIRender();
 
+      public:
         const std::string& GetName() const;
 
       private:
