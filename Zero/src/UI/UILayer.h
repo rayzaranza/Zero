@@ -14,20 +14,13 @@ namespace Zero
         ~UILayer();
 
       public:
-        void OnAttach();
-        void OnDetach();
-        void OnUpdate();
-        void OnEvent(Event& event);
+        virtual void OnAttach() override;
+        virtual void OnDetach() override;
+        virtual void OnUIRender() override;
 
-      private:
-        bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& event);
-        bool OnMouseButtonReleasedEvent(MouseButtonReleasedEvent& event);
-        bool OnMouseScrolledEvent(MouseScrolledEvent& event);
-        bool OnMouseMovedEvent(MouseMovedEvent& event);
-        bool OnKeyPressedEvent(KeyPressedEvent& event);
-        bool OnKeyReleasedEvent(KeyReleasedEvent& event);
-        bool OnKeyTypedEvent(KeyTypedEvent& event);
-        bool OnWindowResizedEvent(WindowResizedEvent& event);
+      public:
+        void Begin();
+        void End();
 
       private:
         float m_Time { 0.0f };
