@@ -41,6 +41,9 @@ add_library(Zero SHARED
     "src/UI/ImGui/imgui_impl_glfw.cpp"
     "src/UI/ImGui/imgui_impl_opengl3.h"
     "src/UI/ImGui/imgui_impl_opengl3.cpp"
+
+    "src/Input/Input.h"
+    "src/Input/Input.cpp"
 )
 
 target_include_directories(Zero PUBLIC
