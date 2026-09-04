@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Event/ApplicationEvent.h"
+#include "Input/Input.h"
 
 #include <glad/glad.h>
 
@@ -65,6 +66,9 @@ namespace Zero
             {
                 layer->OnUpdate();
             }
+
+            glm::vec2 mousePosition { Input::GetMousePosition() };
+            ZERO_CORE_LOG("Mouse Position: {0}, {1}", mousePosition.x, mousePosition.y);
 
             m_Window->OnUpdate();
         }
