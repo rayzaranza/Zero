@@ -25,6 +25,6 @@ namespace Zero
 
       private:
         LayerPointerArray m_Layers {};
-        LayerPointerArray::iterator m_LayerInsert {};
+        unsigned int m_LayerInsertIndex { 0 };
     };
 }
