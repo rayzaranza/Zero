@@ -48,7 +48,6 @@ target_include_directories(Zero PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/Zero"
 )
 
-
 target_link_libraries(Zero PUBLIC
 	glm::glm 
 	glad::glad 
@@ -59,11 +58,11 @@ target_link_libraries(Zero PUBLIC
 
 target_compile_definitions(Zero PUBLIC
     ZERO_PLATFORM_WINDOWS
-    ZERO_ENABLE_ASSERTS
 )
 
 target_compile_definitions(Zero PRIVATE
     ZERO_BUILD_DLL
+    ZERO_ENABLE_ASSERTS
     GLFW_INCLUDE_NONE
     IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 )
