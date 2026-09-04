@@ -44,6 +44,8 @@ add_library(Zero SHARED
 
     "src/Input/Input.h"
     "src/Input/Input.cpp"
+    "src/Input/KeyCode.h"
+    "src/Input/MouseButtonCode.h"
 )
 
 target_include_directories(Zero PUBLIC
