@@ -37,7 +37,6 @@ class Sandbox : public Zero::Application
     Sandbox()
     {
         PushLayer(new ExampleLayer());
-        PushOverlay(new Zero::UILayer());
     }
 
     ~Sandbox()

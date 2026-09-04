@@ -8,11 +8,13 @@ namespace Zero
 {
     Application* Application::s_Instance { nullptr };
 
-    Application::Application() : m_Window { std::make_unique<Window>() }, m_IsRunning { true }
+    Application::Application()
+        : m_Window { std::make_unique<Window>() }, m_UILayer { new UILayer() }, m_IsRunning { true }
     {
         ZERO_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;
         m_Window->SetEventCallback(ZERO_BIND_FUNCTION(Application::OnEvent));
+        PushOverlay(m_UILayer);
     }
 
     Application::~Application()
@@ -66,6 +68,13 @@ namespace Zero
             {
                 layer->OnUpdate();
             }
+
+            m_UILayer->Begin();
+            for (Layer* layer : m_LayerStack)
+            {
+                layer->OnUIRender();
+            }
+            m_UILayer->End();
 
             m_Window->OnUpdate();
         }

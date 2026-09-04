@@ -3,6 +3,7 @@
 #include "Core.h"
 #include "Event/Event.h"
 #include "Layer/LayerStack.h"
+#include "UI/UILayer.h"
 #include "Window/Window.h"
 
 namespace Zero
@@ -28,6 +29,7 @@ namespace Zero
         std::unique_ptr<Window> m_Window {};
         bool m_IsRunning {};
         LayerStack m_LayerStack {};
+        UILayer* m_UILayer {};
 
       private:
         static Application* s_Instance;
