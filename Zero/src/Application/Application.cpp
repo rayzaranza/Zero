@@ -67,9 +67,6 @@ namespace Zero
                 layer->OnUpdate();
             }
 
-            glm::vec2 mousePosition { Input::GetMousePosition() };
-            ZERO_CORE_LOG("Mouse Position: {0}, {1}", mousePosition.x, mousePosition.y);
-
             m_Window->OnUpdate();
         }
     }
