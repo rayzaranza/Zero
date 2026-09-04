@@ -37,11 +37,6 @@ add_library(Zero SHARED
     "src/UI/UILayer.h"
     "src/UI/UILayer.cpp"
 
-    "src/UI/ImGui/imgui_impl_glfw.h"
-    "src/UI/ImGui/imgui_impl_glfw.cpp"
-    "src/UI/ImGui/imgui_impl_opengl3.h"
-    "src/UI/ImGui/imgui_impl_opengl3.cpp"
-
     "src/Input/Input.h"
     "src/Input/Input.cpp"
     "src/Input/KeyCode.h"
@@ -51,6 +46,10 @@ add_library(Zero SHARED
 target_include_directories(Zero PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
 	"${CMAKE_CURRENT_SOURCE_DIR}/src/Zero"
+)
+
+target_precompile_headers(Zero PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Zero/zrpch.h"
 )
 
 target_link_libraries(Zero PUBLIC
@@ -72,6 +71,3 @@ target_compile_definitions(Zero PRIVATE
     IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 )
 
-target_precompile_headers(Zero PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/Zero/zrpch.h"
-)
