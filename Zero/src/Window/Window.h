@@ -20,7 +20,7 @@ namespace Zero
     class ZERO_API Window
     {
       public:
-        Window(const std::string& title = "ZERO", unsigned int width = 1920, unsigned int height = 1080);
+        Window(const std::string& title = "ZERO", unsigned int width = 1800, unsigned int height = 940);
         ~Window();
 
       public:
