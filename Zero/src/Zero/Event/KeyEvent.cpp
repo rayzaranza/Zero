@@ -8,12 +8,12 @@ namespace Zero
     KeyEvent::KeyEvent(int keyCode) : m_KeyCode { keyCode }
     {}
 
-    inline int KeyEvent::GetKeyCode() const
+    int KeyEvent::GetKeyCode() const
     {
         return m_KeyCode;
     }
 
-    inline int KeyEvent::GetCategoryFlags() const
+    int KeyEvent::GetCategoryFlags() const
     {
         return EventCategory::EventCategoryKeyboard | EventCategory::EventCategoryInput;
     }
@@ -24,7 +24,7 @@ namespace Zero
     KeyPressedEvent::KeyPressedEvent(int keyCode, int repeatCount) : KeyEvent { keyCode }, m_RepeatCount { repeatCount }
     {}
 
-    inline int KeyPressedEvent::GetRepeatCount() const
+    int KeyPressedEvent::GetRepeatCount() const
     {
         return m_RepeatCount;
     }

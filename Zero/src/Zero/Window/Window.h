@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "Event/ApplicationEvent.h"
+#include "Zero/Core.h"
+#include "Zero/Event/ApplicationEvent.h"
 
 #include <GLFW/glfw3.h>
 
@@ -17,7 +17,7 @@ namespace Zero
         EventCallback EventCallback {};
     };
 
-    class ZERO_API Window
+    class Window
     {
       public:
         Window(const std::string& title = "ZERO", unsigned int width = 1800, unsigned int height = 940);

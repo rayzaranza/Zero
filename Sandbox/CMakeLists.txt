@@ -2,4 +2,7 @@
 	"src/Sandbox.cpp"
 )
 
-target_link_libraries(Sandbox PRIVATE Zero)
+target_link_libraries(Sandbox
+    PRIVATE
+        Zero
+)

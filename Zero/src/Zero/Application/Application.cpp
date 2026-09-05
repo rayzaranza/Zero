@@ -1,6 +1,6 @@
 #include "Application.h"
-#include "Event/ApplicationEvent.h"
-#include "Input/Input.h"
+#include "Zero/Event/ApplicationEvent.h"
+#include "Zero/Input/Input.h"
 
 #include <glad/glad.h>
 

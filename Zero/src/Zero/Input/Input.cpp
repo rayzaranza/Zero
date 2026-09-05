@@ -1,6 +1,6 @@
 #include "Input.h"
 
-#include "Application/Application.h"
+#include "Zero/Application/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace Zero

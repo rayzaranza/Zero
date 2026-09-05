@@ -4,10 +4,14 @@
 //  API DLL
 // ·······················································································································
 #ifdef ZERO_PLATFORM_WINDOWS
-    #ifdef ZERO_BUILD_DLL
-        #define ZERO_API __declspec(dllexport)
+    #ifdef ZERO_DYNAMIC_LIBRARY
+        #ifdef ZERO_BUILD_DLL
+            #define ZERO_API __declspec(dllexport)
+        #else
+            #define ZERO_API __declspec(dllimport)
+        #endif
     #else
-        #define ZERO_API __declspec(dllimport)
+        #define ZERO_API
     #endif
 #else
     #define ZERO_API

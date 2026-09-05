@@ -7,7 +7,7 @@ namespace Zero
 {
     using LayerPointerArray = std::vector<Layer*>;
 
-    class ZERO_API LayerStack
+    class LayerStack
     {
 
       public:

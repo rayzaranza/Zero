@@ -1,8 +1,8 @@
 #include "Window.h"
 
-#include "Event/ApplicationEvent.h"
-#include "Event/KeyEvent.h"
-#include "Event/MouseEvent.h"
+#include "Zero/Event/ApplicationEvent.h"
+#include "Zero/Event/KeyEvent.h"
+#include "Zero/Event/MouseEvent.h"
 
 #include <glad/glad.h>
 
