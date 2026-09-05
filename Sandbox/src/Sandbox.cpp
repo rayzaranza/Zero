@@ -1,4 +1,4 @@
-#include <Zero.h>
+#include <Zero/Zero.h>
 
 class ExampleLayer : public Zero::Layer
 {
@@ -7,7 +7,7 @@ class ExampleLayer : public Zero::Layer
     {}
 
   public:
-    void OnUpdate() override
+    virtual void OnUpdate() override
     {
         if (Zero::Input::IsKeyPressed(ZERO_KEY_TAB))
         {
@@ -15,7 +15,7 @@ class ExampleLayer : public Zero::Layer
         }
     }
 
-    void OnEvent(Zero::Event& event) override
+    virtual void OnEvent(Zero::Event& event) override
     {
         if (event.GetEventType() == Zero::EventType::KeyPressed)
         {
@@ -29,6 +29,9 @@ class ExampleLayer : public Zero::Layer
             ZERO_LOG("{0}", (char)e.GetKeyCode());
         }
     }
+
+    virtual void OnUIRender() override
+    {}
 };
 
 class Sandbox : public Zero::Application
@@ -37,7 +40,6 @@ class Sandbox : public Zero::Application
     Sandbox()
     {
         PushLayer(new ExampleLayer());
-        PushOverlay(new Zero::UILayer());
     }
 
     ~Sandbox()

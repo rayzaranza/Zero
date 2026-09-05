@@ -4,7 +4,7 @@
 
 namespace Zero
 {
-    class ZERO_API Input
+    class Input
     {
       public:
         static bool IsKeyPressed(int keyCode);

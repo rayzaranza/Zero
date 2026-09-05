@@ -10,9 +10,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Zero/Logger/Logger.h"
+
 #ifdef ZERO_PLATFORM_WINDOWS
     #include <Windows.h>
 #endif
-
-#include "Core.h"
-#include "Logger/Logger.h"

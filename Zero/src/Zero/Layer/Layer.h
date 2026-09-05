@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Event/Event.h"
 #include "Zero/Core.h"
+#include "Zero/Event/Event.h"
 
 namespace Zero
 {
-    class ZERO_API Layer
+    class Layer
     {
       public:
         Layer(const std::string& name = "Layer");
@@ -16,7 +16,9 @@ namespace Zero
         virtual void OnDetach();
         virtual void OnUpdate();
         virtual void OnEvent(Event& event);
+        virtual void OnUIRender();
 
+      public:
         const std::string& GetName() const;
 
       private:

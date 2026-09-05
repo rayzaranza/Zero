@@ -8,7 +8,7 @@ namespace Zero
 {
     using LoggerPointer = std::shared_ptr<spdlog::logger>;
 
-    class ZERO_API Logger
+    class Logger
     {
       private:
         static LoggerPointer s_CoreLogger;

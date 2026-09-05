@@ -1,13 +1,14 @@
 #pragma once
 
-#include "Core.h"
-#include "Event/Event.h"
-#include "Layer/LayerStack.h"
-#include "Window/Window.h"
+#include "Zero/Core.h"
+#include "Zero/Event/Event.h"
+#include "Zero/Layer/LayerStack.h"
+#include "Zero/UI/UILayer.h"
+#include "Zero/Window/Window.h"
 
 namespace Zero
 {
-    class ZERO_API Application
+    class Application
     {
       public:
         Application();
@@ -28,6 +29,7 @@ namespace Zero
         std::unique_ptr<Window> m_Window {};
         bool m_IsRunning {};
         LayerStack m_LayerStack {};
+        UILayer* m_UILayer {};
 
       private:
         static Application* s_Instance;

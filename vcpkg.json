@@ -6,6 +6,6 @@
     "glfw3",
     "glm",
     "spdlog",
-    "imgui"
+    { "name": "imgui", "features": [ "docking-experimental", "glfw-binding", "opengl3-binding" ]}
   ]
 }

@@ -56,7 +56,7 @@ namespace Zero
 
     EventType WindowClosedEvent::GetStaticType()
     {
-        return EventType::WindowResized;
+        return EventType::WindowClosed;
     }
 
     EventType WindowClosedEvent::GetEventType() const

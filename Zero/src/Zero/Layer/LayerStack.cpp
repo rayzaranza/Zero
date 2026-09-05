@@ -2,7 +2,7 @@
 
 namespace Zero
 {
-    LayerStack::LayerStack() : m_LayerInsert { m_Layers.begin() }
+    LayerStack::LayerStack()
     {}
 
     LayerStack::~LayerStack()
@@ -15,7 +15,8 @@ namespace Zero
 
     void LayerStack::PushLayer(Layer* layer)
     {
-        m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
+        m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
+        m_LayerInsertIndex++;
     }
 
     void LayerStack::PushOverlay(Layer* overlay)
@@ -29,7 +30,7 @@ namespace Zero
         if (layerIterator != m_Layers.end())
         {
             m_Layers.erase(layerIterator);
-            m_LayerInsert--;
+            m_LayerInsertIndex--;
         }
     }
 

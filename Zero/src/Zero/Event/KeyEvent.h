@@ -1,77 +1,51 @@
 #pragma once
 
 #include "Event.h"
-#include "Zero/Core.h"
 
 namespace Zero
 {
     // ················································································································
-    //  Mouse Moved Event
+    //  Key Event
     // ················································································································
-    class ZERO_API MouseMovedEvent : public Event
+    class KeyEvent : public Event
     {
       public:
-        MouseMovedEvent(float x, float y);
-
-      public:
-        inline float GetX() const;
-        inline float GetY() const;
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
-        virtual int GetCategoryFlags() const override;
-
-      private:
-        float m_MouseX {};
-        float m_MouseY {};
-    };
-
-    // ················································································································
-    //  Mouse Scrolled Event
-    // ················································································································
-    class ZERO_API MouseScrolledEvent : public Event
-    {
-      public:
-        MouseScrolledEvent(float xOffset, float yOffset);
-
-      public:
-        inline float GetXOffset() const;
-        inline float GetYOffset() const;
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
-        virtual int GetCategoryFlags() const override;
-
-      private:
-        float m_XOffset {};
-        float m_YOffset {};
-    };
-
-    // ················································································································
-    //  Mouse Button Event
-    // ················································································································
-    class ZERO_API MouseButtonEvent : public Event
-    {
-      public:
-        inline int GetMouseButton() const;
+        int GetKeyCode() const;
         virtual int GetCategoryFlags() const override;
 
       protected:
-        MouseButtonEvent(int button);
+        KeyEvent(int keyCode);
 
       protected:
-        int m_Button {};
+        int m_KeyCode {};
     };
 
     // ················································································································
-    //  Mouse Button Pressed Event
+    //  Key Pressed Event
     // ················································································································
-    class ZERO_API MouseButtonPressedEvent : public MouseButtonEvent
+    class KeyPressedEvent : public KeyEvent
     {
       public:
-        MouseButtonPressedEvent(int button);
+        KeyPressedEvent(int keyCode, int repeatCount);
+
+      public:
+        int GetRepeatCount() const;
+        std::string ToString() const override;
+        static EventType GetStaticType();
+        virtual EventType GetEventType() const override;
+        virtual const char* GetName() const override;
+
+      private:
+        int m_RepeatCount {};
+    };
+
+    // ················································································································
+    //  Key Released Event
+    // ················································································································
+    class KeyReleasedEvent : public KeyEvent
+    {
+      public:
+        KeyReleasedEvent(int keyCode);
 
       public:
         std::string ToString() const override;
@@ -81,12 +55,12 @@ namespace Zero
     };
 
     // ················································································································
-    //  Mouse Button Released Event
+    //  Key Typed Event
     // ················································································································
-    class ZERO_API MouseButtonReleasedEvent : public MouseButtonEvent
+    class KeyTypedEvent : public KeyEvent
     {
       public:
-        MouseButtonReleasedEvent(int button);
+        KeyTypedEvent(int keyCode);
 
       public:
         std::string ToString() const override;

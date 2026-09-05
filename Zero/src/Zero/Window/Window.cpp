@@ -1,8 +1,8 @@
 #include "Window.h"
 
-#include "Event/ApplicationEvent.h"
-#include "Event/KeyEvent.h"
-#include "Event/MouseEvent.h"
+#include "Zero/Event/ApplicationEvent.h"
+#include "Zero/Event/KeyEvent.h"
+#include "Zero/Event/MouseEvent.h"
 
 #include <glad/glad.h>
 
@@ -11,6 +11,17 @@ namespace Zero
     static void errorCallback(int error, const char* description)
     {
         ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description);
+    }
+
+    static void sendToSecondMonitor(GLFWwindow* window, unsigned int width, unsigned int height)
+    {
+        int monitorCount;
+        GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+        GLFWmonitor* monitor { monitors[1] };
+        const GLFWvidmode* mode { glfwGetVideoMode(monitor) };
+        int x, y;
+        glfwGetMonitorPos(monitor, &x, &y);
+        glfwSetWindowPos(window, x + (mode->width - width) / 2, y + (mode->height - height) / 2 - 24);
     }
 
     Window::Window(const std::string& title, unsigned int width, unsigned int height) : m_Data { title, width, height }
@@ -34,11 +45,18 @@ namespace Zero
         int monitorCount;
         GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
 
-        m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), monitors[1], nullptr);
-        glfwMakeContextCurrent(m_Window);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        // glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
+        //  glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+        m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
+        glfwMakeContextCurrent(m_Window);
         int gladLoadSuccess { gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
         ZERO_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
+
+        sendToSecondMonitor(m_Window, m_Data.Width, m_Data.Height);
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
         glfwSwapInterval(1);
@@ -64,7 +82,7 @@ namespace Zero
 
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
-            WindowClosedEvent event {};
+            WindowClosedEvent event;
             data.EventCallback(event);
         });
 
