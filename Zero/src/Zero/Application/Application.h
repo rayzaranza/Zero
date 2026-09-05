@@ -3,6 +3,7 @@
 #include "Zero/Core.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Layer/LayerStack.h"
+#include "Zero/Renderer/Shader.h"
 #include "Zero/UI/UILayer.h"
 #include "Zero/Window/Window.h"
 
@@ -34,6 +35,7 @@ namespace Zero
         unsigned int m_VertexArray {};
         unsigned int m_VertexBuffer {};
         unsigned int m_IndexBuffer {};
+        std::unique_ptr<Shader> m_Shader {};
 
       private:
         static Application* s_Instance;

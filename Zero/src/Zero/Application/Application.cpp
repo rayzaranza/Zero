@@ -9,7 +9,9 @@ namespace Zero
     Application* Application::s_Instance { nullptr };
 
     Application::Application()
-        : m_Window { std::make_unique<Window>() }, m_UILayer { new UILayer() }, m_IsRunning { true }
+        : m_Window { std::make_unique<Window>() },
+          m_UILayer { new UILayer() },
+          m_IsRunning { true }
     {
         ZERO_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;
@@ -37,6 +39,35 @@ namespace Zero
         glGenBuffers(1, &m_IndexBuffer);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+        const std::string vertexSource { R"(
+            #version 460 core
+
+            layout (location = 0) in vec3 a_Position;
+
+            out vec3 v_Position;
+
+            void main()
+            {
+                v_Position = a_Position;
+                gl_Position = vec4(a_Position, 1.0f);
+            }
+        )" };
+
+        const std::string fragmentSource { R"(
+            #version 460 core
+
+            in vec3 v_Position;
+
+            out vec4 o_Color;
+
+            void main()
+            {
+                o_Color = vec4(v_Position * 0.5f + 0.5f, 1.0f);
+            }
+        )" };
+
+        m_Shader = std::make_unique<Shader>(vertexSource, fragmentSource);
     }
 
     Application::~Application()
@@ -85,6 +116,10 @@ namespace Zero
         {
             glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            glBindVertexArray(m_VertexArray);
+            m_Shader->Bind();
+
             glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 
             for (Layer* layer : m_LayerStack)

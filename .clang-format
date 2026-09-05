@@ -35,3 +35,4 @@ BraceWrapping:
     AfterCaseLabel: true
 
 SeparateDefinitionBlocks: Always
+PackConstructorInitializers: CurrentLine
