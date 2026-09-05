@@ -3,8 +3,9 @@
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/KeyEvent.h"
 #include "Zero/Event/MouseEvent.h"
+#include "Zero/Renderer/OpenGL/OpenGLContext.h"
 
-#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 namespace Zero
 {
@@ -52,11 +53,8 @@ namespace Zero
         glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
         m_WindowHandle = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
-        glfwMakeContextCurrent(m_Window);
-        int gladLoadSuccess { gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
-        ZERO_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
-
-        sendToSecondMonitor(m_Window, m_Data.Width, m_Data.Height);
+        m_RendererContext = new OpenGLContext(m_WindowHandle);
+        m_RendererContext->Initialize();
 
         glfwSetWindowUserPointer(m_WindowHandle, &m_Data);
         glfwSwapInterval(1);
@@ -173,6 +171,6 @@ namespace Zero
     void Window::OnUpdate()
     {
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        m_RendererContext->SwapBuffers();
     }
 }
