@@ -1,4 +1,5 @@
 #include <Zero/Zero.h>
+#include <imgui.h>
 
 class ExampleLayer : public Zero::Layer
 {
@@ -31,7 +32,11 @@ class ExampleLayer : public Zero::Layer
     }
 
     virtual void OnUIRender() override
-    {}
+    {
+        ImGui::Begin("Teste");
+        ImGui::Text("Testing this text");
+        ImGui::End();
+    }
 };
 
 class Sandbox : public Zero::Application
