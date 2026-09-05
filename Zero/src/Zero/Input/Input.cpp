@@ -9,21 +9,21 @@ namespace Zero
 
     bool Input::IsKeyPressed(int keyCode)
     {
-        GLFWwindow* window { Application::Get().GetWindow().GetGLFWWindow() };
+        GLFWwindow* window { Application::Get().GetWindow().GetWindowHandle() };
         const int state { glfwGetKey(window, keyCode) };
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
     bool Input::IsMouseButtonPressed(int button)
     {
-        GLFWwindow* window { Application::Get().GetWindow().GetGLFWWindow() };
+        GLFWwindow* window { Application::Get().GetWindow().GetWindowHandle() };
         const int state { glfwGetMouseButton(window, button) };
         return state == GLFW_PRESS;
     }
 
     glm::vec2 Input::GetMousePosition()
     {
-        GLFWwindow* window { Application::Get().GetWindow().GetGLFWWindow() };
+        GLFWwindow* window { Application::Get().GetWindow().GetWindowHandle() };
         double x;
         double y;
         glfwGetCursorPos(window, &x, &y);

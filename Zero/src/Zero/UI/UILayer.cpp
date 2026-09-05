@@ -37,7 +37,7 @@ namespace Zero
         }
 
         Application& application { Application::Get() };
-        GLFWwindow* window { application.GetWindow().GetGLFWWindow() };
+        GLFWwindow* window { application.GetWindow().GetWindowHandle() };
 
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init("#version 460");

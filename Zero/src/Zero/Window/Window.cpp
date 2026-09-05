@@ -48,9 +48,9 @@ namespace Zero
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-        // glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
-        //  glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-        m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+        glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
+        glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+        m_WindowHandle = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
         glfwMakeContextCurrent(m_Window);
         int gladLoadSuccess { gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
@@ -58,21 +58,22 @@ namespace Zero
 
         sendToSecondMonitor(m_Window, m_Data.Width, m_Data.Height);
 
-        glfwSetWindowUserPointer(m_Window, &m_Data);
+        glfwSetWindowUserPointer(m_WindowHandle, &m_Data);
         glfwSwapInterval(1);
 
         setCallbacks();
+        sendToSecondMonitor(m_WindowHandle, m_Data.Width, m_Data.Height);
     }
 
     void Window::Destroy()
     {
-        glfwDestroyWindow(m_Window);
+        glfwDestroyWindow(m_WindowHandle);
         glfwTerminate();
     }
 
     void Window::setCallbacks()
     {
-        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+        glfwSetWindowSizeCallback(m_WindowHandle, [](GLFWwindow* window, int width, int height) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             data.Width = width;
             data.Height = height;
@@ -80,25 +81,25 @@ namespace Zero
             data.EventCallback(event);
         });
 
-        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
+        glfwSetWindowCloseCallback(m_WindowHandle, [](GLFWwindow* window) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             WindowClosedEvent event;
             data.EventCallback(event);
         });
 
-        glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xOffset, double yOffset) {
+        glfwSetScrollCallback(m_WindowHandle, [](GLFWwindow* window, double xOffset, double yOffset) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             MouseScrolledEvent event { static_cast<float>(xOffset), static_cast<float>(yOffset) };
             data.EventCallback(event);
         });
 
-        glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double x, double y) {
+        glfwSetCursorPosCallback(m_WindowHandle, [](GLFWwindow* window, double x, double y) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             MouseMovedEvent event { static_cast<float>(x), static_cast<float>(y) };
             data.EventCallback(event);
         });
 
-        glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scanCode, int action, int mods) {
+        glfwSetKeyCallback(m_WindowHandle, [](GLFWwindow* window, int key, int scanCode, int action, int mods) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             switch (action)
             {
@@ -123,13 +124,13 @@ namespace Zero
             }
         });
 
-        glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keyCode) {
+        glfwSetCharCallback(m_WindowHandle, [](GLFWwindow* window, unsigned int keyCode) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             KeyTypedEvent event { static_cast<int>(keyCode) };
             data.EventCallback(event);
         });
 
-        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
+        glfwSetMouseButtonCallback(m_WindowHandle, [](GLFWwindow* window, int button, int action, int mods) {
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             switch (action)
             {
@@ -159,9 +160,9 @@ namespace Zero
         return m_Data.Height;
     }
 
-    GLFWwindow* Window::GetGLFWWindow() const
+    GLFWwindow* Window::GetWindowHandle() const
     {
-        return m_Window;
+        return m_WindowHandle;
     }
 
     void Window::SetEventCallback(const EventCallback& callback)

@@ -26,14 +26,14 @@ namespace Zero
       public:
         unsigned int GetWidth() const;
         unsigned int GetHeight() const;
-        GLFWwindow* GetGLFWWindow() const;
+        GLFWwindow* GetWindowHandle() const;
         void SetEventCallback(const EventCallback& callback);
         void OnUpdate();
         void Initialize();
         void Destroy();
 
       private:
-        GLFWwindow* m_Window {};
+        GLFWwindow* m_WindowHandle {};
         WindowData m_Data {};
 
       private:
