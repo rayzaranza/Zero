@@ -44,6 +44,10 @@ add_library(Zero
 
         "src/Zero/UI/UILayer.h"
         "src/Zero/UI/UILayer.cpp"
+
+        "src/Zero/Renderer/RendererContext.h"
+        "src/Zero/Renderer/OpenGL/OpenGLContext.h"
+        "src/Zero/Renderer/OpenGL/OpenGLContext.cpp"
 )
 
 target_include_directories(Zero
