@@ -51,8 +51,14 @@ add_library(Zero
 
         "src/Zero/Renderer/OpenGL/OpenGLContext.h"
         "src/Zero/Renderer/OpenGL/OpenGLContext.cpp"
+        "src/Zero/Renderer/OpenGL/OpenGLBuffer.h"
+        "src/Zero/Renderer/OpenGL/OpenGLBuffer.cpp"
+
         "src/Zero/Renderer/Shader.h"
         "src/Zero/Renderer/Shader.cpp"
+
+        "src/Zero/Renderer/Buffer.h"
+        "src/Zero/Renderer/Buffer.cpp"
 )
 
 target_include_directories(Zero
