@@ -35,3 +35,15 @@ BraceWrapping:
     AfterCaseLabel: true
 
 SeparateDefinitionBlocks: Always
+PackConstructorInitializers: CurrentLine
+
+AllowShortCaseLabelsOnASingleLine: true
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCaseColons: false
+
+AlignAfterOpenBracket: BlockIndent
+BinPackArguments: false
+AllowAllArgumentsOnNextLine: true

@@ -3,6 +3,9 @@
 #include "Zero/Core.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Layer/LayerStack.h"
+#include "Zero/Renderer/Buffer.h"
+#include "Zero/Renderer/Shader.h"
+#include "Zero/Renderer/VertexArray.h"
 #include "Zero/UI/UILayer.h"
 #include "Zero/Window/Window.h"
 
@@ -23,13 +26,19 @@ namespace Zero
         static Application& Get();
 
       private:
-        bool onWindowClosed(WindowClosedEvent& event);
+        bool OnWindowClosed(WindowClosedEvent& event);
 
       private:
         std::unique_ptr<Window> m_Window {};
         bool m_IsRunning {};
         LayerStack m_LayerStack {};
         UILayer* m_UILayer {};
+
+        std::shared_ptr<Shader> m_TriangleShader {};
+        std::shared_ptr<Shader> m_QuadShader {};
+
+        std::shared_ptr<VertexArray> m_TriangleVertexArray {};
+        std::shared_ptr<VertexArray> m_QuadVertexArray {};
 
       private:
         static Application* s_Instance;

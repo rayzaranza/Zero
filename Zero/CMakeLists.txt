@@ -44,6 +44,31 @@ add_library(Zero
 
         "src/Zero/UI/UILayer.h"
         "src/Zero/UI/UILayer.cpp"
+
+        "src/Zero/Renderer/Renderer.h"
+        "src/Zero/Renderer/Renderer.cpp"
+        "src/Zero/Renderer/RenderCommand.h"
+        "src/Zero/Renderer/RenderCommand.cpp"
+        "src/Zero/Renderer/RendererAPI.h"
+        "src/Zero/Renderer/RendererAPI.cpp"
+        "src/Zero/Renderer/RendererContext.h"
+
+        "src/Zero/Renderer/Buffer.h"
+        "src/Zero/Renderer/Buffer.cpp"
+        "src/Zero/Renderer/VertexArray.h"
+        "src/Zero/Renderer/VertexArray.cpp"
+
+        "src/Zero/Renderer/OpenGL/OpenGLContext.h"
+        "src/Zero/Renderer/OpenGL/OpenGLContext.cpp"
+        "src/Zero/Renderer/OpenGL/OpenGLBuffer.h"
+        "src/Zero/Renderer/OpenGL/OpenGLBuffer.cpp"
+        "src/Zero/Renderer/OpenGL/OpenGLVertexArray.h"
+        "src/Zero/Renderer/OpenGL/OpenGLVertexArray.cpp"
+        "src/Zero/Renderer/OpenGL/OpenGLRendererAPI.h"
+        "src/Zero/Renderer/OpenGL/OpenGLRendererAPI.cpp"
+
+        "src/Zero/Renderer/Shader.h"
+        "src/Zero/Renderer/Shader.cpp"
 )
 
 target_include_directories(Zero

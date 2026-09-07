@@ -2,12 +2,21 @@
 
 #include "Zero/Core.h"
 #include "Zero/Event/ApplicationEvent.h"
+#include "Zero/Renderer/RendererContext.h"
 
-#include <GLFW/glfw3.h>
+struct GLFWwindow;
 
 namespace Zero
 {
+    // ················································································································
+    //  Event Callback Function
+    // ················································································································
+
     using EventCallback = std::function<void(Event&)>;
+
+    // ················································································································
+    //  Window Data
+    // ················································································································
 
     struct WindowData
     {
@@ -16,6 +25,10 @@ namespace Zero
         unsigned int Height {};
         EventCallback EventCallback {};
     };
+
+    // ················································································································
+    //  Window
+    // ················································································································
 
     class Window
     {
@@ -26,17 +39,19 @@ namespace Zero
       public:
         unsigned int GetWidth() const;
         unsigned int GetHeight() const;
-        GLFWwindow* GetGLFWWindow() const;
+        GLFWwindow* GetWindowHandle() const;
         void SetEventCallback(const EventCallback& callback);
         void OnUpdate();
         void Initialize();
         void Destroy();
 
       private:
-        GLFWwindow* m_Window {};
+        GLFWwindow* m_WindowHandle {};
+        RendererContext* m_RendererContext {};
         WindowData m_Data {};
 
       private:
         void setCallbacks();
+        static void errorCallback(int error, const char* description);
     };
 }

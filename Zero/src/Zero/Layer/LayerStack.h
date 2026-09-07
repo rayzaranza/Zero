@@ -5,11 +5,8 @@
 
 namespace Zero
 {
-    using LayerPointerArray = std::vector<Layer*>;
-
     class LayerStack
     {
-
       public:
         LayerStack();
         ~LayerStack();
@@ -20,11 +17,11 @@ namespace Zero
         void PopLayer(Layer* layer);
         void PopOverlay(Layer* layer);
 
-        LayerPointerArray::iterator begin();
-        LayerPointerArray::iterator end();
+        std::vector<Layer*>::iterator begin();
+        std::vector<Layer*>::iterator end();
 
       private:
-        LayerPointerArray m_Layers {};
+        std::vector<Layer*> m_Layers {};
         unsigned int m_LayerInsertIndex { 0 };
     };
 }
