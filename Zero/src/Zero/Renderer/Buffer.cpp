@@ -81,18 +81,18 @@ namespace Zero
     {
         switch (Renderer::GetAPI())
         {
-            case RendererAPI::None:
+            case RendererAPI::API::None:
             {
                 ZERO_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
 
-            case RendererAPI::OpenGL:
+            case RendererAPI::API::OpenGL:
             {
                 return new OpenGLVertexBuffer(vertices, size);
             }
 
-            case RendererAPI::Vulkan:
+            case RendererAPI::API::Vulkan:
             {
                 ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
@@ -114,18 +114,18 @@ namespace Zero
     {
         switch (Renderer::GetAPI())
         {
-            case RendererAPI::None:
+            case RendererAPI::API::None:
             {
                 ZERO_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
 
-            case RendererAPI::OpenGL:
+            case RendererAPI::API::OpenGL:
             {
                 return new OpenGLIndexBuffer(indices, size);
             }
 
-            case RendererAPI::Vulkan:
+            case RendererAPI::API::Vulkan:
             {
                 ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;

@@ -2,14 +2,20 @@
 
 namespace Zero
 {
-    // ················································································································
-    //  Renderer
-    // ················································································································
+    void Renderer::BeginScene()
+    {}
 
-    RendererAPI Renderer::s_RendererAPI { RendererAPI::OpenGL };
+    void Renderer::EndScene()
+    {}
 
-    RendererAPI Renderer::GetAPI()
+    void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray)
     {
-        return s_RendererAPI;
+        vertexArray->Bind();
+        RenderCommand::DrawIndexed(vertexArray);
+    }
+
+    RendererAPI::API Renderer::GetAPI()
+    {
+        return RendererAPI::GetAPI();
     }
 }
