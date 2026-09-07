@@ -5,6 +5,7 @@
 #include "Zero/Layer/LayerStack.h"
 #include "Zero/Renderer/Buffer.h"
 #include "Zero/Renderer/Shader.h"
+#include "Zero/Renderer/VertexArray.h"
 #include "Zero/UI/UILayer.h"
 #include "Zero/Window/Window.h"
 
@@ -33,10 +34,10 @@ namespace Zero
         LayerStack m_LayerStack {};
         UILayer* m_UILayer {};
 
-        unsigned int m_VertexArray {};
-        std::unique_ptr<IndexBuffer> m_IndexBuffer {};
-        std::unique_ptr<VertexBuffer> m_VertexBuffer {};
-        std::unique_ptr<Shader> m_Shader {};
+        std::shared_ptr<Shader> m_Shader {};
+
+        std::shared_ptr<VertexArray> m_TriangleVertexArray {};
+        std::shared_ptr<VertexArray> m_QuadVertexArray {};
 
       private:
         static Application* s_Instance;

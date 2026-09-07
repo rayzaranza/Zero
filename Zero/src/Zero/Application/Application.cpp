@@ -6,8 +6,6 @@
 
 namespace Zero
 {
-    static GLenum GetOpenGLTypeFromAttributeType(AttributeType type);
-
     Application* Application::s_Instance { nullptr };
 
     Application::Application()
@@ -15,41 +13,63 @@ namespace Zero
           m_UILayer { new UILayer() },
           m_IsRunning { true }
     {
-        ZERO_ASSERT(s_Instance == nullptr, "Application already exists");
+        ZERO_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;
         m_Window->SetEventCallback(ZERO_BIND_FUNCTION(Application::OnEvent));
         PushOverlay(m_UILayer);
 
-        glCreateVertexArrays(1, &m_VertexArray);
-        glBindVertexArray(m_VertexArray);
+        VertexBufferLayout layout {
+            { AttributeType::Float3, "a_Position" },
+            { AttributeType::Float4, "a_Color" },
+        };
 
-        float vertices[3 * 7] {
+        // ····················································································································
+        // Triangle
+        // ····················································································································
+
+        m_TriangleVertexArray.reset(VertexArray::Create());
+
+        float triangleVertices[] {
             -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, //
             0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, //
             0.0f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f, //
         };
+        std::shared_ptr<VertexBuffer> triangleVertexBuffer;
+        triangleVertexBuffer.reset(VertexBuffer::Create(triangleVertices, sizeof(triangleVertices)));
+        triangleVertexBuffer->SetLayout(layout);
+        m_TriangleVertexArray->AddVertexBuffer(triangleVertexBuffer);
 
-        m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-        m_VertexBuffer->SetLayout({ { AttributeType::Float3, "a_Position" }, { AttributeType::Float4, "a_Color" } });
-        const VertexBufferLayout& layout { m_VertexBuffer->GetLayout() };
+        uint32_t indices[] { 0, 1, 2 };
+        std::shared_ptr<IndexBuffer> triangleIndexBuffer;
+        triangleIndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+        m_TriangleVertexArray->SetIndexBuffer(triangleIndexBuffer);
 
-        uint32_t location { 0 };
-        for (const VertexAttribute& attribute : layout)
-        {
-            glEnableVertexAttribArray(location);
-            glVertexAttribPointer(
-                location,
-                attribute.ComponentCount,
-                GetOpenGLTypeFromAttributeType(attribute.Type),
-                attribute.IsNormalized ? GL_TRUE : GL_FALSE,
-                layout.GetStride(),
-                reinterpret_cast<const void*>(static_cast<uintptr_t>(attribute.Offset))
-            );
-            ++location;
-        }
+        // ····················································································································
+        // Quad
+        // ····················································································································
 
-        uint32_t indices[3] { 0, 1, 2 };
-        m_IndexBuffer.reset(IndexBuffer::Create(indices, 3));
+        m_QuadVertexArray.reset(VertexArray::Create());
+        constexpr float i { 0.33f };
+        float quadVertices[] {
+            0.5f + i,  0.5f + i,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right
+            0.5f + i,  -0.5f + i, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // bottom right
+            -0.5f + i, -0.5f + i, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // bottom left
+            -0.5f + i, 0.5f + i,  0.0f, 1.0f, 0.0f, 1.0f, 1.0f, // top left
+        };
+
+        std::shared_ptr<VertexBuffer> quadVertexBuffer;
+        quadVertexBuffer.reset(VertexBuffer::Create(quadVertices, sizeof(quadVertices)));
+        quadVertexBuffer->SetLayout(layout);
+        m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
+
+        uint32_t quadIndices[] { 0, 1, 3, 1, 2, 3 };
+        std::shared_ptr<IndexBuffer> quadIndexBuffer;
+        quadIndexBuffer.reset(IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)));
+        m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
+
+        // ····················································································································
+        // Shader
+        // ····················································································································
 
         const std::string vertexSource { R"(
             #version 460 core
@@ -82,11 +102,14 @@ namespace Zero
             }
         )" };
 
-        m_Shader = std::make_unique<Shader>(vertexSource, fragmentSource);
+        m_Shader = std::make_shared<Shader>(vertexSource, fragmentSource);
+        ZERO_CORE_LOG("Application created");
     }
 
     Application::~Application()
-    {}
+    {
+        ZERO_CORE_LOG("Application destroyed");
+    }
 
     void Application::OnEvent(Event& event)
     {
@@ -132,10 +155,12 @@ namespace Zero
             glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            glBindVertexArray(m_VertexArray);
             m_Shader->Bind();
+            m_TriangleVertexArray->Bind();
+            glDrawElements(GL_TRIANGLES, m_TriangleVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
-            glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+            m_QuadVertexArray->Bind();
+            glDrawElements(GL_TRIANGLES, m_QuadVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
             for (Layer* layer : m_LayerStack)
             {
@@ -159,28 +184,4 @@ namespace Zero
         return true;
     }
 
-    GLenum GetOpenGLTypeFromAttributeType(AttributeType type)
-    {
-        switch (type)
-        {
-            case AttributeType::Float:
-            case AttributeType::Float2:
-            case AttributeType::Float3:
-            case AttributeType::Float4:
-            case AttributeType::Matrix3:
-            case AttributeType::Matrix4: return GL_FLOAT;
-
-            case AttributeType::Int:
-            case AttributeType::Int2:
-            case AttributeType::Int3:    return GL_INT;
-
-            case AttributeType::Boolean: return GL_BOOL;
-
-            default:
-            {
-                ZERO_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
-                return 0;
-            }
-        }
-    }
 }
