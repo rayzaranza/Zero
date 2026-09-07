@@ -92,6 +92,12 @@ namespace Zero
                 return new OpenGLVertexBuffer(vertices, size);
             }
 
+            case RendererAPI::Vulkan:
+            {
+                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                return nullptr;
+            }
+
             default:
             {
                 ZERO_CORE_ASSERT(false, "Unknown Renderer API");
@@ -117,6 +123,12 @@ namespace Zero
             case RendererAPI::OpenGL:
             {
                 return new OpenGLIndexBuffer(indices, size);
+            }
+
+            case RendererAPI::Vulkan:
+            {
+                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                return nullptr;
             }
 
             default:

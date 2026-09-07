@@ -49,16 +49,20 @@ add_library(Zero
         "src/Zero/Renderer/Renderer.cpp"
         "src/Zero/Renderer/RendererContext.h"
 
+        "src/Zero/Renderer/Buffer.h"
+        "src/Zero/Renderer/Buffer.cpp"
+        "src/Zero/Renderer/VertexArray.h"
+        "src/Zero/Renderer/VertexArray.cpp"
+
         "src/Zero/Renderer/OpenGL/OpenGLContext.h"
         "src/Zero/Renderer/OpenGL/OpenGLContext.cpp"
         "src/Zero/Renderer/OpenGL/OpenGLBuffer.h"
         "src/Zero/Renderer/OpenGL/OpenGLBuffer.cpp"
+        "src/Zero/Renderer/OpenGL/OpenGLVertexArray.h"
+        "src/Zero/Renderer/OpenGL/OpenGLVertexArray.cpp"
 
         "src/Zero/Renderer/Shader.h"
         "src/Zero/Renderer/Shader.cpp"
-
-        "src/Zero/Renderer/Buffer.h"
-        "src/Zero/Renderer/Buffer.cpp"
 )
 
 target_include_directories(Zero
