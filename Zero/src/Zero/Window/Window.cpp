@@ -1,5 +1,4 @@
-#include "Window.h"
-
+#include "Zero/Window/Window.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/KeyEvent.h"
 #include "Zero/Event/MouseEvent.h"
@@ -9,21 +8,7 @@
 
 namespace Zero
 {
-    static void errorCallback(int error, const char* description)
-    {
-        ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description);
-    }
-
-    static void sendToSecondMonitor(GLFWwindow* window, unsigned int width, unsigned int height)
-    {
-        int monitorCount;
-        GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
-        GLFWmonitor* monitor { monitors[1] };
-        const GLFWvidmode* mode { glfwGetVideoMode(monitor) };
-        int x, y;
-        glfwGetMonitorPos(monitor, &x, &y);
-        glfwSetWindowPos(window, x + (mode->width - width) / 2, y + (mode->height - height) / 2 - 24);
-    }
+    static void sendWindowToSecondMonitor(GLFWwindow* window, unsigned int width, unsigned int height);
 
     Window::Window(const std::string& title, unsigned int width, unsigned int height) : m_Data { title, width, height }
     {
@@ -59,7 +44,7 @@ namespace Zero
         glfwSwapInterval(1);
 
         setCallbacks();
-        sendToSecondMonitor(m_WindowHandle, m_Data.Width, m_Data.Height);
+        sendWindowToSecondMonitor(m_WindowHandle, m_Data.Width, m_Data.Height);
     }
 
     void Window::Destroy()
@@ -171,5 +156,21 @@ namespace Zero
     {
         glfwPollEvents();
         m_RendererContext->SwapBuffers();
+    }
+
+    void Window::errorCallback(int error, const char* description)
+    {
+        ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description);
+    }
+
+    void sendWindowToSecondMonitor(GLFWwindow* window, unsigned int width, unsigned int height)
+    {
+        int monitorCount;
+        GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+        GLFWmonitor* monitor { monitors[1] };
+        const GLFWvidmode* mode { glfwGetVideoMode(monitor) };
+        int x, y;
+        glfwGetMonitorPos(monitor, &x, &y);
+        glfwSetWindowPos(window, x + (mode->width - width) / 2, y + (mode->height - height) / 2 - 24);
     }
 }

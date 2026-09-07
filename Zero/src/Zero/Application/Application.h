@@ -25,7 +25,7 @@ namespace Zero
         static Application& Get();
 
       private:
-        bool onWindowClosed(WindowClosedEvent& event);
+        bool OnWindowClosed(WindowClosedEvent& event);
 
       private:
         std::unique_ptr<Window> m_Window {};

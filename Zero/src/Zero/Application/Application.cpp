@@ -66,7 +66,7 @@ namespace Zero
     void Application::OnEvent(Event& event)
     {
         EventDispatcher dispatcher { event };
-        dispatcher.Dispatch<WindowClosedEvent>(ZERO_BIND_FUNCTION(Application::onWindowClosed));
+        dispatcher.Dispatch<WindowClosedEvent>(ZERO_BIND_FUNCTION(Application::OnWindowClosed));
 
         for (LayerPointerArray::iterator iterator { m_LayerStack.end() }; iterator != m_LayerStack.begin();)
         {
@@ -128,7 +128,7 @@ namespace Zero
         }
     }
 
-    bool Application::onWindowClosed(WindowClosedEvent& event)
+    bool Application::OnWindowClosed(WindowClosedEvent& event)
     {
         m_IsRunning = false;
         return true;
