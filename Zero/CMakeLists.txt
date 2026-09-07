@@ -47,6 +47,10 @@ add_library(Zero
 
         "src/Zero/Renderer/Renderer.h"
         "src/Zero/Renderer/Renderer.cpp"
+        "src/Zero/Renderer/RenderCommand.h"
+        "src/Zero/Renderer/RenderCommand.cpp"
+        "src/Zero/Renderer/RendererAPI.h"
+        "src/Zero/Renderer/RendererAPI.cpp"
         "src/Zero/Renderer/RendererContext.h"
 
         "src/Zero/Renderer/Buffer.h"
@@ -60,6 +64,8 @@ add_library(Zero
         "src/Zero/Renderer/OpenGL/OpenGLBuffer.cpp"
         "src/Zero/Renderer/OpenGL/OpenGLVertexArray.h"
         "src/Zero/Renderer/OpenGL/OpenGLVertexArray.cpp"
+        "src/Zero/Renderer/OpenGL/OpenGLRendererAPI.h"
+        "src/Zero/Renderer/OpenGL/OpenGLRendererAPI.cpp"
 
         "src/Zero/Renderer/Shader.h"
         "src/Zero/Renderer/Shader.cpp"
