@@ -17,9 +17,12 @@ namespace Zero
       public:
         virtual void Bind() const override;
         virtual void Unbind() const override;
+        virtual void SetLayout(const VertexBufferLayout& layout) override;
+        virtual const VertexBufferLayout& GetLayout() const override;
 
       private:
         uint32_t m_Id {};
+        VertexBufferLayout m_Layout {};
     };
 
     // ················································································································
