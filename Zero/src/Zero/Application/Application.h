@@ -34,7 +34,8 @@ namespace Zero
         LayerStack m_LayerStack {};
         UILayer* m_UILayer {};
 
-        std::shared_ptr<Shader> m_Shader {};
+        std::shared_ptr<Shader> m_TriangleShader {};
+        std::shared_ptr<Shader> m_QuadShader {};
 
         std::shared_ptr<VertexArray> m_TriangleVertexArray {};
         std::shared_ptr<VertexArray> m_QuadVertexArray {};

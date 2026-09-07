@@ -1,8 +1,7 @@
 #include "Zero/Application/Application.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Input/Input.h"
-
-#include <glad/glad.h>
+#include "Zero/Renderer/Renderer.h"
 
 namespace Zero
 {
@@ -44,6 +43,39 @@ namespace Zero
         triangleIndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
         m_TriangleVertexArray->SetIndexBuffer(triangleIndexBuffer);
 
+        const std::string triangleVertexSource { R"(
+            #version 460 core
+
+            layout (location = 0) in vec3 a_Position;
+            layout (location = 1) in vec4 a_Color;
+
+            out vec3 v_Position;
+            out vec4 v_Color;
+
+            void main()
+            {
+                v_Position = a_Position;
+                v_Color = a_Color;
+                gl_Position = vec4(a_Position, 1.0f);
+            }
+        )" };
+
+        const std::string triangleFragmentSource { R"(
+            #version 460 core
+
+            in vec3 v_Position;
+            in vec4 v_Color;
+
+            out vec4 o_Color;
+
+            void main()
+            {
+                o_Color = v_Color;
+            }
+        )" };
+
+        m_TriangleShader = std::make_shared<Shader>(triangleVertexSource, triangleFragmentSource);
+
         // ····················································································································
         // Quad
         // ····················································································································
@@ -67,11 +99,7 @@ namespace Zero
         quadIndexBuffer.reset(IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)));
         m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
-        // ····················································································································
-        // Shader
-        // ····················································································································
-
-        const std::string vertexSource { R"(
+        const std::string quadVertexSource { R"(
             #version 460 core
 
             layout (location = 0) in vec3 a_Position;
@@ -88,7 +116,7 @@ namespace Zero
             }
         )" };
 
-        const std::string fragmentSource { R"(
+        const std::string quadFragmentSource { R"(
             #version 460 core
 
             in vec3 v_Position;
@@ -98,11 +126,12 @@ namespace Zero
 
             void main()
             {
-                o_Color = v_Color;
+                o_Color = vec4(0.2f, 1.0f, 0.5f, 1.0f);
             }
         )" };
 
-        m_Shader = std::make_shared<Shader>(vertexSource, fragmentSource);
+        m_QuadShader = std::make_shared<Shader>(quadVertexSource, quadFragmentSource);
+
         ZERO_CORE_LOG("Application created");
     }
 
@@ -116,7 +145,7 @@ namespace Zero
         EventDispatcher dispatcher { event };
         dispatcher.Dispatch<WindowClosedEvent>(ZERO_BIND_FUNCTION(Application::OnWindowClosed));
 
-        for (LayerPointerArray::iterator iterator { m_LayerStack.end() }; iterator != m_LayerStack.begin();)
+        for (std::vector<Layer*>::iterator iterator { m_LayerStack.end() }; iterator != m_LayerStack.begin();)
         {
             (*--iterator)->OnEvent(event);
             if (event.IsHandled())
@@ -152,15 +181,22 @@ namespace Zero
     {
         while (m_IsRunning)
         {
-            glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+            RenderCommand::Clear();
 
-            m_Shader->Bind();
-            m_TriangleVertexArray->Bind();
-            glDrawElements(GL_TRIANGLES, m_TriangleVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            // ····································································
 
-            m_QuadVertexArray->Bind();
-            glDrawElements(GL_TRIANGLES, m_QuadVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            Renderer::BeginScene();
+            {
+                m_TriangleShader->Bind();
+                Renderer::Submit(m_TriangleVertexArray);
+
+                m_QuadShader->Bind();
+                Renderer::Submit(m_QuadVertexArray);
+            }
+            Renderer::EndScene();
+
+            // ····································································
 
             for (Layer* layer : m_LayerStack)
             {
@@ -183,5 +219,4 @@ namespace Zero
         m_IsRunning = false;
         return true;
     }
-
 }
