@@ -8,11 +8,15 @@ namespace Zero
     class Renderer
     {
       public:
-        static void BeginScene();
-        static void EndScene();
-        static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+        inline static void BeginScene() {};
+        inline static void EndScene() {};
+        inline static void Submit(const std::shared_ptr<VertexArray>& vertexArray)
+        {
+            vertexArray->Bind();
+            RenderCommand::DrawIndexed(vertexArray);
+        }
 
       public:
-        static RendererAPI::API GetAPI();
+        inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
     };
 }

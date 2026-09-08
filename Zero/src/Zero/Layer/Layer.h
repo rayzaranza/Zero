@@ -8,18 +8,17 @@ namespace Zero
     class Layer
     {
       public:
-        Layer(const std::string& name = "Layer");
-        virtual ~Layer();
+        Layer(const std::string& name = "Layer") : m_Name { name } {}
 
       public:
-        virtual void OnAttach();
-        virtual void OnDetach();
-        virtual void OnUpdate();
-        virtual void OnEvent(Event& event);
-        virtual void OnUIRender();
+        inline virtual void OnAttach() {}
+        inline virtual void OnDetach() {}
+        inline virtual void OnUpdate() {}
+        inline virtual void OnUIRender() {}
+        inline virtual void OnEvent(Event& event) {}
 
       public:
-        const std::string& GetName() const;
+        inline const std::string& GetName() const { return m_Name; }
 
       private:
         std::string m_Name {};

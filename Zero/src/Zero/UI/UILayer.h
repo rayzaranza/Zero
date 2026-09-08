@@ -10,8 +10,8 @@ namespace Zero
     class UILayer : public Layer
     {
       public:
-        UILayer();
-        ~UILayer();
+        UILayer() : Layer { "UILayer" } {}
+        ~UILayer() = default;
 
       public:
         virtual void OnAttach() override;

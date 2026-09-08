@@ -3,8 +3,8 @@
 
 namespace Zero
 {
-    LoggerPointer Logger::s_CoreLogger;
-    LoggerPointer Logger::s_ClientLogger;
+    std::shared_ptr<spdlog::logger> Logger::s_CoreLogger {};
+    std::shared_ptr<spdlog::logger> Logger::s_ClientLogger {};
 
     void Logger::Init()
     {
@@ -15,15 +15,5 @@ namespace Zero
 
         s_ClientLogger = spdlog::stdout_color_mt("APP ");
         s_ClientLogger->set_level(spdlog::level::trace);
-    }
-
-    LoggerPointer& Logger::GetCoreLogger()
-    {
-        return s_CoreLogger;
-    }
-
-    LoggerPointer& Logger::GetClientLogger()
-    {
-        return s_ClientLogger;
     }
 }

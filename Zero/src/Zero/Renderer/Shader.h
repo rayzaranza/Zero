@@ -12,6 +12,6 @@ namespace Zero
         void Bind() const;
 
       private:
-        uint32_t m_Id;
+        uint32_t m_Id {};
     };
 }

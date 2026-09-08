@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Layer.h"
 #include "Zero/Core.h"
+#include "Zero/Layer/Layer.h"
 
 namespace Zero
 {
     class LayerStack
     {
       public:
-        LayerStack();
+        LayerStack() = default;
         ~LayerStack();
 
       public:
@@ -17,8 +17,8 @@ namespace Zero
         void PopLayer(Layer* layer);
         void PopOverlay(Layer* layer);
 
-        std::vector<Layer*>::iterator begin();
-        std::vector<Layer*>::iterator end();
+        inline std::vector<Layer*>::iterator begin() { return m_Layers.begin(); }
+        inline std::vector<Layer*>::iterator end() { return m_Layers.end(); }
 
       private:
         std::vector<Layer*> m_Layers {};

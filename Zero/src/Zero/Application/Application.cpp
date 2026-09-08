@@ -167,16 +167,6 @@ namespace Zero
         overlay->OnAttach();
     }
 
-    Window& Application::GetWindow() const
-    {
-        return *m_Window;
-    }
-
-    Application& Application::Get()
-    {
-        return *s_Instance;
-    }
-
     void Application::Run()
     {
         while (m_IsRunning)

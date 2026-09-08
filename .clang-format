@@ -34,7 +34,7 @@ BraceWrapping:
     SplitEmptyRecord: false
     AfterCaseLabel: true
 
-SeparateDefinitionBlocks: Always
+SeparateDefinitionBlocks: Leave
 PackConstructorInitializers: CurrentLine
 
 AllowShortCaseLabelsOnASingleLine: true
@@ -47,3 +47,7 @@ AlignConsecutiveShortCaseStatements:
 AlignAfterOpenBracket: BlockIndent
 BinPackArguments: false
 AllowAllArgumentsOnNextLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+BreakTemplateDeclarations: Yes
+
+ColumnLimit: 120

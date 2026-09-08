@@ -21,8 +21,8 @@ namespace Zero
     struct WindowData
     {
         std::string Title {};
-        unsigned int Width {};
-        unsigned int Height {};
+        int Width {};
+        int Height {};
         EventCallback EventCallback {};
     };
 
@@ -33,14 +33,16 @@ namespace Zero
     class Window
     {
       public:
-        Window(const std::string& title = "ZERO", unsigned int width = 1800, unsigned int height = 940);
+        Window(const std::string& title = "ZERO", int width = 1800, int height = 940);
         ~Window();
 
       public:
-        unsigned int GetWidth() const;
-        unsigned int GetHeight() const;
-        GLFWwindow* GetWindowHandle() const;
-        void SetEventCallback(const EventCallback& callback);
+        inline int GetWidth() const { return m_Data.Width; }
+        inline int GetHeight() const { return m_Data.Height; }
+        inline GLFWwindow* GetWindowHandle() const { return m_WindowHandle; }
+        inline void SetEventCallback(const EventCallback& callback) { m_Data.EventCallback = callback; }
+
+      public:
         void OnUpdate();
         void Initialize();
         void Destroy();
@@ -52,6 +54,9 @@ namespace Zero
 
       private:
         void setCallbacks();
-        static void errorCallback(int error, const char* description);
+        inline static void errorCallback(int error, const char* description)
+        {
+            ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description);
+        }
     };
 }

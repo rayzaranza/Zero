@@ -25,6 +25,9 @@ namespace Zero
     //  Vertex Attribute
     // ················································································································
 
+    uint32_t GetSizeFromAttributeType(AttributeType type);
+    uint32_t GetComponentCountFromAttributeType(AttributeType type);
+
     struct VertexAttribute
     {
         std::string Name {};
@@ -34,7 +37,14 @@ namespace Zero
         uint32_t ComponentCount {};
         bool IsNormalized {};
 
-        VertexAttribute(AttributeType type, const std::string& name);
+        VertexAttribute(AttributeType type, const std::string& name)
+            : Name { name },
+              Type { type },
+              Size { GetSizeFromAttributeType(type) },
+              ComponentCount { GetComponentCountFromAttributeType(type) },
+              IsNormalized { false },
+              Offset { 0 }
+        {}
     };
 
     // ················································································································
@@ -44,17 +54,20 @@ namespace Zero
     class VertexBufferLayout
     {
       public:
-        VertexBufferLayout(const std::initializer_list<VertexAttribute>& attributes);
+        VertexBufferLayout(const std::initializer_list<VertexAttribute>& attributes) : m_Attributes { attributes }
+        {
+            CalculateOffsetsAndStride();
+        }
 
       public:
-        uint32_t GetStride() const;
-        const std::vector<VertexAttribute>& GetAttributes() const;
+        inline uint32_t GetStride() const { return m_Stride; }
+        inline const std::vector<VertexAttribute>& GetAttributes() const { return m_Attributes; }
 
       public:
-        std::vector<VertexAttribute>::iterator begin();
-        std::vector<VertexAttribute>::iterator end();
-        std::vector<VertexAttribute>::const_iterator begin() const;
-        std::vector<VertexAttribute>::const_iterator end() const;
+        inline std::vector<VertexAttribute>::iterator begin() { return m_Attributes.begin(); }
+        inline std::vector<VertexAttribute>::iterator end() { return m_Attributes.end(); }
+        inline std::vector<VertexAttribute>::const_iterator begin() const { return m_Attributes.begin(); }
+        inline std::vector<VertexAttribute>::const_iterator end() const { return m_Attributes.end(); }
 
       private:
         void CalculateOffsetsAndStride();

@@ -7,14 +7,15 @@ namespace Zero
     // ················································································································
     //  Key Event
     // ················································································································
+
     class KeyEvent : public Event
     {
       public:
-        int GetKeyCode() const;
-        virtual int GetCategoryFlags() const override;
+        inline int GetKeyCode() const { return m_KeyCode; }
+        inline virtual int GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
 
       protected:
-        KeyEvent(int keyCode);
+        KeyEvent(int keyCode) : m_KeyCode { keyCode } {}
 
       protected:
         int m_KeyCode {};
@@ -23,17 +24,23 @@ namespace Zero
     // ················································································································
     //  Key Pressed Event
     // ················································································································
+
     class KeyPressedEvent : public KeyEvent
     {
       public:
-        KeyPressedEvent(int keyCode, int repeatCount);
+        KeyPressedEvent(int keyCode, int repeatCount) : KeyEvent { keyCode }, m_RepeatCount { repeatCount } {}
 
       public:
-        int GetRepeatCount() const;
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
+        inline int GetRepeatCount() const { return m_RepeatCount; }
+        inline static EventType GetStaticType() { return EventType::KeyPressed; }
+        inline virtual EventType GetEventType() const override { return GetStaticType(); }
+        inline virtual const char* GetName() const override { return "KeyPressed"; }
+        inline virtual std::string ToString() const override
+        {
+            std::stringstream stream {};
+            stream << "KeyPressedEvent: " << m_KeyCode << " (repeats: " << m_RepeatCount << ")";
+            return stream.str();
+        }
 
       private:
         int m_RepeatCount {};
@@ -42,30 +49,42 @@ namespace Zero
     // ················································································································
     //  Key Released Event
     // ················································································································
+
     class KeyReleasedEvent : public KeyEvent
     {
       public:
-        KeyReleasedEvent(int keyCode);
+        KeyReleasedEvent(int keyCode) : KeyEvent { keyCode } {}
 
       public:
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
+        inline static EventType GetStaticType() { return EventType::KeyReleased; }
+        inline virtual EventType GetEventType() const override { return GetStaticType(); }
+        inline virtual const char* GetName() const override { return "KeyReleased"; }
+        inline virtual std::string ToString() const override
+        {
+            std::stringstream stream {};
+            stream << "KeyReleasedEvent: " << m_KeyCode;
+            return stream.str();
+        }
     };
 
     // ················································································································
     //  Key Typed Event
     // ················································································································
+
     class KeyTypedEvent : public KeyEvent
     {
       public:
-        KeyTypedEvent(int keyCode);
+        KeyTypedEvent(int keyCode) : KeyEvent { keyCode } {}
 
       public:
-        std::string ToString() const override;
-        static EventType GetStaticType();
-        virtual EventType GetEventType() const override;
-        virtual const char* GetName() const override;
+        inline static EventType GetStaticType() { return EventType::KeyTyped; }
+        inline virtual EventType GetEventType() const override { return GetStaticType(); };
+        inline virtual const char* GetName() const override { return "KeyTyped"; };
+        inline virtual std::string ToString() const override
+        {
+            std::stringstream stream {};
+            stream << "KeyTypedEvent: " << m_KeyCode;
+            return stream.str();
+        }
     };
 }
