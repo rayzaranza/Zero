@@ -57,6 +57,8 @@ add_library(Zero
         "src/Zero/Renderer/OpenGL/OpenGLVertexArray.cpp"
         "src/Zero/Renderer/OpenGL/OpenGLRendererAPI.h"
         "src/Zero/Renderer/OpenGL/OpenGLRendererAPI.cpp"
+        "src/Zero/Renderer/OpenGL/OpenGLShader.h"
+        "src/Zero/Renderer/OpenGL/OpenGLShader.cpp"
 
         "src/Zero/Renderer/Shader.h"
         "src/Zero/Renderer/Shader.cpp"
