@@ -6,15 +6,15 @@
 ////    Triangle Data    //////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float triangleVertices[]{
+float triangleVertices[] {
     -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, //
     0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, //
     0.0f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f, //
 };
 
-uint32_t triangleIndices[]{ 0, 1, 2 };
+uint32_t triangleIndices[] { 0, 1, 2 };
 
-const std::string triangleVertexSource{ R"(
+const std::string triangleVertexSource { R"(
     #version 460 core
 
     layout (location = 0) in vec3 a_Position;
@@ -34,7 +34,7 @@ const std::string triangleVertexSource{ R"(
     }
 )" };
 
-const std::string triangleFragmentSource{ R"(
+const std::string triangleFragmentSource { R"(
     #version 460 core
 
     in vec3 v_Position;
@@ -52,16 +52,16 @@ const std::string triangleFragmentSource{ R"(
 ////    Quad Data    //////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float quadVertices[]{
+float quadVertices[] {
     0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right
     0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // bottom right
     -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // bottom left
     -0.5f, 0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 1.0f, // top left
 };
 
-uint32_t quadIndices[]{ 0, 1, 3, 1, 2, 3 };
+uint32_t quadIndices[] { 0, 1, 3, 1, 2, 3 };
 
-const std::string quadVertexSource{ R"(
+const std::string quadVertexSource { R"(
     #version 460 core
 
     layout (location = 0) in vec3 a_Position;
@@ -81,17 +81,20 @@ const std::string quadVertexSource{ R"(
     }
 )" };
 
-const std::string quadFragmentSource{ R"(
+const std::string quadFragmentSource { R"(
     #version 460 core
 
     in vec3 v_Position;
     in vec4 v_Color;
+
+    uniform vec4 u_Color;
 
     out vec4 o_Color;
 
     void main()
     {
         o_Color = vec4(0.2f, 0.8f, 0.7f, 1.0f);
+        o_Color = u_Color;
     }
 )" };
 
@@ -101,10 +104,10 @@ const std::string quadFragmentSource{ R"(
 
 class ExampleLayer : public Zero::Layer
 {
-public:
-    ExampleLayer() : Layer{ "Example" }, m_Camera{ -1.6f, 1.6f, -0.9f, 0.9f }, m_CameraPosition{ 0.0f }
+  public:
+    ExampleLayer() : Layer { "Example" }, m_Camera { -1.6f, 1.6f, -0.9f, 0.9f }, m_CameraPosition { 0.0f }
     {
-        Zero::VertexBufferLayout layout{
+        Zero::VertexBufferLayout layout {
             { Zero::AttributeType::Float3, "a_Position" },
             { Zero::AttributeType::Float4, "a_Color" },
         };
@@ -136,7 +139,7 @@ public:
         m_QuadShader = std::make_shared<Zero::Shader>(quadVertexSource, quadFragmentSource);
     }
 
-public:
+  public:
     virtual void OnUpdate(Zero::DeltaTime deltaTime) override
     {
         if (Zero::Input::IsKeyPressed(ZERO_KEY_LEFT))
@@ -171,7 +174,7 @@ public:
         m_Camera.SetPosition(m_CameraPosition);
         m_Camera.SetRotation(m_CameraRotation);
 
-        glm::mat4 triangleModelMatrix{ 1.0f };
+        glm::mat4 triangleModelMatrix { 1.0f };
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -179,14 +182,20 @@ public:
         Zero::RenderCommand::Clear();
 
         Zero::Renderer::BeginScene(m_Camera);
-        constexpr int count{ 20 };
-        for (int y{ 0 }; y < count; ++y)
+
+        glm::vec4 red { 1.0f, 0.0f, 0.0f, 1.0f };
+        glm::vec4 blue { 0.0f, 0.0f, 1.0f, 1.0f };
+
+        constexpr int count { 20 };
+        for (int y { 0 }; y < count; ++y)
         {
-            for (int x{ 0 }; x < count; ++x)
+            for (int x { 0 }; x < count; ++x)
             {
-                glm::vec3 position{ static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f };
-                glm::mat4 quadModelMatrix{ glm::translate({ 1.0f }, position) *
+                glm::vec3 position { static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f };
+                glm::mat4 quadModelMatrix { glm::translate({ 1.0f }, position) *
                                             glm::scale({ 1.0f }, glm::vec3 { 0.1f }) };
+                m_QuadShader->SetUniform("u_Color", (x % 2 == 0) ? red : blue);
+
                 Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader, quadModelMatrix);
             }
         }
@@ -200,7 +209,7 @@ public:
 
     virtual void OnUIRender() override {}
 
-private:
+  private:
     std::shared_ptr<Zero::Shader> m_TriangleShader;
     std::shared_ptr<Zero::Shader> m_QuadShader;
     std::shared_ptr<Zero::VertexArray> m_TriangleVertexArray;
@@ -208,12 +217,12 @@ private:
     Zero::CameraOrthographic m_Camera;
 
     glm::vec3 m_CameraPosition;
-    float m_CameraMovementSpeed{ 1.0f };
-    float m_CameraRotationSpeed{ 90.0f };
-    float m_CameraRotation{ 0.0f };
+    float m_CameraMovementSpeed { 1.0f };
+    float m_CameraRotationSpeed { 90.0f };
+    float m_CameraRotation { 0.0f };
 
-    glm::vec3 m_QuadPosition{ 0.0f };
-    float m_QuadMovementSpeed{ 1.0f };
+    glm::vec3 m_QuadPosition { 0.0f };
+    float m_QuadMovementSpeed { 1.0f };
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -222,7 +231,7 @@ private:
 
 class Sandbox : public Zero::Application
 {
-public:
+  public:
     Sandbox() { PushLayer(new ExampleLayer()); }
     ~Sandbox() {}
 };

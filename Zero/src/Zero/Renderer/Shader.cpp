@@ -1,6 +1,7 @@
 #include "Zero/Renderer/Shader.h"
 
 #include <glad/glad.h>
+
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Zero
@@ -90,7 +91,31 @@ namespace Zero
 
     void Shader::SetUniform(const std::string& name, const glm::mat4& matrix) const
     {
-        GLint location { glGetUniformLocation(m_Id, name.c_str()) };
+        int location { glGetUniformLocation(m_Id, name.c_str()) };
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+    void Shader::SetUniform(const std::string& name, const glm::vec4& vector) const
+    {
+        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+    }
+
+    void Shader::SetUniform(const std::string& name, const glm::vec3& vector) const
+    {
+        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform3f(location, vector.x, vector.y, vector.z);
+    }
+
+    void Shader::SetUniform(const std::string& name, const glm::vec2& vector) const
+    {
+        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform2f(location, vector.x, vector.y);
+    }
+
+    void Shader::SetUniform(const std::string& name, float value) const
+    {
+        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform1f(location, value);
     }
 }
