@@ -9,10 +9,15 @@ namespace Zero
         s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
 
-    void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader)
+    void Renderer::Submit(
+        const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader,
+        const glm::mat4& modelMatrix
+    )
     {
         shader->Bind();
         shader->SetUniform("u_ViewProjectionMatrix", s_SceneData->ViewProjectionMatrix);
+        shader->SetUniform("u_ModelMatrix", modelMatrix);
+
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);
     }

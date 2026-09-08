@@ -5,13 +5,18 @@
 #include "Zero/Renderer/RendererAPI.h"
 #include "Zero/Renderer/Shader.h"
 
+#include <glm/glm.hpp>
+
 namespace Zero
 {
     class Renderer
     {
       public:
         static void BeginScene(CameraOrthographic& camera);
-        static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader);
+        static void Submit(
+            const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader,
+            const glm::mat4& transform
+        );
         static void EndScene();
 
       public:
