@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Zero/Camera/Camera.h"
 #include "Zero/Core.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Layer/LayerStack.h"
@@ -39,6 +40,7 @@ namespace Zero
         std::shared_ptr<Shader> m_QuadShader;
         std::shared_ptr<VertexArray> m_TriangleVertexArray;
         std::shared_ptr<VertexArray> m_QuadVertexArray;
+        CameraOrthographic m_Camera;
 
       private:
         static Application* s_Instance;
