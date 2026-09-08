@@ -60,6 +60,9 @@ add_library(Zero
 
         "src/Zero/Renderer/Shader.h"
         "src/Zero/Renderer/Shader.cpp"
+
+        "src/Zero/Camera/Camera.h"
+        "src/Zero/Camera/Camera.cpp"
 )
 
 target_include_directories(Zero
