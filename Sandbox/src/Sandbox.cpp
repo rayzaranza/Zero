@@ -130,22 +130,22 @@ class ExampleLayer : public Zero::Layer
     }
 
   public:
-    virtual void OnUpdate() override
+    virtual void OnUpdate(Zero::DeltaTime deltaTime) override
     {
         if (Zero::Input::IsKeyPressed(ZERO_KEY_LEFT))
-            m_CameraPosition.x -= m_CameraMovementSpeed;
+            m_CameraPosition.x -= m_CameraMovementSpeed * deltaTime;
         else if (Zero::Input::IsKeyPressed(ZERO_KEY_RIGHT))
-            m_CameraPosition.x += m_CameraMovementSpeed;
+            m_CameraPosition.x += m_CameraMovementSpeed * deltaTime;
 
         if (Zero::Input::IsKeyPressed(ZERO_KEY_DOWN))
-            m_CameraPosition.y -= m_CameraMovementSpeed;
+            m_CameraPosition.y -= m_CameraMovementSpeed * deltaTime;
         else if (Zero::Input::IsKeyPressed(ZERO_KEY_UP))
-            m_CameraPosition.y += m_CameraMovementSpeed;
+            m_CameraPosition.y += m_CameraMovementSpeed * deltaTime;
 
         if (Zero::Input::IsKeyPressed(ZERO_KEY_A))
-            m_CameraRotation += m_CameraRotationSpeed;
+            m_CameraRotation += m_CameraRotationSpeed * deltaTime;
         else if (Zero::Input::IsKeyPressed(ZERO_KEY_D))
-            m_CameraRotation -= m_CameraRotationSpeed;
+            m_CameraRotation -= m_CameraRotationSpeed * deltaTime;
 
         Zero::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
         Zero::RenderCommand::Clear();
@@ -170,8 +170,8 @@ class ExampleLayer : public Zero::Layer
     std::shared_ptr<Zero::VertexArray> m_QuadVertexArray;
     Zero::CameraOrthographic m_Camera;
     glm::vec3 m_CameraPosition;
-    float m_CameraMovementSpeed { 0.05f };
-    float m_CameraRotationSpeed { 0.8f };
+    float m_CameraMovementSpeed { 1.0f };
+    float m_CameraRotationSpeed { 90.0f };
     float m_CameraRotation { 0.0f };
 };
 

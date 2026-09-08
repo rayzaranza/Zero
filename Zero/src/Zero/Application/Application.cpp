@@ -1,4 +1,7 @@
 #include "Zero/Application/Application.h"
+
+#include <GLFW/glfw3.h>
+
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Input/Input.h"
 #include "Zero/Renderer/Renderer.h"
@@ -56,15 +59,17 @@ namespace Zero
     {
         while (m_IsRunning)
         {
+            float time = static_cast<float>(glfwGetTime());
+            DeltaTime deltaTime { time - m_LastFrameTime };
+            m_LastFrameTime = time;
+
             for (Layer* layer : m_LayerStack)
-            {
-                layer->OnUpdate();
-            }
+                layer->OnUpdate(deltaTime);
 
             m_UILayer->Begin();
-            for (Layer* layer : m_LayerStack)
             {
-                layer->OnUIRender();
+                for (Layer* layer : m_LayerStack)
+                    layer->OnUIRender();
             }
             m_UILayer->End();
 

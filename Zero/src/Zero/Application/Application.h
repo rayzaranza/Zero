@@ -5,6 +5,7 @@
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Layer/LayerStack.h"
+#include "Zero/Time/DeltaTime.h"
 #include "Zero/UI/UILayer.h"
 #include "Zero/Window/Window.h"
 
@@ -34,6 +35,7 @@ namespace Zero
         bool m_IsRunning;
         LayerStack m_LayerStack;
         UILayer* m_UILayer;
+        float m_LastFrameTime { 0.0f };
 
       private:
         static Application* s_Instance;
