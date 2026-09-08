@@ -1,16 +1,14 @@
 #pragma once
 
-#include <functional>
-#include <memory>
+#include "Zero/Logger/Logger.h"
 
+#include <functional>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
-
 #include <unordered_map>
 #include <vector>
-
-#include "Zero/Logger/Logger.h"
 
 #ifdef ZERO_PLATFORM_WINDOWS
     #include <Windows.h>

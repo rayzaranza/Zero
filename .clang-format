@@ -1,23 +1,18 @@
 BasedOnStyle: Microsoft
 Language: Cpp
-
+Standard: c++23
 IndentWidth: 4
 UseTab: Never
-
 IndentPPDirectives: BeforeHash
-
 SpaceBeforeCpp11BracedList: true
 Cpp11BracedListStyle: Block
 SpaceBeforeAssignmentOperators: true
-
 NamespaceIndentation: All
 PointerAlignment: Left
 ReferenceAlignment: Left
 IndentAccessModifiers: false
 FixNamespaceComments: false
-
 IndentCaseLabels: true
-
 BreakBeforeBraces: Custom
 BraceWrapping:
     AfterNamespace: true
@@ -33,21 +28,29 @@ BraceWrapping:
     SplitEmptyFunction: false 
     SplitEmptyRecord: false
     AfterCaseLabel: true
-
 SeparateDefinitionBlocks: Leave
 PackConstructorInitializers: CurrentLine
-
 AllowShortCaseLabelsOnASingleLine: true
 AlignConsecutiveShortCaseStatements:
   Enabled: true
   AcrossEmptyLines: true
   AcrossComments: true
   AlignCaseColons: false
-
 AlignAfterOpenBracket: BlockIndent
 BinPackArguments: false
 AllowAllArgumentsOnNextLine: true
 AllowShortFunctionsOnASingleLine: InlineOnly
 BreakTemplateDeclarations: Yes
-
 ColumnLimit: 120
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:    '^<[[:alnum:]_]+\.h>$'
+    Priority: 1
+  - Regex:    '^<.*\.h>$'
+    Priority: 2
+  - Regex:    '^"Zero/'
+    Priority: 3
+  - Regex:    '.*'
+    Priority: 4
+SortIncludes: true
+AlignTrailingComments: true

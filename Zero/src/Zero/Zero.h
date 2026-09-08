@@ -1,13 +1,19 @@
 #pragma once
 
-#include "Zero/Logger/Logger.h"
+#include "Logger/Logger.h"
 
-#include "Zero/Application/Application.h"
-#include "Zero/Layer/Layer.h"
-#include "Zero/UI/UILayer.h"
+#include "Application/Application.h"
+#include "Layer/Layer.h"
+#include "UI/UILayer.h"
 
-#include "Zero/Input/Input.h"
-#include "Zero/Input/KeyCode.h"
-#include "Zero/Input/MouseButtonCode.h"
+#include "Input/Input.h"
+#include "Input/KeyCode.h"
+#include "Input/MouseButtonCode.h"
+
+#include "Renderer/Buffer.h"
+#include "Renderer/RenderCommand.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/RendererAPI.h"
+#include "Renderer/Shader.h"
 
 #include "EntryPoint.h"

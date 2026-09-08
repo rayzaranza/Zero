@@ -1,10 +1,11 @@
 #include "Zero/Window/Window.h"
+
+#include <GLFW/glfw3.h>
+
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/KeyEvent.h"
 #include "Zero/Event/MouseEvent.h"
 #include "Zero/Renderer/OpenGL/OpenGLContext.h"
-
-#include <GLFW/glfw3.h>
 
 namespace Zero
 {

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Zero/Event/ApplicationEvent.h"
-#include "Zero/Event/KeyEvent.h"
-#include "Zero/Event/MouseEvent.h"
 #include "Zero/Layer/Layer.h"
 
 namespace Zero
