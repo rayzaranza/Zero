@@ -1,9 +1,13 @@
 #include <Zero/Zero.h>
 
+// ················································································································
+//  Sandbox Example Layer
+// ················································································································
+
 class ExampleLayer : public Zero::Layer
 {
   public:
-    ExampleLayer() : Layer { "Example" }, m_Camera { -1.6f, 1.6f, -0.9f, 0.9f }
+    ExampleLayer() : Layer { "Example" }, m_Camera { -1.6f, 1.6f, -0.9f, 0.9f }, m_CameraPosition { 0.0f }
     {
         Zero::VertexBufferLayout layout {
             { Zero::AttributeType::Float3, "a_Position" },
@@ -128,11 +132,26 @@ class ExampleLayer : public Zero::Layer
   public:
     virtual void OnUpdate() override
     {
+        if (Zero::Input::IsKeyPressed(ZERO_KEY_LEFT))
+            m_CameraPosition.x -= m_CameraMovementSpeed;
+        else if (Zero::Input::IsKeyPressed(ZERO_KEY_RIGHT))
+            m_CameraPosition.x += m_CameraMovementSpeed;
+
+        if (Zero::Input::IsKeyPressed(ZERO_KEY_DOWN))
+            m_CameraPosition.y -= m_CameraMovementSpeed;
+        else if (Zero::Input::IsKeyPressed(ZERO_KEY_UP))
+            m_CameraPosition.y += m_CameraMovementSpeed;
+
+        if (Zero::Input::IsKeyPressed(ZERO_KEY_A))
+            m_CameraRotation += m_CameraRotationSpeed;
+        else if (Zero::Input::IsKeyPressed(ZERO_KEY_D))
+            m_CameraRotation -= m_CameraRotationSpeed;
+
         Zero::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
         Zero::RenderCommand::Clear();
 
-        m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
-        m_Camera.SetRotation(45.0f);
+        m_Camera.SetPosition(m_CameraPosition);
+        m_Camera.SetRotation(m_CameraRotation);
 
         Zero::Renderer::BeginScene(m_Camera);
         Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader);
@@ -147,20 +166,29 @@ class ExampleLayer : public Zero::Layer
   private:
     std::shared_ptr<Zero::Shader> m_TriangleShader;
     std::shared_ptr<Zero::Shader> m_QuadShader;
-
     std::shared_ptr<Zero::VertexArray> m_TriangleVertexArray;
     std::shared_ptr<Zero::VertexArray> m_QuadVertexArray;
-
     Zero::CameraOrthographic m_Camera;
+    glm::vec3 m_CameraPosition;
+    float m_CameraMovementSpeed { 0.05f };
+    float m_CameraRotationSpeed { 0.8f };
+    float m_CameraRotation { 0.0f };
 };
+
+// ················································································································
+//  Sandbox Application
+// ················································································································
 
 class Sandbox : public Zero::Application
 {
   public:
     Sandbox() { PushLayer(new ExampleLayer()); }
-
     ~Sandbox() {}
 };
+
+// ················································································································
+//  Zero Application Creation
+// ················································································································
 
 Zero::Application* Zero::CreateApplication()
 {
