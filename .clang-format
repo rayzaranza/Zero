@@ -41,7 +41,7 @@ BinPackArguments: false
 AllowAllArgumentsOnNextLine: true
 AllowShortFunctionsOnASingleLine: InlineOnly
 BreakTemplateDeclarations: Yes
-ColumnLimit: 120
+ColumnLimit: 160
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex:    '^<[[:alnum:]_]+\.h>$'

@@ -13,10 +13,7 @@ namespace Zero
     {
       public:
         static void BeginScene(CameraOrthographic& camera);
-        static void Submit(
-            const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader,
-            const glm::mat4& transform
-        );
+        static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader, const glm::mat4& transform);
         static void EndScene();
 
       public:
