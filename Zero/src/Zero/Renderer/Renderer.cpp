@@ -1,5 +1,7 @@
 #include "Zero/Renderer/Renderer.h"
 
+#include "Zero/Renderer/OpenGL/OpenGLShader.h"
+
 namespace Zero
 {
     Renderer::SceneData* Renderer::s_SceneData { new Renderer::SceneData() };
@@ -9,14 +11,11 @@ namespace Zero
         s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
 
-    void Renderer::Submit(
-        const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader,
-        const glm::mat4& modelMatrix
-    )
+    void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader, const glm::mat4& modelMatrix)
     {
         shader->Bind();
-        shader->SetUniform("u_ViewProjectionMatrix", s_SceneData->ViewProjectionMatrix);
-        shader->SetUniform("u_ModelMatrix", modelMatrix);
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniform("u_ViewProjectionMatrix", s_SceneData->ViewProjectionMatrix);
+        std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniform("u_ModelMatrix", modelMatrix);
 
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);
