@@ -71,7 +71,7 @@ target_include_directories(Zero
 )
 
 target_precompile_headers(Zero
-    PRIVATE
+    PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}/src/Zero/zrpch.h"
 )
 
