@@ -1,2 +1,5 @@
 #define BIT(x) (1 << x)
 #define ZERO_PLATFORM_WINDOWS
+#define ZERO_ASSERT(x, ...)
+#define ZERO_CORE_ASSERT(x, ...)
+#define ZERO_CORE_LOG(__VA_ARGS__) ::Zero::Logger::GetCoreLogger()->trace(__VA_ARGS__)
