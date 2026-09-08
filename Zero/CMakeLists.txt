@@ -37,6 +37,7 @@ add_library(Zero
         "src/Zero/UI/UILayer.cpp"
 
         "src/Zero/Renderer/Renderer.h"
+        "src/Zero/Renderer/Renderer.cpp"
         "src/Zero/Renderer/RenderCommand.h"
         "src/Zero/Renderer/RenderCommand.cpp"
         "src/Zero/Renderer/RendererAPI.h"
