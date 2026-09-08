@@ -63,6 +63,8 @@ add_library(Zero
 
         "src/Zero/Camera/Camera.h"
         "src/Zero/Camera/Camera.cpp"
+
+        "src/Zero/Time/DeltaTime.h"
 )
 
 target_include_directories(Zero

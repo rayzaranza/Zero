@@ -16,4 +16,5 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/RendererAPI.h"
 #include "Renderer/Shader.h"
+#include "Time/DeltaTime.h"
 #include "UI/UILayer.h"
