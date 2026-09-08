@@ -17,28 +17,19 @@ add_library(Zero
         "src/Zero/Logger/Logger.cpp"
 
         "src/Zero/Input/Input.h"
+        "src/Zero/Input/Input.cpp"
         "src/Zero/Input/KeyCode.h"
         "src/Zero/Input/MouseButtonCode.h"
-        "src/Zero/Input/Input.cpp"
 
         "src/Zero/Window/Window.h"
         "src/Zero/Window/Window.cpp"
 
         "src/Zero/Event/Event.h"
-        "src/Zero/Event/Event.cpp"
-
         "src/Zero/Event/KeyEvent.h"
-        "src/Zero/Event/KeyEvent.cpp"
-
         "src/Zero/Event/MouseEvent.h"
-        "src/Zero/Event/MouseEvent.cpp"
-
         "src/Zero/Event/ApplicationEvent.h"
-        "src/Zero/Event/ApplicationEvent.cpp"
 
         "src/Zero/Layer/Layer.h"
-        "src/Zero/Layer/Layer.cpp"
-
         "src/Zero/Layer/LayerStack.h"
         "src/Zero/Layer/LayerStack.cpp"
 
@@ -69,6 +60,9 @@ add_library(Zero
 
         "src/Zero/Renderer/Shader.h"
         "src/Zero/Renderer/Shader.cpp"
+
+        "src/Zero/Camera/Camera.h"
+        "src/Zero/Camera/Camera.cpp"
 )
 
 target_include_directories(Zero

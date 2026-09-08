@@ -8,9 +8,9 @@
 
 namespace Zero
 {
-    static void sendWindowToSecondMonitor(GLFWwindow* window, unsigned int width, unsigned int height);
+    static void sendWindowToSecondMonitor(GLFWwindow* window, int width, int height);
 
-    Window::Window(const std::string& title, unsigned int width, unsigned int height) : m_Data { title, width, height }
+    Window::Window(const std::string& title, int width, int height) : m_Data { title, width, height }
     {
         Initialize();
     }
@@ -59,7 +59,7 @@ namespace Zero
             WindowData& data { *(WindowData*)glfwGetWindowUserPointer(window) };
             data.Width = width;
             data.Height = height;
-            WindowResizedEvent event { static_cast<unsigned int>(width), static_cast<unsigned int>(height) };
+            WindowResizedEvent event { width, height };
             data.EventCallback(event);
         });
 
@@ -132,38 +132,13 @@ namespace Zero
         });
     }
 
-    unsigned int Window::GetWidth() const
-    {
-        return m_Data.Width;
-    }
-
-    unsigned int Window::GetHeight() const
-    {
-        return m_Data.Height;
-    }
-
-    GLFWwindow* Window::GetWindowHandle() const
-    {
-        return m_WindowHandle;
-    }
-
-    void Window::SetEventCallback(const EventCallback& callback)
-    {
-        m_Data.EventCallback = callback;
-    }
-
     void Window::OnUpdate()
     {
         glfwPollEvents();
         m_RendererContext->SwapBuffers();
     }
 
-    void Window::errorCallback(int error, const char* description)
-    {
-        ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description);
-    }
-
-    void sendWindowToSecondMonitor(GLFWwindow* window, unsigned int width, unsigned int height)
+    void sendWindowToSecondMonitor(GLFWwindow* window, int width, int height)
     {
         int monitorCount;
         GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 namespace Zero
 {
     class Shader
@@ -10,8 +12,10 @@ namespace Zero
 
       public:
         void Bind() const;
+        void Unbind() const;
+        void SetUniform(const std::string& name, const glm::mat4& matrix) const;
 
       private:
-        uint32_t m_Id;
+        uint32_t m_Id {};
     };
 }

@@ -2,9 +2,6 @@
 
 namespace Zero
 {
-    LayerStack::LayerStack()
-    {}
-
     LayerStack::~LayerStack()
     {
         for (Layer* layer : m_Layers)
@@ -41,15 +38,5 @@ namespace Zero
         {
             m_Layers.erase(layerIterator);
         }
-    }
-
-    std::vector<Layer*>::iterator LayerStack::begin()
-    {
-        return m_Layers.begin();
-    }
-
-    std::vector<Layer*>::iterator LayerStack::end()
-    {
-        return m_Layers.end();
     }
 }

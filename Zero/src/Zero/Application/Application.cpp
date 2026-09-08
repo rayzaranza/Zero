@@ -10,7 +10,8 @@ namespace Zero
     Application::Application()
         : m_Window { std::make_unique<Window>() },
           m_UILayer { new UILayer() },
-          m_IsRunning { true }
+          m_IsRunning { true },
+          m_Camera { -1.6f, 1.6f, -0.9f, 0.9f }
     {
         ZERO_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;
@@ -52,11 +53,13 @@ namespace Zero
             out vec3 v_Position;
             out vec4 v_Color;
 
+            uniform mat4 u_ViewProjectionMatrix;
+
             void main()
             {
                 v_Position = a_Position;
                 v_Color = a_Color;
-                gl_Position = vec4(a_Position, 1.0f);
+                gl_Position = u_ViewProjectionMatrix * vec4(a_Position, 1.0f);
             }
         )" };
 
@@ -81,12 +84,12 @@ namespace Zero
         // ····················································································································
 
         m_QuadVertexArray.reset(VertexArray::Create());
-        constexpr float i { 0.33f };
+        constexpr float i { 1.1f };
         float quadVertices[] {
-            0.5f + i,  0.5f + i,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right
-            0.5f + i,  -0.5f + i, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // bottom right
-            -0.5f + i, -0.5f + i, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // bottom left
-            -0.5f + i, 0.5f + i,  0.0f, 1.0f, 0.0f, 1.0f, 1.0f, // top left
+            0.5f * i,  0.5f * i,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right
+            0.5f * i,  -0.5f * i, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // bottom right
+            -0.5f * i, -0.5f * i, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // bottom left
+            -0.5f * i, 0.5f * i,  0.0f, 1.0f, 0.0f, 1.0f, 1.0f, // top left
         };
 
         std::shared_ptr<VertexBuffer> quadVertexBuffer;
@@ -105,6 +108,8 @@ namespace Zero
             layout (location = 0) in vec3 a_Position;
             layout (location = 1) in vec4 a_Color;
 
+            uniform mat4 u_ViewProjectionMatrix;
+
             out vec3 v_Position;
             out vec4 v_Color;
 
@@ -112,7 +117,7 @@ namespace Zero
             {
                 v_Position = a_Position;
                 v_Color = a_Color;
-                gl_Position = vec4(a_Position, 1.0f);
+                gl_Position = u_ViewProjectionMatrix * vec4(a_Position, 1.0f);
             }
         )" };
 
@@ -126,7 +131,7 @@ namespace Zero
 
             void main()
             {
-                o_Color = vec4(0.2f, 1.0f, 0.5f, 1.0f);
+                o_Color = vec4(0.2f, 0.8f, 0.7f, 1.0f);
             }
         )" };
 
@@ -167,41 +172,31 @@ namespace Zero
         overlay->OnAttach();
     }
 
-    Window& Application::GetWindow() const
-    {
-        return *m_Window;
-    }
-
-    Application& Application::Get()
-    {
-        return *s_Instance;
-    }
-
     void Application::Run()
     {
         while (m_IsRunning)
         {
+            for (Layer* layer : m_LayerStack)
+            {
+                layer->OnUpdate();
+            }
+
+            // ····································································
+
             RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
             RenderCommand::Clear();
 
             // ····································································
 
-            Renderer::BeginScene();
-            {
-                m_TriangleShader->Bind();
-                Renderer::Submit(m_TriangleVertexArray);
+            m_Camera.SetPosition({ 0.5f, 0.5f, 0.0f });
+            m_Camera.SetRotation(45.0f);
 
-                m_QuadShader->Bind();
-                Renderer::Submit(m_QuadVertexArray);
-            }
+            Renderer::BeginScene(m_Camera);
+            Renderer::Submit(m_QuadVertexArray, m_QuadShader);
+            Renderer::Submit(m_TriangleVertexArray, m_TriangleShader);
             Renderer::EndScene();
 
             // ····································································
-
-            for (Layer* layer : m_LayerStack)
-            {
-                layer->OnUpdate();
-            }
 
             m_UILayer->Begin();
             for (Layer* layer : m_LayerStack)

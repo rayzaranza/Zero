@@ -4,61 +4,10 @@
 
 namespace Zero
 {
-    // ················································································································
-    //  Vertex Buffer Attribute
-    // ················································································································
-
-    static uint32_t GetSizeFromAttributeType(AttributeType type);
-    static uint32_t GetComponentCountFromAttributeType(AttributeType type);
-
-    VertexAttribute::VertexAttribute(AttributeType type, const std::string& name)
-        : Name { name },
-          Type { type },
-          Size { GetSizeFromAttributeType(type) },
-          ComponentCount { GetComponentCountFromAttributeType(type) },
-          IsNormalized { false },
-          Offset { 0 }
-    {}
 
     // ················································································································
     //  Vertex Buffer Layout
     // ················································································································
-
-    VertexBufferLayout::VertexBufferLayout(const std::initializer_list<VertexAttribute>& attributes)
-        : m_Attributes { attributes }
-    {
-        CalculateOffsetsAndStride();
-    }
-
-    uint32_t VertexBufferLayout::GetStride() const
-    {
-        return m_Stride;
-    }
-
-    const std::vector<VertexAttribute>& VertexBufferLayout::GetAttributes() const
-    {
-        return m_Attributes;
-    }
-
-    std::vector<VertexAttribute>::iterator VertexBufferLayout::begin()
-    {
-        return m_Attributes.begin();
-    }
-
-    std::vector<VertexAttribute>::iterator VertexBufferLayout::end()
-    {
-        return m_Attributes.end();
-    }
-
-    std::vector<VertexAttribute>::const_iterator VertexBufferLayout::begin() const
-    {
-        return m_Attributes.begin();
-    }
-
-    std::vector<VertexAttribute>::const_iterator VertexBufferLayout::end() const
-    {
-        return m_Attributes.end();
-    }
 
     void VertexBufferLayout::CalculateOffsetsAndStride()
     {
@@ -143,7 +92,7 @@ namespace Zero
     //  Vertex Attribute Type Helpers
     // ················································································································
 
-    static uint32_t GetSizeFromAttributeType(AttributeType type)
+    uint32_t GetSizeFromAttributeType(AttributeType type)
     {
         switch (type)
         {

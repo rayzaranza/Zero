@@ -46,14 +46,15 @@ namespace Zero
     class Event
     {
       public:
+        virtual ~Event() = default;
         virtual EventType GetEventType() const = 0;
         virtual const char* GetName() const = 0;
         virtual int GetCategoryFlags() const = 0;
-        virtual std::string ToString() const;
 
       public:
-        bool IsInCategory(EventCategory category) const;
-        bool IsHandled() const;
+        inline virtual std::string ToString() const { return GetName(); }
+        inline bool IsHandled() const { return m_IsHandled; }
+        inline bool IsInCategory(EventCategory category) const { return GetCategoryFlags() & category; };
 
       protected:
         bool m_IsHandled { false };
@@ -71,30 +72,30 @@ namespace Zero
     class EventDispatcher
     {
       public:
-        EventDispatcher(Event& event);
+        EventDispatcher(Event& event) : m_Event { event } {}
 
       protected:
-        template <typename T> using EventCallback = std::function<bool(T&)>;
+        template <typename T>
+        using EventCallback = std::function<bool(T&)>;
 
       public:
-        template <typename T> bool Dispatch(EventCallback<T> function);
+        template <typename T>
+        bool Dispatch(EventCallback<T> function)
+        {
+            if (m_Event.GetEventType() == T::GetStaticType())
+            {
+                m_Event.m_IsHandled = function(*(T*)&m_Event);
+                return true;
+            }
+            return false;
+        }
 
       private:
         Event& m_Event;
     };
 
-    template <typename T> inline bool EventDispatcher::Dispatch(EventCallback<T> callback)
-    {
-        if (m_Event.GetEventType() == T::GetStaticType())
-        {
-            m_Event.m_IsHandled = callback(*(T*)&m_Event);
-            return true;
-        }
-
-        return false;
-    }
-
 }
 
-template <> struct fmt::formatter<Zero::Event> : fmt::ostream_formatter
+template <>
+struct fmt::formatter<Zero::Event> : fmt::ostream_formatter
 {};

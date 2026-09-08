@@ -10,11 +10,6 @@
 
 namespace Zero
 {
-    UILayer::UILayer() : Layer { "UILayer" }
-    {}
-
-    UILayer::~UILayer()
-    {}
 
     void UILayer::OnAttach()
     {
