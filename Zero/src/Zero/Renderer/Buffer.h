@@ -31,11 +31,11 @@ namespace Zero
     struct VertexAttribute
     {
         std::string Name {};
-        uint32_t Size {};
-        uint32_t Offset {};
         AttributeType Type {};
+        uint32_t Size {};
         uint32_t ComponentCount {};
         bool IsNormalized {};
+        uint32_t Offset {};
 
         VertexAttribute(AttributeType type, const std::string& name)
             : Name { name },
