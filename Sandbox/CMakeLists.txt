@@ -1,4 +1,5 @@
 ﻿add_executable(Sandbox
+    "src/Sandbox.h"
 	"src/Sandbox.cpp"
 )
 

@@ -1,59 +1,62 @@
+#include "Sandbox.h"
+
 #include <imgui.h>
 
 #include <Zero/Renderer/OpenGL/OpenGLShader.h>
-#include <Zero/Zero.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-//=====================================================================================================================================
-//  Sandbox Example Layer
-//=====================================================================================================================================
-
-class ExampleLayer : public Zero::Layer
+ExampleLayer::ExampleLayer()
+    : Zero::Layer{"Example"}
+    , m_Camera{-1.6f, 1.6f, -0.9f, 0.9f}
+    , m_CameraPosition{0.0f}
+    , m_CameraMovementSpeed{1.0f}
+    , m_CameraRotationSpeed{90.0f}
+    , m_CameraRotation{0.0f}
+    , m_QuadPosition{0.0f}
+    , m_QuadMovementSpeed{1.0f}
+    , m_QuadColor{1.0f, 0.0f, 0.0f, 1.0f}
 {
-  public:
-    ExampleLayer() : Layer { "Example" }, m_Camera { -1.6f, 1.6f, -0.9f, 0.9f }, m_CameraPosition { 0.0f }
-    {
-        Zero::VertexBufferLayout layout {
-            { Zero::AttributeType::Float3, "a_Position" },
-            { Zero::AttributeType::Float4, "a_Color" },
-        };
+    Zero::VertexBufferLayout layout{
+        {Zero::AttributeType::Float3, "a_Position"},
+        {Zero::AttributeType::Float2, "a_UV"},
+    };
 
-        float triangleVertices[] {
-            -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, //
-            0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, //
-            0.0f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f, //
-        };
+    float quadVertices[]{
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, //
+        0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, //
+        0.5f,  0.5f,  0.0f, 1.0f, 1.0f, //
+        -0.5f, 0.5f,  0.0f, 0.0f, 1.0f, //
+    };
 
-        uint32_t triangleIndices[] { 0, 1, 2 };
+    uint32_t quadIndices[]{0, 1, 2, 2, 3, 0};
 
-        std::string triangleVertexSource { R"(
+    std::string quadVertexSource{R"(
             #version 460 core
 
             layout (location = 0) in vec3 a_Position;
-            layout (location = 1) in vec4 a_Color;
+            layout (location = 1) in vec2 a_UV;
 
             uniform mat4 u_ViewProjectionMatrix;
             uniform mat4 u_ModelMatrix;
 
             out vec3 v_Position;
-            out vec4 v_Color;
+            out vec2 v_UV;
 
             void main()
             {
                 v_Position = a_Position;
-                v_Color = a_Color;
+                v_UV = a_UV;
                 gl_Position = u_ViewProjectionMatrix * u_ModelMatrix * vec4(a_Position, 1.0f);
             }
+        )"};
 
-        )" };
-
-        std::string triangleFragmentSource { R"(
+    std::string quadFragmentSource{R"(
             #version 460 core
 
             in vec3 v_Position;
-            in vec4 v_Color;
+            in vec2 v_UV;
 
             uniform vec4 u_Color;
 
@@ -61,179 +64,120 @@ class ExampleLayer : public Zero::Layer
 
             void main()
             {
-                o_Color = v_Color;
                 o_Color = u_Color;
+                //o_Color = vec4(v_UV, 1.0f, 1.0f);
             }
+        )"};
 
-        )" };
+    m_QuadVertexArray.reset(Zero::VertexArray::Create());
 
-        //=====================================================================================================================================
+    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer;
+    quadVertexBuffer.reset(Zero::VertexBuffer::Create(quadVertices, sizeof(quadVertices)));
+    quadVertexBuffer->SetLayout(layout);
+    m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
 
-        float quadVertices[] {
-            0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right
-            0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // bottom right
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // bottom left
-            -0.5f, 0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 1.0f, // top left
-        };
+    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer;
+    quadIndexBuffer.reset(Zero::IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)));
+    m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
-        uint32_t quadIndices[] { 0, 1, 3, 1, 2, 3 };
+    m_QuadShader.reset(Zero::Shader::Create(quadVertexSource, quadFragmentSource));
 
-        std::string quadVertexSource { R"(
+    std::string textureVertexSource{R"(
             #version 460 core
 
             layout (location = 0) in vec3 a_Position;
-            layout (location = 1) in vec4 a_Color;
+            layout (location = 1) in vec2 a_UV;
 
             uniform mat4 u_ViewProjectionMatrix;
             uniform mat4 u_ModelMatrix;
 
             out vec3 v_Position;
-            out vec4 v_Color;
+            out vec2 v_UV;
 
             void main()
             {
                 v_Position = a_Position;
-                v_Color = a_Color;
+                v_UV = a_UV;
                 gl_Position = u_ViewProjectionMatrix * u_ModelMatrix * vec4(a_Position, 1.0f);
             }
-        )" };
+        )"};
 
-        std::string quadFragmentSource { R"(
+    std::string textureFragmentSource{R"(
             #version 460 core
 
             in vec3 v_Position;
-            in vec4 v_Color;
+            in vec2 v_UV;
 
-            uniform vec4 u_Color;
+            uniform sampler2D u_Texture;
 
             out vec4 o_Color;
 
             void main()
             {
-                o_Color = vec4(0.2f, 0.8f, 0.7f, 1.0f);
-                o_Color = u_Color;
+                o_Color = texture(u_Texture, v_UV);
             }
-        )" };
+        )"};
 
-        m_TriangleVertexArray.reset(Zero::VertexArray::Create());
-        Zero::Ref<Zero::VertexBuffer> triangleVertexBuffer;
-        triangleVertexBuffer.reset(Zero::VertexBuffer::Create(triangleVertices, sizeof(triangleVertices)));
-        triangleVertexBuffer->SetLayout(layout);
-        m_TriangleVertexArray->AddVertexBuffer(triangleVertexBuffer);
-        Zero::Ref<Zero::IndexBuffer> triangleIndexBuffer;
-        triangleIndexBuffer.reset(Zero::IndexBuffer::Create(triangleIndices, sizeof(triangleIndices) / sizeof(uint32_t)));
-        m_TriangleVertexArray->SetIndexBuffer(triangleIndexBuffer);
-        m_TriangleShader.reset(Zero::Shader::Create(triangleVertexSource, triangleFragmentSource));
+    m_TextureShader.reset(Zero::Shader::Create(textureVertexSource, textureFragmentSource));
+    m_Texture = Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.png");
 
-        m_QuadVertexArray.reset(Zero::VertexArray::Create());
+    std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TextureShader)->Bind();
+    std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TextureShader)->SetUniform("u_Texture", 0);
+}
 
-        Zero::Ref<Zero::VertexBuffer> quadVertexBuffer;
-        quadVertexBuffer.reset(Zero::VertexBuffer::Create(quadVertices, sizeof(quadVertices)));
-        quadVertexBuffer->SetLayout(layout);
-        m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
+void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
+{
+    if (Zero::Input::IsKeyPressed(Zero::Key::D))
+        m_CameraPosition.x += m_CameraMovementSpeed * deltaTime;
+    else if (Zero::Input::IsKeyPressed(Zero::Key::A))
+        m_CameraPosition.x -= m_CameraMovementSpeed * deltaTime;
 
-        Zero::Ref<Zero::IndexBuffer> quadIndexBuffer;
-        quadIndexBuffer.reset(Zero::IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)));
-        m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
+    if (Zero::Input::IsKeyPressed(Zero::Key::W))
+        m_CameraPosition.y += m_CameraMovementSpeed * deltaTime;
+    else if (Zero::Input::IsKeyPressed(Zero::Key::S))
+        m_CameraPosition.y -= m_CameraMovementSpeed * deltaTime;
 
-        m_QuadShader.reset(Zero::Shader::Create(quadVertexSource, quadFragmentSource));
-    }
+    if (Zero::Input::IsKeyPressed(Zero::Key::Q))
+        m_CameraRotation += m_CameraRotationSpeed * deltaTime;
+    else if (Zero::Input::IsKeyPressed(Zero::Key::E))
+        m_CameraRotation -= m_CameraRotationSpeed * deltaTime;
 
-  public:
-    virtual void OnUpdate(Zero::DeltaTime deltaTime) override
+    m_Camera.SetPosition(m_CameraPosition);
+    m_Camera.SetRotation(m_CameraRotation);
+
+    glm::mat4 triangleModelMatrix{1.0f};
+
+    Zero::RenderCommand::SetClearColor({0.1f, 0.1f, 0.1f, 1.0f});
+    Zero::RenderCommand::Clear();
+
+    Zero::Renderer::BeginScene(m_Camera);
+
+    std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->Bind();
+    std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->SetUniform("u_Color", m_QuadColor);
+
+    constexpr int count{20};
+    for (int y{0}; y < count; ++y)
     {
-        if (Zero::Input::IsKeyPressed(ZERO_KEY_D))
-            m_CameraPosition.x += m_CameraMovementSpeed * deltaTime;
-        else if (Zero::Input::IsKeyPressed(ZERO_KEY_A))
-            m_CameraPosition.x -= m_CameraMovementSpeed * deltaTime;
-
-        if (Zero::Input::IsKeyPressed(ZERO_KEY_W))
-            m_CameraPosition.y += m_CameraMovementSpeed * deltaTime;
-        else if (Zero::Input::IsKeyPressed(ZERO_KEY_S))
-            m_CameraPosition.y -= m_CameraMovementSpeed * deltaTime;
-
-        if (Zero::Input::IsKeyPressed(ZERO_KEY_Q))
-            m_CameraRotation += m_CameraRotationSpeed * deltaTime;
-        else if (Zero::Input::IsKeyPressed(ZERO_KEY_E))
-            m_CameraRotation -= m_CameraRotationSpeed * deltaTime;
-
-        m_Camera.SetPosition(m_CameraPosition);
-        m_Camera.SetRotation(m_CameraRotation);
-
-        glm::mat4 triangleModelMatrix { 1.0f };
-
-        Zero::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-        Zero::RenderCommand::Clear();
-
-        Zero::Renderer::BeginScene(m_Camera);
-
-        std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->Bind();
-        std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->SetUniform("u_Color", m_QuadColor);
-
-        std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TriangleShader)->Bind();
-        std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TriangleShader)->SetUniform("u_Color", m_TriangleColor);
-
-        constexpr int count { 20 };
-        for (int y { 0 }; y < count; ++y)
+        for (int x{0}; x < count; ++x)
         {
-            for (int x { 0 }; x < count; ++x)
-            {
-                glm::vec3 position { static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f };
-                glm::mat4 quadModelMatrix { glm::translate({ 1.0f }, position) * glm::scale({ 1.0f }, glm::vec3 { 0.1f }) };
-                Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader, quadModelMatrix);
-            }
+            glm::vec3 position{static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f};
+            glm::mat4 quadModelMatrix{glm::translate({1.0f}, position) * glm::scale({1.0f}, glm::vec3{0.1f})};
+            Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader, quadModelMatrix);
         }
-
-        Zero::Renderer::Submit(m_TriangleVertexArray, m_TriangleShader, triangleModelMatrix);
-
-        Zero::Renderer::EndScene();
     }
 
-    virtual void OnEvent(Zero::Event& event) override {}
+    m_Texture->Bind();
+    Zero::Renderer::Submit(m_QuadVertexArray, m_TextureShader);
 
-    virtual void OnUIRender() override
-    {
-        ImGui::Begin("Settings");
-        ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadColor));
-        ImGui::ColorEdit4("Triangle Color", glm::value_ptr(m_TriangleColor));
-        ImGui::End();
-    }
+    Zero::Renderer::EndScene();
+}
 
-  private:
-    Zero::Ref<Zero::Shader> m_TriangleShader;
-    Zero::Ref<Zero::Shader> m_QuadShader;
-    Zero::Ref<Zero::VertexArray> m_TriangleVertexArray;
-    Zero::Ref<Zero::VertexArray> m_QuadVertexArray;
-    Zero::CameraOrthographic m_Camera;
+void ExampleLayer::OnEvent(Zero::Event& event)
+{}
 
-    glm::vec3 m_CameraPosition;
-    float m_CameraMovementSpeed { 1.0f };
-    float m_CameraRotationSpeed { 90.0f };
-    float m_CameraRotation { 0.0f };
-
-    glm::vec3 m_QuadPosition { 0.0f };
-    float m_QuadMovementSpeed { 1.0f };
-
-    glm::vec4 m_QuadColor { 1.0f, 0.0f, 0.0f, 1.0f };
-    glm::vec4 m_TriangleColor { 0.0f, 0.0f, 1.0f, 1.0f };
-};
-
-//=====================================================================================================================================
-//  Sandbox Application
-//=====================================================================================================================================
-
-class Sandbox : public Zero::Application
+void ExampleLayer::OnUIRender()
 {
-  public:
-    Sandbox() { PushLayer(new ExampleLayer()); }
-    ~Sandbox() {}
-};
-
-//=====================================================================================================================================
-//  Application Creation
-//=====================================================================================================================================
-
-Zero::Application* Zero::CreateApplication()
-{
-    return new Sandbox();
+    ImGui::Begin("Settings");
+    ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadColor));
+    ImGui::End();
 }
