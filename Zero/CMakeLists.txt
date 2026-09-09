@@ -3,6 +3,7 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
+find_package(Stb REQUIRED)
 
 set(ZERO_SRC "src/Zero")
 
@@ -141,6 +142,7 @@ target_link_libraries(Zero
 	    glfw
 	    spdlog::spdlog
         imgui::imgui
+        ${Stb_INCLUDE_DIR}
 )
 
 target_compile_definitions(Zero
