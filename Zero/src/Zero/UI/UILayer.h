@@ -7,7 +7,7 @@ namespace Zero
     class UILayer : public Layer
     {
       public:
-        UILayer() : Layer { "UILayer" } {}
+        UILayer() : Layer{"UILayer"}, m_Time{0.0f} {}
         ~UILayer() = default;
 
       public:
@@ -20,6 +20,6 @@ namespace Zero
         void End();
 
       private:
-        float m_Time { 0.0f };
+        float m_Time;
     };
 }

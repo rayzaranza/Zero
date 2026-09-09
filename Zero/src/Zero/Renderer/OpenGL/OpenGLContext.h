@@ -17,6 +17,6 @@ namespace Zero
         virtual void SwapBuffers() override;
 
       private:
-        GLFWwindow* m_WindowHandle {};
+        GLFWwindow* m_WindowHandle;
     };
 }

@@ -4,9 +4,10 @@ Standard: c++23
 IndentWidth: 4
 UseTab: Never
 IndentPPDirectives: BeforeHash
-SpaceBeforeCpp11BracedList: true
-Cpp11BracedListStyle: Block
+SpaceBeforeCpp11BracedList: false
+Cpp11BracedListStyle: AlignFirstComment
 SpaceBeforeAssignmentOperators: true
+BreakConstructorInitializers: BeforeComma
 NamespaceIndentation: All
 PointerAlignment: Left
 ReferenceAlignment: Left

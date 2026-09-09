@@ -28,13 +28,13 @@ namespace Zero
 
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
-        const VertexBufferLayout& layout { vertexBuffer->GetLayout() };
+        const VertexBufferLayout& layout{vertexBuffer->GetLayout()};
         ZERO_CORE_ASSERT(layout.GetAttributes().size(), "Vertex Buffer has no layout");
 
         glBindVertexArray(m_Id);
         vertexBuffer->Bind();
 
-        uint32_t location { 0 };
+        int location{0};
         for (const VertexAttribute& attribute : layout)
         {
             glEnableVertexAttribArray(location);

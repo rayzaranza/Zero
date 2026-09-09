@@ -35,7 +35,7 @@ namespace Zero
         bool m_IsRunning;
         LayerStack m_LayerStack;
         UILayer* m_UILayer;
-        float m_LastFrameTime { 0.0f };
+        float m_LastFrameTime;
 
       private:
         static Application* s_Instance;

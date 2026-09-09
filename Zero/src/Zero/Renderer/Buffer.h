@@ -2,10 +2,9 @@
 
 namespace Zero
 {
-    // ················································································································
+    //======================================================================================
     //  Vertex Attribute Type
-    // ················································································································
-
+    //======================================================================================
     enum class AttributeType : uint8_t
     {
         Float,
@@ -21,43 +20,38 @@ namespace Zero
         Boolean,
     };
 
-    // ················································································································
+    //======================================================================================
     //  Vertex Attribute
-    // ················································································································
-
+    //======================================================================================
     uint32_t GetSizeFromAttributeType(AttributeType type);
     uint32_t GetComponentCountFromAttributeType(AttributeType type);
 
     struct VertexAttribute
     {
-        std::string Name {};
-        AttributeType Type {};
-        uint32_t Size {};
-        uint32_t ComponentCount {};
-        bool IsNormalized {};
-        uint32_t Offset {};
+        std::string Name;
+        AttributeType Type;
+        uint32_t Size;
+        uint32_t ComponentCount;
+        bool IsNormalized;
+        uint32_t Offset;
 
         VertexAttribute(AttributeType type, const std::string& name)
-            : Name { name },
-              Type { type },
-              Size { GetSizeFromAttributeType(type) },
-              ComponentCount { GetComponentCountFromAttributeType(type) },
-              IsNormalized { false },
-              Offset { 0 }
+            : Name{name}
+            , Type{type}
+            , Size{GetSizeFromAttributeType(type)}
+            , ComponentCount{GetComponentCountFromAttributeType(type)}
+            , IsNormalized{false}
+            , Offset{0}
         {}
     };
 
-    // ················································································································
+    //======================================================================================
     //  Vertex Buffer Layout
-    // ················································································································
-
+    //======================================================================================
     class VertexBufferLayout
     {
       public:
-        VertexBufferLayout(const std::initializer_list<VertexAttribute>& attributes) : m_Attributes { attributes }
-        {
-            CalculateOffsetsAndStride();
-        }
+        VertexBufferLayout(const std::initializer_list<VertexAttribute>& attributes) : m_Attributes{attributes} { CalculateOffsetsAndStride(); }
 
       public:
         inline uint32_t GetStride() const { return m_Stride; }
@@ -73,14 +67,13 @@ namespace Zero
         void CalculateOffsetsAndStride();
 
       private:
-        std::vector<VertexAttribute> m_Attributes {};
-        uint32_t m_Stride {};
+        std::vector<VertexAttribute> m_Attributes;
+        uint32_t m_Stride{};
     };
 
-    // ················································································································
+    //======================================================================================
     //  Vertex Buffer
-    // ················································································································
-
+    //======================================================================================
     class VertexBuffer
     {
       public:
@@ -93,13 +86,12 @@ namespace Zero
         virtual const VertexBufferLayout& GetLayout() const = 0;
 
       public:
-        static VertexBuffer* Create(float* vertices, size_t size);
+        static Ref<VertexBuffer> Create(float* vertices, size_t size);
     };
 
-    // ················································································································
+    //======================================================================================
     //  Index Buffer
-    // ················································································································
-
+    //======================================================================================
     class IndexBuffer
     {
       public:
@@ -111,6 +103,6 @@ namespace Zero
         virtual uint32_t GetCount() const = 0;
 
       public:
-        static IndexBuffer* Create(uint32_t* indices, size_t size);
+        static Ref<IndexBuffer> Create(uint32_t* indices, size_t size);
     };
 }

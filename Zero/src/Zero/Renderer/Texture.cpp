@@ -1,11 +1,12 @@
-#include "Zero/Renderer/VertexArray.h"
+#include "Zero/Renderer/Texture.h"
 
-#include "Zero/Renderer/OpenGL/OpenGLVertexArray.h"
+#include "Zero/Core.h"
+#include "Zero/Renderer/OpenGL/OpenGLTexture.h"
 #include "Zero/Renderer/Renderer.h"
 
 namespace Zero
 {
-    VertexArray* VertexArray::Create()
+    Ref<Texture2D> Texture2D::Create(const std::string& path)
     {
         switch (Renderer::GetAPI())
         {
@@ -16,7 +17,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return new OpenGLVertexArray();
+                return std::make_shared<OpenGLTexture2D>(path);
             }
             case RendererAPI::API::Vulkan:
             {

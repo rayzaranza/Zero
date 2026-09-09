@@ -4,7 +4,12 @@
 
 namespace Zero
 {
-    Renderer::SceneData* Renderer::s_SceneData { new Renderer::SceneData() };
+    Renderer::SceneData* Renderer::s_SceneData{new Renderer::SceneData()};
+
+    void Renderer::Initialize()
+    {
+        RenderCommand::Initialize();
+    }
 
     void Renderer::BeginScene(CameraOrthographic& camera)
     {

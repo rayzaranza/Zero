@@ -2,15 +2,21 @@
 
 // @glfw3.h
 
-#define ZERO_MOUSE_BUTTON_1 0
-#define ZERO_MOUSE_BUTTON_2 1
-#define ZERO_MOUSE_BUTTON_3 2
-#define ZERO_MOUSE_BUTTON_4 3
-#define ZERO_MOUSE_BUTTON_5 4
-#define ZERO_MOUSE_BUTTON_6 5
-#define ZERO_MOUSE_BUTTON_7 6
-#define ZERO_MOUSE_BUTTON_8 7
-#define ZERO_MOUSE_BUTTON_LAST ZERO_MOUSE_BUTTON_8
-#define ZERO_MOUSE_BUTTON_LEFT ZERO_MOUSE_BUTTON_1
-#define ZERO_MOUSE_BUTTON_RIGHT ZERO_MOUSE_BUTTON_2
-#define ZERO_MOUSE_BUTTON_MIDDLE ZERO_MOUSE_BUTTON_3
+namespace Zero
+{
+    enum class MouseButton
+    {
+        ONE = 0,
+        TWO = 1,
+        THREE = 2,
+        FOUR = 3,
+        FIVE = 4,
+        SIX = 5,
+        SEVEN = 6,
+        EIGHT = 7,
+        LAST = EIGHT,
+        LEFT = ONE,
+        RIGHT = TWO,
+        MIDDLE = THREE
+    };
+}

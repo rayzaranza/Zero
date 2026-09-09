@@ -17,6 +17,7 @@ namespace Zero
         };
 
       public:
+        virtual void Initialize() = 0;
         virtual void SetClearColor(const glm::vec4& color) const = 0;
         virtual void Clear() const = 0;
         virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;

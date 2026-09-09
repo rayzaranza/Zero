@@ -12,8 +12,9 @@ namespace Zero
     class Renderer
     {
       public:
+        static void Initialize();
         static void BeginScene(CameraOrthographic& camera);
-        static void Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform);
+        static void Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform = glm::mat4{1.0f});
         static void EndScene();
 
       public:
@@ -22,7 +23,7 @@ namespace Zero
       private:
         struct SceneData
         {
-            glm::mat4 ViewProjectionMatrix { 1.0f };
+            glm::mat4 ViewProjectionMatrix{1.0f};
         };
 
         static SceneData* s_SceneData;
