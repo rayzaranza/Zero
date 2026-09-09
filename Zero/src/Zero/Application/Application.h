@@ -31,7 +31,7 @@ namespace Zero
         bool OnWindowClosed(WindowClosedEvent& event);
 
       private:
-        std::unique_ptr<Window> m_Window;
+        Scope<Window> m_Window;
         bool m_IsRunning;
         LayerStack m_LayerStack;
         UILayer* m_UILayer;

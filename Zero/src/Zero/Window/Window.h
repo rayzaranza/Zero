@@ -54,9 +54,6 @@ namespace Zero
 
       private:
         void setCallbacks();
-        inline static void errorCallback(int error, const char* description)
-        {
-            ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description);
-        }
+        inline static void errorCallback(int error, const char* description) { ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description); }
     };
 }

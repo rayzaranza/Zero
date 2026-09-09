@@ -9,6 +9,6 @@ namespace Zero
       public:
         virtual void SetClearColor(const glm::vec4& color) const override;
         virtual void Clear() const override;
-        virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) override;
+        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
     };
 }

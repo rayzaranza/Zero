@@ -26,7 +26,7 @@ namespace Zero
 
     static GLenum GetOpenGLTypeFromAttributeType(AttributeType type);
 
-    void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
+    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
         const VertexBufferLayout& layout { vertexBuffer->GetLayout() };
         ZERO_CORE_ASSERT(layout.GetAttributes().size(), "Vertex Buffer has no layout");
@@ -52,19 +52,19 @@ namespace Zero
         m_VertexBuffers.push_back(vertexBuffer);
     }
 
-    void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
+    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
     {
         glBindVertexArray(m_Id);
         indexBuffer->Bind();
         m_IndexBuffer = indexBuffer;
     }
 
-    const std::vector<std::shared_ptr<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
+    const std::vector<Ref<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
     {
         return m_VertexBuffers;
     }
 
-    const std::shared_ptr<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
+    const Ref<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
     {
         return m_IndexBuffer;
     }

@@ -10,10 +10,7 @@ namespace Zero
 {
     Application* Application::s_Instance { nullptr };
 
-    Application::Application()
-        : m_Window { std::make_unique<Window>() },
-          m_UILayer { new UILayer() },
-          m_IsRunning { true }
+    Application::Application() : m_Window { std::make_unique<Window>() }, m_UILayer { new UILayer() }, m_IsRunning { true }
     {
         ZERO_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;

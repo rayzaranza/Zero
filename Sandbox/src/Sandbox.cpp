@@ -6,13 +6,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//  Triangle Data
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//=====================================================================================================================================
 //  Sandbox Example Layer
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//=====================================================================================================================================
 
 class ExampleLayer : public Zero::Layer
 {
@@ -71,9 +67,7 @@ class ExampleLayer : public Zero::Layer
 
         )" };
 
-        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        //  Quad Data
-        //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //=====================================================================================================================================
 
         float quadVertices[] {
             0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // top right
@@ -122,23 +116,23 @@ class ExampleLayer : public Zero::Layer
         )" };
 
         m_TriangleVertexArray.reset(Zero::VertexArray::Create());
-        std::shared_ptr<Zero::VertexBuffer> triangleVertexBuffer;
+        Zero::Ref<Zero::VertexBuffer> triangleVertexBuffer;
         triangleVertexBuffer.reset(Zero::VertexBuffer::Create(triangleVertices, sizeof(triangleVertices)));
         triangleVertexBuffer->SetLayout(layout);
         m_TriangleVertexArray->AddVertexBuffer(triangleVertexBuffer);
-        std::shared_ptr<Zero::IndexBuffer> triangleIndexBuffer;
+        Zero::Ref<Zero::IndexBuffer> triangleIndexBuffer;
         triangleIndexBuffer.reset(Zero::IndexBuffer::Create(triangleIndices, sizeof(triangleIndices) / sizeof(uint32_t)));
         m_TriangleVertexArray->SetIndexBuffer(triangleIndexBuffer);
         m_TriangleShader.reset(Zero::Shader::Create(triangleVertexSource, triangleFragmentSource));
 
         m_QuadVertexArray.reset(Zero::VertexArray::Create());
 
-        std::shared_ptr<Zero::VertexBuffer> quadVertexBuffer;
+        Zero::Ref<Zero::VertexBuffer> quadVertexBuffer;
         quadVertexBuffer.reset(Zero::VertexBuffer::Create(quadVertices, sizeof(quadVertices)));
         quadVertexBuffer->SetLayout(layout);
         m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
 
-        std::shared_ptr<Zero::IndexBuffer> quadIndexBuffer;
+        Zero::Ref<Zero::IndexBuffer> quadIndexBuffer;
         quadIndexBuffer.reset(Zero::IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)));
         m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
@@ -206,10 +200,10 @@ class ExampleLayer : public Zero::Layer
     }
 
   private:
-    std::shared_ptr<Zero::Shader> m_TriangleShader;
-    std::shared_ptr<Zero::Shader> m_QuadShader;
-    std::shared_ptr<Zero::VertexArray> m_TriangleVertexArray;
-    std::shared_ptr<Zero::VertexArray> m_QuadVertexArray;
+    Zero::Ref<Zero::Shader> m_TriangleShader;
+    Zero::Ref<Zero::Shader> m_QuadShader;
+    Zero::Ref<Zero::VertexArray> m_TriangleVertexArray;
+    Zero::Ref<Zero::VertexArray> m_QuadVertexArray;
     Zero::CameraOrthographic m_Camera;
 
     glm::vec3 m_CameraPosition;
@@ -224,9 +218,9 @@ class ExampleLayer : public Zero::Layer
     glm::vec4 m_TriangleColor { 0.0f, 0.0f, 1.0f, 1.0f };
 };
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//=====================================================================================================================================
 //  Sandbox Application
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//=====================================================================================================================================
 
 class Sandbox : public Zero::Application
 {
@@ -235,9 +229,9 @@ class Sandbox : public Zero::Application
     ~Sandbox() {}
 };
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//=====================================================================================================================================
 //  Application Creation
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//=====================================================================================================================================
 
 Zero::Application* Zero::CreateApplication()
 {

@@ -1,4 +1,5 @@
 #include "Zero/Renderer/RenderCommand.h"
+
 #include "Zero/Renderer/OpenGL/OpenGLRendererAPI.h"
 
 namespace Zero
@@ -15,7 +16,7 @@ namespace Zero
         s_RendererAPI->SetClearColor(color);
     }
 
-    void RenderCommand::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+    void RenderCommand::DrawIndexed(const Ref<VertexArray>& vertexArray)
     {
         s_RendererAPI->DrawIndexed(vertexArray);
     }
