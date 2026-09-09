@@ -6,18 +6,18 @@
 
 namespace Zero
 {
-    OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource) : m_Id { glCreateProgram() }
+    OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource) : m_Id{glCreateProgram()}
     {
-        uint32_t vertexShader { glCreateShader(GL_VERTEX_SHADER) };
-        const char* source { vertexSource.c_str() };
+        uint32_t vertexShader{glCreateShader(GL_VERTEX_SHADER)};
+        const char* source{vertexSource.c_str()};
         glShaderSource(vertexShader, 1, &source, 0);
         glCompileShader(vertexShader);
 
-        int isCompiled { 0 };
+        int isCompiled{0};
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
         if (isCompiled == GL_FALSE)
         {
-            int32_t maxLength { 0 };
+            int32_t maxLength{0};
             glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
             std::vector<char> infoLog(maxLength);
             glGetShaderInfoLog(vertexShader, maxLength, &maxLength, infoLog.data());
@@ -28,7 +28,7 @@ namespace Zero
             return;
         }
 
-        uint32_t fragmentShader { glCreateShader(GL_FRAGMENT_SHADER) };
+        uint32_t fragmentShader{glCreateShader(GL_FRAGMENT_SHADER)};
         source = fragmentSource.c_str();
         glShaderSource(fragmentShader, 1, &source, 0);
         glCompileShader(fragmentShader);
@@ -36,7 +36,7 @@ namespace Zero
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
         if (isCompiled == GL_FALSE)
         {
-            int32_t maxLength { 0 };
+            int32_t maxLength{0};
             glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
             std::vector<char> infoLog(maxLength);
             glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, infoLog.data());
@@ -52,11 +52,11 @@ namespace Zero
         glAttachShader(m_Id, fragmentShader);
         glLinkProgram(m_Id);
 
-        int isLinked { 0 };
+        int isLinked{0};
         glGetProgramiv(m_Id, GL_LINK_STATUS, &isLinked);
         if (isLinked == GL_FALSE)
         {
-            int32_t maxLength { 0 };
+            int32_t maxLength{0};
             glGetProgramiv(m_Id, GL_INFO_LOG_LENGTH, &maxLength);
             std::vector<char> infoLog(maxLength);
             glGetProgramInfoLog(m_Id, maxLength, &maxLength, infoLog.data());
@@ -91,31 +91,37 @@ namespace Zero
 
     void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix) const
     {
-        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        int location{glGetUniformLocation(m_Id, name.c_str())};
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
     void OpenGLShader::SetUniform(const std::string& name, const glm::vec4& vector) const
     {
-        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        int location{glGetUniformLocation(m_Id, name.c_str())};
         glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
     }
 
     void OpenGLShader::SetUniform(const std::string& name, const glm::vec3& vector) const
     {
-        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        int location{glGetUniformLocation(m_Id, name.c_str())};
         glUniform3f(location, vector.x, vector.y, vector.z);
     }
 
     void OpenGLShader::SetUniform(const std::string& name, const glm::vec2& vector) const
     {
-        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        int location{glGetUniformLocation(m_Id, name.c_str())};
         glUniform2f(location, vector.x, vector.y);
     }
 
     void OpenGLShader::SetUniform(const std::string& name, float value) const
     {
-        int location { glGetUniformLocation(m_Id, name.c_str()) };
+        int location{glGetUniformLocation(m_Id, name.c_str())};
         glUniform1f(location, value);
+    }
+
+    void OpenGLShader::SetUniform(const std::string& name, int value) const
+    {
+        int location{glGetUniformLocation(m_Id, name.c_str())};
+        glUniform1i(location, value);
     }
 }

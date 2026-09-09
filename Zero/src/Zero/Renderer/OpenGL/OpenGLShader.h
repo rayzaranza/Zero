@@ -20,8 +20,9 @@ namespace Zero
         void SetUniform(const std::string& name, const glm::vec3& vector) const;
         void SetUniform(const std::string& name, const glm::vec2& vector) const;
         void SetUniform(const std::string& name, float value) const;
+        void SetUniform(const std::string& name, int value) const;
 
       private:
-        uint32_t m_Id {};
+        uint32_t m_Id;
     };
 }

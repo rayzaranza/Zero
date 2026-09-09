@@ -9,7 +9,7 @@ namespace Zero
     class Layer
     {
       public:
-        Layer(const std::string& name = "Layer") : m_Name { name } {}
+        Layer(const std::string& name = "Layer") : m_Name{name} {}
 
       public:
         inline virtual void OnAttach() {}
@@ -22,6 +22,6 @@ namespace Zero
         inline const std::string& GetName() const { return m_Name; }
 
       private:
-        std::string m_Name {};
+        std::string m_Name{};
     };
 }
