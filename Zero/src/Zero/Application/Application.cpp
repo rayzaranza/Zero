@@ -8,16 +8,14 @@
 
 namespace Zero
 {
-    Application* Application::s_Instance { nullptr };
+    Application* Application::s_Instance{nullptr};
 
-    Application::Application() : m_Window { std::make_unique<Window>() }, m_UILayer { new UILayer() }, m_IsRunning { true }
+    Application::Application() : m_Window{std::make_unique<Window>()}, m_UILayer{new UILayer()}, m_IsRunning{true}
     {
         ZERO_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;
         m_Window->SetEventCallback(ZERO_BIND_FUNCTION(Application::OnEvent));
         PushOverlay(m_UILayer);
-
-        ZERO_CORE_LOG("Application created");
     }
 
     Application::~Application()
@@ -27,10 +25,10 @@ namespace Zero
 
     void Application::OnEvent(Event& event)
     {
-        EventDispatcher dispatcher { event };
+        EventDispatcher dispatcher{event};
         dispatcher.Dispatch<WindowClosedEvent>(ZERO_BIND_FUNCTION(Application::OnWindowClosed));
 
-        for (std::vector<Layer*>::iterator iterator { m_LayerStack.end() }; iterator != m_LayerStack.begin();)
+        for (std::vector<Layer*>::iterator iterator{m_LayerStack.end()}; iterator != m_LayerStack.begin();)
         {
             (*--iterator)->OnEvent(event);
             if (event.IsHandled())
@@ -57,7 +55,7 @@ namespace Zero
         while (m_IsRunning)
         {
             float time = static_cast<float>(glfwGetTime());
-            DeltaTime deltaTime { time - m_LastFrameTime };
+            DeltaTime deltaTime{time - m_LastFrameTime};
             m_LastFrameTime = time;
 
             for (Layer* layer : m_LayerStack)

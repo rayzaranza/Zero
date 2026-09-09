@@ -4,10 +4,10 @@
 
 namespace Zero
 {
-    std::shared_ptr<spdlog::logger> Logger::s_CoreLogger {};
-    std::shared_ptr<spdlog::logger> Logger::s_ClientLogger {};
+    std::shared_ptr<spdlog::logger> Logger::s_CoreLogger{};
+    std::shared_ptr<spdlog::logger> Logger::s_ClientLogger{};
 
-    void Logger::Init()
+    void Logger::Initialize()
     {
         spdlog::set_pattern("%^ %T | %n | %v%$");
 

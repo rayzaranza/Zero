@@ -5,7 +5,7 @@ namespace Zero
     class DeltaTime
     {
       public:
-        DeltaTime(float time = 0.0f) : m_Time { time } {}
+        DeltaTime(float time = 0.0f) : m_Time{time} {}
 
       public:
         inline float GetSeconds() const { return m_Time; }

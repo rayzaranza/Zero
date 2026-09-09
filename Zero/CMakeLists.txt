@@ -4,69 +4,124 @@ find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 
-add_library(Zero
-    STATIC
-        "src/Zero/Zero.h"
-        "src/Zero/Core.h"
-        "src/Zero/EntryPoint.h"
+set(ZERO_SRC "src/Zero")
 
-        "src/Zero/Application/Application.h"
-	    "src/Zero/Application/Application.cpp"
+add_library(Zero STATIC
+    #=====================================================================================================================================
+    #  Core
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Zero.h"
+    "${ZERO_SRC}/Core.h"
+    "${ZERO_SRC}/EntryPoint.h"
 
-        "src/Zero/Logger/Logger.h"
-        "src/Zero/Logger/Logger.cpp"
+    #=====================================================================================================================================
+    #  Application 
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Application/Application.h"
+	"${ZERO_SRC}/Application/Application.cpp"
 
-        "src/Zero/Input/Input.h"
-        "src/Zero/Input/Input.cpp"
-        "src/Zero/Input/KeyCode.h"
-        "src/Zero/Input/MouseButtonCode.h"
+    #=====================================================================================================================================
+    #  Logger
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Logger/Logger.h"
+    "${ZERO_SRC}/Logger/Logger.cpp"
 
-        "src/Zero/Window/Window.h"
-        "src/Zero/Window/Window.cpp"
+    #=====================================================================================================================================
+    #  Input
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Input/Input.h"
+    "${ZERO_SRC}/Input/Input.cpp"
+    "${ZERO_SRC}/Input/KeyCode.h"
+    "${ZERO_SRC}/Input/MouseButtonCode.h"
 
-        "src/Zero/Event/Event.h"
-        "src/Zero/Event/KeyEvent.h"
-        "src/Zero/Event/MouseEvent.h"
-        "src/Zero/Event/ApplicationEvent.h"
+    #=====================================================================================================================================
+    #  Window
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Window/Window.h"
+    "${ZERO_SRC}/Window/Window.cpp"
 
-        "src/Zero/Layer/Layer.h"
-        "src/Zero/Layer/LayerStack.h"
-        "src/Zero/Layer/LayerStack.cpp"
+    #=====================================================================================================================================
+    #  Event
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Event/Event.h"
+    "${ZERO_SRC}/Event/KeyEvent.h"
+    "${ZERO_SRC}/Event/MouseEvent.h"
+    "${ZERO_SRC}/Event/ApplicationEvent.h"
 
-        "src/Zero/UI/UILayer.h"
-        "src/Zero/UI/UILayer.cpp"
+    #=====================================================================================================================================
+    #  Layer
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Layer/Layer.h"
+    "${ZERO_SRC}/Layer/LayerStack.h"
+    "${ZERO_SRC}/Layer/LayerStack.cpp"
+    "${ZERO_SRC}/UI/UILayer.h"
+    "${ZERO_SRC}/UI/UILayer.cpp"
 
-        "src/Zero/Renderer/Renderer.h"
-        "src/Zero/Renderer/Renderer.cpp"
-        "src/Zero/Renderer/RenderCommand.h"
-        "src/Zero/Renderer/RenderCommand.cpp"
-        "src/Zero/Renderer/RendererAPI.h"
-        "src/Zero/Renderer/RendererAPI.cpp"
-        "src/Zero/Renderer/RendererContext.h"
+    #=====================================================================================================================================
+    #  Renderer
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Renderer/Renderer.h"
+    "${ZERO_SRC}/Renderer/Renderer.cpp"
+    "${ZERO_SRC}/Renderer/RenderCommand.h"
+    "${ZERO_SRC}/Renderer/RenderCommand.cpp"
 
-        "src/Zero/Renderer/Buffer.h"
-        "src/Zero/Renderer/Buffer.cpp"
-        "src/Zero/Renderer/VertexArray.h"
-        "src/Zero/Renderer/VertexArray.cpp"
+    #=====================================================================================================================================
+    #  Renderer API
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Renderer/RendererAPI.h"
+    "${ZERO_SRC}/Renderer/RendererAPI.cpp"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLRendererAPI.h"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLRendererAPI.cpp"
 
-        "src/Zero/Renderer/OpenGL/OpenGLContext.h"
-        "src/Zero/Renderer/OpenGL/OpenGLContext.cpp"
-        "src/Zero/Renderer/OpenGL/OpenGLBuffer.h"
-        "src/Zero/Renderer/OpenGL/OpenGLBuffer.cpp"
-        "src/Zero/Renderer/OpenGL/OpenGLVertexArray.h"
-        "src/Zero/Renderer/OpenGL/OpenGLVertexArray.cpp"
-        "src/Zero/Renderer/OpenGL/OpenGLRendererAPI.h"
-        "src/Zero/Renderer/OpenGL/OpenGLRendererAPI.cpp"
-        "src/Zero/Renderer/OpenGL/OpenGLShader.h"
-        "src/Zero/Renderer/OpenGL/OpenGLShader.cpp"
+    #=====================================================================================================================================
+    #  Renderer Context
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Renderer/RendererContext.h"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLContext.h"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLContext.cpp"
 
-        "src/Zero/Renderer/Shader.h"
-        "src/Zero/Renderer/Shader.cpp"
+    #=====================================================================================================================================
+    #  Buffer
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Renderer/Buffer.h"
+    "${ZERO_SRC}/Renderer/Buffer.cpp"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLBuffer.h"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLBuffer.cpp"
 
-        "src/Zero/Camera/Camera.h"
-        "src/Zero/Camera/Camera.cpp"
+    #=====================================================================================================================================
+    #  Vertex Array
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Renderer/VertexArray.h"
+    "${ZERO_SRC}/Renderer/VertexArray.cpp"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLVertexArray.h"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLVertexArray.cpp"
 
-        "src/Zero/Time/DeltaTime.h"
+    #=====================================================================================================================================
+    #  Shader
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Renderer/Shader.h"
+    "${ZERO_SRC}/Renderer/Shader.cpp"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLShader.h"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLShader.cpp"
+
+    #=====================================================================================================================================
+    #  Texture
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Renderer/Texture.h"
+    "${ZERO_SRC}/Renderer/Texture.cpp"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLTexture.h"
+    "${ZERO_SRC}/Renderer/OpenGL/OpenGLTexture.cpp"
+
+    #=====================================================================================================================================
+    #  Camera
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Camera/Camera.h"
+    "${ZERO_SRC}/Camera/Camera.cpp"
+
+    #=====================================================================================================================================
+    #  Time
+    #=====================================================================================================================================
+    "${ZERO_SRC}/Time/DeltaTime.h"
 )
 
 target_include_directories(Zero
@@ -76,7 +131,7 @@ target_include_directories(Zero
 
 target_precompile_headers(Zero
     PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/Zero/zrpch.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/${ZERO_SRC}/zrpch.h"
 )
 
 target_link_libraries(Zero

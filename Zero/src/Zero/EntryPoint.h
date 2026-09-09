@@ -6,8 +6,8 @@ extern Zero::Application* Zero::CreateApplication();
 
 int main(int argc, char** argv)
 {
-    Zero::Logger::Init();
-    Zero::Application* application { Zero::CreateApplication() };
+    Zero::Logger::Initialize();
+    Zero::Application* application{Zero::CreateApplication()};
     application->Run();
     delete application;
 }
