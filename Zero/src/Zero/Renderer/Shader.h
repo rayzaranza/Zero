@@ -12,6 +12,6 @@ namespace Zero
         virtual void Unbind() const = 0;
 
       public:
-        static Shader* Create(const std::string& vertexSource, const std::string& fragmentSource);
+        static Ref<Shader> Create(const std::string& vertexSource, const std::string& fragmentSource);
     };
 }

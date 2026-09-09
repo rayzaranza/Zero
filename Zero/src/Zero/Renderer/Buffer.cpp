@@ -1,17 +1,16 @@
 #include "Zero/Renderer/Buffer.h"
+
 #include "Zero/Renderer/OpenGL/OpenGLBuffer.h"
 #include "Zero/Renderer/Renderer.h"
 
 namespace Zero
 {
-
     //======================================================================================
     //  Vertex Buffer Layout
     //======================================================================================
-
     void VertexBufferLayout::CalculateOffsetsAndStride()
     {
-        uint32_t offset { 0 };
+        uint32_t offset{0};
         m_Stride = 0;
 
         for (VertexAttribute& attribute : m_Attributes)
@@ -25,8 +24,7 @@ namespace Zero
     //======================================================================================
     //  Vertex Buffer
     //======================================================================================
-
-    VertexBuffer* VertexBuffer::Create(float* vertices, size_t size)
+    Ref<VertexBuffer> VertexBuffer::Create(float* vertices, size_t size)
     {
         switch (Renderer::GetAPI())
         {
@@ -35,18 +33,15 @@ namespace Zero
                 ZERO_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
-
             case RendererAPI::API::OpenGL:
             {
-                return new OpenGLVertexBuffer(vertices, size);
+                return std::make_shared<OpenGLVertexBuffer>(vertices, size);
             }
-
             case RendererAPI::API::Vulkan:
             {
                 ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
-
             default:
             {
                 ZERO_CORE_ASSERT(false, "Unknown Renderer API");
@@ -58,8 +53,7 @@ namespace Zero
     //======================================================================================
     //  Index Buffer
     //======================================================================================
-
-    IndexBuffer* IndexBuffer::Create(uint32_t* indices, size_t size)
+    Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, size_t size)
     {
         switch (Renderer::GetAPI())
         {
@@ -68,18 +62,15 @@ namespace Zero
                 ZERO_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
-
             case RendererAPI::API::OpenGL:
             {
-                return new OpenGLIndexBuffer(indices, size);
+                return std::make_shared<OpenGLIndexBuffer>(indices, size);
             }
-
             case RendererAPI::API::Vulkan:
             {
                 ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
-
             default:
             {
                 ZERO_CORE_ASSERT(false, "Unknown Renderer API");
@@ -91,7 +82,6 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute Type Helpers
     //======================================================================================
-
     uint32_t GetSizeFromAttributeType(AttributeType type)
     {
         switch (type)

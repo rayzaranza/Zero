@@ -13,31 +13,31 @@ namespace Zero
 {
     class Application
     {
-    public:
+      public:
         Application();
         virtual ~Application();
 
-    public:
+      public:
         void Run();
         void OnEvent(Event& event);
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* overlay);
 
-    public:
+      public:
         inline static Application& Get() { return *s_Instance; }
         inline Window& GetWindow() const { return *m_Window; }
 
-    private:
+      private:
         bool OnWindowClosed(WindowClosedEvent& event);
 
-    private:
+      private:
         Scope<Window> m_Window;
         bool m_IsRunning;
         LayerStack m_LayerStack;
         UILayer* m_UILayer;
-        float m_LastFrameTime{ 0.0f };
+        float m_LastFrameTime;
 
-    private:
+      private:
         static Application* s_Instance;
     };
 

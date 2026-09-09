@@ -20,6 +20,7 @@ class ExampleLayer : public Zero::Layer
     Zero::Ref<Zero::Shader> m_TextureShader;
     Zero::Ref<Zero::VertexArray> m_QuadVertexArray;
     Zero::Ref<Zero::Texture2D> m_Texture;
+    Zero::Ref<Zero::Texture2D> m_TransparentTexture;
 
     Zero::CameraOrthographic m_Camera;
 

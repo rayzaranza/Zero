@@ -17,6 +17,8 @@ ExampleLayer::ExampleLayer()
     , m_QuadPosition{0.0f}
     , m_QuadMovementSpeed{1.0f}
     , m_QuadColor{1.0f, 0.0f, 0.0f, 1.0f}
+    , m_Texture{Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png")}
+    , m_TransparentTexture{Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/zzz.png")}
 {
     Zero::VertexBufferLayout layout{
         {Zero::AttributeType::Float3, "a_Position"},
@@ -71,16 +73,14 @@ ExampleLayer::ExampleLayer()
 
     m_QuadVertexArray.reset(Zero::VertexArray::Create());
 
-    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer;
-    quadVertexBuffer.reset(Zero::VertexBuffer::Create(quadVertices, sizeof(quadVertices)));
+    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{Zero::VertexBuffer::Create(quadVertices, sizeof(quadVertices))};
     quadVertexBuffer->SetLayout(layout);
     m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
 
-    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer;
-    quadIndexBuffer.reset(Zero::IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)));
+    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{Zero::IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t))};
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
-    m_QuadShader.reset(Zero::Shader::Create(quadVertexSource, quadFragmentSource));
+    m_QuadShader = Zero::Shader::Create(quadVertexSource, quadFragmentSource);
 
     std::string textureVertexSource{R"(
             #version 460 core
@@ -118,9 +118,7 @@ ExampleLayer::ExampleLayer()
             }
         )"};
 
-    m_TextureShader.reset(Zero::Shader::Create(textureVertexSource, textureFragmentSource));
-    m_Texture = Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.png");
-
+    m_TextureShader = Zero::Shader::Create(textureVertexSource, textureFragmentSource);
     std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TextureShader)->Bind();
     std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TextureShader)->SetUniform("u_Texture", 0);
 }
@@ -155,10 +153,9 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
     std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->Bind();
     std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->SetUniform("u_Color", m_QuadColor);
 
-    constexpr int count{20};
-    for (int y{0}; y < count; ++y)
+    for (int y{0}; y < 20; ++y)
     {
-        for (int x{0}; x < count; ++x)
+        for (int x{0}; x < 20; ++x)
         {
             glm::vec3 position{static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f};
             glm::mat4 quadModelMatrix{glm::translate({1.0f}, position) * glm::scale({1.0f}, glm::vec3{0.1f})};
@@ -167,6 +164,10 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
     }
 
     m_Texture->Bind();
+    Zero::Renderer::Submit(m_QuadVertexArray, m_TextureShader);
+
+    m_TransparentTexture->Bind();
+    glm::mat4 transparentQuadTransform{glm::translate({1.0f}, glm::vec3{0.0f, 1.0f, 0.0f}) * glm::scale({1.0f}, glm::vec3{0.25f})};
     Zero::Renderer::Submit(m_QuadVertexArray, m_TextureShader);
 
     Zero::Renderer::EndScene();

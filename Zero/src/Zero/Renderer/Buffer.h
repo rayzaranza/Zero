@@ -5,7 +5,6 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute Type
     //======================================================================================
-
     enum class AttributeType : uint8_t
     {
         Float,
@@ -24,7 +23,6 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute
     //======================================================================================
-
     uint32_t GetSizeFromAttributeType(AttributeType type);
     uint32_t GetComponentCountFromAttributeType(AttributeType type);
 
@@ -50,7 +48,6 @@ namespace Zero
     //======================================================================================
     //  Vertex Buffer Layout
     //======================================================================================
-
     class VertexBufferLayout
     {
       public:
@@ -77,7 +74,6 @@ namespace Zero
     //======================================================================================
     //  Vertex Buffer
     //======================================================================================
-
     class VertexBuffer
     {
       public:
@@ -90,13 +86,12 @@ namespace Zero
         virtual const VertexBufferLayout& GetLayout() const = 0;
 
       public:
-        static VertexBuffer* Create(float* vertices, size_t size);
+        static Ref<VertexBuffer> Create(float* vertices, size_t size);
     };
 
     //======================================================================================
     //  Index Buffer
     //======================================================================================
-
     class IndexBuffer
     {
       public:
@@ -108,6 +103,6 @@ namespace Zero
         virtual uint32_t GetCount() const = 0;
 
       public:
-        static IndexBuffer* Create(uint32_t* indices, size_t size);
+        static Ref<IndexBuffer> Create(uint32_t* indices, size_t size);
     };
 }
