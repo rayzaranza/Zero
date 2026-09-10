@@ -16,8 +16,9 @@ class ExampleLayer : public Zero::Layer
     virtual void OnUIRender() override;
 
   private:
+    Zero::Ref<Zero::ShaderLibrary> m_ShaderLibrary;
+
     Zero::Ref<Zero::Shader> m_QuadShader;
-    Zero::Ref<Zero::Shader> m_TextureShader;
     Zero::Ref<Zero::VertexArray> m_QuadVertexArray;
     Zero::Ref<Zero::Texture2D> m_Texture;
     Zero::Ref<Zero::Texture2D> m_TransparentTexture;

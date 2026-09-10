@@ -20,7 +20,7 @@ ExampleLayer::ExampleLayer()
     , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
     , m_TransparentTexture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/zzz.png") }
     , m_QuadShader{ Zero::Shader::Create("D:/Zero/Sandbox/assets/shaders/Flat.glsl") }
-    , m_TextureShader{ Zero::Shader::Create("D:/Zero/Sandbox/assets/shaders/Texture.glsl") }
+    , m_ShaderLibrary{ std::make_shared<Zero::ShaderLibrary>() }
 {
     Zero::VertexBufferLayout layout{
         { Zero::AttributeType::Float3, "a_Position" },
@@ -45,8 +45,11 @@ ExampleLayer::ExampleLayer()
     Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)) };
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
-    std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TextureShader)->Bind();
-    std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TextureShader)->SetUniform("u_Texture", 0);
+    m_ShaderLibrary->Load("D:/Zero/Sandbox/assets/shaders/Texture.glsl");
+
+    Zero::Ref<Zero::OpenGLShader> textureShader{ std::dynamic_pointer_cast<Zero::OpenGLShader>(m_ShaderLibrary->Get("Texture")) };
+    textureShader->Bind();
+    textureShader->SetUniform("u_Texture", 0);
 }
 
 void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
@@ -75,27 +78,30 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
     Zero::RenderCommand::Clear();
 
     Zero::Renderer::BeginScene(m_Camera);
-
-    std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->Bind();
-    std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->SetUniform("u_Color", m_QuadColor);
-
-    for (int y{ 0 }; y < 20; ++y)
     {
-        for (int x{ 0 }; x < 20; ++x)
+        std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->Bind();
+        std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->SetUniform("u_Color", m_QuadColor);
+
+        for (int y{ 0 }; y < 20; ++y)
         {
-            glm::vec3 position{ static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f };
-            glm::mat4 quadModelMatrix{ glm::translate({ 1.0f }, position) * glm::scale({ 1.0f }, glm::vec3{ 0.1f }) };
-            Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader, quadModelMatrix);
+            for (int x{ 0 }; x < 20; ++x)
+            {
+                glm::vec3 position{ static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f };
+                glm::mat4 quadModelMatrix{ glm::translate({ 1.0f }, position) * glm::scale({ 1.0f }, glm::vec3{ 0.1f }) };
+                Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader, quadModelMatrix);
+            }
         }
+
+        m_Texture->Bind();
+
+        Zero::Ref<Zero::OpenGLShader> textureShader{ std::dynamic_pointer_cast<Zero::OpenGLShader>(m_ShaderLibrary->Get("Texture")) };
+        Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
+        m_TransparentTexture->Bind();
+
+        glm::mat4 transparentQuadTransform{ glm::translate({ 1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f }) *
+                                            glm::scale({ 1.0f }, glm::vec3{ 0.25f }) };
+        Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
     }
-
-    m_Texture->Bind();
-    Zero::Renderer::Submit(m_QuadVertexArray, m_TextureShader);
-
-    m_TransparentTexture->Bind();
-    glm::mat4 transparentQuadTransform{ glm::translate({ 1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f }) * glm::scale({ 1.0f }, glm::vec3{ 0.25f }) };
-    Zero::Renderer::Submit(m_QuadVertexArray, m_TextureShader);
-
     Zero::Renderer::EndScene();
 }
 

@@ -7,14 +7,14 @@
 
 namespace Zero
 {
-    OpenGLShader::OpenGLShader(const std::string& filePath)
+    OpenGLShader::OpenGLShader(const std::string& filePath) : m_Name{ ExtractNameFromFilePath(filePath) }
     {
         const std::string source{ ReadFile(filePath) };
         const std::unordered_map<GLenum, std::string> shaderSources{ PreProcess(source) };
         OpenGLShader::Compile(shaderSources);
     }
 
-    OpenGLShader::OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource)
+    OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource) : m_Name{ name }
     {
         const std::unordered_map<GLenum, std::string> shaderSources{
             { GL_VERTEX_SHADER, vertexSource },
@@ -185,6 +185,15 @@ namespace Zero
 
         ZERO_CORE_ASSERT(false, "Unknow shader type");
         return 0;
+    }
+
+    std::string OpenGLShader::ExtractNameFromFilePath(const std::string& filePath)
+    {
+        size_t lastSlashPosition{ filePath.find_last_of("/\\") };
+        lastSlashPosition = lastSlashPosition == std::string::npos ? 0 : lastSlashPosition + 1;
+        size_t lastDotPosition{ filePath.rfind(".") };
+        size_t count{ lastDotPosition == std::string::npos ? filePath.size() - lastSlashPosition : lastDotPosition - lastSlashPosition };
+        return filePath.substr(lastSlashPosition, count);
     }
 
     bool OpenGLShader::CheckShaderErrors(GLuint shader)
