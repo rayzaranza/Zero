@@ -9,11 +9,6 @@
 
 ExampleLayer::ExampleLayer()
     : Zero::Layer{ "Example" }
-    , m_Camera{ -1.6f, 1.6f, -0.9f, 0.9f }
-    , m_CameraPosition{ 0.0f }
-    , m_CameraMovementSpeed{ 1.0f }
-    , m_CameraRotationSpeed{ 90.0f }
-    , m_CameraRotation{ 0.0f }
     , m_QuadPosition{ 0.0f }
     , m_QuadMovementSpeed{ 1.0f }
     , m_QuadColor{ 1.0f, 0.0f, 0.0f, 1.0f }
@@ -21,6 +16,7 @@ ExampleLayer::ExampleLayer()
     , m_TransparentTexture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/zzz.png") }
     , m_QuadShader{ Zero::Shader::Create("D:/Zero/Sandbox/assets/shaders/Flat.glsl") }
     , m_ShaderLibrary{ std::make_shared<Zero::ShaderLibrary>() }
+    , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
 {
     Zero::VertexBufferLayout layout{
         { Zero::AttributeType::Float3, "a_Position" },
@@ -54,30 +50,11 @@ ExampleLayer::ExampleLayer()
 
 void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
 {
-    if (Zero::Input::IsKeyPressed(Zero::Key::D))
-        m_CameraPosition.x += m_CameraMovementSpeed * deltaTime;
-    else if (Zero::Input::IsKeyPressed(Zero::Key::A))
-        m_CameraPosition.x -= m_CameraMovementSpeed * deltaTime;
-
-    if (Zero::Input::IsKeyPressed(Zero::Key::W))
-        m_CameraPosition.y += m_CameraMovementSpeed * deltaTime;
-    else if (Zero::Input::IsKeyPressed(Zero::Key::S))
-        m_CameraPosition.y -= m_CameraMovementSpeed * deltaTime;
-
-    if (Zero::Input::IsKeyPressed(Zero::Key::Q))
-        m_CameraRotation += m_CameraRotationSpeed * deltaTime;
-    else if (Zero::Input::IsKeyPressed(Zero::Key::E))
-        m_CameraRotation -= m_CameraRotationSpeed * deltaTime;
-
-    m_Camera.SetPosition(m_CameraPosition);
-    m_Camera.SetRotation(m_CameraRotation);
-
-    glm::mat4 triangleModelMatrix{ 1.0f };
+    m_CameraController.OnUpdate(deltaTime);
 
     Zero::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
     Zero::RenderCommand::Clear();
-
-    Zero::Renderer::BeginScene(m_Camera);
+    Zero::Renderer::BeginScene(m_CameraController.GetCamera());
     {
         std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->Bind();
         std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->SetUniform("u_Color", m_QuadColor);
@@ -93,20 +70,22 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
         }
 
         m_Texture->Bind();
-
         Zero::Ref<Zero::OpenGLShader> textureShader{ std::dynamic_pointer_cast<Zero::OpenGLShader>(m_ShaderLibrary->Get("Texture")) };
         Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
-        m_TransparentTexture->Bind();
 
-        glm::mat4 transparentQuadTransform{ glm::translate({ 1.0f }, glm::vec3{ 0.0f, 1.0f, 0.0f }) *
-                                            glm::scale({ 1.0f }, glm::vec3{ 0.25f }) };
+        m_TransparentTexture->Bind();
+        glm::mat4 transparentQuadTransform{ 1.0f };
+        transparentQuadTransform = glm::translate(transparentQuadTransform, glm::vec3{ 0.0f, 1.0f, 0.0f });
+        transparentQuadTransform = glm::scale(transparentQuadTransform, glm::vec3{ 0.25f });
         Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
     }
     Zero::Renderer::EndScene();
 }
 
 void ExampleLayer::OnEvent(Zero::Event& event)
-{}
+{
+    m_CameraController.OnEvent(event);
+}
 
 void ExampleLayer::OnUIRender()
 {

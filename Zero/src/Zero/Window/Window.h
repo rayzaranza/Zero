@@ -33,7 +33,7 @@ namespace Zero
     class Window
     {
       public:
-        Window(const std::string& title = "ZERO", int width = 1800, int height = 940);
+        Window(const std::string& title = "ZERO", int width = 1920, int height = 1080);
         ~Window();
 
       public:
@@ -41,6 +41,7 @@ namespace Zero
         inline int GetHeight() const { return m_Data.Height; }
         inline GLFWwindow* GetWindowHandle() const { return m_WindowHandle; }
         inline void SetEventCallback(const EventCallback& callback) { m_Data.EventCallback = callback; }
+        inline float GetAspectRatio() const { return static_cast<float>(m_Data.Width) / static_cast<float>(m_Data.Height); }
 
       public:
         void OnUpdate();
