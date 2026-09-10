@@ -2,6 +2,7 @@
 
 #include "Zero/Logger/Logger.h"
 
+#include <array>
 #include <functional>
 #include <iostream>
 #include <memory>

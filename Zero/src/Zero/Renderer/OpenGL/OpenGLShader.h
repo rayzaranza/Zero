@@ -7,6 +7,8 @@ typedef unsigned int GLuint;
 
 namespace Zero
 {
+    constexpr int MAX_SHADERS_SUPPORTED{ 2 };
+
     class OpenGLShader : public Shader
     {
       public:
@@ -31,7 +33,7 @@ namespace Zero
         std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
         void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
         static bool CheckShaderErrors(GLuint shader);
-        static bool CheckProgramErrors(GLuint program, const std::vector<GLuint>& shaderIds);
+        static bool CheckProgramErrors(GLuint program, const std::array<GLuint, MAX_SHADERS_SUPPORTED>& shaderIds);
         static GLenum StringToShaderType(const std::string& type);
 
       private:

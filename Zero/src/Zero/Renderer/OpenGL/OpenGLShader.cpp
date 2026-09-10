@@ -31,10 +31,13 @@ namespace Zero
     void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
     {
         const GLuint program{ glCreateProgram() };
-        std::vector<GLuint> shaderIds{};
-        shaderIds.reserve(shaderSources.size());
 
-        for (const auto& [type, source] : shaderSources)
+        ZERO_CORE_ASSERT(shaderSources.size() <= MAX_SHADERS_SUPPORTED, "Only 2 shaders are supported");
+
+        std::array<GLenum, MAX_SHADERS_SUPPORTED> shaderIds{};
+        int shaderIdIndex{ 0 };
+
+        for (auto& [type, source] : shaderSources)
         {
             const GLuint shader{ glCreateShader(type) };
             const GLchar* sourceRaw{ source.c_str() };
@@ -48,7 +51,7 @@ namespace Zero
                 continue;
 
             glAttachShader(program, shader);
-            shaderIds.push_back(shader);
+            shaderIds[shaderIdIndex++] = shader;
         }
 
         glLinkProgram(program);
@@ -70,7 +73,7 @@ namespace Zero
     std::string OpenGLShader::ReadFile(const std::string& filePath)
     {
         std::string result{};
-        std::ifstream inputStream{ filePath, std::ios::in, std::ios::binary };
+        std::ifstream inputStream{ filePath, std::ios::in | std::ios::binary };
 
         if (!inputStream.is_open())
         {
@@ -203,7 +206,7 @@ namespace Zero
         return true;
     }
 
-    bool OpenGLShader::CheckProgramErrors(GLuint program, const std::vector<GLuint>& shaderIds)
+    bool OpenGLShader::CheckProgramErrors(GLuint program, const std::array<GLuint, MAX_SHADERS_SUPPORTED>& shaderIds)
     {
         int isLinked{ 0 };
         glGetProgramiv(program, GL_LINK_STATUS, &isLinked);
