@@ -10,7 +10,7 @@ namespace Zero
     //======================================================================================
     void VertexBufferLayout::CalculateOffsetsAndStride()
     {
-        uint32_t offset{0};
+        uint32_t offset{ 0 };
         m_Stride = 0;
 
         for (VertexAttribute& attribute : m_Attributes)
@@ -64,7 +64,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLIndexBuffer>(indices, size);
+                return std::make_shared<OpenGLIndexBuffer>(indices, static_cast<uint32_t>(size));
             }
             case RendererAPI::API::Vulkan:
             {
