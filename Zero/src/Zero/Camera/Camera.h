@@ -4,10 +4,10 @@
 
 namespace Zero
 {
-    class CameraOrthographic
+    class OrthographicCamera
     {
       public:
-        CameraOrthographic(float left, float right, float bottom, float top);
+        OrthographicCamera(float left, float right, float bottom = -1.0f, float top = 1.0f);
 
       public:
         inline const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
@@ -15,11 +15,13 @@ namespace Zero
         inline const glm::mat4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; };
         inline const glm::vec3& GetPosition() const { return m_Position; }
         inline float GetRotation() const { return m_Rotation; }
+
         void SetPosition(const glm::vec3& position);
         void SetRotation(float rotation);
+        void SetProjectionMatrix(float left, float right, float bottom, float top);
 
       private:
-        void CalculateViewMatrix();
+        void CalculateViewProjectionMatrix();
 
       private:
         glm::vec3 m_Position;

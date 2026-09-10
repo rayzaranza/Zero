@@ -1,11 +1,11 @@
-#include "OpenGLContext.h"
+#include "Zero/Renderer/OpenGL/OpenGLContext.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
 namespace Zero
 {
-    OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) : m_WindowHandle{windowHandle}
+    OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) : m_WindowHandle{ windowHandle }
     {
         ZERO_CORE_ASSERT(windowHandle, "Window handle is null");
     }
@@ -16,7 +16,7 @@ namespace Zero
     void OpenGLContext::Initialize()
     {
         glfwMakeContextCurrent(m_WindowHandle);
-        int gladLoadSuccess{gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)};
+        int gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
         ZERO_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
 
         ZERO_CORE_INFO("OpenGL Context:");

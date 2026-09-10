@@ -23,12 +23,7 @@ class ExampleLayer : public Zero::Layer
     Zero::Ref<Zero::Texture2D> m_Texture;
     Zero::Ref<Zero::Texture2D> m_TransparentTexture;
 
-    Zero::CameraOrthographic m_Camera;
-
-    glm::vec3 m_CameraPosition;
-    float m_CameraMovementSpeed;
-    float m_CameraRotationSpeed;
-    float m_CameraRotation;
+    Zero::OrthographicCameraController m_CameraController;
 
     glm::vec3 m_QuadPosition;
     glm::vec4 m_QuadColor;

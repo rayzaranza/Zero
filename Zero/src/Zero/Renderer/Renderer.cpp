@@ -11,7 +11,7 @@ namespace Zero
         RenderCommand::Initialize();
     }
 
-    void Renderer::BeginScene(CameraOrthographic& camera)
+    void Renderer::BeginScene(OrthographicCamera& camera)
     {
         s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
