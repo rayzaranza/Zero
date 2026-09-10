@@ -13,5 +13,6 @@ namespace Zero
 
       public:
         static Ref<Shader> Create(const std::string& vertexSource, const std::string& fragmentSource);
+        static Ref<Shader> Create(const std::string& filePath);
     };
 }

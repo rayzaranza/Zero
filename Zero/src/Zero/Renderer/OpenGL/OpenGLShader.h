@@ -2,11 +2,15 @@
 
 #include <glm/glm.hpp>
 
+typedef unsigned int GLenum;
+typedef unsigned int GLuint;
+
 namespace Zero
 {
     class OpenGLShader : public Shader
     {
       public:
+        OpenGLShader(const std::string& filePath);
         OpenGLShader(const std::string& vertexSource, const std::string& fragmentSource);
         virtual ~OpenGLShader() override;
 
@@ -23,6 +27,14 @@ namespace Zero
         void SetUniform(const std::string& name, int value) const;
 
       private:
-        uint32_t m_Id;
+        std::string ReadFile(const std::string& filePath);
+        std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
+        void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
+        static bool CheckShaderErrors(GLuint shader);
+        static bool CheckProgramErrors(GLuint program, const std::vector<GLuint>& shaderIds);
+        static GLenum StringToShaderType(const std::string& type);
+
+      private:
+        uint32_t m_Id{};
     };
 }
