@@ -19,6 +19,8 @@ ExampleLayer::ExampleLayer()
     , m_QuadColor{ 1.0f, 0.0f, 0.0f, 1.0f }
     , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
     , m_TransparentTexture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/zzz.png") }
+    , m_QuadShader{ Zero::Shader::Create("D:/Zero/Sandbox/assets/shaders/Flat.glsl") }
+    , m_TextureShader{ Zero::Shader::Create("D:/Zero/Sandbox/assets/shaders/Texture.glsl") }
 {
     Zero::VertexBufferLayout layout{
         { Zero::AttributeType::Float3, "a_Position" },
@@ -34,43 +36,6 @@ ExampleLayer::ExampleLayer()
 
     uint32_t quadIndices[]{ 0, 1, 2, 2, 3, 0 };
 
-    std::string quadVertexSource{ R"(
-            #version 460 core
-
-            layout (location = 0) in vec3 a_Position;
-            layout (location = 1) in vec2 a_UV;
-
-            uniform mat4 u_ViewProjectionMatrix;
-            uniform mat4 u_ModelMatrix;
-
-            out vec3 v_Position;
-            out vec2 v_UV;
-
-            void main()
-            {
-                v_Position = a_Position;
-                v_UV = a_UV;
-                gl_Position = u_ViewProjectionMatrix * u_ModelMatrix * vec4(a_Position, 1.0f);
-            }
-        )" };
-
-    std::string quadFragmentSource{ R"(
-            #version 460 core
-
-            in vec3 v_Position;
-            in vec2 v_UV;
-
-            uniform vec4 u_Color;
-
-            out vec4 o_Color;
-
-            void main()
-            {
-                o_Color = u_Color;
-                //o_Color = vec4(v_UV, 1.0f, 1.0f);
-            }
-        )" };
-
     m_QuadVertexArray.reset(Zero::VertexArray::Create());
 
     Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{ Zero::VertexBuffer::Create(quadVertices, sizeof(quadVertices)) };
@@ -79,9 +44,7 @@ ExampleLayer::ExampleLayer()
 
     Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)) };
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
-    m_QuadShader = Zero::Shader::Create(quadVertexSource, quadFragmentSource);
 
-    m_TextureShader = Zero::Shader::Create("D:/Zero/Sandbox/assets/shaders/Texture.glsl");
     std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TextureShader)->Bind();
     std::dynamic_pointer_cast<Zero::OpenGLShader>(m_TextureShader)->SetUniform("u_Texture", 0);
 }
