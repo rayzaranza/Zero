@@ -23,22 +23,22 @@ ExampleLayer::ExampleLayer()
         { Zero::AttributeType::Float2, "a_UV" },
     };
 
-    float quadVertices[]{
+    const Zero::VertexBufferData quadVertices{
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, //
         0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, //
         0.5f,  0.5f,  0.0f, 1.0f, 1.0f, //
         -0.5f, 0.5f,  0.0f, 0.0f, 1.0f, //
     };
 
-    uint32_t quadIndices[]{ 0, 1, 2, 2, 3, 0 };
+    const Zero::IndexBufferData quadIndices{ 0, 1, 2, 2, 3, 0 };
 
-    m_QuadVertexArray.reset(Zero::VertexArray::Create());
+    m_QuadVertexArray = Zero::VertexArray::Create();
 
-    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{ Zero::VertexBuffer::Create(quadVertices, sizeof(quadVertices)) };
+    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{ Zero::VertexBuffer::Create(quadVertices) };
     quadVertexBuffer->SetLayout(layout);
     m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
 
-    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create(quadIndices, sizeof(quadIndices) / sizeof(uint32_t)) };
+    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create(quadIndices) };
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
     m_ShaderLibrary->Load("D:/Zero/Sandbox/assets/shaders/Texture.glsl");

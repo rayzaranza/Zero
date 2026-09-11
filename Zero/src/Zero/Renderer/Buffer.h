@@ -36,12 +36,12 @@ namespace Zero
         uint32_t Offset;
 
         VertexAttribute(AttributeType type, const std::string& name)
-            : Name{name}
-            , Type{type}
-            , Size{GetSizeFromAttributeType(type)}
-            , ComponentCount{GetComponentCountFromAttributeType(type)}
-            , IsNormalized{false}
-            , Offset{0}
+            : Name{ name }
+            , Type{ type }
+            , Size{ GetSizeFromAttributeType(type) }
+            , ComponentCount{ GetComponentCountFromAttributeType(type) }
+            , IsNormalized{ false }
+            , Offset{ 0 }
         {}
     };
 
@@ -51,7 +51,10 @@ namespace Zero
     class VertexBufferLayout
     {
       public:
-        VertexBufferLayout(const std::initializer_list<VertexAttribute>& attributes) : m_Attributes{attributes} { CalculateOffsetsAndStride(); }
+        VertexBufferLayout(const std::initializer_list<VertexAttribute>& attributes) : m_Attributes{ attributes }
+        {
+            CalculateOffsetsAndStride();
+        }
 
       public:
         inline uint32_t GetStride() const { return m_Stride; }
@@ -74,6 +77,9 @@ namespace Zero
     //======================================================================================
     //  Vertex Buffer
     //======================================================================================
+
+    using VertexBufferData = std::vector<float>;
+
     class VertexBuffer
     {
       public:
@@ -86,12 +92,15 @@ namespace Zero
         virtual const VertexBufferLayout& GetLayout() const = 0;
 
       public:
-        static Ref<VertexBuffer> Create(float* vertices, size_t size);
+        static Ref<VertexBuffer> Create(const VertexBufferData& vertices);
     };
 
     //======================================================================================
     //  Index Buffer
     //======================================================================================
+
+    using IndexBufferData = std::vector<uint32_t>;
+
     class IndexBuffer
     {
       public:
@@ -103,6 +112,6 @@ namespace Zero
         virtual uint32_t GetCount() const = 0;
 
       public:
-        static Ref<IndexBuffer> Create(uint32_t* indices, size_t size);
+        static Ref<IndexBuffer> Create(const IndexBufferData& indices);
     };
 }

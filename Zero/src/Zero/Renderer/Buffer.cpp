@@ -24,7 +24,7 @@ namespace Zero
     //======================================================================================
     //  Vertex Buffer
     //======================================================================================
-    Ref<VertexBuffer> VertexBuffer::Create(float* vertices, size_t size)
+    Ref<VertexBuffer> VertexBuffer::Create(const VertexBufferData& vertices)
     {
         switch (Renderer::GetAPI())
         {
@@ -35,7 +35,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+                return std::make_shared<OpenGLVertexBuffer>(vertices);
             }
             case RendererAPI::API::Vulkan:
             {
@@ -53,7 +53,7 @@ namespace Zero
     //======================================================================================
     //  Index Buffer
     //======================================================================================
-    Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, size_t size)
+    Ref<IndexBuffer> IndexBuffer::Create(const IndexBufferData& indices)
     {
         switch (Renderer::GetAPI())
         {
@@ -64,7 +64,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLIndexBuffer>(indices, static_cast<uint32_t>(size));
+                return std::make_shared<OpenGLIndexBuffer>(indices);
             }
             case RendererAPI::API::Vulkan:
             {

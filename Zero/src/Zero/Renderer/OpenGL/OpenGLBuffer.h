@@ -10,7 +10,7 @@ namespace Zero
     class OpenGLVertexBuffer : public VertexBuffer
     {
       public:
-        OpenGLVertexBuffer(float* vertices, size_t size);
+        OpenGLVertexBuffer(const VertexBufferData& vertices);
         virtual ~OpenGLVertexBuffer();
 
       public:
@@ -30,7 +30,7 @@ namespace Zero
     class OpenGLIndexBuffer : public IndexBuffer
     {
       public:
-        OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
+        OpenGLIndexBuffer(const IndexBufferData& indices);
         virtual ~OpenGLIndexBuffer();
 
       public:
@@ -40,6 +40,6 @@ namespace Zero
 
       private:
         uint32_t m_Id{};
-        uint32_t m_Count;
+        size_t m_Count;
     };
 }
