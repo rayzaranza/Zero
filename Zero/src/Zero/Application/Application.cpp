@@ -8,9 +8,14 @@
 
 namespace Zero
 {
-    Application* Application::s_Instance{nullptr};
+    Application* Application::s_Instance{ nullptr };
 
-    Application::Application() : m_Window{std::make_unique<Window>()}, m_UILayer{new UILayer()}, m_IsRunning{true}, m_LastFrameTime{0.0f}
+    Application::Application()
+        : m_Window{ std::make_unique<Window>() }
+        , m_UILayer{ new UILayer() }
+        , m_IsRunning{ true }
+        , m_IsMinimized{ false }
+        , m_LastFrameTime{ 0.0f }
     {
         ZERO_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;
@@ -26,10 +31,11 @@ namespace Zero
 
     void Application::OnEvent(Event& event)
     {
-        EventDispatcher dispatcher{event};
+        EventDispatcher dispatcher{ event };
         dispatcher.Dispatch<WindowClosedEvent>(ZERO_BIND_FUNCTION(Application::OnWindowClosed));
+        dispatcher.Dispatch<WindowResizedEvent>(ZERO_BIND_FUNCTION(Application::OnWindowResized));
 
-        for (std::vector<Layer*>::iterator iterator{m_LayerStack.end()}; iterator != m_LayerStack.begin();)
+        for (std::vector<Layer*>::iterator iterator{ m_LayerStack.end() }; iterator != m_LayerStack.begin();)
         {
             (*--iterator)->OnEvent(event);
             if (event.IsHandled())
@@ -56,17 +62,18 @@ namespace Zero
         while (m_IsRunning)
         {
             float time = static_cast<float>(glfwGetTime());
-            DeltaTime deltaTime{time - m_LastFrameTime};
+            DeltaTime deltaTime{ time - m_LastFrameTime };
             m_LastFrameTime = time;
 
-            for (Layer* layer : m_LayerStack)
-                layer->OnUpdate(deltaTime);
-
-            m_UILayer->Begin();
+            if (!m_IsMinimized)
             {
                 for (Layer* layer : m_LayerStack)
-                    layer->OnUIRender();
+                    layer->OnUpdate(deltaTime);
             }
+
+            m_UILayer->Begin();
+            for (Layer* layer : m_LayerStack)
+                layer->OnUIRender();
             m_UILayer->End();
 
             m_Window->OnUpdate();
@@ -77,5 +84,22 @@ namespace Zero
     {
         m_IsRunning = false;
         return true;
+    }
+
+    bool Application::OnWindowResized(WindowResizedEvent& event)
+    {
+        const int width{ event.GetWidth() };
+        const int height{ event.GetHeight() };
+
+        if (width == 0 || height == 0)
+        {
+            m_IsMinimized = true;
+            return false;
+        }
+
+        Renderer::OnWindowResized(width, height);
+
+        m_IsMinimized = false;
+        return false;
     }
 }

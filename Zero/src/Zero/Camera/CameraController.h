@@ -17,6 +17,8 @@ namespace Zero
         void OnEvent(Event& event);
         inline const OrthographicCamera& GetCamera() const { return m_Camera; }
         inline OrthographicCamera& GetCamera() { return m_Camera; }
+        inline float GetZoomLevel() const { return m_ZoomLevel; }
+        inline void SetZoomLevel(float zoomLevel) { m_ZoomLevel = zoomLevel; }
 
       private:
         bool OnMouseScrolled(MouseScrolledEvent& event);

@@ -60,6 +60,7 @@ namespace Zero
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
             data.Width = width;
             data.Height = height;
+
             WindowResizedEvent event{ width, height };
             data.EventCallback(event);
         });

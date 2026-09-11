@@ -4,11 +4,16 @@
 
 namespace Zero
 {
-    Renderer::SceneData* Renderer::s_SceneData{new Renderer::SceneData()};
+    Renderer::SceneData* Renderer::s_SceneData{ new Renderer::SceneData() };
 
     void Renderer::Initialize()
     {
         RenderCommand::Initialize();
+    }
+
+    void Renderer::OnWindowResized(uint32_t width, uint32_t height)
+    {
+        RenderCommand::SetViewport(0, 0, width, height);
     }
 
     void Renderer::BeginScene(OrthographicCamera& camera)

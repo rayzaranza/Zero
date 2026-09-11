@@ -33,7 +33,7 @@ namespace Zero
     class Window
     {
       public:
-        Window(const std::string& title = "ZERO", int width = 1920, int height = 1080);
+        Window(const std::string& title = "ZERO", int width = 1280, int height = 720);
         ~Window();
 
       public:

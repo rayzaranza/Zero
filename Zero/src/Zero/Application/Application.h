@@ -29,10 +29,12 @@ namespace Zero
 
       private:
         bool OnWindowClosed(WindowClosedEvent& event);
+        bool OnWindowResized(WindowResizedEvent& event);
 
       private:
         Scope<Window> m_Window;
         bool m_IsRunning;
+        bool m_IsMinimized;
         LayerStack m_LayerStack;
         UILayer* m_UILayer;
         float m_LastFrameTime;
