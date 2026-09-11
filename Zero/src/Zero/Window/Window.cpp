@@ -9,9 +9,9 @@
 
 namespace Zero
 {
-    static void SendWindowToSecondMonitor(GLFWwindow* window, int width, int height);
+    static void SendWindowToSecondMonitor(GLFWwindow* window, I32 width, I32 height);
 
-    Window::Window(const std::string& title, int width, int height) : m_Data{ title, width, height }
+    Window::Window(const String& title, I32 width, I32 height) : m_Data{ title, width, height }
     {
         Initialize();
     }
@@ -25,11 +25,11 @@ namespace Zero
     {
         ZR_CORE_LOG("Window created: {} ({}, {})", m_Data.Title, m_Data.Width, m_Data.Height);
 
-        int glfwInitSuccess{ glfwInit() };
+        I32 glfwInitSuccess{ glfwInit() };
         ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
         glfwSetErrorCallback(errorCallback);
 
-        int monitorCount;
+        I32 monitorCount;
         GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
 
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -56,7 +56,7 @@ namespace Zero
 
     void Window::setCallbacks()
     {
-        glfwSetWindowSizeCallback(m_WindowHandle, [](GLFWwindow* window, int width, int height) {
+        glfwSetWindowSizeCallback(m_WindowHandle, [](GLFWwindow* window, I32 width, I32 height) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
             data.Width = width;
             data.Height = height;
@@ -71,19 +71,19 @@ namespace Zero
             data.EventCallback(event);
         });
 
-        glfwSetScrollCallback(m_WindowHandle, [](GLFWwindow* window, double xOffset, double yOffset) {
+        glfwSetScrollCallback(m_WindowHandle, [](GLFWwindow* window, F64 xOffset, F64 yOffset) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
-            MouseScrolledEvent event{ static_cast<float>(xOffset), static_cast<float>(yOffset) };
+            MouseScrolledEvent event{ static_cast<F32>(xOffset), static_cast<F32>(yOffset) };
             data.EventCallback(event);
         });
 
-        glfwSetCursorPosCallback(m_WindowHandle, [](GLFWwindow* window, double x, double y) {
+        glfwSetCursorPosCallback(m_WindowHandle, [](GLFWwindow* window, F64 x, F64 y) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
-            MouseMovedEvent event{ static_cast<float>(x), static_cast<float>(y) };
+            MouseMovedEvent event{ static_cast<F32>(x), static_cast<F32>(y) };
             data.EventCallback(event);
         });
 
-        glfwSetKeyCallback(m_WindowHandle, [](GLFWwindow* window, int key, int scanCode, int action, int mods) {
+        glfwSetKeyCallback(m_WindowHandle, [](GLFWwindow* window, I32 key, I32 scanCode, I32 action, I32 mods) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
             switch (action)
             {
@@ -108,13 +108,13 @@ namespace Zero
             }
         });
 
-        glfwSetCharCallback(m_WindowHandle, [](GLFWwindow* window, unsigned int keyCode) {
+        glfwSetCharCallback(m_WindowHandle, [](GLFWwindow* window, U32 keyCode) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
-            KeyTypedEvent event{ static_cast<int>(keyCode) };
+            KeyTypedEvent event{ static_cast<I32>(keyCode) };
             data.EventCallback(event);
         });
 
-        glfwSetMouseButtonCallback(m_WindowHandle, [](GLFWwindow* window, int button, int action, int mods) {
+        glfwSetMouseButtonCallback(m_WindowHandle, [](GLFWwindow* window, I32 button, I32 action, I32 mods) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
             switch (action)
             {
@@ -140,13 +140,13 @@ namespace Zero
         m_RendererContext->SwapBuffers();
     }
 
-    void SendWindowToSecondMonitor(GLFWwindow* window, int width, int height)
+    void SendWindowToSecondMonitor(GLFWwindow* window, I32 width, I32 height)
     {
-        int monitorCount;
+        I32 monitorCount;
         GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
         GLFWmonitor* monitor{ monitors[1] };
         const GLFWvidmode* mode{ glfwGetVideoMode(monitor) };
-        int x, y;
+        I32 x, y;
         glfwGetMonitorPos(monitor, &x, &y);
         glfwSetWindowPos(window, x + (mode->width - width) / 2, y + (mode->height - height) / 2 - 24);
 

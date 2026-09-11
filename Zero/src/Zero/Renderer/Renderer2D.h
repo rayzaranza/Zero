@@ -16,17 +16,17 @@ namespace Zero
 
       public:
         static void DrawQuad(
-            const glm::vec2& position = glm::vec2{ 0.0f },
-            const glm::vec2& size = glm::vec2{ 1.0f },
-            float rotation = 0.0f,
-            const glm::vec4& color = glm::vec4{ 1.0f }
+            const Vector2& position = Vector2{ 0.0f },
+            const Vector2& size = Vector2{ 1.0f },
+            F32 rotation = 0.0f,
+            const Color& color = Color{ 1.0f }
         );
 
         static void DrawQuad(
-            const glm::vec3& position = glm::vec3{ 0.0f },
-            const glm::vec2& size = glm::vec2{ 1.0f },
-            float rotation = 0.0f,
-            const glm::vec4& color = glm::vec4{ 1.0f }
+            const Vector3& position = Vector3{ 0.0f },
+            const Vector2& size = Vector2{ 1.0f },
+            F32 rotation = 0.0f,
+            const Color& color = Color{ 1.0f }
         );
     };
 }

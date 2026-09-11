@@ -8,9 +8,9 @@ namespace Zero
     {
       public:
         virtual void Initialize() override;
-        virtual void SetClearColor(const glm::vec4& color) const override;
+        virtual void SetClearColor(const Color& color) const override;
         virtual void Clear() const override;
-        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
-        virtual void SetViewport(int x, int y, uint32_t width, uint32_t height) override;
+        virtual void DrawIndexed(const VertexArrayRef& vertexArray) override;
+        virtual void SetViewport(I32 x, I32 y, U32 width, U32 height) override;
     };
 }

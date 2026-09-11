@@ -11,16 +11,16 @@ namespace Zero
     //=====================================================================================================================================
     //  Event Callback Function
     //=====================================================================================================================================
-    using EventCallback = std::function<void(Event&)>;
+    using EventCallback = Function<void(Event&)>;
 
     //=====================================================================================================================================
     //  Window Data
     //=====================================================================================================================================
     struct WindowData
     {
-        std::string Title{};
-        int Width{};
-        int Height{};
+        String Title{};
+        I32 Width{};
+        I32 Height{};
         EventCallback EventCallback{};
     };
 
@@ -30,15 +30,15 @@ namespace Zero
     class Window
     {
       public:
-        Window(const std::string& title = "ZERO", int width = 1280, int height = 720);
+        Window(const String& title = "ZERO", I32 width = 1280, I32 height = 720);
         ~Window();
 
       public:
-        inline int GetWidth() const { return m_Data.Width; }
-        inline int GetHeight() const { return m_Data.Height; }
+        inline I32 GetWidth() const { return m_Data.Width; }
+        inline I32 GetHeight() const { return m_Data.Height; }
         inline GLFWwindow* GetWindowHandle() const { return m_WindowHandle; }
         inline void SetEventCallback(const EventCallback& callback) { m_Data.EventCallback = callback; }
-        inline float GetAspectRatio() const { return static_cast<float>(m_Data.Width) / static_cast<float>(m_Data.Height); }
+        inline F32 GetAspectRatio() const { return static_cast<F32>(m_Data.Width) / static_cast<F32>(m_Data.Height); }
 
       public:
         void OnUpdate();
@@ -52,6 +52,6 @@ namespace Zero
 
       private:
         void setCallbacks();
-        inline static void errorCallback(int error, const char* description) { ZR_CORE_ERROR("GLFW Error ({}): {}", error, description); }
+        inline static void errorCallback(I32 error, const char* description) { ZR_CORE_ERROR("GLFW Error ({}): {}", error, description); }
     };
 }

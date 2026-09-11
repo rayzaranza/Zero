@@ -17,7 +17,7 @@ namespace Zero
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
 
-        ImGuiIO& io{ImGui::GetIO()};
+        ImGuiIO& io{ ImGui::GetIO() };
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
@@ -25,15 +25,15 @@ namespace Zero
 
         ImGui::StyleColorsDark();
 
-        ImGuiStyle& style{ImGui::GetStyle()};
+        ImGuiStyle& style{ ImGui::GetStyle() };
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
             style.WindowRounding = 0.0f;
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
 
-        Application& application{Application::Get()};
-        GLFWwindow* window{application.GetWindow().GetWindowHandle()};
+        Application& application{ Application::Get() };
+        GLFWwindow* window{ application.GetWindow().GetWindowHandle() };
 
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init("#version 460");
@@ -48,7 +48,7 @@ namespace Zero
 
     void UILayer::OnUIRender()
     {
-        static bool show{true};
+        static bool show{ true };
         ImGui::ShowDemoWindow(&show);
     }
 
@@ -61,16 +61,16 @@ namespace Zero
 
     void UILayer::End()
     {
-        ImGuiIO& io{ImGui::GetIO()};
-        Window& window{Application::Get().GetWindow()};
-        io.DisplaySize = ImVec2{static_cast<float>(window.GetWidth()), static_cast<float>(window.GetHeight())};
+        ImGuiIO& io{ ImGui::GetIO() };
+        Window& window{ Application::Get().GetWindow() };
+        io.DisplaySize = ImVec2{ static_cast<F32>(window.GetWidth()), static_cast<F32>(window.GetHeight()) };
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         {
-            GLFWwindow* backupCurrentContext{glfwGetCurrentContext()};
+            GLFWwindow* backupCurrentContext{ glfwGetCurrentContext() };
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
             glfwMakeContextCurrent(backupCurrentContext);

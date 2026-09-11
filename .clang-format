@@ -57,7 +57,7 @@ PackArguments:
 
 AllowAllArgumentsOnNextLine: true
 AllowShortFunctionsOnASingleLine: InlineOnly
-BreakTemplateDeclarations: Yes
+BreakTemplateDeclarations: Leave
 
 IncludeBlocks: Regroup
 IncludeCategories:
