@@ -34,6 +34,7 @@
 #include "Zero/Renderer/Buffer.h"
 #include "Zero/Renderer/RenderCommand.h"
 #include "Zero/Renderer/Renderer.h"
+#include "Zero/Renderer/Renderer2D.h"
 #include "Zero/Renderer/RendererAPI.h"
 #include "Zero/Renderer/Shader.h"
 #include "Zero/Renderer/Texture.h"

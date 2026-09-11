@@ -63,6 +63,8 @@ add_library(Zero STATIC
     #=====================================================================================================================================
     "${ZR_SRC}/Renderer/Renderer.h"
     "${ZR_SRC}/Renderer/Renderer.cpp"
+    "${ZR_SRC}/Renderer/Renderer2D.h"
+    "${ZR_SRC}/Renderer/Renderer2D.cpp"
     "${ZR_SRC}/Renderer/RenderCommand.h"
     "${ZR_SRC}/Renderer/RenderCommand.cpp"
 

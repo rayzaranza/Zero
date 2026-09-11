@@ -1,5 +1,7 @@
 #include "Zero/Renderer/Renderer.h"
 
+#include "Zero/Renderer/Renderer2D.h"
+
 namespace Zero
 {
     Renderer::SceneData* Renderer::s_SceneData{ new Renderer::SceneData() };
@@ -7,6 +9,7 @@ namespace Zero
     void Renderer::Initialize()
     {
         RenderCommand::Initialize();
+        Renderer2D::Initialize();
     }
 
     void Renderer::OnWindowResized(uint32_t width, uint32_t height)
