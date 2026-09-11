@@ -23,10 +23,10 @@ namespace Zero
 
     void Window::Initialize()
     {
-        ZERO_CORE_LOG("Window created: {} ({}, {})", m_Data.Title, m_Data.Width, m_Data.Height);
+        ZR_CORE_LOG("Window created: {} ({}, {})", m_Data.Title, m_Data.Width, m_Data.Height);
 
         int glfwInitSuccess{ glfwInit() };
-        ZERO_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
+        ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
         glfwSetErrorCallback(errorCallback);
 
         int monitorCount;
@@ -150,7 +150,7 @@ namespace Zero
         glfwGetMonitorPos(monitor, &x, &y);
         glfwSetWindowPos(window, x + (mode->width - width) / 2, y + (mode->height - height) / 2 - 24);
 
-        ZERO_CORE_LOG("width: {}, height: {}", width, height);
-        ZERO_CORE_LOG("mode width: {}, mode height: {}", mode->width, mode->height);
+        ZR_CORE_LOG("width: {}, height: {}", width, height);
+        ZR_CORE_LOG("mode width: {}, mode height: {}", mode->width, mode->height);
     }
 }

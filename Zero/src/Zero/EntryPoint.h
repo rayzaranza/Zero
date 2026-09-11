@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef ZERO_PLATFORM_WINDOWS
+#ifdef ZR_PLATFORM_WINDOWS
 
 extern Zero::Application* Zero::CreateApplication();
 

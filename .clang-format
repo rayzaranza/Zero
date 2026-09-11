@@ -3,7 +3,7 @@ Language: Cpp
 Standard: c++23
 IndentWidth: 4
 UseTab: Never
-IndentPPDirectives: BeforeHash
+IndentPPDirectives: Leave
 SpaceBeforeCpp11BracedList: false
 Cpp11BracedListStyle: Block
 SpaceBeforeAssignmentOperators: true

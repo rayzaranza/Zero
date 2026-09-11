@@ -11,7 +11,7 @@ namespace Zero
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
@@ -20,12 +20,12 @@ namespace Zero
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }
@@ -37,7 +37,7 @@ namespace Zero
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
@@ -46,12 +46,12 @@ namespace Zero
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }
@@ -59,7 +59,7 @@ namespace Zero
 
     void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
     {
-        ZERO_CORE_ASSERT(!Exists(name), "Shader already exists");
+        ZR_CORE_ASSERT(!Exists(name), "Shader already exists");
         m_Shaders[name] = shader;
     }
 
@@ -85,7 +85,7 @@ namespace Zero
 
     Ref<Shader> ShaderLibrary::Get(const std::string& name)
     {
-        ZERO_CORE_ASSERT(Exists(name), "Shader not found");
+        ZR_CORE_ASSERT(Exists(name), "Shader not found");
         return m_Shaders[name];
     }
 

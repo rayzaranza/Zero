@@ -32,7 +32,7 @@ namespace Zero
     {
         const GLuint program{ glCreateProgram() };
 
-        ZERO_CORE_ASSERT(shaderSources.size() <= MAX_SHADERS_SUPPORTED, "Only 2 shaders are supported");
+        ZR_CORE_ASSERT(shaderSources.size() <= MAX_SHADERS_SUPPORTED, "Only 2 shaders are supported");
 
         std::array<GLenum, MAX_SHADERS_SUPPORTED> shaderIds{};
         int shaderIdIndex{ 0 };
@@ -45,7 +45,7 @@ namespace Zero
             glCompileShader(shader);
 
             const bool isCompiled{ CheckShaderErrors(shader) };
-            ZERO_CORE_ASSERT(isCompiled, "Shader compilation error");
+            ZR_CORE_ASSERT(isCompiled, "Shader compilation error");
 
             if (!isCompiled)
                 continue;
@@ -56,7 +56,7 @@ namespace Zero
 
         glLinkProgram(program);
         const bool isLinked{ CheckProgramErrors(program, shaderIds) };
-        ZERO_CORE_ASSERT(isLinked, "Shader linking error");
+        ZR_CORE_ASSERT(isLinked, "Shader linking error");
 
         if (!isLinked)
             return;
@@ -77,7 +77,7 @@ namespace Zero
 
         if (!inputStream.is_open())
         {
-            ZERO_CORE_ERROR("Could not open file: {0}", filePath);
+            ZR_CORE_ERROR("Could not open file: {0}", filePath);
             return result;
         }
 
@@ -101,7 +101,7 @@ namespace Zero
         {
             const size_t endOfLine{ source.find_first_of("\r\n", position) };
 
-            ZERO_CORE_ASSERT(endOfLine != std::string::npos, "Syntax error");
+            ZR_CORE_ASSERT(endOfLine != std::string::npos, "Syntax error");
 
             if (endOfLine == std::string::npos)
                 break;
@@ -111,7 +111,7 @@ namespace Zero
             const std::string typeName{ source.substr(typeNameBegin, endOfLine - typeNameBegin) };
             const GLenum type{ StringToShaderType(typeName) };
 
-            ZERO_CORE_ASSERT(type, "Invalid Shader Type");
+            ZR_CORE_ASSERT(type, "Invalid Shader Type");
 
             const size_t nextLinePosition{ source.find_first_of("\r\n", endOfLine) };
             position = source.find(typeToken, nextLinePosition);
@@ -183,7 +183,7 @@ namespace Zero
         if (type == "geometry")
             return GL_GEOMETRY_SHADER;
 
-        ZERO_CORE_ASSERT(false, "Unknow shader type");
+        ZR_CORE_ASSERT(false, "Unknow shader type");
         return 0;
     }
 
@@ -208,7 +208,7 @@ namespace Zero
             glGetShaderInfoLog(shader, maxLength, &maxLength, infoLog.data());
             glDeleteShader(shader);
 
-            ZERO_CORE_ERROR("{0}", infoLog.data());
+            ZR_CORE_ERROR("{0}", infoLog.data());
             return false;
         }
 
@@ -231,7 +231,7 @@ namespace Zero
 
             glDeleteProgram(program);
 
-            ZERO_CORE_ERROR("{0}", infoLog.data());
+            ZR_CORE_ERROR("{0}", infoLog.data());
             return false;
         }
 

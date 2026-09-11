@@ -34,8 +34,8 @@ namespace Zero
     void OrthographicCameraController::OnEvent(Event& event)
     {
         EventDispatcher dispatcher{ event };
-        dispatcher.Dispatch<MouseScrolledEvent>(ZERO_BIND_FUNCTION(OrthographicCameraController::OnMouseScrolled));
-        dispatcher.Dispatch<WindowResizedEvent>(ZERO_BIND_FUNCTION(OrthographicCameraController::OnWindowResizedEvent));
+        dispatcher.Dispatch<MouseScrolledEvent>(ZR_BIND_FUNCTION(OrthographicCameraController::OnMouseScrolled));
+        dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(OrthographicCameraController::OnWindowResizedEvent));
     }
 
     bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)

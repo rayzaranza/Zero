@@ -7,7 +7,7 @@ namespace Zero
 {
     OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) : m_WindowHandle{ windowHandle }
     {
-        ZERO_CORE_ASSERT(windowHandle, "Window handle is null");
+        ZR_CORE_ASSERT(windowHandle, "Window handle is null");
     }
 
     OpenGLContext::~OpenGLContext()
@@ -17,7 +17,12 @@ namespace Zero
     {
         glfwMakeContextCurrent(m_WindowHandle);
         int gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
-        ZERO_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
+        ZR_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
+
+        ZR_CORE_INFO("OpenGL Context:");
+        ZR_CORE_INFO("  Vendor: {0}", (char*)glGetString(GL_VENDOR));
+        ZR_CORE_INFO("  Renderer: {0}", (char*)glGetString(GL_RENDERER));
+        ZR_CORE_INFO("  Version: {0}", (char*)glGetString(GL_VERSION));
 
         ZERO_CORE_INFO("OpenGL Context:");
         ZERO_CORE_INFO("  Vendor: {0}", (char*)glGetString(GL_VENDOR));

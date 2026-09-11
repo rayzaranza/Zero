@@ -12,7 +12,7 @@ namespace Zero
         int width, height, channels;
         stbi_set_flip_vertically_on_load(1);
         stbi_uc* image{ stbi_load(path.c_str(), &width, &height, &channels, 0) };
-        ZERO_CORE_ASSERT(image, "Failed to load image");
+        ZR_CORE_ASSERT(image, "Failed to load image");
 
         m_Width = width;
         m_Height = height;
@@ -34,7 +34,7 @@ namespace Zero
                 dataFormat = GL_RGB;
                 break;
             }
-            default: ZERO_CORE_ASSERT(false, "Texture2D image format not supported"); break;
+            default: ZR_CORE_ASSERT(false, "Texture2D image format not supported"); break;
         }
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_Id);

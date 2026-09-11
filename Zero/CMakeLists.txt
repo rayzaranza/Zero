@@ -5,126 +5,126 @@ find_package(spdlog CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(Stb REQUIRED)
 
-set(ZERO_SRC "src/Zero")
+set(ZR_SRC "src/Zero")
 
 add_library(Zero STATIC
     #=====================================================================================================================================
     #  Core
     #=====================================================================================================================================
-    "${ZERO_SRC}/Zero.h"
-    "${ZERO_SRC}/Core.h"
-    "${ZERO_SRC}/EntryPoint.h"
+    "${ZR_SRC}/Zero.h"
+    "${ZR_SRC}/Core.h"
+    "${ZR_SRC}/EntryPoint.h"
 
     #=====================================================================================================================================
     #  Application 
     #=====================================================================================================================================
-    "${ZERO_SRC}/Application/Application.h"
-	"${ZERO_SRC}/Application/Application.cpp"
+    "${ZR_SRC}/Application/Application.h"
+	"${ZR_SRC}/Application/Application.cpp"
 
     #=====================================================================================================================================
     #  Logger
     #=====================================================================================================================================
-    "${ZERO_SRC}/Logger/Logger.h"
-    "${ZERO_SRC}/Logger/Logger.cpp"
+    "${ZR_SRC}/Logger/Logger.h"
+    "${ZR_SRC}/Logger/Logger.cpp"
 
     #=====================================================================================================================================
     #  Input
     #=====================================================================================================================================
-    "${ZERO_SRC}/Input/Input.h"
-    "${ZERO_SRC}/Input/Input.cpp"
-    "${ZERO_SRC}/Input/KeyCode.h"
-    "${ZERO_SRC}/Input/MouseButtonCode.h"
+    "${ZR_SRC}/Input/Input.h"
+    "${ZR_SRC}/Input/Input.cpp"
+    "${ZR_SRC}/Input/KeyCode.h"
+    "${ZR_SRC}/Input/MouseButtonCode.h"
 
     #=====================================================================================================================================
     #  Window
     #=====================================================================================================================================
-    "${ZERO_SRC}/Window/Window.h"
-    "${ZERO_SRC}/Window/Window.cpp"
+    "${ZR_SRC}/Window/Window.h"
+    "${ZR_SRC}/Window/Window.cpp"
 
     #=====================================================================================================================================
     #  Event
     #=====================================================================================================================================
-    "${ZERO_SRC}/Event/Event.h"
-    "${ZERO_SRC}/Event/KeyEvent.h"
-    "${ZERO_SRC}/Event/MouseEvent.h"
-    "${ZERO_SRC}/Event/ApplicationEvent.h"
+    "${ZR_SRC}/Event/Event.h"
+    "${ZR_SRC}/Event/KeyEvent.h"
+    "${ZR_SRC}/Event/MouseEvent.h"
+    "${ZR_SRC}/Event/ApplicationEvent.h"
 
     #=====================================================================================================================================
     #  Layer
     #=====================================================================================================================================
-    "${ZERO_SRC}/Layer/Layer.h"
-    "${ZERO_SRC}/Layer/LayerStack.h"
-    "${ZERO_SRC}/Layer/LayerStack.cpp"
-    "${ZERO_SRC}/UI/UILayer.h"
-    "${ZERO_SRC}/UI/UILayer.cpp"
+    "${ZR_SRC}/Layer/Layer.h"
+    "${ZR_SRC}/Layer/LayerStack.h"
+    "${ZR_SRC}/Layer/LayerStack.cpp"
+    "${ZR_SRC}/UI/UILayer.h"
+    "${ZR_SRC}/UI/UILayer.cpp"
 
     #=====================================================================================================================================
     #  Renderer
     #=====================================================================================================================================
-    "${ZERO_SRC}/Renderer/Renderer.h"
-    "${ZERO_SRC}/Renderer/Renderer.cpp"
-    "${ZERO_SRC}/Renderer/RenderCommand.h"
-    "${ZERO_SRC}/Renderer/RenderCommand.cpp"
+    "${ZR_SRC}/Renderer/Renderer.h"
+    "${ZR_SRC}/Renderer/Renderer.cpp"
+    "${ZR_SRC}/Renderer/RenderCommand.h"
+    "${ZR_SRC}/Renderer/RenderCommand.cpp"
 
     #=====================================================================================================================================
     #  Renderer API
     #=====================================================================================================================================
-    "${ZERO_SRC}/Renderer/RendererAPI.h"
-    "${ZERO_SRC}/Renderer/RendererAPI.cpp"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLRendererAPI.h"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLRendererAPI.cpp"
+    "${ZR_SRC}/Renderer/RendererAPI.h"
+    "${ZR_SRC}/Renderer/RendererAPI.cpp"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLRendererAPI.h"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLRendererAPI.cpp"
 
     #=====================================================================================================================================
     #  Renderer Context
     #=====================================================================================================================================
-    "${ZERO_SRC}/Renderer/RendererContext.h"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLContext.h"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLContext.cpp"
+    "${ZR_SRC}/Renderer/RendererContext.h"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLContext.h"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLContext.cpp"
 
     #=====================================================================================================================================
     #  Buffer
     #=====================================================================================================================================
-    "${ZERO_SRC}/Renderer/Buffer.h"
-    "${ZERO_SRC}/Renderer/Buffer.cpp"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLBuffer.h"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLBuffer.cpp"
+    "${ZR_SRC}/Renderer/Buffer.h"
+    "${ZR_SRC}/Renderer/Buffer.cpp"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLBuffer.h"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLBuffer.cpp"
 
     #=====================================================================================================================================
     #  Vertex Array
     #=====================================================================================================================================
-    "${ZERO_SRC}/Renderer/VertexArray.h"
-    "${ZERO_SRC}/Renderer/VertexArray.cpp"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLVertexArray.h"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLVertexArray.cpp"
+    "${ZR_SRC}/Renderer/VertexArray.h"
+    "${ZR_SRC}/Renderer/VertexArray.cpp"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLVertexArray.h"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLVertexArray.cpp"
 
     #=====================================================================================================================================
     #  Shader
     #=====================================================================================================================================
-    "${ZERO_SRC}/Renderer/Shader.h"
-    "${ZERO_SRC}/Renderer/Shader.cpp"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLShader.h"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLShader.cpp"
+    "${ZR_SRC}/Renderer/Shader.h"
+    "${ZR_SRC}/Renderer/Shader.cpp"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLShader.h"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLShader.cpp"
 
     #=====================================================================================================================================
     #  Texture
     #=====================================================================================================================================
-    "${ZERO_SRC}/Renderer/Texture.h"
-    "${ZERO_SRC}/Renderer/Texture.cpp"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLTexture.h"
-    "${ZERO_SRC}/Renderer/OpenGL/OpenGLTexture.cpp"
+    "${ZR_SRC}/Renderer/Texture.h"
+    "${ZR_SRC}/Renderer/Texture.cpp"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLTexture.h"
+    "${ZR_SRC}/Renderer/OpenGL/OpenGLTexture.cpp"
 
     #=====================================================================================================================================
     #  Camera
     #=====================================================================================================================================
-    "${ZERO_SRC}/Camera/Camera.h"
-    "${ZERO_SRC}/Camera/Camera.cpp"
-    "${ZERO_SRC}/Camera/CameraController.h"
-    "${ZERO_SRC}/Camera/CameraController.cpp"
+    "${ZR_SRC}/Camera/Camera.h"
+    "${ZR_SRC}/Camera/Camera.cpp"
+    "${ZR_SRC}/Camera/CameraController.h"
+    "${ZR_SRC}/Camera/CameraController.cpp"
 
     #=====================================================================================================================================
     #  Time
     #=====================================================================================================================================
-    "${ZERO_SRC}/Time/DeltaTime.h"
+    "${ZR_SRC}/Time/DeltaTime.h"
 )
 
 target_include_directories(Zero
@@ -134,7 +134,7 @@ target_include_directories(Zero
 
 target_precompile_headers(Zero
     PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/${ZERO_SRC}/zrpch.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h"
 )
 
 target_link_libraries(Zero
@@ -149,13 +149,7 @@ target_link_libraries(Zero
 
 target_compile_definitions(Zero
     PUBLIC
-        ZERO_PLATFORM_WINDOWS
-)
-
-target_compile_definitions(Zero
-    PUBLIC
-        ZERO_ENABLE_ASSERTS
+        ZR_ENABLE_ASSERTS
         GLFW_INCLUDE_NONE
-        ZERO_BUILD_DLL
         IMGUI_IMPL_OPENGL_LOADER_GLAD
 )

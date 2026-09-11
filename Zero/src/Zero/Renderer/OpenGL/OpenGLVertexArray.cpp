@@ -29,7 +29,7 @@ namespace Zero
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
         const VertexBufferLayout& layout{vertexBuffer->GetLayout()};
-        ZERO_CORE_ASSERT(layout.GetAttributes().size(), "Vertex Buffer has no layout");
+        ZR_CORE_ASSERT(layout.GetAttributes().size(), "Vertex Buffer has no layout");
 
         glBindVertexArray(m_Id);
         vertexBuffer->Bind();
@@ -88,7 +88,7 @@ namespace Zero
 
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Vertex Attribute Type");
+                ZR_CORE_ASSERT(false, "Unknown Vertex Attribute Type");
                 return 0;
             }
         }

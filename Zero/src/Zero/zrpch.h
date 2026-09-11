@@ -11,6 +11,6 @@
 #include <unordered_map>
 #include <vector>
 
-#ifdef ZERO_PLATFORM_WINDOWS
+#ifdef ZR_PLATFORM_WINDOWS
     #include <Windows.h>
 #endif

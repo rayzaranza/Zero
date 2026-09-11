@@ -30,7 +30,7 @@ namespace Zero
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
@@ -39,12 +39,12 @@ namespace Zero
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }
@@ -59,7 +59,7 @@ namespace Zero
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
@@ -68,12 +68,12 @@ namespace Zero
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }
@@ -100,7 +100,7 @@ namespace Zero
 
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
+                ZR_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
                 return 0;
             }
         }
@@ -124,7 +124,7 @@ namespace Zero
 
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
+                ZR_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
                 return 0;
             }
         }
