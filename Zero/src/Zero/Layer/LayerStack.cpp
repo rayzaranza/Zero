@@ -23,7 +23,7 @@ namespace Zero
 
     void LayerStack::PopLayer(Layer* layer)
     {
-        std::vector<Layer*>::iterator layerIterator{std::find(m_Layers.begin(), m_Layers.end(), layer)};
+        std::vector<Layer*>::iterator layerIterator{ std::find(m_Layers.begin(), m_Layers.end(), layer) };
         if (layerIterator != m_Layers.end())
         {
             m_Layers.erase(layerIterator);
@@ -33,7 +33,7 @@ namespace Zero
 
     void LayerStack::PopOverlay(Layer* overlay)
     {
-        std::vector<Layer*>::iterator layerIterator{std::find(m_Layers.begin(), m_Layers.end(), overlay)};
+        std::vector<Layer*>::iterator layerIterator{ std::find(m_Layers.begin(), m_Layers.end(), overlay) };
         if (layerIterator != m_Layers.end())
         {
             m_Layers.erase(layerIterator);

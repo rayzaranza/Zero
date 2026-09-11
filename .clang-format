@@ -1,20 +1,27 @@
 BasedOnStyle: Microsoft
 Language: Cpp
 Standard: c++23
+
 IndentWidth: 4
 UseTab: Never
-IndentPPDirectives: Leave
-SpaceBeforeCpp11BracedList: false
+
+ColumnLimit: 144
+
 Cpp11BracedListStyle: Block
+
+SpaceBeforeCpp11BracedList: false
 SpaceBeforeAssignmentOperators: true
+IndentAccessModifiers: false
+FixNamespaceComments: false
+IndentCaseLabels: true
+
+IndentPPDirectives: Leave
 BreakConstructorInitializers: BeforeComma
 NamespaceIndentation: All
 PointerAlignment: Left
 ReferenceAlignment: Left
-IndentAccessModifiers: false
-FixNamespaceComments: false
-IndentCaseLabels: true
 BreakBeforeBraces: Custom
+
 BraceWrapping:
     AfterNamespace: true
     AfterClass: true
@@ -29,20 +36,29 @@ BraceWrapping:
     SplitEmptyFunction: false 
     SplitEmptyRecord: false
     AfterCaseLabel: true
+
 SeparateDefinitionBlocks: Leave
 PackConstructorInitializers: CurrentLine
 AllowShortCaseLabelsOnASingleLine: true
+
 AlignConsecutiveShortCaseStatements:
-  Enabled: true
-  AcrossEmptyLines: true
-  AcrossComments: true
-  AlignCaseColons: false
+    Enabled: true
+    AcrossEmptyLines: true
+    AcrossComments: true
+    AlignCaseColons: false
+
 AlignAfterOpenBracket: BlockIndent
-BinPackArguments: false
+
+PackParameters:
+    BinPack: OnePerLine
+
+PackArguments:
+    BinPack: OnePerLine
+
 AllowAllArgumentsOnNextLine: true
 AllowShortFunctionsOnASingleLine: InlineOnly
 BreakTemplateDeclarations: Yes
-ColumnLimit: 144
+
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex:    '^<[[:alnum:]_]+\.h>$'
@@ -53,5 +69,6 @@ IncludeCategories:
     Priority: 3
   - Regex:    '.*'
     Priority: 4
+
 SortIncludes: true
 AlignTrailingComments: true

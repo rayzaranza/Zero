@@ -7,7 +7,6 @@ namespace Zero
     //======================================================================================
     //  Event Type
     //======================================================================================
-
     enum class EventType
     {
         None,
@@ -31,7 +30,6 @@ namespace Zero
     //======================================================================================
     //  Event Category
     //======================================================================================
-
     enum EventCategory
     {
         None,
@@ -45,7 +43,6 @@ namespace Zero
     //======================================================================================
     //  Event
     //======================================================================================
-
     class Event
     {
       public:
@@ -60,7 +57,7 @@ namespace Zero
         inline bool IsInCategory(EventCategory category) const { return GetCategoryFlags() & category; };
 
       protected:
-        bool m_IsHandled{false};
+        bool m_IsHandled{ false };
         friend class EventDispatcher;
     };
 
@@ -72,11 +69,10 @@ namespace Zero
     //======================================================================================
     //  Event Dispatcher
     //======================================================================================
-
     class EventDispatcher
     {
       public:
-        EventDispatcher(Event& event) : m_Event{event} {}
+        EventDispatcher(Event& event) : m_Event{ event } {}
 
       public:
         template <typename T>

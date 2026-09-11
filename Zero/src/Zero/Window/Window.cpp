@@ -9,7 +9,7 @@
 
 namespace Zero
 {
-    static void sendWindowToSecondMonitor(GLFWwindow* window, int width, int height);
+    static void SendWindowToSecondMonitor(GLFWwindow* window, int width, int height);
 
     Window::Window(const std::string& title, int width, int height) : m_Data{ title, width, height }
     {
@@ -45,7 +45,7 @@ namespace Zero
         glfwSwapInterval(1);
 
         setCallbacks();
-        sendWindowToSecondMonitor(m_WindowHandle, m_Data.Width, m_Data.Height);
+        SendWindowToSecondMonitor(m_WindowHandle, m_Data.Width, m_Data.Height);
     }
 
     void Window::Destroy()
@@ -140,7 +140,7 @@ namespace Zero
         m_RendererContext->SwapBuffers();
     }
 
-    void sendWindowToSecondMonitor(GLFWwindow* window, int width, int height)
+    void SendWindowToSecondMonitor(GLFWwindow* window, int width, int height)
     {
         int monitorCount;
         GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);

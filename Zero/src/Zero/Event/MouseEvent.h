@@ -6,13 +6,13 @@
 
 namespace Zero
 {
-    //======================================================================================
+    //=====================================================================================================================================
     //  Mouse Moved Event
-    //======================================================================================
+    //=====================================================================================================================================
     class MouseMovedEvent : public Event
     {
       public:
-        MouseMovedEvent(float x, float y) : m_MouseX{x}, m_MouseY{y} {}
+        MouseMovedEvent(float x, float y) : m_MouseX{ x }, m_MouseY{ y } {}
 
       public:
         inline float GetX() const { return m_MouseX; }
@@ -33,13 +33,13 @@ namespace Zero
         float m_MouseY;
     };
 
-    //======================================================================================
+    //=====================================================================================================================================
     //  Mouse Scrolled Event
-    //======================================================================================
+    //=====================================================================================================================================
     class MouseScrolledEvent : public Event
     {
       public:
-        MouseScrolledEvent(float xOffset, float yOffset) : m_XOffset{xOffset}, m_YOffset{yOffset} {}
+        MouseScrolledEvent(float xOffset, float yOffset) : m_XOffset{ xOffset }, m_YOffset{ yOffset } {}
 
       public:
         inline float GetXOffset() const { return m_XOffset; }
@@ -60,9 +60,9 @@ namespace Zero
         float m_YOffset;
     };
 
-    //======================================================================================
+    //=====================================================================================================================================
     //  Mouse Button Event
-    //======================================================================================
+    //=====================================================================================================================================
     class MouseButtonEvent : public Event
     {
       public:
@@ -70,19 +70,19 @@ namespace Zero
         inline virtual int GetCategoryFlags() const override { return EventCategoryMouseButton | EventCategoryInput; };
 
       protected:
-        MouseButtonEvent(int button) : m_Button{button} {}
+        MouseButtonEvent(int button) : m_Button{ button } {}
 
       protected:
         int m_Button;
     };
 
-    //======================================================================================
+    //=====================================================================================================================================
     //  Mouse Button Pressed Event
-    //======================================================================================
+    //=====================================================================================================================================
     class MouseButtonPressedEvent : public MouseButtonEvent
     {
       public:
-        MouseButtonPressedEvent(int button) : MouseButtonEvent{button} {}
+        MouseButtonPressedEvent(int button) : MouseButtonEvent{ button } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::MouseButtonPressed; }
@@ -96,13 +96,13 @@ namespace Zero
         }
     };
 
-    //======================================================================================
+    //=====================================================================================================================================
     //  Mouse Button Released Event
-    //======================================================================================
+    //=====================================================================================================================================
     class MouseButtonReleasedEvent : public MouseButtonEvent
     {
       public:
-        MouseButtonReleasedEvent(int button) : MouseButtonEvent{button} {}
+        MouseButtonReleasedEvent(int button) : MouseButtonEvent{ button } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::MouseButtonReleased; }

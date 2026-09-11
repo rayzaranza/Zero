@@ -15,7 +15,18 @@ namespace Zero
         static void EndScene();
 
       public:
-        static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);
-        static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
+        static void DrawQuad(
+            const glm::vec2& position = glm::vec2{ 0.0f },
+            const glm::vec2& size = glm::vec2{ 1.0f },
+            float rotation = 0.0f,
+            const glm::vec4& color = glm::vec4{ 1.0f }
+        );
+
+        static void DrawQuad(
+            const glm::vec3& position = glm::vec3{ 0.0f },
+            const glm::vec2& size = glm::vec2{ 1.0f },
+            float rotation = 0.0f,
+            const glm::vec4& color = glm::vec4{ 1.0f }
+        );
     };
 }

@@ -8,11 +8,10 @@ namespace Zero
     //======================================================================================
     //  Window Resized Event
     //======================================================================================
-
     class WindowResizedEvent : public Event
     {
       public:
-        WindowResizedEvent(int width, int height) : m_Width{width}, m_Height{height} {}
+        WindowResizedEvent(int width, int height) : m_Width{ width }, m_Height{ height } {}
 
       public:
         inline int GetWidth() const { return m_Width; }
@@ -36,7 +35,6 @@ namespace Zero
     //======================================================================================
     //  Window Closed Event
     //======================================================================================
-
     class WindowClosedEvent : public Event
     {
       public:
@@ -53,7 +51,6 @@ namespace Zero
     //======================================================================================
     //  Application Ticked Event
     //======================================================================================
-
     class ApplicationTickedEvent : public Event
     {
       public:
@@ -70,7 +67,6 @@ namespace Zero
     //======================================================================================
     //  Application Updated Event
     //======================================================================================
-
     class ApplicationUpdatedEvent : public Event
     {
       public:
@@ -87,7 +83,6 @@ namespace Zero
     //======================================================================================
     //  Application Rendered Event
     //======================================================================================
-
     class ApplicationRenderedEvent : public Event
     {
       public:

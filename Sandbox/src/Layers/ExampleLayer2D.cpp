@@ -41,7 +41,7 @@ void ExampleLayer2D::OnUpdate(Zero::DeltaTime deltaTime)
     Zero::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
     Zero::RenderCommand::Clear();
 
-    Zero::Renderer2D::DrawQuad(glm::vec2{ 0.0f }, glm::vec2{ 1.0f }, m_QuadColor);
+    Zero::Renderer2D::DrawQuad(glm::vec2{ 0.0f }, glm::vec2{ 1.0f }, 0.0f, m_QuadColor);
     Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
     Zero::Renderer2D::EndScene();

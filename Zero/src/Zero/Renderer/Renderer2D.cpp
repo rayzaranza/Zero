@@ -45,7 +45,7 @@ namespace Zero
     void Renderer2D::EndScene()
     {}
 
-    void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
+    void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
     {
         glm::mat4 modelMatrix{ 1.0f };
         modelMatrix = glm::translate(modelMatrix, position);
@@ -59,8 +59,8 @@ namespace Zero
         RenderCommand::DrawIndexed(s_Data->VertexArray);
     }
 
-    void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
+    void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
     {
-        Renderer2D::DrawQuad(glm::vec3{ position, 0.0f }, size, color);
+        Renderer2D::DrawQuad(glm::vec3{ position, 0.0f }, size, rotation, color);
     }
 }
