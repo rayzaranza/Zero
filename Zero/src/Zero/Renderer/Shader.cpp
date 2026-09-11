@@ -93,4 +93,9 @@ namespace Zero
     {
         return m_Shaders.find(name) != m_Shaders.end();
     }
+
+    Ref<ShaderLibrary> ShaderLibrary::Create()
+    {
+        return std::make_shared<ShaderLibrary>();
+    }
 }

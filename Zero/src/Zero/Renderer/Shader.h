@@ -26,12 +26,19 @@ namespace Zero
     class ShaderLibrary
     {
       public:
+        ShaderLibrary() = default;
+        ~ShaderLibrary() = default;
+
+      public:
         void Add(const Ref<Shader>& shader);
         void Add(const std::string& name, const Ref<Shader>& shader);
         Ref<Shader> Load(const std::string& filePath);
         Ref<Shader> Load(const std::string& name, const std::string& filePath);
         Ref<Shader> Get(const std::string& name);
         bool Exists(const std::string& name) const;
+
+      public:
+        static Ref<ShaderLibrary> Create();
 
       private:
         std::unordered_map<std::string, Ref<Shader>> m_Shaders{};
