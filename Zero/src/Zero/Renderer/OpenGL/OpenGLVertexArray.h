@@ -19,8 +19,8 @@ namespace Zero
         virtual const Ref<IndexBuffer>& GetIndexBuffer() const override;
 
       private:
-        uint32_t m_Id {};
-        std::vector<Ref<VertexBuffer>> m_VertexBuffers {};
-        Ref<IndexBuffer> m_IndexBuffer {};
+        uint32_t m_Id{};
+        std::vector<Ref<VertexBuffer>> m_VertexBuffers{};
+        Ref<IndexBuffer> m_IndexBuffer{};
     };
 }
