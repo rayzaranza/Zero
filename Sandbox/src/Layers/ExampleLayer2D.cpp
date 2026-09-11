@@ -2,8 +2,6 @@
 
 #include <imgui.h>
 
-#include <Zero/Renderer/OpenGL/OpenGLShader.h>
-
 #include <glm/gtc/type_ptr.hpp>
 
 ExampleLayer2D::ExampleLayer2D()
@@ -20,11 +18,14 @@ void ExampleLayer2D::OnAttach()
 {
     m_QuadVertexArray = Zero::VertexArray::Create();
 
-    auto quadVertexBuffer{ Zero::VertexBuffer::Create({ -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, -0.5f, 0.5f, 0.0f }) };
+    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{
+        Zero::VertexBuffer::Create({ -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, -0.5f, 0.5f, 0.0f })
+    };
+
+    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
+
     quadVertexBuffer->SetLayout({ { Zero::AttributeType::Float3, "a_Position" } });
     m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
-
-    auto quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
     m_ShaderLibrary->Load("D:/Zero/Sandbox/assets/shaders/Flat.glsl");
@@ -42,9 +43,9 @@ void ExampleLayer2D::OnUpdate(Zero::DeltaTime deltaTime)
 
     Zero::Renderer::BeginScene(m_CameraController.GetCamera());
 
-    auto flatShader{ std::dynamic_pointer_cast<Zero::OpenGLShader>(m_ShaderLibrary->Get("Flat")) };
+    Zero::Ref<Zero::Shader> flatShader{ m_ShaderLibrary->Get("Flat") };
     flatShader->Bind();
-    flatShader->SetUniform("u_Color", m_QuadColor);
+    flatShader->SetFloat4("u_Color", m_QuadColor);
     Zero::Renderer::Submit(m_QuadVertexArray, flatShader);
 
     Zero::Renderer::EndScene();

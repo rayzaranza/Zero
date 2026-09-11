@@ -2,8 +2,6 @@
 
 #include <imgui.h>
 
-#include <Zero/Renderer/OpenGL/OpenGLShader.h>
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -23,29 +21,28 @@ ExampleLayer::ExampleLayer()
         { Zero::AttributeType::Float2, "a_UV" },
     };
 
-    const Zero::VertexBufferData quadVertices{
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, //
-        0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, //
-        0.5f,  0.5f,  0.0f, 1.0f, 1.0f, //
-        -0.5f, 0.5f,  0.0f, 0.0f, 1.0f, //
-    };
-
-    const Zero::IndexBufferData quadIndices{ 0, 1, 2, 2, 3, 0 };
-
     m_QuadVertexArray = Zero::VertexArray::Create();
 
-    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{ Zero::VertexBuffer::Create(quadVertices) };
+    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{ Zero::VertexBuffer::Create(
+        {
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, //
+            0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, //
+            0.5f,  0.5f,  0.0f, 1.0f, 1.0f, //
+            -0.5f, 0.5f,  0.0f, 0.0f, 1.0f, //
+        }
+    ) };
+
     quadVertexBuffer->SetLayout(layout);
     m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
 
-    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create(quadIndices) };
+    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
     m_ShaderLibrary->Load("D:/Zero/Sandbox/assets/shaders/Texture.glsl");
 
-    Zero::Ref<Zero::OpenGLShader> textureShader{ std::dynamic_pointer_cast<Zero::OpenGLShader>(m_ShaderLibrary->Get("Texture")) };
+    auto textureShader{ m_ShaderLibrary->Get("Texture") };
     textureShader->Bind();
-    textureShader->SetUniform("u_Texture", 0);
+    textureShader->SetInt("u_Texture", 0);
 }
 
 void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
@@ -56,8 +53,8 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
     Zero::RenderCommand::Clear();
     Zero::Renderer::BeginScene(m_CameraController.GetCamera());
     {
-        std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->Bind();
-        std::dynamic_pointer_cast<Zero::OpenGLShader>(m_QuadShader)->SetUniform("u_Color", m_QuadColor);
+        m_QuadShader->Bind();
+        m_QuadShader->SetFloat4("u_Color", m_QuadColor);
 
         for (int y{ 0 }; y < 20; ++y)
         {
@@ -70,7 +67,7 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
         }
 
         m_Texture->Bind();
-        Zero::Ref<Zero::OpenGLShader> textureShader{ std::dynamic_pointer_cast<Zero::OpenGLShader>(m_ShaderLibrary->Get("Texture")) };
+        auto textureShader{ m_ShaderLibrary->Get("Texture") };
         Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
 
         m_TransparentTexture->Bind();
