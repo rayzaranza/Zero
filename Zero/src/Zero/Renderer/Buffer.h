@@ -5,7 +5,7 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute Type
     //======================================================================================
-    enum class AttributeType : uint8_t
+    enum class AttributeType : uint16_t
     {
         Float,
         Float2,
