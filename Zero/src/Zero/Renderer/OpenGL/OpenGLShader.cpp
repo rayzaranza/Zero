@@ -16,10 +16,7 @@ namespace Zero
 
     OpenGLShader::OpenGLShader(const String& name, const String& vertexSource, const String& fragmentSource) : m_Name{ name }
     {
-        const Map<U32, String> shaderSources{
-            { GL_VERTEX_SHADER, vertexSource },
-            { GL_FRAGMENT_SHADER, fragmentSource },
-        };
+        const Map<U32, String> shaderSources{ { GL_VERTEX_SHADER, vertexSource }, { GL_FRAGMENT_SHADER, fragmentSource } };
         OpenGLShader::Compile(shaderSources);
     }
 
@@ -136,6 +133,12 @@ namespace Zero
         glUseProgram(0);
     }
 
+    void OpenGLShader::SetColor(const String& name, const Color& color) const
+    {
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform4f(location, color.r, color.g, color.b, color.a);
+    }
+
     void OpenGLShader::SetMatrix4(const String& name, const Matrix4& matrix) const
     {
         const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
@@ -160,13 +163,13 @@ namespace Zero
         glUniform2f(location, vector.x, vector.y);
     }
 
-    void OpenGLShader::SetFloat(const String& name, F32 value) const
+    void OpenGLShader::SetFloat(const String& name, const F32 value) const
     {
         const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform1f(location, value);
     }
 
-    void OpenGLShader::SetInt(const String& name, I32 value) const
+    void OpenGLShader::SetInt(const String& name, const I32 value) const
     {
         const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform1i(location, value);

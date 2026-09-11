@@ -40,14 +40,15 @@ namespace Zero
 
     Boolean OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)
     {
-        m_ZoomLevel = std::fmax(m_ZoomLevel - event.GetYOffset() * m_ZoomSpeed, 0.25f);
+        m_ZoomLevel = std::fmax(m_ZoomLevel - event.GetOffset().y * m_ZoomSpeed, 0.25f);
         m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
         return false;
     }
 
     Boolean OrthographicCameraController::OnWindowResizedEvent(WindowResizedEvent& event)
     {
-        m_AspectRatio = static_cast<F32>(event.GetWidth()) / static_cast<F32>(event.GetHeight());
+        const Vector2i size{ event.GetSize() };
+        m_AspectRatio = static_cast<F32>(size.x) / static_cast<F32>(size.y);
         m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
         return false;
     }

@@ -23,8 +23,8 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute
     //======================================================================================
-    I32 GetSizeFromAttributeType(AttributeType type);
-    U32 GetComponentCountFromAttributeType(AttributeType type);
+    I32 GetSizeFromAttributeType(const AttributeType type);
+    U32 GetComponentCountFromAttributeType(const AttributeType type);
 
     struct VertexAttribute
     {
@@ -35,7 +35,7 @@ namespace Zero
         Boolean IsNormalized;
         U32 Offset;
 
-        VertexAttribute(AttributeType type, const String& name)
+        VertexAttribute(const AttributeType type, const String& name)
             : Name{ name }
             , Type{ type }
             , Size{ GetSizeFromAttributeType(type) }

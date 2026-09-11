@@ -13,7 +13,7 @@ namespace Zero
     {
       public:
         static void Initialize();
-        static void OnWindowResized(U32 width, U32 height);
+        static void OnWindowResized(const Vector2u& size);
         static void BeginScene(OrthographicCamera& camera);
         static void Submit(const VertexArrayRef& vertexArray, const ShaderRef& shader, const Matrix4& transform = Matrix4{ 1.0f });
         static void EndScene();

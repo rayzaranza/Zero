@@ -82,7 +82,7 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute Type Helpers
     //======================================================================================
-    I32 GetSizeFromAttributeType(AttributeType type)
+    I32 GetSizeFromAttributeType(const AttributeType type)
     {
         switch (type)
         {
@@ -106,7 +106,7 @@ namespace Zero
         }
     }
 
-    U32 GetComponentCountFromAttributeType(AttributeType type)
+    U32 GetComponentCountFromAttributeType(const AttributeType type)
     {
         switch (type)
         {

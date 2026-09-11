@@ -19,12 +19,13 @@ namespace Zero
         inline virtual const String& GetName() const override { return m_Name; }
 
       public:
+        virtual void SetColor(const String& name, const Color& color) const override;
         virtual void SetMatrix4(const String& name, const Matrix4& matrix) const override;
         virtual void SetVector4(const String& name, const Vector4& vector) const override;
         virtual void SetVector3(const String& name, const Vector3& vector) const override;
         virtual void SetFloat2(const String& name, const Vector2& vector) const override;
-        virtual void SetFloat(const String& name, F32 value) const override;
-        virtual void SetInt(const String& name, I32 value) const override;
+        virtual void SetFloat(const String& name, const F32 value) const override;
+        virtual void SetInt(const String& name, const I32 value) const override;
 
       private:
         String ReadFile(const String& filePath);

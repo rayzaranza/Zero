@@ -24,7 +24,7 @@ namespace Zero
         glBindVertexArray(0);
     }
 
-    static U32 GetOpenGLTypeFromAttributeType(AttributeType type);
+    static U32 GetOpenGLTypeFromAttributeType(const AttributeType type);
 
     void OpenGLVertexArray::AddVertexBuffer(const VertexBufferRef& vertexBuffer)
     {
@@ -69,7 +69,7 @@ namespace Zero
         return m_IndexBuffer;
     }
 
-    U32 GetOpenGLTypeFromAttributeType(AttributeType type)
+    U32 GetOpenGLTypeFromAttributeType(const AttributeType type)
     {
         switch (type)
         {

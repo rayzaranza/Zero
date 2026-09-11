@@ -12,11 +12,10 @@ namespace Zero
     class MouseMovedEvent : public Event
     {
       public:
-        MouseMovedEvent(F32 x, F32 y) : m_MouseX{ x }, m_MouseY{ y } {}
+        MouseMovedEvent(const Vector2& position) : m_Position{ position } {}
 
       public:
-        inline F32 GetX() const { return m_MouseX; }
-        inline F32 GetY() const { return m_MouseY; }
+        inline const Vector2& GetPosition() const { return m_Position; }
         inline static EventType GetStaticType() { return EventType::MouseMoved; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "MouseMoved"; }
@@ -24,13 +23,12 @@ namespace Zero
         inline virtual String ToString() const override
         {
             std::stringstream stream{};
-            stream << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
+            stream << "MouseMovedEvent: " << m_Position.x << ", " << m_Position.y;
             return stream.str();
         }
 
       private:
-        F32 m_MouseX;
-        F32 m_MouseY;
+        Vector2 m_Position;
     };
 
     //=====================================================================================================================================
@@ -39,11 +37,10 @@ namespace Zero
     class MouseScrolledEvent : public Event
     {
       public:
-        MouseScrolledEvent(F32 xOffset, F32 yOffset) : m_XOffset{ xOffset }, m_YOffset{ yOffset } {}
+        MouseScrolledEvent(const Vector2& offset) : m_Offset{ offset } {}
 
       public:
-        inline F32 GetXOffset() const { return m_XOffset; }
-        inline F32 GetYOffset() const { return m_YOffset; }
+        inline const Vector2& GetOffset() const { return m_Offset; }
         inline static EventType GetStaticType() { return EventType::MouseScrolled; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "MouseScrolled"; }
@@ -51,13 +48,12 @@ namespace Zero
         inline String ToString() const override
         {
             std::stringstream stream{};
-            stream << "MouseScrolledEvent: " << m_XOffset << ", " << m_YOffset;
+            stream << "MouseScrolledEvent: " << m_Offset.x << ", " << m_Offset.y;
             return stream.str();
         }
 
       private:
-        F32 m_XOffset;
-        F32 m_YOffset;
+        Vector2 m_Offset;
     };
 
     //=====================================================================================================================================
@@ -70,7 +66,7 @@ namespace Zero
         inline virtual I32 GetCategoryFlags() const override { return EventCategoryMouseButton | EventCategoryInput; };
 
       protected:
-        MouseButtonEvent(I32 button) : m_Button{ button } {}
+        MouseButtonEvent(const I32 button) : m_Button{ button } {}
 
       protected:
         I32 m_Button;
@@ -82,7 +78,7 @@ namespace Zero
     class MouseButtonPressedEvent : public MouseButtonEvent
     {
       public:
-        MouseButtonPressedEvent(I32 button) : MouseButtonEvent{ button } {}
+        MouseButtonPressedEvent(const I32 button) : MouseButtonEvent{ button } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::MouseButtonPressed; }
@@ -102,7 +98,7 @@ namespace Zero
     class MouseButtonReleasedEvent : public MouseButtonEvent
     {
       public:
-        MouseButtonReleasedEvent(I32 button) : MouseButtonEvent{ button } {}
+        MouseButtonReleasedEvent(const I32 button) : MouseButtonEvent{ button } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::MouseButtonReleased; }

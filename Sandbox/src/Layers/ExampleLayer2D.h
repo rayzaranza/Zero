@@ -11,13 +11,13 @@ class ExampleLayer2D : public Zero::Layer
   public:
     virtual void OnAttach() override;
     virtual void OnDetach() override;
-    virtual void OnUpdate(Zero::DeltaTime deltaTime) override;
+    virtual void OnUpdate(const Zero::DeltaTime deltaTime) override;
     virtual void OnUIRender() override;
     virtual void OnEvent(Zero::Event& event) override;
 
   private:
     Zero::ShaderLibraryRef m_ShaderLibrary;
-    Zero::VertexArrayRef m_QuadVertexArray{};
+    Zero::VertexArrayRef m_QuadVertexArray;
     Zero::OrthographicCameraController m_CameraController;
-    Zero::Color m_QuadColor{ 0.2f, 0.1f, 0.4f, 1.0f };
+    Zero::Color m_QuadColor;
 };

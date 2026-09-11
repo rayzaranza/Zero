@@ -8,13 +8,12 @@ class ExampleLayer : public Zero::Layer
     ExampleLayer();
 
   public:
-    virtual void OnUpdate(Zero::DeltaTime deltaTime) override;
+    virtual void OnUpdate(const Zero::DeltaTime deltaTime) override;
     virtual void OnEvent(Zero::Event& event) override;
     virtual void OnUIRender() override;
 
   private:
     Zero::ShaderLibraryRef m_ShaderLibrary;
-
     Zero::ShaderRef m_QuadShader;
     Zero::VertexArrayRef m_QuadVertexArray;
     Zero::Texture2DRef m_Texture;

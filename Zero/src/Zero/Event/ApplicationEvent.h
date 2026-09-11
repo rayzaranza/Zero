@@ -11,11 +11,10 @@ namespace Zero
     class WindowResizedEvent : public Event
     {
       public:
-        WindowResizedEvent(I32 width, I32 height) : m_Width{ width }, m_Height{ height } {}
+        WindowResizedEvent(const Vector2i& size) : m_Size{ size } {}
 
       public:
-        inline I32 GetWidth() const { return m_Width; }
-        inline I32 GetHeight() const { return m_Height; }
+        inline const Vector2i& GetSize() const { return m_Size; }
         inline static EventType GetStaticType() { return EventType::WindowResized; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "WindowResized"; }
@@ -23,13 +22,12 @@ namespace Zero
         inline virtual String ToString() const override
         {
             std::stringstream stream{};
-            stream << GetName() << ": " << m_Width << ", " << m_Height;
+            stream << GetName() << ": " << m_Size.x << ", " << m_Size.y;
             return stream.str();
         }
 
       private:
-        I32 m_Width;
-        I32 m_Height;
+        Vector2i m_Size;
     };
 
     //======================================================================================

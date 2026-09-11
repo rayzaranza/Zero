@@ -61,7 +61,7 @@ namespace Zero
     {
         while (m_IsRunning)
         {
-            F32 time = static_cast<F32>(glfwGetTime());
+            const Seconds time = static_cast<Seconds>(glfwGetTime());
             DeltaTime deltaTime{ time - m_LastFrameTime };
             m_LastFrameTime = time;
 
@@ -88,16 +88,15 @@ namespace Zero
 
     Boolean Application::OnWindowResized(WindowResizedEvent& event)
     {
-        const I32 width{ event.GetWidth() };
-        const I32 height{ event.GetHeight() };
+        const Vector2i size{ event.GetSize() };
 
-        if (width == 0 || height == 0)
+        if (size.x == 0 || size.y == 0)
         {
             m_IsMinimized = true;
             return false;
         }
 
-        Renderer::OnWindowResized(width, height);
+        Renderer::OnWindowResized(size);
 
         m_IsMinimized = false;
         return false;

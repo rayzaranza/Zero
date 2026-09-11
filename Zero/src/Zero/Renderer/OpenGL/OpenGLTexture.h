@@ -11,14 +11,12 @@ namespace Zero
         virtual ~OpenGLTexture2D();
 
       public:
-        virtual void Bind(U32 slot = 0) const override;
-        inline virtual U32 GetWidth() const override { return m_Width; }
-        inline virtual U32 GetHeight() const override { return m_Height; }
+        virtual void Bind(const U32 slot = 0) const override;
+        inline virtual const Vector2u& GetSize() const override { return m_Size; }
 
       private:
         RendererID m_Id;
         String m_Path;
-        U32 m_Width;
-        U32 m_Height;
+        Vector2u m_Size;
     };
 }

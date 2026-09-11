@@ -103,13 +103,24 @@ namespace Zero
     template <typename T> using WeakRef = std::weak_ptr<T>;
 
     //===========================================================================================
-    using Vector3 = glm::vec3;
     using Vector2 = glm::vec2;
+    using Vector3 = glm::vec3;
     using Vector4 = glm::vec4;
-    using Matrix4 = glm::mat4;
     using Matrix3 = glm::mat3;
+    using Matrix4 = glm::mat4;
     using Quaternion = glm::quat;
     using Color = glm::vec4;
+    using Vector2i = glm::ivec2;
+    using Vector3i = glm::ivec3;
+    using Vector4i = glm::ivec4;
+    using Vector2u = glm::uvec2;
+    using Vector3u = glm::uvec3;
+    using Vector4u = glm::uvec4;
+
+    //===========================================================================================
+    using Degrees = F32;
+    using Seconds = F32;
+    using Milliseconds = F32;
 
     //===========================================================================================
     using RendererID = U32;
@@ -119,11 +130,5 @@ namespace Zero
     constexpr Ref<T> CreateRef(TArgs&&... args)
     {
         return std::make_shared<T>(std::forward<TArgs>(args)...);
-    }
-
-    template <typename T, typename... TArgs>
-    constexpr Ref<T> CreateScope(TArgs&&... args)
-    {
-        return std::make_unique<T>(std::forward<TArgs>(args)...);
     }
 }

@@ -15,15 +15,14 @@ ExampleLayer::ExampleLayer()
     , m_QuadShader{ Zero::Shader::Create("D:/Zero/Sandbox/assets/shaders/Flat.glsl") }
     , m_ShaderLibrary{ std::make_shared<Zero::ShaderLibrary>() }
     , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
+    , m_QuadVertexArray{ Zero::VertexArray::Create() }
 {
-    Zero::VertexBufferLayout layout{
+    const Zero::VertexBufferLayout layout{
         { Zero::AttributeType::Vector3, "a_Position" },
         { Zero::AttributeType::Vector2, "a_UV" },
     };
 
-    m_QuadVertexArray = Zero::VertexArray::Create();
-
-    Zero::VertexBufferRef quadVertexBuffer{ Zero::VertexBuffer::Create(
+    const Zero::VertexBufferRef quadVertexBuffer{ Zero::VertexBuffer::Create(
         {
             -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, //
             0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, //
@@ -35,17 +34,17 @@ ExampleLayer::ExampleLayer()
     quadVertexBuffer->SetLayout(layout);
     m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
 
-    Zero::IndexBufferRef quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
+    const Zero::IndexBufferRef quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
     m_ShaderLibrary->Load("D:/Zero/Sandbox/assets/shaders/Texture.glsl");
 
-    Zero::ShaderRef textureShader{ m_ShaderLibrary->Get("Texture") };
+    const Zero::ShaderRef textureShader{ m_ShaderLibrary->Get("Texture") };
     textureShader->Bind();
     textureShader->SetInt("u_Texture", 0);
 }
 
-void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
+void ExampleLayer::OnUpdate(const Zero::DeltaTime deltaTime)
 {
     m_CameraController.OnUpdate(deltaTime);
 
@@ -67,7 +66,7 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
         }
 
         m_Texture->Bind();
-        auto textureShader{ m_ShaderLibrary->Get("Texture") };
+        const Zero::ShaderRef& textureShader{ m_ShaderLibrary->Get("Texture") };
         Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
 
         m_TransparentTexture->Bind();

@@ -19,8 +19,7 @@ namespace Zero
     struct WindowData
     {
         String Title{};
-        I32 Width{};
-        I32 Height{};
+        Vector2i Size{};
         EventCallback EventCallback{};
     };
 
@@ -30,15 +29,14 @@ namespace Zero
     class Window
     {
       public:
-        Window(const String& title = "ZERO", I32 width = 1280, I32 height = 720);
+        Window(const String& title = "ZERO", const Vector2i& size = Vector2i{ 1280, 720 });
         ~Window();
 
       public:
-        inline I32 GetWidth() const { return m_Data.Width; }
-        inline I32 GetHeight() const { return m_Data.Height; }
+        inline const Vector2i& GetSize() const { return m_Data.Size; }
         inline GLFWwindow* GetWindowHandle() const { return m_WindowHandle; }
         inline void SetEventCallback(const EventCallback& callback) { m_Data.EventCallback = callback; }
-        inline F32 GetAspectRatio() const { return static_cast<F32>(m_Data.Width) / static_cast<F32>(m_Data.Height); }
+        inline F32 GetAspectRatio() const { return static_cast<F32>(m_Data.Size.x) / static_cast<F32>(m_Data.Size.y); }
 
       public:
         void OnUpdate();
@@ -52,6 +50,6 @@ namespace Zero
 
       private:
         void setCallbacks();
-        inline static void errorCallback(I32 error, const char* description) { ZR_CORE_ERROR("GLFW Error ({}): {}", error, description); }
+        inline static void errorCallback(const I32 error, const char* description) { ZR_CORE_ERROR("GLFW Error ({}): {}", error, description); }
     };
 }

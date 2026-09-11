@@ -32,11 +32,11 @@ namespace Zero
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
 
-        Application& application{ Application::Get() };
+        const Application& application{ Application::Get() };
         GLFWwindow* window{ application.GetWindow().GetWindowHandle() };
 
         ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL3_Init("#version 460");
+        ImGui_ImplOpenGL3_Init("#version 460 core");
     }
 
     void UILayer::OnDetach()
@@ -62,8 +62,8 @@ namespace Zero
     void UILayer::End()
     {
         ImGuiIO& io{ ImGui::GetIO() };
-        Window& window{ Application::Get().GetWindow() };
-        io.DisplaySize = ImVec2{ static_cast<F32>(window.GetWidth()), static_cast<F32>(window.GetHeight()) };
+        const Vector2& windowSize{ static_cast<Vector2>(Application::Get().GetWindow().GetSize()) };
+        io.DisplaySize = ImVec2{ windowSize.x, windowSize.y };
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

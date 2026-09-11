@@ -25,8 +25,8 @@ namespace Zero
         glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetLength(), GL_UNSIGNED_INT, nullptr);
     }
 
-    void OpenGLRendererAPI::SetViewport(I32 x, I32 y, U32 width, U32 height)
+    void OpenGLRendererAPI::SetViewport(const Vector2i& position, const Vector2u& size)
     {
-        glViewport(x, y, width, height);
+        glViewport(position.x, position.y, size.x, size.y);
     }
 }

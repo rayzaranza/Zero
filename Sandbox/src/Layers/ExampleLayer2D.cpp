@@ -33,7 +33,7 @@ void ExampleLayer2D::OnAttach()
 void ExampleLayer2D::OnDetach()
 {}
 
-void ExampleLayer2D::OnUpdate(Zero::DeltaTime deltaTime)
+void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 {
     m_CameraController.OnUpdate(deltaTime);
 

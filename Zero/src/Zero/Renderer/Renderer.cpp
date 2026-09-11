@@ -12,9 +12,9 @@ namespace Zero
         Renderer2D::Initialize();
     }
 
-    void Renderer::OnWindowResized(U32 width, U32 height)
+    void Renderer::OnWindowResized(const Vector2u& size)
     {
-        RenderCommand::SetViewport(0, 0, width, height);
+        RenderCommand::SetViewport({ 0, 0 }, size);
     }
 
     void Renderer::BeginScene(OrthographicCamera& camera)

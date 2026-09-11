@@ -16,7 +16,7 @@ namespace Zero
     void OpenGLContext::Initialize()
     {
         glfwMakeContextCurrent(m_WindowHandle);
-        I32 gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
+        const I32 gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
         ZR_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
 
         ZR_CORE_INFO("OpenGL Context:");

@@ -11,6 +11,6 @@ namespace Zero
         virtual void SetClearColor(const Color& color) const override;
         virtual void Clear() const override;
         virtual void DrawIndexed(const VertexArrayRef& vertexArray) override;
-        virtual void SetViewport(I32 x, I32 y, U32 width, U32 height) override;
+        virtual void SetViewport(const Vector2i& position, const Vector2u& size) override;
     };
 }

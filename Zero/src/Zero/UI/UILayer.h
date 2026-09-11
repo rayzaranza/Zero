@@ -20,6 +20,6 @@ namespace Zero
         void End();
 
       private:
-        F32 m_Time;
+        Seconds m_Time;
     };
 }

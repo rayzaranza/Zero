@@ -40,12 +40,13 @@ namespace Zero
     {
         s_Data->Shader->Bind();
         s_Data->Shader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
+        s_Data->Shader->SetMatrix4("u_ModelMatrix", Zero::Matrix4{ 1.0f });
     }
 
     void Renderer2D::EndScene()
     {}
 
-    void Renderer2D::DrawQuad(const Vector3& position, const Vector2& size, F32 rotation, const Color& color)
+    void Renderer2D::DrawQuad(const Vector3& position, const Vector2& size, const Degrees rotation, const Color& color)
     {
         Matrix4 modelMatrix{ 1.0f };
         modelMatrix = glm::translate(modelMatrix, position);
@@ -54,13 +55,13 @@ namespace Zero
 
         s_Data->Shader->Bind();
         s_Data->Shader->SetMatrix4("u_ModelMatrix", modelMatrix);
-        s_Data->Shader->SetVector4("u_Color", color);
+        s_Data->Shader->SetColor("u_Color", color);
 
         s_Data->VertexArray->Bind();
         RenderCommand::DrawIndexed(s_Data->VertexArray);
     }
 
-    void Renderer2D::DrawQuad(const Vector2& position, const Vector2& size, F32 rotation, const Color& color)
+    void Renderer2D::DrawQuad(const Vector2& position, const Vector2& size, const Degrees rotation, const Color& color)
     {
         Renderer2D::DrawQuad(Vector3{ position, 0.0f }, size, rotation, color);
     }

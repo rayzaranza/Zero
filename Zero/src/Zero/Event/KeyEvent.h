@@ -14,7 +14,7 @@ namespace Zero
         inline virtual I32 GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
 
       protected:
-        KeyEvent(I32 keyCode) : m_KeyCode{ keyCode } {}
+        KeyEvent(const I32 keyCode) : m_KeyCode{ keyCode } {}
 
       protected:
         I32 m_KeyCode{};
@@ -26,7 +26,7 @@ namespace Zero
     class KeyPressedEvent : public KeyEvent
     {
       public:
-        KeyPressedEvent(I32 keyCode, I32 repeatCount) : KeyEvent{ keyCode }, m_RepeatCount{ repeatCount } {}
+        KeyPressedEvent(const I32 keyCode, const I32 repeatCount) : KeyEvent{ keyCode }, m_RepeatCount{ repeatCount } {}
 
       public:
         inline I32 GetRepeatCount() const { return m_RepeatCount; }
@@ -41,7 +41,7 @@ namespace Zero
         }
 
       private:
-        I32 m_RepeatCount{};
+        I32 m_RepeatCount;
     };
 
     //=====================================================================================================================================
@@ -50,7 +50,7 @@ namespace Zero
     class KeyReleasedEvent : public KeyEvent
     {
       public:
-        KeyReleasedEvent(I32 keyCode) : KeyEvent{ keyCode } {}
+        KeyReleasedEvent(const I32 keyCode) : KeyEvent{ keyCode } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::KeyReleased; }
@@ -70,7 +70,7 @@ namespace Zero
     class KeyTypedEvent : public KeyEvent
     {
       public:
-        KeyTypedEvent(I32 keyCode) : KeyEvent{ keyCode } {}
+        KeyTypedEvent(const I32 keyCode) : KeyEvent{ keyCode } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::KeyTyped; }
