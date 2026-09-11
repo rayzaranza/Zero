@@ -5,7 +5,7 @@
 
 namespace Zero
 {
-    Ref<Shader> Shader::Create(const std::string& filePath)
+    ShaderRef Shader::Create(const String& filePath)
     {
         switch (Renderer::GetAPI())
         {
@@ -16,7 +16,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLShader>(filePath);
+                return CreateRef<OpenGLShader>(filePath);
             }
             case RendererAPI::API::Vulkan:
             {
@@ -31,7 +31,7 @@ namespace Zero
         }
     }
 
-    Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
+    ShaderRef Shader::Create(const String& name, const String& vertexSource, const String& fragmentSource)
     {
         switch (Renderer::GetAPI())
         {
@@ -42,7 +42,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLShader>(name, vertexSource, fragmentSource);
+                return CreateRef<OpenGLShader>(name, vertexSource, fragmentSource);
             }
             case RendererAPI::API::Vulkan:
             {
@@ -57,45 +57,45 @@ namespace Zero
         }
     }
 
-    void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
+    void ShaderLibrary::Add(const String& name, const ShaderRef& shader)
     {
         ZR_CORE_ASSERT(!Exists(name), "Shader already exists");
         m_Shaders[name] = shader;
     }
 
-    void ShaderLibrary::Add(const Ref<Shader>& shader)
+    void ShaderLibrary::Add(const ShaderRef& shader)
     {
-        const std::string& name{ shader->GetName() };
+        const String& name{ shader->GetName() };
         Add(name, shader);
     }
 
-    Ref<Shader> ShaderLibrary::Load(const std::string& filePath)
+    ShaderRef ShaderLibrary::Load(const String& filePath)
     {
-        Ref<Shader> shader{ Shader::Create(filePath) };
+        ShaderRef shader{ Shader::Create(filePath) };
         Add(shader);
         return shader;
     }
 
-    Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& filePath)
+    ShaderRef ShaderLibrary::Load(const String& name, const String& filePath)
     {
-        Ref<Shader> shader{ Shader::Create(filePath) };
+        ShaderRef shader{ Shader::Create(filePath) };
         Add(name, shader);
         return shader;
     }
 
-    Ref<Shader> ShaderLibrary::Get(const std::string& name)
+    ShaderRef ShaderLibrary::Get(const String& name)
     {
         ZR_CORE_ASSERT(Exists(name), "Shader not found");
         return m_Shaders[name];
     }
 
-    bool ShaderLibrary::Exists(const std::string& name) const
+    Boolean ShaderLibrary::Exists(const String& name) const
     {
         return m_Shaders.find(name) != m_Shaders.end();
     }
 
-    Ref<ShaderLibrary> ShaderLibrary::Create()
+    ShaderLibraryRef ShaderLibrary::Create()
     {
-        return std::make_shared<ShaderLibrary>();
+        return CreateRef<ShaderLibrary>();
     }
 }

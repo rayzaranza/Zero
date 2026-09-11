@@ -13,16 +13,16 @@ class ExampleLayer : public Zero::Layer
     virtual void OnUIRender() override;
 
   private:
-    Zero::Ref<Zero::ShaderLibrary> m_ShaderLibrary;
+    Zero::ShaderLibraryRef m_ShaderLibrary;
 
-    Zero::Ref<Zero::Shader> m_QuadShader;
-    Zero::Ref<Zero::VertexArray> m_QuadVertexArray;
-    Zero::Ref<Zero::Texture2D> m_Texture;
-    Zero::Ref<Zero::Texture2D> m_TransparentTexture;
+    Zero::ShaderRef m_QuadShader;
+    Zero::VertexArrayRef m_QuadVertexArray;
+    Zero::Texture2DRef m_Texture;
+    Zero::Texture2DRef m_TransparentTexture;
 
     Zero::OrthographicCameraController m_CameraController;
 
-    glm::vec3 m_QuadPosition;
-    glm::vec4 m_QuadColor;
-    float m_QuadMovementSpeed;
+    Zero::Vector3 m_QuadPosition;
+    Zero::Color m_QuadColor;
+    Zero::F32 m_QuadMovementSpeed;
 };

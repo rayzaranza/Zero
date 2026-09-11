@@ -5,7 +5,7 @@
 
 namespace Zero
 {
-    OrthographicCameraController::OrthographicCameraController(float aspectRatio)
+    OrthographicCameraController::OrthographicCameraController(F32 aspectRatio)
         : m_AspectRatio(aspectRatio)
         , m_ZoomLevel{ 1.0f }
         , m_Camera{ -m_AspectRatio, m_AspectRatio }
@@ -38,16 +38,16 @@ namespace Zero
         dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(OrthographicCameraController::OnWindowResizedEvent));
     }
 
-    bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)
+    Boolean OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)
     {
-        m_ZoomLevel = std::max(m_ZoomLevel - event.GetYOffset() * m_ZoomSpeed, 0.25f);
+        m_ZoomLevel = std::fmax(m_ZoomLevel - event.GetYOffset() * m_ZoomSpeed, 0.25f);
         m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
         return false;
     }
 
-    bool OrthographicCameraController::OnWindowResizedEvent(WindowResizedEvent& event)
+    Boolean OrthographicCameraController::OnWindowResizedEvent(WindowResizedEvent& event)
     {
-        m_AspectRatio = static_cast<float>(event.GetWidth()) / static_cast<float>(event.GetHeight());
+        m_AspectRatio = static_cast<F32>(event.GetWidth()) / static_cast<F32>(event.GetHeight());
         m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
         return false;
     }

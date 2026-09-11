@@ -24,9 +24,9 @@ namespace Zero
         glBindVertexArray(0);
     }
 
-    static GLenum GetOpenGLTypeFromAttributeType(AttributeType type);
+    static U32 GetOpenGLTypeFromAttributeType(AttributeType type);
 
-    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
+    void OpenGLVertexArray::AddVertexBuffer(const VertexBufferRef& vertexBuffer)
     {
         const VertexBufferLayout& layout{ vertexBuffer->GetLayout() };
         ZR_CORE_ASSERT(layout.GetAttributes().size(), "Vertex Buffer has no layout");
@@ -34,7 +34,7 @@ namespace Zero
         glBindVertexArray(m_Id);
         vertexBuffer->Bind();
 
-        int location{ 0 };
+        I32 location{ 0 };
         for (const VertexAttribute& attribute : layout)
         {
             glEnableVertexAttribArray(location);
@@ -52,39 +52,40 @@ namespace Zero
         m_VertexBuffers.push_back(vertexBuffer);
     }
 
-    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
+    void OpenGLVertexArray::SetIndexBuffer(const IndexBufferRef& indexBuffer)
     {
         glBindVertexArray(m_Id);
         indexBuffer->Bind();
         m_IndexBuffer = indexBuffer;
     }
 
-    const std::vector<Ref<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
+    const Array<VertexBufferRef>& OpenGLVertexArray::GetVertexBuffers() const
     {
         return m_VertexBuffers;
     }
 
-    const Ref<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
+    const IndexBufferRef& OpenGLVertexArray::GetIndexBuffer() const
     {
         return m_IndexBuffer;
     }
 
-    GLenum GetOpenGLTypeFromAttributeType(AttributeType type)
+    U32 GetOpenGLTypeFromAttributeType(AttributeType type)
     {
         switch (type)
         {
             case AttributeType::Float:
-            case AttributeType::Float2:
-            case AttributeType::Float3:
-            case AttributeType::Float4:
+            case AttributeType::Vector2:
+            case AttributeType::Vector3:
+            case AttributeType::Vector4:
             case AttributeType::Matrix3:
-            case AttributeType::Matrix4: return GL_FLOAT;
+            case AttributeType::Matrix4:  return GL_FLOAT;
 
             case AttributeType::Int:
-            case AttributeType::Int2:
-            case AttributeType::Int3:    return GL_INT;
+            case AttributeType::Vector2i:
+            case AttributeType::Vector3i:
+            case AttributeType::Vector4i: return GL_INT;
 
-            case AttributeType::Boolean: return GL_BOOL;
+            case AttributeType::Boolean:  return GL_BOOL;
 
             default:
             {

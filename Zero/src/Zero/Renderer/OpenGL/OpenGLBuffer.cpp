@@ -7,11 +7,11 @@ namespace Zero
     //=================================================================================================================
     //  OpenGL Vertex Buffer
     //=================================================================================================================
-    OpenGLVertexBuffer::OpenGLVertexBuffer(const VertexBufferData& vertices)
+    OpenGLVertexBuffer::OpenGLVertexBuffer(const Array<F32>& vertices)
     {
         glCreateBuffers(1, &m_Id);
         glBindBuffer(GL_ARRAY_BUFFER, m_Id);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(F32), vertices.data(), GL_STATIC_DRAW);
     }
 
     OpenGLVertexBuffer::~OpenGLVertexBuffer()
@@ -42,11 +42,11 @@ namespace Zero
     //=================================================================================================================
     //  OpenGL Index Buffer
     //=================================================================================================================
-    OpenGLIndexBuffer::OpenGLIndexBuffer(const IndexBufferData& indices) : m_Count{ indices.size() }
+    OpenGLIndexBuffer::OpenGLIndexBuffer(const Array<U32>& indices) : m_Length{ indices.size() }
     {
         glCreateBuffers(1, &m_Id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Length * sizeof(U32), indices.data(), GL_STATIC_DRAW);
     }
 
     OpenGLIndexBuffer::~OpenGLIndexBuffer()
@@ -64,8 +64,8 @@ namespace Zero
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
-    uint32_t OpenGLIndexBuffer::GetCount() const
+    Length OpenGLIndexBuffer::GetLength() const
     {
-        return m_Count;
+        return m_Length;
     }
 }

@@ -7,9 +7,9 @@
 
 namespace Zero
 {
-    OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : m_Path{ path }
+    OpenGLTexture2D::OpenGLTexture2D(const String& path) : m_Path{ path }
     {
-        int width, height, channels;
+        I32 width, height, channels;
         stbi_set_flip_vertically_on_load(1);
         stbi_uc* image{ stbi_load(path.c_str(), &width, &height, &channels, 0) };
         ZR_CORE_ASSERT(image, "Failed to load image");
@@ -17,8 +17,8 @@ namespace Zero
         m_Width = width;
         m_Height = height;
 
-        GLenum internalFormat{};
-        GLenum dataFormat{};
+        U32 internalFormat{};
+        U32 dataFormat{};
 
         switch (channels)
         {
@@ -53,7 +53,7 @@ namespace Zero
         glDeleteTextures(1, &m_Id);
     }
 
-    void OpenGLTexture2D::Bind(uint32_t slot) const
+    void OpenGLTexture2D::Bind(U32 slot) const
     {
         glBindTextureUnit(0, m_Id);
     }

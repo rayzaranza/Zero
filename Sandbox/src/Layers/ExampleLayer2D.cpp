@@ -18,13 +18,12 @@ void ExampleLayer2D::OnAttach()
 {
     m_QuadVertexArray = Zero::VertexArray::Create();
 
-    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{
+    Zero::VertexBufferRef quadVertexBuffer{
         Zero::VertexBuffer::Create({ -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, -0.5f, 0.5f, 0.0f })
     };
+    Zero::IndexBufferRef quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
 
-    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
-
-    quadVertexBuffer->SetLayout({ { Zero::AttributeType::Float3, "a_Position" } });
+    quadVertexBuffer->SetLayout({ { Zero::AttributeType::Vector3, "a_Position" } });
     m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
@@ -41,7 +40,7 @@ void ExampleLayer2D::OnUpdate(Zero::DeltaTime deltaTime)
     Zero::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
     Zero::RenderCommand::Clear();
 
-    Zero::Renderer2D::DrawQuad(glm::vec2{ 0.0f }, glm::vec2{ 1.0f }, 0.0f, m_QuadColor);
+    Zero::Renderer2D::DrawQuad(Zero::Vector2{ 0.0f }, Zero::Vector2{ 1.0f }, 0.0f, m_QuadColor);
     Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
     Zero::Renderer2D::EndScene();

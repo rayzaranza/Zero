@@ -35,7 +35,7 @@ namespace Zero
         dispatcher.Dispatch<WindowClosedEvent>(ZR_BIND_FUNCTION(Application::OnWindowClosed));
         dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(Application::OnWindowResized));
 
-        for (std::vector<Layer*>::iterator iterator{ m_LayerStack.end() }; iterator != m_LayerStack.begin();)
+        for (Array<Layer*>::iterator iterator{ m_LayerStack.end() }; iterator != m_LayerStack.begin();)
         {
             (*--iterator)->OnEvent(event);
             if (event.IsHandled())
@@ -61,7 +61,7 @@ namespace Zero
     {
         while (m_IsRunning)
         {
-            float time = static_cast<float>(glfwGetTime());
+            F32 time = static_cast<F32>(glfwGetTime());
             DeltaTime deltaTime{ time - m_LastFrameTime };
             m_LastFrameTime = time;
 
@@ -80,16 +80,16 @@ namespace Zero
         }
     }
 
-    bool Application::OnWindowClosed(WindowClosedEvent& event)
+    Boolean Application::OnWindowClosed(WindowClosedEvent& event)
     {
         m_IsRunning = false;
         return true;
     }
 
-    bool Application::OnWindowResized(WindowResizedEvent& event)
+    Boolean Application::OnWindowResized(WindowResizedEvent& event)
     {
-        const int width{ event.GetWidth() };
-        const int height{ event.GetHeight() };
+        const I32 width{ event.GetWidth() };
+        const I32 height{ event.GetHeight() };
 
         if (width == 0 || height == 0)
         {

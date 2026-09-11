@@ -16,7 +16,7 @@ namespace Zero
     void OpenGLContext::Initialize()
     {
         glfwMakeContextCurrent(m_WindowHandle);
-        int gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
+        I32 gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
         ZR_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
 
         ZR_CORE_INFO("OpenGL Context:");
@@ -25,8 +25,8 @@ namespace Zero
         ZR_CORE_INFO("  Version: {0}", (char*)glGetString(GL_VERSION));
 
 #       ifdef ZR_ENABLE_ASSERTS
-        int versionMajor;
-        int versionMinor;
+        I32 versionMajor;
+        I32 versionMinor;
         glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
         glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
         ZR_CORE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 6), "Minimum OpenGL version required is 4.6");

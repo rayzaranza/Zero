@@ -13,14 +13,14 @@ namespace Zero
       public:
         virtual void Bind() const override;
         virtual void Unbind() const override;
-        virtual void AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) override;
-        virtual void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) override;
-        virtual const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const override;
-        virtual const Ref<IndexBuffer>& GetIndexBuffer() const override;
+        virtual void AddVertexBuffer(const VertexBufferRef& vertexBuffer) override;
+        virtual void SetIndexBuffer(const IndexBufferRef& indexBuffer) override;
+        virtual const Array<VertexBufferRef>& GetVertexBuffers() const override;
+        virtual const IndexBufferRef& GetIndexBuffer() const override;
 
       private:
-        uint32_t m_Id{};
-        std::vector<Ref<VertexBuffer>> m_VertexBuffers{};
-        Ref<IndexBuffer> m_IndexBuffer{};
+        RendererID m_Id{};
+        Array<VertexBufferRef> m_VertexBuffers{};
+        IndexBufferRef m_IndexBuffer{};
     };
 }

@@ -5,7 +5,7 @@
 
 namespace Zero
 {
-    Ref<VertexArray> VertexArray::Create()
+    VertexArrayRef VertexArray::Create()
     {
         switch (Renderer::GetAPI())
         {
@@ -16,7 +16,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLVertexArray>();
+                return CreateRef<OpenGLVertexArray>();
             }
             case RendererAPI::API::Vulkan:
             {

@@ -10,7 +10,7 @@ namespace Zero
     //======================================================================================
     void VertexBufferLayout::CalculateOffsetsAndStride()
     {
-        uint32_t offset{ 0 };
+        U32 offset{ 0 };
         m_Stride = 0;
 
         for (VertexAttribute& attribute : m_Attributes)
@@ -24,7 +24,7 @@ namespace Zero
     //======================================================================================
     //  Vertex Buffer
     //======================================================================================
-    Ref<VertexBuffer> VertexBuffer::Create(const VertexBufferData& vertices)
+    VertexBufferRef VertexBuffer::Create(const Array<F32>& vertices)
     {
         switch (Renderer::GetAPI())
         {
@@ -35,7 +35,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLVertexBuffer>(vertices);
+                return CreateRef<OpenGLVertexBuffer>(vertices);
             }
             case RendererAPI::API::Vulkan:
             {
@@ -53,7 +53,7 @@ namespace Zero
     //======================================================================================
     //  Index Buffer
     //======================================================================================
-    Ref<IndexBuffer> IndexBuffer::Create(const IndexBufferData& indices)
+    IndexBufferRef IndexBuffer::Create(const Array<U32>& indices)
     {
         switch (Renderer::GetAPI())
         {
@@ -64,7 +64,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLIndexBuffer>(indices);
+                return CreateRef<OpenGLIndexBuffer>(indices);
             }
             case RendererAPI::API::Vulkan:
             {
@@ -82,21 +82,21 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute Type Helpers
     //======================================================================================
-    uint32_t GetSizeFromAttributeType(AttributeType type)
+    I32 GetSizeFromAttributeType(AttributeType type)
     {
         switch (type)
         {
-            case AttributeType::Float:   return 4;
-            case AttributeType::Float2:  return 4 * 2;
-            case AttributeType::Float3:  return 4 * 3;
-            case AttributeType::Float4:  return 4 * 4;
-            case AttributeType::Matrix3: return 4 * 3 * 3;
-            case AttributeType::Matrix4: return 4 * 4 * 4;
-            case AttributeType::Int:     return 4;
-            case AttributeType::Int2:    return 4 * 2;
-            case AttributeType::Int3:    return 4 * 3;
-            case AttributeType::Int4:    return 4 * 4;
-            case AttributeType::Boolean: return 1;
+            case AttributeType::Float:    return 4;
+            case AttributeType::Vector2:  return 4 * 2;
+            case AttributeType::Vector3:  return 4 * 3;
+            case AttributeType::Vector4:  return 4 * 4;
+            case AttributeType::Matrix3:  return 4 * 3 * 3;
+            case AttributeType::Matrix4:  return 4 * 4 * 4;
+            case AttributeType::Int:      return 4;
+            case AttributeType::Vector2i: return 4 * 2;
+            case AttributeType::Vector3i: return 4 * 3;
+            case AttributeType::Vector4i: return 4 * 4;
+            case AttributeType::Boolean:  return 1;
 
             default:
             {
@@ -106,21 +106,21 @@ namespace Zero
         }
     }
 
-    uint32_t GetComponentCountFromAttributeType(AttributeType type)
+    U32 GetComponentCountFromAttributeType(AttributeType type)
     {
         switch (type)
         {
-            case AttributeType::Float:   return 1;
-            case AttributeType::Float2:  return 2;
-            case AttributeType::Float3:  return 3;
-            case AttributeType::Float4:  return 4;
-            case AttributeType::Matrix3: return 3 * 3;
-            case AttributeType::Matrix4: return 4 * 4;
-            case AttributeType::Int:     return 1;
-            case AttributeType::Int2:    return 2;
-            case AttributeType::Int3:    return 3;
-            case AttributeType::Int4:    return 4;
-            case AttributeType::Boolean: return 1;
+            case AttributeType::Float:    return 1;
+            case AttributeType::Vector2:  return 2;
+            case AttributeType::Vector3:  return 3;
+            case AttributeType::Vector4:  return 4;
+            case AttributeType::Matrix3:  return 3 * 3;
+            case AttributeType::Matrix4:  return 4 * 4;
+            case AttributeType::Int:      return 1;
+            case AttributeType::Vector2i: return 2;
+            case AttributeType::Vector3i: return 3;
+            case AttributeType::Vector4i: return 4;
+            case AttributeType::Boolean:  return 1;
 
             default:
             {

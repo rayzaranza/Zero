@@ -18,11 +18,11 @@ namespace Zero
         void PopOverlay(Layer* layer);
 
       public:
-        inline std::vector<Layer*>::iterator begin() { return m_Layers.begin(); }
-        inline std::vector<Layer*>::iterator end() { return m_Layers.end(); }
+        inline Array<Layer*>::iterator begin() { return m_Layers.begin(); }
+        inline Array<Layer*>::iterator end() { return m_Layers.end(); }
 
       private:
-        std::vector<Layer*> m_Layers{};
-        unsigned int m_LayerInsertIndex{ 0 };
+        Array<Layer*> m_Layers{};
+        U32 m_LayerInsertIndex{ 0 };
     };
 }

@@ -17,13 +17,13 @@ ExampleLayer::ExampleLayer()
     , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
 {
     Zero::VertexBufferLayout layout{
-        { Zero::AttributeType::Float3, "a_Position" },
-        { Zero::AttributeType::Float2, "a_UV" },
+        { Zero::AttributeType::Vector3, "a_Position" },
+        { Zero::AttributeType::Vector2, "a_UV" },
     };
 
     m_QuadVertexArray = Zero::VertexArray::Create();
 
-    Zero::Ref<Zero::VertexBuffer> quadVertexBuffer{ Zero::VertexBuffer::Create(
+    Zero::VertexBufferRef quadVertexBuffer{ Zero::VertexBuffer::Create(
         {
             -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, //
             0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, //
@@ -35,12 +35,12 @@ ExampleLayer::ExampleLayer()
     quadVertexBuffer->SetLayout(layout);
     m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
 
-    Zero::Ref<Zero::IndexBuffer> quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
+    Zero::IndexBufferRef quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
     m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
 
     m_ShaderLibrary->Load("D:/Zero/Sandbox/assets/shaders/Texture.glsl");
 
-    auto textureShader{ m_ShaderLibrary->Get("Texture") };
+    Zero::ShaderRef textureShader{ m_ShaderLibrary->Get("Texture") };
     textureShader->Bind();
     textureShader->SetInt("u_Texture", 0);
 }
@@ -54,14 +54,14 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
     Zero::Renderer::BeginScene(m_CameraController.GetCamera());
     {
         m_QuadShader->Bind();
-        m_QuadShader->SetFloat4("u_Color", m_QuadColor);
+        m_QuadShader->SetVector4("u_Color", m_QuadColor);
 
-        for (int y{ 0 }; y < 20; ++y)
+        for (Zero::I32 y{ 0 }; y < 20; ++y)
         {
-            for (int x{ 0 }; x < 20; ++x)
+            for (Zero::I32 x{ 0 }; x < 20; ++x)
             {
-                glm::vec3 position{ static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f };
-                glm::mat4 quadModelMatrix{ glm::translate({ 1.0f }, position) * glm::scale({ 1.0f }, glm::vec3{ 0.1f }) };
+                Zero::Vector3 position{ static_cast<Zero::F32>(x) * 0.11f, static_cast<Zero::F32>(y) * 0.11f, 0.0f };
+                Zero::Matrix4 quadModelMatrix{ glm::translate({ 1.0f }, position) * glm::scale({ 1.0f }, Zero::Vector3{ 0.1f }) };
                 Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader, quadModelMatrix);
             }
         }
@@ -71,9 +71,9 @@ void ExampleLayer::OnUpdate(Zero::DeltaTime deltaTime)
         Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
 
         m_TransparentTexture->Bind();
-        glm::mat4 transparentQuadTransform{ 1.0f };
-        transparentQuadTransform = glm::translate(transparentQuadTransform, glm::vec3{ 0.0f, 1.0f, 0.0f });
-        transparentQuadTransform = glm::scale(transparentQuadTransform, glm::vec3{ 0.25f });
+        Zero::Matrix4 transparentQuadTransform{ 1.0f };
+        transparentQuadTransform = glm::translate(transparentQuadTransform, Zero::Vector3{ 0.0f, 1.0f, 0.0f });
+        transparentQuadTransform = glm::scale(transparentQuadTransform, Zero::Vector3{ 0.25f });
         Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
     }
     Zero::Renderer::EndScene();

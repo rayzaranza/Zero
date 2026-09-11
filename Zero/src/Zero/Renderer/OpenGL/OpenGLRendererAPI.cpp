@@ -10,7 +10,7 @@ namespace Zero
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) const
+    void OpenGLRendererAPI::SetClearColor(const Color& color) const
     {
         glClearColor(color.r, color.g, color.b, color.a);
     }
@@ -20,12 +20,12 @@ namespace Zero
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
+    void OpenGLRendererAPI::DrawIndexed(const VertexArrayRef& vertexArray)
     {
-        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetLength(), GL_UNSIGNED_INT, nullptr);
     }
 
-    void OpenGLRendererAPI::SetViewport(int x, int y, uint32_t width, uint32_t height)
+    void OpenGLRendererAPI::SetViewport(I32 x, I32 y, U32 width, U32 height)
     {
         glViewport(x, y, width, height);
     }

@@ -7,9 +7,9 @@ namespace Zero
     class Input
     {
       public:
-        static bool IsKeyPressed(int keyCode);
-        static bool IsMouseButtonPressed(int button);
-        static glm::vec2 GetMousePosition();
+        static Boolean IsKeyPressed(I32 keyCode);
+        static Boolean IsMouseButtonPressed(I32 button);
+        static Vector2 GetMousePosition();
 
       private:
         static Input* s_Instance;

@@ -12,7 +12,7 @@ namespace Zero
         Renderer2D::Initialize();
     }
 
-    void Renderer::OnWindowResized(uint32_t width, uint32_t height)
+    void Renderer::OnWindowResized(U32 width, U32 height)
     {
         RenderCommand::SetViewport(0, 0, width, height);
     }
@@ -22,7 +22,7 @@ namespace Zero
         s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
 
-    void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& modelMatrix)
+    void Renderer::Submit(const VertexArrayRef& vertexArray, const ShaderRef& shader, const Matrix4& modelMatrix)
     {
         shader->Bind();
         shader->SetMatrix4("u_ViewProjectionMatrix", s_SceneData->ViewProjectionMatrix);

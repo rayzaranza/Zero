@@ -8,11 +8,7 @@
 class Sandbox : public Zero::Application
 {
   public:
-    Sandbox()
-    {
-        // PushLayer(new ExampleLayer());
-        PushLayer(new ExampleLayer2D());
-    }
+    Sandbox() { PushLayer(new ExampleLayer2D()); }
 
     ~Sandbox() = default;
 };

@@ -6,7 +6,7 @@
 
 namespace Zero
 {
-    Ref<Texture2D> Texture2D::Create(const std::string& path)
+    Texture2DRef Texture2D::Create(const String& path)
     {
         switch (Renderer::GetAPI())
         {
@@ -17,7 +17,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLTexture2D>(path);
+                return CreateRef<OpenGLTexture2D>(path);
             }
             case RendererAPI::API::Vulkan:
             {
