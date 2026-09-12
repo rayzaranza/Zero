@@ -22,6 +22,7 @@ namespace Zero
         void OnEvent(Event& event);
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* overlay);
+        void Close();
 
       public:
         inline static Application& Get() { return *s_Instance; }

@@ -17,6 +17,9 @@ class ExampleLayer2D : public Zero::Layer
     virtual void OnEvent(Zero::Event& event) override;
 
   public:
+    Zero::Boolean OnKeyPressed(Zero::KeyPressedEvent& event);
+
+  public:
     struct ProfileResult
     {
         Zero::String Name{};

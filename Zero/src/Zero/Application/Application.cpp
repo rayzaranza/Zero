@@ -57,6 +57,11 @@ namespace Zero
         overlay->OnAttach();
     }
 
+    void Application::Close()
+    {
+        m_IsRunning = false;
+    }
+
     void Application::Run()
     {
         while (m_IsRunning)

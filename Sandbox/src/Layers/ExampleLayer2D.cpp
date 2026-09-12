@@ -56,7 +56,7 @@ ExampleLayer2D::~ExampleLayer2D()
 
 void ExampleLayer2D::OnAttach()
 {
-    m_Texture = Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png");
+    m_Texture = Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
 }
 
 void ExampleLayer2D::OnDetach()
@@ -71,23 +71,33 @@ void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 void ExampleLayer2D::OnRender()
 {
     PROFILE_SCOPE("OnRender");
+    Zero::RenderCommand::Clear(Zero::Color::Black);
+
+    Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
     {
-        PROFILE_SCOPE("Renderer Prep");
-        Zero::RenderCommand::Clear(Zero::Color::Black);
-    }
-    {
-        PROFILE_SCOPE("Renderer Draw");
-        Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
         Zero::Renderer2D::DrawQuad({ -1.0f, -0.5f }, 0.0f, Zero::Vector2{ 10.0f }, m_Texture);
         Zero::Renderer2D::DrawQuad(Zero::Vector2::Zero, 0.0f, Zero::Vector2::One, Zero::Color::Red);
         Zero::Renderer2D::DrawQuad({ 0.5f, 1.0f }, 0.0f, Zero::Vector2::One, m_QuadColor);
-        Zero::Renderer2D::EndScene();
     }
+    Zero::Renderer2D::EndScene();
 }
 
 void ExampleLayer2D::OnEvent(Zero::Event& event)
 {
     m_CameraController.OnEvent(event);
+    Zero::EventDispatcher dispatcher{ event };
+    dispatcher.Dispatch<Zero::KeyPressedEvent>(ZR_BIND_FUNCTION(ExampleLayer2D::OnKeyPressed));
+}
+
+Zero::Boolean ExampleLayer2D::OnKeyPressed(Zero::KeyPressedEvent& event)
+{
+    if (event.GetKeyCode() == Zero::KeyCode::ESCAPE)
+    {
+        Zero::Application::Get().Close();
+        ZR_LOG("Close app");
+    }
+
+    return false;
 }
 
 void ExampleLayer2D::OnUIRender()
