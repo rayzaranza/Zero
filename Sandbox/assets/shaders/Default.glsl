@@ -15,17 +15,19 @@ void main()
     gl_Position = u_ViewProjectionMatrix * u_ModelMatrix * vec4(a_Position, 0.0f, 1.0f);
 }
 
+//====================================================================================
 
 #type fragment
 #version 460 core
 
 in vec2 v_UV;
 
+uniform vec4 u_Color;
 uniform sampler2D u_Texture;
 
 out vec4 o_Color;
 
 void main()
 {
-    o_Color = texture(u_Texture, v_UV * 10.0f);
+    o_Color = texture(u_Texture, v_UV) * u_Color;
 }
