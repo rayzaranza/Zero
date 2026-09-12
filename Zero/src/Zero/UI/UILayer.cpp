@@ -47,10 +47,7 @@ namespace Zero
     }
 
     void UILayer::OnUIRender()
-    {
-        static Boolean show{ true };
-        ImGui::ShowDemoWindow(&show);
-    }
+    {}
 
     void UILayer::Begin()
     {

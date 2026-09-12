@@ -16,8 +16,17 @@ class ExampleLayer2D : public Zero::Layer
     virtual void OnUIRender() override;
     virtual void OnEvent(Zero::Event& event) override;
 
+  public:
+    struct ProfileResult
+    {
+        Zero::String Name{};
+        Zero::Milliseconds Time{};
+    };
+
   private:
     Zero::OrthographicCameraController m_CameraController;
     Zero::Color m_QuadColor;
     Zero::Texture2DRef m_Texture;
+
+    Zero::Array<ProfileResult> m_ProfileResults{};
 };
