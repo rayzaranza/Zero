@@ -40,7 +40,7 @@ namespace Zero
         m_RendererContext->Initialize();
 
         glfwSetWindowUserPointer(m_WindowHandle, &m_Data);
-        glfwSwapInterval(1);
+        glfwSwapInterval(0);
 
         setCallbacks();
         SendWindowToSecondMonitor(m_WindowHandle, m_Data.Size);
