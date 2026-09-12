@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Zero/Camera/Camera.h"
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Layer/LayerStack.h"
@@ -28,16 +28,16 @@ namespace Zero
         inline Window& GetWindow() const { return *m_Window; }
 
       private:
-        bool OnWindowClosed(WindowClosedEvent& event);
-        bool OnWindowResized(WindowResizedEvent& event);
+        Boolean OnWindowClosed(WindowClosedEvent& event);
+        Boolean OnWindowResized(WindowResizedEvent& event);
 
       private:
         Scope<Window> m_Window;
-        bool m_IsRunning;
-        bool m_IsMinimized;
+        Boolean m_IsRunning;
+        Boolean m_IsMinimized;
         LayerStack m_LayerStack;
         UILayer* m_UILayer;
-        float m_LastFrameTime;
+        Seconds m_LastFrameTime;
 
       private:
         static Application* s_Instance;

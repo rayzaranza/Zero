@@ -10,7 +10,7 @@ namespace Zero
     //======================================================================================
     void VertexBufferLayout::CalculateOffsetsAndStride()
     {
-        uint32_t offset{ 0 };
+        U32 offset{ 0 };
         m_Stride = 0;
 
         for (VertexAttribute& attribute : m_Attributes)
@@ -24,27 +24,27 @@ namespace Zero
     //======================================================================================
     //  Vertex Buffer
     //======================================================================================
-    Ref<VertexBuffer> VertexBuffer::Create(float* vertices, size_t size)
+    VertexBufferRef VertexBuffer::Create(const Array<F32>& vertices)
     {
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLVertexBuffer>(vertices, size);
+                return CreateRef<OpenGLVertexBuffer>(vertices);
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }
@@ -53,27 +53,27 @@ namespace Zero
     //======================================================================================
     //  Index Buffer
     //======================================================================================
-    Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, size_t size)
+    IndexBufferRef IndexBuffer::Create(const Array<U32>& indices)
     {
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLIndexBuffer>(indices, static_cast<uint32_t>(size));
+                return CreateRef<OpenGLIndexBuffer>(indices);
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }
@@ -82,49 +82,49 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute Type Helpers
     //======================================================================================
-    uint32_t GetSizeFromAttributeType(AttributeType type)
+    I32 GetSizeFromAttributeType(const AttributeType type)
     {
         switch (type)
         {
-            case AttributeType::Float:   return 4;
-            case AttributeType::Float2:  return 4 * 2;
-            case AttributeType::Float3:  return 4 * 3;
-            case AttributeType::Float4:  return 4 * 4;
-            case AttributeType::Matrix3: return 4 * 3 * 3;
-            case AttributeType::Matrix4: return 4 * 4 * 4;
-            case AttributeType::Int:     return 4;
-            case AttributeType::Int2:    return 4 * 2;
-            case AttributeType::Int3:    return 4 * 3;
-            case AttributeType::Int4:    return 4 * 4;
-            case AttributeType::Boolean: return 1;
+            case AttributeType::Float:    return 4;
+            case AttributeType::Vector2:  return 4 * 2;
+            case AttributeType::Vector3:  return 4 * 3;
+            case AttributeType::Vector4:  return 4 * 4;
+            case AttributeType::Matrix3:  return 4 * 3 * 3;
+            case AttributeType::Matrix4:  return 4 * 4 * 4;
+            case AttributeType::Int:      return 4;
+            case AttributeType::Vector2i: return 4 * 2;
+            case AttributeType::Vector3i: return 4 * 3;
+            case AttributeType::Vector4i: return 4 * 4;
+            case AttributeType::Boolean:  return 1;
 
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
+                ZR_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
                 return 0;
             }
         }
     }
 
-    uint32_t GetComponentCountFromAttributeType(AttributeType type)
+    U32 GetComponentCountFromAttributeType(const AttributeType type)
     {
         switch (type)
         {
-            case AttributeType::Float:   return 1;
-            case AttributeType::Float2:  return 2;
-            case AttributeType::Float3:  return 3;
-            case AttributeType::Float4:  return 4;
-            case AttributeType::Matrix3: return 3 * 3;
-            case AttributeType::Matrix4: return 4 * 4;
-            case AttributeType::Int:     return 1;
-            case AttributeType::Int2:    return 2;
-            case AttributeType::Int3:    return 3;
-            case AttributeType::Int4:    return 4;
-            case AttributeType::Boolean: return 1;
+            case AttributeType::Float:    return 1;
+            case AttributeType::Vector2:  return 2;
+            case AttributeType::Vector3:  return 3;
+            case AttributeType::Vector4:  return 4;
+            case AttributeType::Matrix3:  return 3 * 3;
+            case AttributeType::Matrix4:  return 4 * 4;
+            case AttributeType::Int:      return 1;
+            case AttributeType::Vector2i: return 2;
+            case AttributeType::Vector3i: return 3;
+            case AttributeType::Vector4i: return 4;
+            case AttributeType::Boolean:  return 1;
 
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
+                ZR_CORE_ASSERT(false, "Unknow Vertex Attribute Type");
                 return 0;
             }
         }

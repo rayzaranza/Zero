@@ -4,7 +4,7 @@
 
 namespace Zero
 {
-    OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
+    OrthographicCamera::OrthographicCamera(const F32 left, const F32 right, const F32 bottom, const F32 top)
         : m_Position{ 0.0f }
         , m_ViewMatrix{ 1.0f }
         , m_ProjectionMatrix{ glm::ortho(left, right, bottom, top, -1.0f, 1.0f) }
@@ -13,7 +13,7 @@ namespace Zero
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
-    void OrthographicCamera::SetProjectionMatrix(float left, float right, float bottom, float top)
+    void OrthographicCamera::SetProjectionMatrix(const F32 left, const F32 right, const F32 bottom, const F32 top)
     {
         m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
@@ -21,21 +21,22 @@ namespace Zero
 
     void OrthographicCamera::CalculateViewProjectionMatrix()
     {
-        glm::mat4 transform{ glm::translate({ 1.0f }, m_Position) * glm::rotate({ 1.0f }, glm::radians(m_Rotation), glm::vec3{ 0, 0, 1 }) };
+        Matrix4 transform{ 1.0f };
+        transform = glm::translate(transform, m_Position);
+        transform = glm::rotate(transform, glm::radians(m_Rotation), Vector3{ 0, 0, 1 });
         m_ViewMatrix = glm::inverse(transform);
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
-    void OrthographicCamera::SetPosition(const glm::vec3& position)
+    void OrthographicCamera::SetPosition(const Vector3& position)
     {
         m_Position = position;
         CalculateViewProjectionMatrix();
     }
 
-    void OrthographicCamera::SetRotation(float rotation)
+    void OrthographicCamera::SetRotation(Degrees rotation)
     {
         m_Rotation = rotation;
         CalculateViewProjectionMatrix();
     }
-
 }

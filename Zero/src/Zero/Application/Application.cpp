@@ -17,25 +17,25 @@ namespace Zero
         , m_IsMinimized{ false }
         , m_LastFrameTime{ 0.0f }
     {
-        ZERO_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
+        ZR_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
         s_Instance = this;
-        m_Window->SetEventCallback(ZERO_BIND_FUNCTION(Application::OnEvent));
+        m_Window->SetEventCallback(ZR_BIND_FUNCTION(Application::OnEvent));
         PushOverlay(m_UILayer);
         Renderer::Initialize();
     }
 
     Application::~Application()
     {
-        ZERO_CORE_LOG("Application destroyed");
+        ZR_CORE_LOG("Application destroyed");
     }
 
     void Application::OnEvent(Event& event)
     {
         EventDispatcher dispatcher{ event };
-        dispatcher.Dispatch<WindowClosedEvent>(ZERO_BIND_FUNCTION(Application::OnWindowClosed));
-        dispatcher.Dispatch<WindowResizedEvent>(ZERO_BIND_FUNCTION(Application::OnWindowResized));
+        dispatcher.Dispatch<WindowClosedEvent>(ZR_BIND_FUNCTION(Application::OnWindowClosed));
+        dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(Application::OnWindowResized));
 
-        for (std::vector<Layer*>::iterator iterator{ m_LayerStack.end() }; iterator != m_LayerStack.begin();)
+        for (Array<Layer*>::iterator iterator{ m_LayerStack.end() }; iterator != m_LayerStack.begin();)
         {
             (*--iterator)->OnEvent(event);
             if (event.IsHandled())
@@ -61,14 +61,17 @@ namespace Zero
     {
         while (m_IsRunning)
         {
-            float time = static_cast<float>(glfwGetTime());
+            const Seconds time = static_cast<Seconds>(glfwGetTime());
             DeltaTime deltaTime{ time - m_LastFrameTime };
             m_LastFrameTime = time;
 
             if (!m_IsMinimized)
             {
                 for (Layer* layer : m_LayerStack)
+                {
                     layer->OnUpdate(deltaTime);
+                    layer->OnRender();
+                }
             }
 
             m_UILayer->Begin();
@@ -80,24 +83,23 @@ namespace Zero
         }
     }
 
-    bool Application::OnWindowClosed(WindowClosedEvent& event)
+    Boolean Application::OnWindowClosed(WindowClosedEvent& event)
     {
         m_IsRunning = false;
         return true;
     }
 
-    bool Application::OnWindowResized(WindowResizedEvent& event)
+    Boolean Application::OnWindowResized(WindowResizedEvent& event)
     {
-        const int width{ event.GetWidth() };
-        const int height{ event.GetHeight() };
+        const Vector2i size{ event.GetSize() };
 
-        if (width == 0 || height == 0)
+        if (size.x == 0 || size.y == 0)
         {
             m_IsMinimized = true;
             return false;
         }
 
-        Renderer::OnWindowResized(width, height);
+        Renderer::OnWindowResized(size);
 
         m_IsMinimized = false;
         return false;

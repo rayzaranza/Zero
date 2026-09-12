@@ -1,14 +1,13 @@
 #pragma once
 
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 
 namespace Zero
 {
     //======================================================================================
     //  Event Type
     //======================================================================================
-
-    enum class EventType
+    enum class EventType : U8
     {
         None,
         WindowClosed,
@@ -31,8 +30,7 @@ namespace Zero
     //======================================================================================
     //  Event Category
     //======================================================================================
-
-    enum EventCategory
+    enum EventCategory : U8
     {
         None,
         EventCategoryApplication = 1 << 0,
@@ -45,22 +43,21 @@ namespace Zero
     //======================================================================================
     //  Event
     //======================================================================================
-
     class Event
     {
       public:
         virtual ~Event() = default;
         virtual EventType GetEventType() const = 0;
         virtual const char* GetName() const = 0;
-        virtual int GetCategoryFlags() const = 0;
+        virtual I32 GetCategoryFlags() const = 0;
 
       public:
-        inline virtual std::string ToString() const { return GetName(); }
-        inline bool IsHandled() const { return m_IsHandled; }
-        inline bool IsInCategory(EventCategory category) const { return GetCategoryFlags() & category; };
+        inline virtual String ToString() const { return GetName(); }
+        inline Boolean IsHandled() const { return m_IsHandled; }
+        inline Boolean IsInCategory(EventCategory category) const { return GetCategoryFlags() & category; };
 
       protected:
-        bool m_IsHandled{false};
+        Boolean m_IsHandled{ false };
         friend class EventDispatcher;
     };
 
@@ -72,15 +69,13 @@ namespace Zero
     //======================================================================================
     //  Event Dispatcher
     //======================================================================================
-
     class EventDispatcher
     {
       public:
-        EventDispatcher(Event& event) : m_Event{event} {}
+        EventDispatcher(Event& event) : m_Event{ event } {}
 
       public:
-        template <typename T>
-        bool Dispatch(std::function<bool(T&)> function)
+        template <typename T> Boolean Dispatch(Function<Boolean(T&)> function)
         {
             if (m_Event.GetEventType() == T::GetStaticType())
             {
@@ -96,6 +91,5 @@ namespace Zero
 
 }
 
-template <>
-struct fmt::formatter<Zero::Event> : fmt::ostream_formatter
+template <> struct fmt::formatter<Zero::Event> : fmt::ostream_formatter
 {};

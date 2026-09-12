@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zero/Logger/Logger.h"
+#include "Zero/Types/Types.h"
 
 #include <array>
 #include <functional>
@@ -11,6 +12,6 @@
 #include <unordered_map>
 #include <vector>
 
-#ifdef ZERO_PLATFORM_WINDOWS
-    #include <Windows.h>
+#ifdef ZR_PLATFORM_WINDOWS
+#   include <Windows.h>
 #endif

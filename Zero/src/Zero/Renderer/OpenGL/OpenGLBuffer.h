@@ -10,7 +10,7 @@ namespace Zero
     class OpenGLVertexBuffer : public VertexBuffer
     {
       public:
-        OpenGLVertexBuffer(float* vertices, size_t size);
+        OpenGLVertexBuffer(const Array<F32>& vertices);
         virtual ~OpenGLVertexBuffer();
 
       public:
@@ -20,7 +20,7 @@ namespace Zero
         virtual const VertexBufferLayout& GetLayout() const override;
 
       private:
-        uint32_t m_Id{};
+        RendererID m_Id{};
         VertexBufferLayout m_Layout{};
     };
 
@@ -30,16 +30,16 @@ namespace Zero
     class OpenGLIndexBuffer : public IndexBuffer
     {
       public:
-        OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
+        OpenGLIndexBuffer(const Array<U32>& indices);
         virtual ~OpenGLIndexBuffer();
 
       public:
         virtual void Bind() const override;
         virtual void Unbind() const override;
-        virtual uint32_t GetCount() const override;
+        virtual Length GetLength() const override;
 
       private:
-        uint32_t m_Id{};
-        uint32_t m_Count;
+        RendererID m_Id{};
+        Length m_Length;
     };
 }

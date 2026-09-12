@@ -1,6 +1,6 @@
 #include "Zero/Renderer/Renderer.h"
 
-#include "Zero/Renderer/OpenGL/OpenGLShader.h"
+#include "Zero/Renderer/Renderer2D.h"
 
 namespace Zero
 {
@@ -9,11 +9,12 @@ namespace Zero
     void Renderer::Initialize()
     {
         RenderCommand::Initialize();
+        Renderer2D::Initialize();
     }
 
-    void Renderer::OnWindowResized(uint32_t width, uint32_t height)
+    void Renderer::OnWindowResized(const Vector2u& size)
     {
-        RenderCommand::SetViewport(0, 0, width, height);
+        RenderCommand::SetViewport({ 0, 0 }, size);
     }
 
     void Renderer::BeginScene(OrthographicCamera& camera)
@@ -21,11 +22,11 @@ namespace Zero
         s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
 
-    void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& modelMatrix)
+    void Renderer::Submit(const VertexArrayRef& vertexArray, const ShaderRef& shader, const Matrix4& modelMatrix)
     {
         shader->Bind();
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniform("u_ViewProjectionMatrix", s_SceneData->ViewProjectionMatrix);
-        std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniform("u_ModelMatrix", modelMatrix);
+        shader->SetMatrix4("u_ViewProjectionMatrix", s_SceneData->ViewProjectionMatrix);
+        shader->SetMatrix4("u_ModelMatrix", modelMatrix);
 
         vertexArray->Bind();
         RenderCommand::DrawIndexed(vertexArray);

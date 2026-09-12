@@ -5,92 +5,97 @@
 
 namespace Zero
 {
-    Ref<Shader> Shader::Create(const std::string& filePath)
+    ShaderRef Shader::Create(const String& filePath)
     {
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLShader>(filePath);
+                return CreateRef<OpenGLShader>(filePath);
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }
     }
 
-    Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
+    ShaderRef Shader::Create(const String& name, const String& vertexSource, const String& fragmentSource)
     {
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
             {
-                return std::make_shared<OpenGLShader>(name, vertexSource, fragmentSource);
+                return CreateRef<OpenGLShader>(name, vertexSource, fragmentSource);
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }
     }
 
-    void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
+    void ShaderLibrary::Add(const String& name, const ShaderRef& shader)
     {
-        ZERO_CORE_ASSERT(!Exists(name), "Shader already exists");
+        ZR_CORE_ASSERT(!Exists(name), "Shader already exists");
         m_Shaders[name] = shader;
     }
 
-    void ShaderLibrary::Add(const Ref<Shader>& shader)
+    void ShaderLibrary::Add(const ShaderRef& shader)
     {
-        const std::string& name{ shader->GetName() };
+        const String& name{ shader->GetName() };
         Add(name, shader);
     }
 
-    Ref<Shader> ShaderLibrary::Load(const std::string& filePath)
+    ShaderRef ShaderLibrary::Load(const String& filePath)
     {
-        Ref<Shader> shader{ Shader::Create(filePath) };
+        ShaderRef shader{ Shader::Create(filePath) };
         Add(shader);
         return shader;
     }
 
-    Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& filePath)
+    ShaderRef ShaderLibrary::Load(const String& name, const String& filePath)
     {
-        Ref<Shader> shader{ Shader::Create(filePath) };
+        ShaderRef shader{ Shader::Create(filePath) };
         Add(name, shader);
         return shader;
     }
 
-    Ref<Shader> ShaderLibrary::Get(const std::string& name)
+    ShaderRef ShaderLibrary::Get(const String& name)
     {
-        ZERO_CORE_ASSERT(Exists(name), "Shader not found");
+        ZR_CORE_ASSERT(Exists(name), "Shader not found");
         return m_Shaders[name];
     }
 
-    bool ShaderLibrary::Exists(const std::string& name) const
+    Boolean ShaderLibrary::Exists(const String& name) const
     {
         return m_Shaders.find(name) != m_Shaders.end();
+    }
+
+    ShaderLibraryRef ShaderLibrary::Create()
+    {
+        return CreateRef<ShaderLibrary>();
     }
 }

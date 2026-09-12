@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "Zero/Input/Input.h"
 
 #include <GLFW/glfw3.h>
 
@@ -6,28 +6,28 @@
 
 namespace Zero
 {
-    Input* Input::s_Instance{new Input()};
+    Input* Input::s_Instance{ new Input() };
 
-    bool Input::IsKeyPressed(int keyCode)
+    Boolean Input::IsKeyPressed(const KeyCode keyCode)
     {
-        GLFWwindow* window{Application::Get().GetWindow().GetWindowHandle()};
-        const int state{glfwGetKey(window, keyCode)};
+        GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
+        const I32 state{ glfwGetKey(window, static_cast<I32>(keyCode)) };
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    bool Input::IsMouseButtonPressed(int button)
+    Boolean Input::IsMouseButtonPressed(const MouseButton button)
     {
-        GLFWwindow* window{Application::Get().GetWindow().GetWindowHandle()};
-        const int state{glfwGetMouseButton(window, button)};
+        GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
+        const I32 state{ glfwGetMouseButton(window, static_cast<I32>(button)) };
         return state == GLFW_PRESS;
     }
 
-    glm::vec2 Input::GetMousePosition()
+    Vector2 Input::GetMousePosition()
     {
-        GLFWwindow* window{Application::Get().GetWindow().GetWindowHandle()};
-        double x, y;
+        GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
+        F64 x, y;
         glfwGetCursorPos(window, &x, &y);
-        return glm::vec2{static_cast<float>(x), static_cast<float>(y)};
+        return Vector2{ static_cast<F32>(x), static_cast<F32>(y) };
     }
 
 }

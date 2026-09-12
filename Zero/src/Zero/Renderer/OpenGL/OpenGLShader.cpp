@@ -7,19 +7,16 @@
 
 namespace Zero
 {
-    OpenGLShader::OpenGLShader(const std::string& filePath) : m_Name{ ExtractNameFromFilePath(filePath) }
+    OpenGLShader::OpenGLShader(const String& filePath) : m_Name{ ExtractNameFromFilePath(filePath) }
     {
-        const std::string source{ ReadFile(filePath) };
-        const std::unordered_map<GLenum, std::string> shaderSources{ PreProcess(source) };
+        const String source{ ReadFile(filePath) };
+        const Map<U32, String> shaderSources{ PreProcess(source) };
         OpenGLShader::Compile(shaderSources);
     }
 
-    OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource) : m_Name{ name }
+    OpenGLShader::OpenGLShader(const String& name, const String& vertexSource, const String& fragmentSource) : m_Name{ name }
     {
-        const std::unordered_map<GLenum, std::string> shaderSources{
-            { GL_VERTEX_SHADER, vertexSource },
-            { GL_FRAGMENT_SHADER, fragmentSource },
-        };
+        const Map<U32, String> shaderSources{ { GL_VERTEX_SHADER, vertexSource }, { GL_FRAGMENT_SHADER, fragmentSource } };
         OpenGLShader::Compile(shaderSources);
     }
 
@@ -28,24 +25,24 @@ namespace Zero
         glDeleteProgram(m_Id);
     }
 
-    void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
+    void OpenGLShader::Compile(const Map<U32, String>& shaderSources)
     {
-        const GLuint program{ glCreateProgram() };
+        const U32 program{ glCreateProgram() };
 
-        ZERO_CORE_ASSERT(shaderSources.size() <= MAX_SHADERS_SUPPORTED, "Only 2 shaders are supported");
+        ZR_CORE_ASSERT(shaderSources.size() <= MAX_SHADERS_SUPPORTED, "Only 2 shaders are supported");
 
-        std::array<GLenum, MAX_SHADERS_SUPPORTED> shaderIds{};
-        int shaderIdIndex{ 0 };
+        FixedArray<U32, MAX_SHADERS_SUPPORTED> shaderIds{};
+        I32 shaderIdIndex{ 0 };
 
         for (auto& [type, source] : shaderSources)
         {
-            const GLuint shader{ glCreateShader(type) };
-            const GLchar* sourceRaw{ source.c_str() };
+            const U32 shader{ glCreateShader(type) };
+            const char* sourceRaw{ source.c_str() };
             glShaderSource(shader, 1, &sourceRaw, 0);
             glCompileShader(shader);
 
-            const bool isCompiled{ CheckShaderErrors(shader) };
-            ZERO_CORE_ASSERT(isCompiled, "Shader compilation error");
+            const Boolean isCompiled{ CheckShaderErrors(shader) };
+            ZR_CORE_ASSERT(isCompiled, "Shader compilation error");
 
             if (!isCompiled)
                 continue;
@@ -55,13 +52,13 @@ namespace Zero
         }
 
         glLinkProgram(program);
-        const bool isLinked{ CheckProgramErrors(program, shaderIds) };
-        ZERO_CORE_ASSERT(isLinked, "Shader linking error");
+        const Boolean isLinked{ CheckProgramErrors(program, shaderIds) };
+        ZR_CORE_ASSERT(isLinked, "Shader linking error");
 
         if (!isLinked)
             return;
 
-        for (GLuint shaderId : shaderIds)
+        for (U32 shaderId : shaderIds)
         {
             glDetachShader(program, shaderId);
             glDeleteShader(shaderId);
@@ -70,14 +67,14 @@ namespace Zero
         m_Id = program;
     }
 
-    std::string OpenGLShader::ReadFile(const std::string& filePath)
+    String OpenGLShader::ReadFile(const String& filePath)
     {
-        std::string result{};
+        String result{};
         std::ifstream inputStream{ filePath, std::ios::in | std::ios::binary };
 
         if (!inputStream.is_open())
         {
-            ZERO_CORE_ERROR("Could not open file: {0}", filePath);
+            ZR_CORE_ERROR("Could not open file: {0}", filePath);
             return result;
         }
 
@@ -89,37 +86,37 @@ namespace Zero
         return result;
     }
 
-    std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
+    Map<U32, String> OpenGLShader::PreProcess(const String& source)
     {
-        std::unordered_map<GLenum, std::string> shaderSources{};
+        Map<U32, String> shaderSources{};
 
         const char* typeToken{ "#type" };
-        const size_t typeTokenLength{ strlen(typeToken) };
-        size_t position{ source.find(typeToken, 0) };
+        const Length typeTokenLength{ strlen(typeToken) };
+        Length position{ source.find(typeToken, 0) };
 
-        while (position != std::string::npos)
+        while (position != String::npos)
         {
-            const size_t endOfLine{ source.find_first_of("\r\n", position) };
+            const Length endOfLine{ source.find_first_of("\r\n", position) };
 
-            ZERO_CORE_ASSERT(endOfLine != std::string::npos, "Syntax error");
+            ZR_CORE_ASSERT(endOfLine != String::npos, "Syntax error");
 
-            if (endOfLine == std::string::npos)
+            if (endOfLine == String::npos)
                 break;
 
-            const size_t typeNameBegin{ position + typeTokenLength + 1 };
+            const Length typeNameBegin{ position + typeTokenLength + 1 };
 
-            const std::string typeName{ source.substr(typeNameBegin, endOfLine - typeNameBegin) };
-            const GLenum type{ StringToShaderType(typeName) };
+            const String typeName{ source.substr(typeNameBegin, endOfLine - typeNameBegin) };
+            const U32 type{ StringToShaderType(typeName) };
 
-            ZERO_CORE_ASSERT(type, "Invalid Shader Type");
+            ZR_CORE_ASSERT(type, "Invalid Shader Type");
 
-            const size_t nextLinePosition{ source.find_first_of("\r\n", endOfLine) };
+            const Length nextLinePosition{ source.find_first_of("\r\n", endOfLine) };
             position = source.find(typeToken, nextLinePosition);
 
             if (!type)
                 continue;
 
-            const size_t blockEnd{ position == std::string::npos ? source.size() : position };
+            const Length blockEnd{ position == String::npos ? source.size() : position };
             shaderSources[type] = source.substr(nextLinePosition, blockEnd - nextLinePosition);
         }
 
@@ -136,43 +133,49 @@ namespace Zero
         glUseProgram(0);
     }
 
-    void OpenGLShader::SetUniform(const std::string& name, const glm::mat4& matrix) const
+    void OpenGLShader::SetColor(const String& name, const Color& color) const
     {
-        const int location{ glGetUniformLocation(m_Id, name.c_str()) };
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform4f(location, color.r, color.g, color.b, color.a);
+    }
+
+    void OpenGLShader::SetMatrix4(const String& name, const Matrix4& matrix) const
+    {
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
-    void OpenGLShader::SetUniform(const std::string& name, const glm::vec4& vector) const
+    void OpenGLShader::SetVector4(const String& name, const Vector4& vector) const
     {
-        const int location{ glGetUniformLocation(m_Id, name.c_str()) };
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
     }
 
-    void OpenGLShader::SetUniform(const std::string& name, const glm::vec3& vector) const
+    void OpenGLShader::SetVector3(const String& name, const Vector3& vector) const
     {
-        const int location{ glGetUniformLocation(m_Id, name.c_str()) };
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform3f(location, vector.x, vector.y, vector.z);
     }
 
-    void OpenGLShader::SetUniform(const std::string& name, const glm::vec2& vector) const
+    void OpenGLShader::SetFloat2(const String& name, const Vector2& vector) const
     {
-        const int location{ glGetUniformLocation(m_Id, name.c_str()) };
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform2f(location, vector.x, vector.y);
     }
 
-    void OpenGLShader::SetUniform(const std::string& name, float value) const
+    void OpenGLShader::SetFloat(const String& name, const F32 value) const
     {
-        const int location{ glGetUniformLocation(m_Id, name.c_str()) };
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform1f(location, value);
     }
 
-    void OpenGLShader::SetUniform(const std::string& name, int value) const
+    void OpenGLShader::SetInt(const String& name, const I32 value) const
     {
-        const int location{ glGetUniformLocation(m_Id, name.c_str()) };
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform1i(location, value);
     }
 
-    GLenum OpenGLShader::StringToShaderType(const std::string& type)
+    U32 OpenGLShader::StringToShaderType(const String& type)
     {
         if (type == "vertex")
             return GL_VERTEX_SHADER;
@@ -183,55 +186,55 @@ namespace Zero
         if (type == "geometry")
             return GL_GEOMETRY_SHADER;
 
-        ZERO_CORE_ASSERT(false, "Unknow shader type");
+        ZR_CORE_ASSERT(false, "Unknow shader type");
         return 0;
     }
 
-    std::string OpenGLShader::ExtractNameFromFilePath(const std::string& filePath)
+    String OpenGLShader::ExtractNameFromFilePath(const String& filePath)
     {
-        size_t lastSlashPosition{ filePath.find_last_of("/\\") };
-        lastSlashPosition = lastSlashPosition == std::string::npos ? 0 : lastSlashPosition + 1;
-        size_t lastDotPosition{ filePath.rfind(".") };
-        size_t count{ lastDotPosition == std::string::npos ? filePath.size() - lastSlashPosition : lastDotPosition - lastSlashPosition };
+        Length lastSlashPosition{ filePath.find_last_of("/\\") };
+        lastSlashPosition = lastSlashPosition == String::npos ? 0 : lastSlashPosition + 1;
+        Length lastDotPosition{ filePath.rfind(".") };
+        Length count{ lastDotPosition == String::npos ? filePath.size() - lastSlashPosition : lastDotPosition - lastSlashPosition };
         return filePath.substr(lastSlashPosition, count);
     }
 
-    bool OpenGLShader::CheckShaderErrors(GLuint shader)
+    Boolean OpenGLShader::CheckShaderErrors(U32 shader)
     {
-        GLint isCompiled{};
+        I32 isCompiled{};
         glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
         if (isCompiled == GL_FALSE)
         {
-            int32_t maxLength{ 0 };
+            I32 maxLength{ 0 };
             glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
-            std::vector<char> infoLog(maxLength);
+            Array<char> infoLog(maxLength);
             glGetShaderInfoLog(shader, maxLength, &maxLength, infoLog.data());
             glDeleteShader(shader);
 
-            ZERO_CORE_ERROR("{0}", infoLog.data());
+            ZR_CORE_ERROR("{0}", infoLog.data());
             return false;
         }
 
         return true;
     }
 
-    bool OpenGLShader::CheckProgramErrors(GLuint program, const std::array<GLuint, MAX_SHADERS_SUPPORTED>& shaderIds)
+    Boolean OpenGLShader::CheckProgramErrors(U32 program, const FixedArray<U32, MAX_SHADERS_SUPPORTED>& shaderIds)
     {
-        int isLinked{ 0 };
+        I32 isLinked{ 0 };
         glGetProgramiv(program, GL_LINK_STATUS, &isLinked);
         if (isLinked == GL_FALSE)
         {
-            int32_t maxLength{ 0 };
+            I32 maxLength{ 0 };
             glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
-            std::vector<char> infoLog(maxLength);
+            Array<char> infoLog(maxLength);
             glGetProgramInfoLog(program, maxLength, &maxLength, infoLog.data());
 
-            for (GLuint shaderId : shaderIds)
+            for (U32 shaderId : shaderIds)
                 glDeleteShader(shaderId);
 
             glDeleteProgram(program);
 
-            ZERO_CORE_ERROR("{0}", infoLog.data());
+            ZR_CORE_ERROR("{0}", infoLog.data());
             return false;
         }
 

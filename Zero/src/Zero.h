@@ -1,16 +1,18 @@
 #pragma once
 
 //======================================================================================
+//  Types
+//======================================================================================
+#include "Zero/Types/Color.h"
+#include "Zero/Types/Math.h"
+#include "Zero/Types/Types.h"
+
+//======================================================================================
 //  Core
 //======================================================================================
 #include "Zero/Application/Application.h"
 #include "Zero/Logger/Logger.h"
 #include "Zero/Time/DeltaTime.h"
-
-//======================================================================================
-//  Entry Point
-//======================================================================================
-#include "Zero/EntryPoint.h"
 
 //======================================================================================
 //  Event
@@ -25,7 +27,7 @@
 //======================================================================================
 #include "Zero/Input/Input.h"
 #include "Zero/Input/KeyCode.h"
-#include "Zero/Input/MouseButtonCode.h"
+#include "Zero/Input/MouseButton.h"
 
 //======================================================================================
 //  Layer
@@ -39,6 +41,7 @@
 #include "Zero/Renderer/Buffer.h"
 #include "Zero/Renderer/RenderCommand.h"
 #include "Zero/Renderer/Renderer.h"
+#include "Zero/Renderer/Renderer2D.h"
 #include "Zero/Renderer/RendererAPI.h"
 #include "Zero/Renderer/Shader.h"
 #include "Zero/Renderer/Texture.h"

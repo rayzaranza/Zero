@@ -5,27 +5,27 @@
 
 namespace Zero
 {
-    VertexArray* VertexArray::Create()
+    VertexArrayRef VertexArray::Create()
     {
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
             {
-                ZERO_CORE_ASSERT(false, "Renderer API set to None");
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
                 return nullptr;
             }
             case RendererAPI::API::OpenGL:
             {
-                return new OpenGLVertexArray();
+                return CreateRef<OpenGLVertexArray>();
             }
             case RendererAPI::API::Vulkan:
             {
-                ZERO_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
                 return nullptr;
             }
             default:
             {
-                ZERO_CORE_ASSERT(false, "Unknown Renderer API");
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
                 return nullptr;
             }
         }

@@ -2,45 +2,43 @@
 
 #include <glm/glm.hpp>
 
-typedef unsigned int GLenum;
-typedef unsigned int GLuint;
-
 namespace Zero
 {
-    constexpr int MAX_SHADERS_SUPPORTED{ 2 };
+    constexpr I16 MAX_SHADERS_SUPPORTED{ 2 };
 
     class OpenGLShader : public Shader
     {
       public:
-        OpenGLShader(const std::string& filePath);
-        OpenGLShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource);
+        OpenGLShader(const String& filePath);
+        OpenGLShader(const String& name, const String& vertexSource, const String& fragmentSource);
         virtual ~OpenGLShader() override;
 
       public:
         virtual void Bind() const override;
         virtual void Unbind() const override;
-        inline virtual const std::string& GetName() const override { return m_Name; }
+        inline virtual const String& GetName() const override { return m_Name; }
 
       public:
-        void SetUniform(const std::string& name, const glm::mat4& matrix) const;
-        void SetUniform(const std::string& name, const glm::vec4& vector) const;
-        void SetUniform(const std::string& name, const glm::vec3& vector) const;
-        void SetUniform(const std::string& name, const glm::vec2& vector) const;
-        void SetUniform(const std::string& name, float value) const;
-        void SetUniform(const std::string& name, int value) const;
+        virtual void SetColor(const String& name, const Color& color) const override;
+        virtual void SetMatrix4(const String& name, const Matrix4& matrix) const override;
+        virtual void SetVector4(const String& name, const Vector4& vector) const override;
+        virtual void SetVector3(const String& name, const Vector3& vector) const override;
+        virtual void SetFloat2(const String& name, const Vector2& vector) const override;
+        virtual void SetFloat(const String& name, const F32 value) const override;
+        virtual void SetInt(const String& name, const I32 value) const override;
 
       private:
-        std::string ReadFile(const std::string& filePath);
-        std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
-        void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
-        static bool CheckShaderErrors(GLuint shader);
-        static bool CheckProgramErrors(GLuint program, const std::array<GLuint, MAX_SHADERS_SUPPORTED>& shaderIds);
-        static GLenum StringToShaderType(const std::string& type);
-        static std::string ExtractNameFromFilePath(const std::string& filePath);
+        String ReadFile(const String& filePath);
+        Map<U32, String> PreProcess(const String& source);
+        void Compile(const Map<U32, String>& shaderSources);
+        static Boolean CheckShaderErrors(U32 shader);
+        static Boolean CheckProgramErrors(U32 program, const FixedArray<U32, MAX_SHADERS_SUPPORTED>& shaderIds);
+        static U32 StringToShaderType(const String& type);
+        static String ExtractNameFromFilePath(const String& filePath);
 
       private:
-        uint32_t m_Id{};
-        std::string m_Name{};
+        RendererID m_Id{};
+        String m_Name{};
     };
 
 }

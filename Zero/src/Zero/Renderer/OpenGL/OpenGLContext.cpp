@@ -7,7 +7,7 @@ namespace Zero
 {
     OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) : m_WindowHandle{ windowHandle }
     {
-        ZERO_CORE_ASSERT(windowHandle, "Window handle is null");
+        ZR_CORE_ASSERT(windowHandle, "Window handle is null");
     }
 
     OpenGLContext::~OpenGLContext()
@@ -16,13 +16,21 @@ namespace Zero
     void OpenGLContext::Initialize()
     {
         glfwMakeContextCurrent(m_WindowHandle);
-        int gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
-        ZERO_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
+        const I32 gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
+        ZR_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
 
-        ZERO_CORE_INFO("OpenGL Context:");
-        ZERO_CORE_INFO("  Vendor: {0}", (char*)glGetString(GL_VENDOR));
-        ZERO_CORE_INFO("  Renderer: {0}", (char*)glGetString(GL_RENDERER));
-        ZERO_CORE_INFO("  Version: {0}", (char*)glGetString(GL_VERSION));
+        ZR_CORE_INFO("OpenGL Context:");
+        ZR_CORE_INFO("  Vendor: {0}", (char*)glGetString(GL_VENDOR));
+        ZR_CORE_INFO("  Renderer: {0}", (char*)glGetString(GL_RENDERER));
+        ZR_CORE_INFO("  Version: {0}", (char*)glGetString(GL_VERSION));
+
+#       ifdef ZR_ENABLE_ASSERTS
+        I32 versionMajor;
+        I32 versionMinor;
+        glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
+        glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
+        ZR_CORE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 6), "Minimum OpenGL version required is 4.6");
+#       endif
     }
 
     void OpenGLContext::SwapBuffers()

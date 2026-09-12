@@ -10,26 +10,26 @@ namespace Zero
     class OrthographicCameraController
     {
       public:
-        OrthographicCameraController(float aspectRatio);
+        OrthographicCameraController(F32 aspectRatio);
 
       public:
         void OnUpdate(DeltaTime deltaTime);
         void OnEvent(Event& event);
         inline const OrthographicCamera& GetCamera() const { return m_Camera; }
         inline OrthographicCamera& GetCamera() { return m_Camera; }
-        inline float GetZoomLevel() const { return m_ZoomLevel; }
-        inline void SetZoomLevel(float zoomLevel) { m_ZoomLevel = zoomLevel; }
+        inline F32 GetZoomLevel() const { return m_ZoomLevel; }
+        inline void SetZoomLevel(F32 zoomLevel) { m_ZoomLevel = zoomLevel; }
 
       private:
-        bool OnMouseScrolled(MouseScrolledEvent& event);
-        bool OnWindowResizedEvent(WindowResizedEvent& event);
+        Boolean OnMouseScrolled(MouseScrolledEvent& event);
+        Boolean OnWindowResizedEvent(WindowResizedEvent& event);
 
       private:
-        float m_AspectRatio;
-        float m_ZoomLevel;
+        F32 m_AspectRatio;
+        F32 m_ZoomLevel;
         OrthographicCamera m_Camera;
-        glm::vec3 m_Position;
-        float m_ZoomSpeed;
-        float m_TranslationSpeed;
+        Vector3 m_Position;
+        F32 m_ZoomSpeed;
+        F32 m_TranslationSpeed;
     };
 }

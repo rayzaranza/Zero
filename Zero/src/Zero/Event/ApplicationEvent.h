@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 #include "Zero/Event/Event.h"
 
 namespace Zero
@@ -8,35 +8,31 @@ namespace Zero
     //======================================================================================
     //  Window Resized Event
     //======================================================================================
-
     class WindowResizedEvent : public Event
     {
       public:
-        WindowResizedEvent(int width, int height) : m_Width{width}, m_Height{height} {}
+        WindowResizedEvent(const Vector2i& size) : m_Size{ size } {}
 
       public:
-        inline int GetWidth() const { return m_Width; }
-        inline int GetHeight() const { return m_Height; }
+        inline const Vector2i& GetSize() const { return m_Size; }
         inline static EventType GetStaticType() { return EventType::WindowResized; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "WindowResized"; }
-        inline virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override
+        inline virtual I32 GetCategoryFlags() const override { return EventCategoryApplication; }
+        inline virtual String ToString() const override
         {
             std::stringstream stream{};
-            stream << GetName() << ": " << m_Width << ", " << m_Height;
+            stream << GetName() << ": " << m_Size.x << ", " << m_Size.y;
             return stream.str();
         }
 
       private:
-        int m_Width;
-        int m_Height;
+        Vector2i m_Size;
     };
 
     //======================================================================================
     //  Window Closed Event
     //======================================================================================
-
     class WindowClosedEvent : public Event
     {
       public:
@@ -46,14 +42,13 @@ namespace Zero
         inline static EventType GetStaticType() { return EventType::WindowClosed; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "WindowClosed"; }
-        inline virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override { return GetName(); }
+        inline virtual I32 GetCategoryFlags() const override { return EventCategoryApplication; }
+        inline virtual String ToString() const override { return GetName(); }
     };
 
     //======================================================================================
     //  Application Ticked Event
     //======================================================================================
-
     class ApplicationTickedEvent : public Event
     {
       public:
@@ -63,14 +58,13 @@ namespace Zero
         inline static EventType GetStaticType() { return EventType::ApplicationTicked; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "ApplicationTicked"; }
-        inline virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override { return GetName(); }
+        inline virtual I32 GetCategoryFlags() const override { return EventCategoryApplication; }
+        inline virtual String ToString() const override { return GetName(); }
     };
 
     //======================================================================================
     //  Application Updated Event
     //======================================================================================
-
     class ApplicationUpdatedEvent : public Event
     {
       public:
@@ -80,14 +74,13 @@ namespace Zero
         inline static EventType GetStaticType() { return EventType::ApplicationUpdated; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "ApplicationUpdated"; }
-        inline virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override { return GetName(); }
+        inline virtual I32 GetCategoryFlags() const override { return EventCategoryApplication; }
+        inline virtual String ToString() const override { return GetName(); }
     };
 
     //======================================================================================
     //  Application Rendered Event
     //======================================================================================
-
     class ApplicationRenderedEvent : public Event
     {
       public:
@@ -97,7 +90,7 @@ namespace Zero
         inline static EventType GetStaticType() { return EventType::ApplicationRendered; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "ApplicationRendered"; }
-        inline virtual int GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override { return GetName(); }
+        inline virtual I32 GetCategoryFlags() const override { return EventCategoryApplication; }
+        inline virtual String ToString() const override { return GetName(); }
     };
 }

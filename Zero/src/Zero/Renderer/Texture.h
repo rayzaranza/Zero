@@ -11,9 +11,8 @@ namespace Zero
         virtual ~Texture() = default;
 
       public:
-        virtual void Bind(uint32_t slot = 0) const = 0;
-        virtual uint32_t GetWidth() const = 0;
-        virtual uint32_t GetHeight() const = 0;
+        virtual void Bind(const U32 slot = 0) const = 0;
+        virtual const Vector2u& GetSize() const = 0;
     };
 
     //======================================================================================
@@ -22,6 +21,9 @@ namespace Zero
     class Texture2D : public Texture
     {
       public:
-        static Ref<Texture2D> Create(const std::string& path);
+        static Ref<Texture2D> Create(const String& path);
     };
+
+    using Texture2DRef = Ref<Texture2D>;
+
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Renderer/RendererContext.h"
 
@@ -8,40 +8,35 @@ struct GLFWwindow;
 
 namespace Zero
 {
-    //======================================================================================
+    //=====================================================================================================================================
     //  Event Callback Function
-    //======================================================================================
+    //=====================================================================================================================================
+    using EventCallback = Function<void(Event&)>;
 
-    using EventCallback = std::function<void(Event&)>;
-
-    //======================================================================================
+    //=====================================================================================================================================
     //  Window Data
-    //======================================================================================
-
+    //=====================================================================================================================================
     struct WindowData
     {
-        std::string Title{};
-        int Width{};
-        int Height{};
+        String Title{};
+        Vector2i Size{};
         EventCallback EventCallback{};
     };
 
-    //======================================================================================
+    //=====================================================================================================================================
     //  Window
-    //======================================================================================
-
+    //=====================================================================================================================================
     class Window
     {
       public:
-        Window(const std::string& title = "ZERO", int width = 1280, int height = 720);
+        Window(const String& title = "ZERO", const Vector2i& size = Vector2i{ 1280, 720 });
         ~Window();
 
       public:
-        inline int GetWidth() const { return m_Data.Width; }
-        inline int GetHeight() const { return m_Data.Height; }
+        inline const Vector2i& GetSize() const { return m_Data.Size; }
         inline GLFWwindow* GetWindowHandle() const { return m_WindowHandle; }
         inline void SetEventCallback(const EventCallback& callback) { m_Data.EventCallback = callback; }
-        inline float GetAspectRatio() const { return static_cast<float>(m_Data.Width) / static_cast<float>(m_Data.Height); }
+        inline F32 GetAspectRatio() const { return static_cast<F32>(m_Data.Size.x) / static_cast<F32>(m_Data.Size.y); }
 
       public:
         void OnUpdate();
@@ -55,6 +50,6 @@ namespace Zero
 
       private:
         void setCallbacks();
-        inline static void errorCallback(int error, const char* description) { ZERO_CORE_ERROR("GLFW Error ({}): {}", error, description); }
+        inline static void errorCallback(const I32 error, const char* description) { ZR_CORE_ERROR("GLFW Error ({}): {}", error, description); }
     };
 }

@@ -9,7 +9,7 @@ namespace Zero
     class RendererAPI
     {
       public:
-        enum class API
+        enum class API : U8
         {
             None,
             OpenGL,
@@ -18,10 +18,10 @@ namespace Zero
 
       public:
         virtual void Initialize() = 0;
-        virtual void SetClearColor(const glm::vec4& color) const = 0;
+        virtual void SetClearColor(const Color& color) const = 0;
         virtual void Clear() const = 0;
-        virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
-        virtual void SetViewport(int x, int y, uint32_t width, uint32_t height) = 0;
+        virtual void DrawIndexed(const VertexArrayRef& vertexArray) = 0;
+        virtual void SetViewport(const Vector2i& position, const Vector2u& size) = 0;
 
       public:
         inline static API GetAPI() { return s_API; }

@@ -4,7 +4,7 @@
 
 namespace Zero
 {
-    enum Key : int
+    enum class KeyCode : I32
     {
         SPACE = 32,
         APOSTROPHE = 39,
