@@ -34,7 +34,7 @@ namespace Zero
         CalculateViewProjectionMatrix();
     }
 
-    void OrthographicCamera::SetRotation(Degrees rotation)
+    void OrthographicCamera::SetRotation(const Degrees rotation)
     {
         m_Rotation = rotation;
         CalculateViewProjectionMatrix();

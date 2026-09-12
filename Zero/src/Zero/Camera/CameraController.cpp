@@ -6,12 +6,14 @@
 namespace Zero
 {
     OrthographicCameraController::OrthographicCameraController(F32 aspectRatio)
-        : m_AspectRatio(aspectRatio)
+        : m_AspectRatio{ aspectRatio }
         , m_ZoomLevel{ 1.0f }
         , m_Camera{ -m_AspectRatio, m_AspectRatio }
         , m_Position{ 0.0f }
         , m_TranslationSpeed{ m_ZoomLevel }
         , m_ZoomSpeed{ 0.1f }
+        , m_Rotation{ 0.0f }
+        , m_RotationSpeed{ 90.0f }
     {}
 
     void OrthographicCameraController::OnUpdate(DeltaTime deltaTime)
@@ -28,7 +30,13 @@ namespace Zero
         else if (Input::IsKeyPressed(KeyCode::S))
             m_Position.y -= m_TranslationSpeed * deltaTime;
 
+        if (Input::IsKeyPressed(KeyCode::Q))
+            m_Rotation += m_RotationSpeed * deltaTime;
+        else if (Input::IsKeyPressed(KeyCode::E))
+            m_Rotation -= m_RotationSpeed * deltaTime;
+
         m_Camera.SetPosition(m_Position);
+        m_Camera.SetRotation(m_Rotation);
     }
 
     void OrthographicCameraController::OnEvent(Event& event)
@@ -40,7 +48,7 @@ namespace Zero
 
     Boolean OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)
     {
-        m_ZoomLevel = std::fmax(m_ZoomLevel - event.GetOffset().y * m_ZoomSpeed, 0.25f);
+        m_ZoomLevel = std::fmax(m_ZoomLevel - event.GetOffset().y * m_ZoomSpeed, 0.1f);
         m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
         return false;
     }

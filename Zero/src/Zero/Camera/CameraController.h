@@ -29,7 +29,9 @@ namespace Zero
         F32 m_ZoomLevel;
         OrthographicCamera m_Camera;
         Vector3 m_Position;
+        Degrees m_Rotation;
         F32 m_ZoomSpeed;
         F32 m_TranslationSpeed;
+        F32 m_RotationSpeed;
     };
 }
