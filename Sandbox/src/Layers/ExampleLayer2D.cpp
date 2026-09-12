@@ -16,19 +16,7 @@ ExampleLayer2D::~ExampleLayer2D()
 
 void ExampleLayer2D::OnAttach()
 {
-    m_QuadVertexArray = Zero::VertexArray::Create();
-
-    Zero::VertexBufferRef quadVertexBuffer{
-        Zero::VertexBuffer::Create({ -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, -0.5f, 0.5f, 0.0f })
-    };
-
-    Zero::IndexBufferRef quadIndexBuffer{ Zero::IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
-
-    quadVertexBuffer->SetLayout({ { Zero::AttributeType::Vector3, "a_Position" } });
-    m_QuadVertexArray->AddVertexBuffer(quadVertexBuffer);
-    m_QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
-
-    m_ShaderLibrary->Load("D:/Zero/Sandbox/assets/shaders/Flat.glsl");
+    m_Texture = Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
 }
 
 void ExampleLayer2D::OnDetach()
@@ -37,12 +25,16 @@ void ExampleLayer2D::OnDetach()
 void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 {
     m_CameraController.OnUpdate(deltaTime);
-    Zero::RenderCommand::SetClearColor(Zero::Color::Black);
-    Zero::RenderCommand::Clear();
+}
+
+void ExampleLayer2D::OnRender()
+{
+    Zero::RenderCommand::Clear(Zero::Color::Black);
 
     Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Zero::Renderer2D::DrawQuad(Zero::Vector2::Zero, Zero::Vector2::One, 0.0f, m_QuadColor);
-    Zero::Renderer2D::DrawQuad(Zero::Vector2{ 0.5f, 1.0f }, Zero::Vector2{ 1.0f, 0.5f }, 0.0f, Zero::Color::Yellow);
+    Zero::Renderer2D::DrawQuad({ -1.0f, -0.5f }, 0.0f, Zero::Vector2{ 10.0f }, m_Texture);
+    Zero::Renderer2D::DrawQuad(Zero::Vector2::Zero, 0.0f, Zero::Vector2::One, Zero::Color::Red);
+    Zero::Renderer2D::DrawQuad({ 0.5f, 1.0f }, 0.0f, Zero::Vector2::One, Zero::Color::Yellow);
     Zero::Renderer2D::EndScene();
 }
 
