@@ -83,23 +83,25 @@ namespace Zero
 
         glfwSetKeyCallback(m_WindowHandle, [](GLFWwindow* window, const I32 key, const I32 scanCode, const I32 action, const I32 mods) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
+            const KeyCode keyCode{ key };
+
             switch (action)
             {
                 case GLFW_PRESS:
                 {
-                    KeyPressedEvent event{ key, 0 };
+                    KeyPressedEvent event{ keyCode, 0 };
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_RELEASE:
                 {
-                    KeyReleasedEvent event{ key };
+                    KeyReleasedEvent event{ keyCode };
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_REPEAT:
                 {
-                    KeyPressedEvent event{ key, 1 };
+                    KeyPressedEvent event{ keyCode, 1 };
                     data.EventCallback(event);
                     break;
                 }
@@ -108,23 +110,25 @@ namespace Zero
 
         glfwSetCharCallback(m_WindowHandle, [](GLFWwindow* window, const U32 keyCode) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
-            KeyTypedEvent event{ static_cast<I32>(keyCode) };
+            KeyTypedEvent event{ static_cast<KeyCode>(keyCode) };
             data.EventCallback(event);
         });
 
         glfwSetMouseButtonCallback(m_WindowHandle, [](GLFWwindow* window, const I32 button, const I32 action, const I32 mods) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
+
+            const MouseButton mouseButton{ static_cast<MouseButton>(button) };
             switch (action)
             {
                 case GLFW_PRESS:
                 {
-                    MouseButtonPressedEvent event{ button };
+                    MouseButtonPressedEvent event{ mouseButton };
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_RELEASE:
                 {
-                    MouseButtonReleasedEvent event{ button };
+                    MouseButtonReleasedEvent event{ mouseButton };
                     data.EventCallback(event);
                     break;
                 }
