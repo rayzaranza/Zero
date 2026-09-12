@@ -17,6 +17,8 @@ namespace Zero
 
       public:
         static void DrawQuad(const Vector2& position, const Degrees rotation, const Vector2& scale, const Color& color);
-        static void DrawQuad(const Vector2& position, const Degrees rotation, const Vector2& scale, const Texture2DRef& texture);
+        static void DrawQuad(
+            const Vector2& position, const Degrees rotation, const Vector2& scale, const Texture2DRef& texture, const Color& tint = Color::White
+        );
     };
 }

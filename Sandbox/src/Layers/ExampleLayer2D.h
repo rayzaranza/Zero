@@ -17,8 +17,6 @@ class ExampleLayer2D : public Zero::Layer
     virtual void OnEvent(Zero::Event& event) override;
 
   private:
-    Zero::ShaderLibraryRef m_ShaderLibrary;
-    Zero::VertexArrayRef m_QuadVertexArray;
     Zero::OrthographicCameraController m_CameraController;
     Zero::Color m_QuadColor;
     Zero::Texture2DRef m_Texture;

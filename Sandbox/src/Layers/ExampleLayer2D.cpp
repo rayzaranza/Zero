@@ -7,7 +7,6 @@
 ExampleLayer2D::ExampleLayer2D()
     : Zero::Layer{ "ExampleLayer2D" }
     , m_QuadColor{ Zero::Color::Blue }
-    , m_ShaderLibrary{ Zero::ShaderLibrary::Create() }
     , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
 {}
 
@@ -30,11 +29,12 @@ void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 void ExampleLayer2D::OnRender()
 {
     Zero::RenderCommand::Clear(Zero::Color::Black);
-
     Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
-    Zero::Renderer2D::DrawQuad({ -1.0f, -0.5f }, 0.0f, Zero::Vector2{ 10.0f }, m_Texture);
-    Zero::Renderer2D::DrawQuad(Zero::Vector2::Zero, 0.0f, Zero::Vector2::One, Zero::Color::Red);
-    Zero::Renderer2D::DrawQuad({ 0.5f, 1.0f }, 0.0f, Zero::Vector2::One, Zero::Color::Yellow);
+    {
+        Zero::Renderer2D::DrawQuad({ -1.0f, -0.5f }, 0.0f, Zero::Vector2{ 10.0f }, m_Texture);
+        Zero::Renderer2D::DrawQuad(Zero::Vector2::Zero, 0.0f, Zero::Vector2::One, Zero::Color::Red);
+        Zero::Renderer2D::DrawQuad({ 0.5f, 1.0f }, 0.0f, Zero::Vector2::One, m_QuadColor);
+    }
     Zero::Renderer2D::EndScene();
 }
 

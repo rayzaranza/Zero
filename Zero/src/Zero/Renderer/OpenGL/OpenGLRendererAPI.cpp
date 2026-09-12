@@ -29,6 +29,7 @@ namespace Zero
     void OpenGLRendererAPI::DrawIndexed(const VertexArrayRef& vertexArray)
     {
         glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetLength(), GL_UNSIGNED_INT, nullptr);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     void OpenGLRendererAPI::SetViewport(const Vector2i& position, const Vector2u& size)

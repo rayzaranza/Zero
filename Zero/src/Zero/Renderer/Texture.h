@@ -13,6 +13,7 @@ namespace Zero
       public:
         virtual void Bind(const U32 slot = 0) const = 0;
         virtual const Vector2u& GetSize() const = 0;
+        virtual void SetData(const void* data, U32 size) = 0;
     };
 
     //======================================================================================
@@ -21,6 +22,7 @@ namespace Zero
     class Texture2D : public Texture
     {
       public:
+        static Ref<Texture2D> Create(const Vector2u& size);
         static Ref<Texture2D> Create(const String& path);
     };
 
