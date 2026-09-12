@@ -40,7 +40,7 @@ add_library(Zero STATIC
     "${ZR_SRC}/Input/Input.h"
     "${ZR_SRC}/Input/Input.cpp"
     "${ZR_SRC}/Input/KeyCode.h"
-    "${ZR_SRC}/Input/MouseButtonCode.h"
+    "${ZR_SRC}/Input/MouseButton.h"
 
     #=====================================================================================================================================
     #  Window
@@ -143,7 +143,7 @@ target_include_directories(Zero
 
 target_precompile_headers(Zero
     PUBLIC
-        "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/Core/zrpch.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h"
 )
 
 target_link_libraries(Zero

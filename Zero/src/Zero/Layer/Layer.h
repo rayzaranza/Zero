@@ -15,6 +15,7 @@ namespace Zero
         inline virtual void OnAttach() {}
         inline virtual void OnDetach() {}
         inline virtual void OnUpdate(const DeltaTime deltaTime) {}
+        inline virtual void OnRender() {}
         inline virtual void OnUIRender() {}
         inline virtual void OnEvent(Event& event) {}
 

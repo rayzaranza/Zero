@@ -37,13 +37,12 @@ void ExampleLayer2D::OnDetach()
 void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 {
     m_CameraController.OnUpdate(deltaTime);
-
     Zero::RenderCommand::SetClearColor(Zero::Color::Black);
     Zero::RenderCommand::Clear();
 
-    Zero::Renderer2D::DrawQuad(Zero::Vector2{ 0.0f }, Zero::Vector2{ 1.0f }, 0.0f, m_QuadColor);
     Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
-
+    Zero::Renderer2D::DrawQuad(Zero::Vector2::Zero, Zero::Vector2::One, 0.0f, m_QuadColor);
+    Zero::Renderer2D::DrawQuad(Zero::Vector2{ 0.5f, 1.0f }, Zero::Vector2{ 1.0f, 0.5f }, 0.0f, Zero::Color::Yellow);
     Zero::Renderer2D::EndScene();
 }
 

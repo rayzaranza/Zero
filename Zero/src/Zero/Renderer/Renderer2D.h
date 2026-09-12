@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Zero/Camera/Camera.h"
-#include "Zero/Core/Core.h"
 
 namespace Zero
 {

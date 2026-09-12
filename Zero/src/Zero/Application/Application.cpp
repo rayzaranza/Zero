@@ -68,7 +68,10 @@ namespace Zero
             if (!m_IsMinimized)
             {
                 for (Layer* layer : m_LayerStack)
+                {
                     layer->OnUpdate(deltaTime);
+                    layer->OnRender();
+                }
             }
 
             m_UILayer->Begin();
