@@ -8,8 +8,11 @@ class ExampleLayer : public Zero::Layer
     ExampleLayer();
 
   public:
+    virtual void OnAttach() override;
+    virtual void OnDetach() override;
     virtual void OnUpdate(const Zero::DeltaTime deltaTime) override;
     virtual void OnEvent(Zero::Event& event) override;
+    virtual void OnRender() override;
     virtual void OnUIRender() override;
 
   private:

@@ -1,5 +1,6 @@
 #include "Zero/Renderer/Renderer2D.h"
 
+#include "Zero/Math/Math.h"
 #include "Zero/Renderer/RenderCommand.h"
 #include "Zero/Renderer/Shader.h"
 #include "Zero/Renderer/VertexArray.h"
@@ -11,7 +12,8 @@ namespace Zero
     struct Renderer2DStorage
     {
         VertexArrayRef VertexArray{};
-        ShaderRef Shader{};
+        ShaderRef FlatShader{};
+        ShaderRef TextureShader{};
     };
 
     static Renderer2DStorage* s_Data{};
@@ -20,15 +22,39 @@ namespace Zero
     {
         s_Data = new Renderer2DStorage{
             .VertexArray = VertexArray::Create(),
-            .Shader = Shader::Create("D:/Zero/Sandbox/assets/shaders/Flat.glsl"),
+            .FlatShader = Shader::Create("D:/Zero/Sandbox/assets/shaders/Flat.glsl"),
+            .TextureShader = Shader::Create("D:/Zero/Sandbox/assets/shaders/Texture.glsl"),
         };
 
-        VertexBufferRef quadVertexBuffer{ VertexBuffer::Create({ -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f }) };
-        quadVertexBuffer->SetLayout({ { AttributeType::Vector2, "a_Position" } });
+        VertexBufferRef quadVertexBuffer{ VertexBuffer::Create(
+            {
+                -0.5f,
+                -0.5f,
+                0.0f,
+                0.0f, //
+                0.5f,
+                -0.5f,
+                1.0f,
+                0.0f, //
+                0.5f,
+                0.5f,
+                1.0f,
+                1.0f, //
+                -0.5f,
+                0.5f,
+                0.0f,
+                1.0f, //
+            }
+        ) };
+
+        quadVertexBuffer->SetLayout({ { AttributeType::Vector2, "a_Position" }, { AttributeType::Vector2, "a_UV" } });
         s_Data->VertexArray->AddVertexBuffer(quadVertexBuffer);
 
         IndexBufferRef quadIndexBuffer{ IndexBuffer::Create({ 0, 1, 2, 2, 3, 0 }) };
         s_Data->VertexArray->SetIndexBuffer(quadIndexBuffer);
+
+        s_Data->TextureShader->Bind();
+        s_Data->TextureShader->SetInt("u_Texture", 0);
     }
 
     void Renderer2D::Destroy()
@@ -38,30 +64,37 @@ namespace Zero
 
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
-        s_Data->Shader->Bind();
-        s_Data->Shader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
+        s_Data->FlatShader->Bind();
+        s_Data->FlatShader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
+
+        s_Data->TextureShader->Bind();
+        s_Data->TextureShader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
     }
 
     void Renderer2D::EndScene()
     {}
 
-    void Renderer2D::DrawQuad(const Vector3& position, const Vector2& size, const Degrees rotation, const Color& color)
+    void Renderer2D::DrawQuad(const Vector2& position, const Degrees rotation, const Vector2& scale, const Color& color)
     {
-        Matrix4 modelMatrix{ 1.0f };
-        modelMatrix = glm::translate(modelMatrix, position);
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation), Vector3::Up);
-        modelMatrix = glm::scale(modelMatrix, Vector3{ size, 1.0f });
+        s_Data->FlatShader->Bind();
 
-        s_Data->Shader->Bind();
-        s_Data->Shader->SetMatrix4("u_ModelMatrix", modelMatrix);
-        s_Data->Shader->SetColor("u_Color", color);
+        Matrix4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
+        s_Data->FlatShader->SetMatrix4("u_ModelMatrix", modelMatrix);
+        s_Data->FlatShader->SetColor("u_Color", color);
 
         s_Data->VertexArray->Bind();
         RenderCommand::DrawIndexed(s_Data->VertexArray);
     }
 
-    void Renderer2D::DrawQuad(const Vector2& position, const Vector2& size, const Degrees rotation, const Color& color)
+    void Renderer2D::DrawQuad(const Vector2& position, const Degrees rotation, const Vector2& scale, const Texture2DRef& texture)
     {
-        Renderer2D::DrawQuad(Vector3{ position, 0.0f }, size, rotation, color);
+        s_Data->TextureShader->Bind();
+
+        Matrix4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
+        s_Data->TextureShader->SetMatrix4("u_ModelMatrix", modelMatrix);
+
+        texture->Bind();
+        s_Data->VertexArray->Bind();
+        RenderCommand::DrawIndexed(s_Data->VertexArray);
     }
 }

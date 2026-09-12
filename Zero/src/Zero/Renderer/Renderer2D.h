@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zero/Camera/Camera.h"
+#include "Zero/Renderer/Texture.h"
 
 namespace Zero
 {
@@ -15,18 +16,7 @@ namespace Zero
         static void EndScene();
 
       public:
-        static void DrawQuad(
-            const Vector2& position = Vector2::Zero,
-            const Vector2& size = Vector2::One,
-            const Degrees rotation = 0.0f,
-            const Color& color = Color::White
-        );
-
-        static void DrawQuad(
-            const Vector3& position = Vector3::Zero,
-            const Vector2& size = Vector2::One,
-            const Degrees rotation = 0.0f,
-            const Color& color = Color::White
-        );
+        static void DrawQuad(const Vector2& position, const Degrees rotation, const Vector2& scale, const Color& color);
+        static void DrawQuad(const Vector2& position, const Degrees rotation, const Vector2& scale, const Texture2DRef& texture);
     };
 }

@@ -29,8 +29,12 @@ namespace Zero
         const OpenGLTexture2DFormat format{ GetTextureFormat(channels) };
         glCreateTextures(GL_TEXTURE_2D, 1, &m_Id);
         glTextureStorage2D(m_Id, 1, format.storage, m_Size.x, m_Size.y);
+
         glTextureParameteri(m_Id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTextureParameteri(m_Id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTextureParameteri(m_Id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTextureParameteri(m_Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
         glTextureSubImage2D(m_Id, 0, 0, 0, m_Size.x, m_Size.y, format.image, GL_UNSIGNED_BYTE, image);
 
         stbi_image_free(image);
