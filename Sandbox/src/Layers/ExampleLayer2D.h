@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Zero/Zero.h>
+#include <Zero.h>
 
 class ExampleLayer2D : public Zero::Layer
 {

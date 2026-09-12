@@ -1,10 +1,8 @@
 #pragma once
 
-#include <array>
+#include "Zero/Types/Types.h"
+
 #include <functional>
-#include <glm/glm.hpp>
-#include <memory>
-#include <vector>
 
 //===============================================================================================
 //  Platform
@@ -22,7 +20,7 @@
 #        define ZR_PLATFORM_MACOS
 #        error "MacOS is not supported"
 #    else
-#        define ZR_PLATOFMR_APPLE_UNKNOWN
+#        define ZR_PLATFORM_APPLE_UNKNOWN
 #        error "Unknow Apple platform"
 #    endif
 
@@ -69,66 +67,3 @@
 //  Event Function Binding
 //===============================================================================================
 #define ZR_BIND_FUNCTION(fn) std::bind(&fn, this, std::placeholders::_1)
-
-//===============================================================================================
-//  Aliases
-//===============================================================================================
-namespace Zero
-{
-    //===========================================================================================
-    using F32 = float;
-    using F64 = double;
-    using U8 = uint8_t;
-    using U16 = uint16_t;
-    using U32 = uint32_t;
-    using U64 = uint64_t;
-    using I8 = int8_t;
-    using I16 = int16_t;
-    using I32 = int32_t;
-    using I64 = int64_t;
-    using String = std::string;
-    using Boolean = bool;
-    using Length = size_t;
-
-    //===========================================================================================
-    template <typename T> using Array = std::vector<T>;
-    template <typename T, Length S> using FixedArray = std::array<T, S>;
-    template <typename K, typename V> using Map = std::unordered_map<K, V>;
-    template <typename A, typename B> using Pair = std::pair<A, B>;
-    template <typename T> using Function = std::function<T>;
-
-    //===========================================================================================
-    template <typename T> using Scope = std::unique_ptr<T>;
-    template <typename T> using Ref = std::shared_ptr<T>;
-    template <typename T> using WeakRef = std::weak_ptr<T>;
-
-    //===========================================================================================
-    using Vector2 = glm::vec2;
-    using Vector3 = glm::vec3;
-    using Vector4 = glm::vec4;
-    using Matrix3 = glm::mat3;
-    using Matrix4 = glm::mat4;
-    using Quaternion = glm::quat;
-    using Color = glm::vec4;
-    using Vector2i = glm::ivec2;
-    using Vector3i = glm::ivec3;
-    using Vector4i = glm::ivec4;
-    using Vector2u = glm::uvec2;
-    using Vector3u = glm::uvec3;
-    using Vector4u = glm::uvec4;
-
-    //===========================================================================================
-    using Degrees = F32;
-    using Seconds = F32;
-    using Milliseconds = F32;
-
-    //===========================================================================================
-    using RendererID = U32;
-
-    //===========================================================================================
-    template <typename T, typename... TArgs>
-    constexpr Ref<T> CreateRef(TArgs&&... args)
-    {
-        return std::make_shared<T>(std::forward<TArgs>(args)...);
-    }
-}

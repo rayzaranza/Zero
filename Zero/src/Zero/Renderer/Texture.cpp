@@ -1,6 +1,6 @@
 #include "Zero/Renderer/Texture.h"
 
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 #include "Zero/Renderer/OpenGL/OpenGLTexture.h"
 #include "Zero/Renderer/Renderer.h"
 

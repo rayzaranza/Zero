@@ -18,14 +18,14 @@ namespace Zero
     {
         m_TranslationSpeed = m_ZoomLevel;
 
-        if (Input::IsKeyPressed(Key::D))
+        if (Input::IsKeyPressed(KeyCode::D))
             m_Position.x += m_TranslationSpeed * deltaTime;
-        else if (Input::IsKeyPressed(Key::A))
+        else if (Input::IsKeyPressed(KeyCode::A))
             m_Position.x -= m_TranslationSpeed * deltaTime;
 
-        if (Input::IsKeyPressed(Key::W))
+        if (Input::IsKeyPressed(KeyCode::W))
             m_Position.y += m_TranslationSpeed * deltaTime;
-        else if (Input::IsKeyPressed(Key::S))
+        else if (Input::IsKeyPressed(KeyCode::S))
             m_Position.y -= m_TranslationSpeed * deltaTime;
 
         m_Camera.SetPosition(m_Position);

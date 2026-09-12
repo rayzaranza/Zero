@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 #include "Zero/Layer/Layer.h"
 
 namespace Zero

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Zero/Camera/Camera.h"
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Layer/LayerStack.h"

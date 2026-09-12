@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Renderer/RendererContext.h"
 

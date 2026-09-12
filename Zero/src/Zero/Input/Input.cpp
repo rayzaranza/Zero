@@ -1,4 +1,4 @@
-#include "Input.h"
+#include "Zero/Input/Input.h"
 
 #include <GLFW/glfw3.h>
 
@@ -8,21 +8,21 @@ namespace Zero
 {
     Input* Input::s_Instance{ new Input() };
 
-    Boolean Input::IsKeyPressed(const I32 keyCode)
+    Boolean Input::IsKeyPressed(const KeyCode keyCode)
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
-        const I32 state{ glfwGetKey(window, keyCode) };
+        const I32 state{ glfwGetKey(window, static_cast<I32>(keyCode)) };
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    Boolean Input::IsMouseButtonPressed(const I32 button)
+    Boolean Input::IsMouseButtonPressed(const MouseButton button)
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
-        const I32 state{ glfwGetMouseButton(window, button) };
+        const I32 state{ glfwGetMouseButton(window, static_cast<I32>(button)) };
         return state == GLFW_PRESS;
     }
 
-    const Vector2& Input::GetMousePosition()
+    Vector2 Input::GetMousePosition()
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
         F64 x, y;

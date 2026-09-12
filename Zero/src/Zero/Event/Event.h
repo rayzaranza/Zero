@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Zero/Core.h"
+#include "Zero/Core/Core.h"
 
 namespace Zero
 {
     //======================================================================================
     //  Event Type
     //======================================================================================
-    enum class EventType : I8
+    enum class EventType : U8
     {
         None,
         WindowClosed,
@@ -30,7 +30,7 @@ namespace Zero
     //======================================================================================
     //  Event Category
     //======================================================================================
-    enum EventCategory : I8
+    enum EventCategory : U8
     {
         None,
         EventCategoryApplication = 1 << 0,

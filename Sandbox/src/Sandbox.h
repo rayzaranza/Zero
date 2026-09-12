@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Zero/Zero.h>
+#include <Zero.h>
 
 #include "Layers/ExampleLayer.h"
 #include "Layers/ExampleLayer2D.h"

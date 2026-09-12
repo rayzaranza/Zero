@@ -1,6 +1,6 @@
 #include "Sandbox.h"
 
-#include <Zero/EntryPoint.h>
+#include <Zero/Core/EntryPoint.h>
 
 Zero::Application* Zero::CreateApplication()
 {

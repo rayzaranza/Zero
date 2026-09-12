@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zero/Logger/Logger.h"
+#include "Zero/Types/Types.h"
 
 #include <array>
 #include <functional>

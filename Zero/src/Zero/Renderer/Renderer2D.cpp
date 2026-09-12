@@ -40,7 +40,6 @@ namespace Zero
     {
         s_Data->Shader->Bind();
         s_Data->Shader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
-        s_Data->Shader->SetMatrix4("u_ModelMatrix", Zero::Matrix4{ 1.0f });
     }
 
     void Renderer2D::EndScene()
@@ -50,7 +49,7 @@ namespace Zero
     {
         Matrix4 modelMatrix{ 1.0f };
         modelMatrix = glm::translate(modelMatrix, position);
-        modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation), Vector3{ 0, 0, 1 });
+        modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation), Vector3::Up);
         modelMatrix = glm::scale(modelMatrix, Vector3{ size, 1.0f });
 
         s_Data->Shader->Bind();

@@ -9,7 +9,7 @@ namespace Zero
     class RendererAPI
     {
       public:
-        enum class API : I8
+        enum class API : U8
         {
             None,
             OpenGL,

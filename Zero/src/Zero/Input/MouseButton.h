@@ -4,7 +4,7 @@
 
 namespace Zero
 {
-    enum class MouseButton : I8
+    enum class MouseButton : I32
     {
         ONE = 0,
         TWO = 1,

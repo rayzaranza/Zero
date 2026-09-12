@@ -86,6 +86,6 @@ void ExampleLayer::OnEvent(Zero::Event& event)
 void ExampleLayer::OnUIRender()
 {
     ImGui::Begin("Settings");
-    ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadColor));
+    ImGui::ColorEdit4("Quad Color", glm::value_ptr(static_cast<glm::vec4&>(m_QuadColor)));
     ImGui::End();
 }

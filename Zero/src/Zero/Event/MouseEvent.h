@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Zero/Core.h"
-
-#include "Event.h"
+#include "Zero/Core/Core.h"
+#include "Zero/Event/Event.h"
 
 namespace Zero
 {

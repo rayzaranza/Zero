@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zero/Camera/Camera.h"
+#include "Zero/Core/Core.h"
 
 namespace Zero
 {
@@ -16,17 +17,17 @@ namespace Zero
 
       public:
         static void DrawQuad(
-            const Vector2& position = Vector2{ 0.0f },
-            const Vector2& size = Vector2{ 1.0f },
+            const Vector2& position = Vector2::Zero,
+            const Vector2& size = Vector2::One,
             const Degrees rotation = 0.0f,
-            const Color& color = Color{ 1.0f }
+            const Color& color = Color::White
         );
 
         static void DrawQuad(
-            const Vector3& position = Vector3{ 0.0f },
-            const Vector2& size = Vector2{ 1.0f },
+            const Vector3& position = Vector3::Zero,
+            const Vector2& size = Vector2::One,
             const Degrees rotation = 0.0f,
-            const Color& color = Color{ 1.0f }
+            const Color& color = Color::White
         );
     };
 }
