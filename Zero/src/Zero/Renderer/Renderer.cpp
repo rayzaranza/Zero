@@ -14,6 +14,11 @@ namespace Zero
         Renderer2D::Initialize();
     }
 
+    void Renderer::Destroy()
+    {
+        Renderer2D::Destroy();
+    }
+
     void Renderer::OnWindowResized(const Vector2u& size)
     {
         RenderCommand::SetViewport({ 0, 0 }, size);
