@@ -1,6 +1,6 @@
 #include "Zero/Renderer/RendererAPI.h"
 
-#include "Zero/Renderer/OpenGL/OpenGLRendererAPI.h";
+#include "Zero/Renderer/OpenGL/OpenGLRendererAPI.h"
 
 namespace Zero
 {
