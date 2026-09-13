@@ -19,17 +19,8 @@ class ExampleLayer2D : public Zero::Layer
   public:
     Zero::Boolean OnKeyPressed(Zero::KeyPressedEvent& event);
 
-  public:
-    struct ProfileResult
-    {
-        Zero::String Name{};
-        Zero::Milliseconds Time{};
-    };
-
   private:
     Zero::OrthographicCameraController m_CameraController;
     Zero::Color m_QuadColor;
     Zero::Texture2DRef m_Texture;
-
-    Zero::Array<ProfileResult> m_ProfileResults{};
 };
