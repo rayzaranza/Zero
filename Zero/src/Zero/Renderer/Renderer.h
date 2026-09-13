@@ -28,6 +28,6 @@ namespace Zero
             Matrix4 ViewProjectionMatrix{ 1.0f };
         };
 
-        static SceneData* s_SceneData;
+        static Scope<SceneData> s_SceneData;
     };
 }
