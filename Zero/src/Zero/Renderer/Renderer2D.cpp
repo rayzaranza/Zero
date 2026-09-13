@@ -9,9 +9,6 @@
 
 namespace Zero
 {
-    static const Array<F32> QUAD_VERTICES{ -0.5f, -0.5f, 0.0f, 0.0f, 0.5f, -0.5f, 1.0f, 0.0f, 0.5f, 0.5f, 1.0f, 1.0f, -0.5f, 0.5f, 0.0f, 1.0f };
-    static const Array<U32> QUAD_INDICES{ 0, 1, 2, 2, 3, 0 };
-    static const VertexBufferLayout QUAD_ATTRIBUTES{ { AttributeType::Vector2, "a_Position" }, { AttributeType::Vector2, "a_UV" } };
 
     struct Renderer2DStorage
     {
@@ -20,23 +17,30 @@ namespace Zero
         Texture2DRef DefaultTexture{};
     };
 
-    static Renderer2DStorage* s_Data{};
+    static Renderer2DStorage* s_Data;
 
     void Renderer2D::Initialize()
     {
         ZR_PROFILE_FUNCTION();
 
+        s_Data = new Renderer2DStorage{};
+        s_Data->VertexArray = VertexArray::Create();
+
+        const Array<F32> QUAD_VERTICES{ -0.5f, -0.5f, 0.0f, 0.0f, 0.5f, -0.5f, 1.0f, 0.0f, 0.5f, 0.5f, 1.0f, 1.0f, -0.5f, 0.5f, 0.0f, 1.0f };
+        const VertexBufferLayout QUAD_ATTRIBUTES{ { AttributeType::Vector2, "a_Position" }, { AttributeType::Vector2, "a_UV" } };
         VertexBufferRef quadVertexBuffer{ VertexBuffer::Create(QUAD_VERTICES) };
-        IndexBufferRef quadIndexBuffer{ IndexBuffer::Create(QUAD_INDICES) };
-
         quadVertexBuffer->SetLayout(QUAD_ATTRIBUTES);
-
         s_Data->VertexArray->AddVertexBuffer(quadVertexBuffer);
+
+        const Array<U32> QUAD_INDICES{ 0, 1, 2, 2, 3, 0 };
+        IndexBufferRef quadIndexBuffer{ IndexBuffer::Create(QUAD_INDICES) };
         s_Data->VertexArray->SetIndexBuffer(quadIndexBuffer);
 
+        s_Data->DefaultTexture = Texture2D::Create(Vector2u{ 1 });
         constexpr U32 defaultTextureData{ 0xffffffff };
         s_Data->DefaultTexture->SetData(&defaultTextureData, sizeof(U32));
 
+        s_Data->Shader = Shader::Create("D:/Zero/Sandbox/assets/shaders/Default.glsl");
         s_Data->Shader->Bind();
         s_Data->Shader->SetInt("u_Texture", 0);
     }
