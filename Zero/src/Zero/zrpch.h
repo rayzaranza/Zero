@@ -2,6 +2,7 @@
 
 #include "Zero/Core/Types.h"
 #include "Zero/Logger/Logger.h"
+#include "Zero/Profiler/Profiler.h"
 
 #include <array>
 #include <functional>
