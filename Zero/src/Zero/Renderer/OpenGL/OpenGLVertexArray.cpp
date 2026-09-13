@@ -4,6 +4,8 @@
 
 namespace Zero
 {
+    static U32 GetOpenGLTypeFromAttributeType(const AttributeType type);
+
     OpenGLVertexArray::OpenGLVertexArray()
     {
         ZR_PROFILE_FUNCTION();
@@ -31,8 +33,6 @@ namespace Zero
 
         glBindVertexArray(0);
     }
-
-    static U32 GetOpenGLTypeFromAttributeType(const AttributeType type);
 
     void OpenGLVertexArray::AddVertexBuffer(const VertexBufferRef& vertexBuffer)
     {
@@ -69,16 +69,6 @@ namespace Zero
         glBindVertexArray(m_Id);
         indexBuffer->Bind();
         m_IndexBuffer = indexBuffer;
-    }
-
-    const Array<VertexBufferRef>& OpenGLVertexArray::GetVertexBuffers() const
-    {
-        return m_VertexBuffers;
-    }
-
-    const IndexBufferRef& OpenGLVertexArray::GetIndexBuffer() const
-    {
-        return m_IndexBuffer;
     }
 
     U32 GetOpenGLTypeFromAttributeType(const AttributeType type)

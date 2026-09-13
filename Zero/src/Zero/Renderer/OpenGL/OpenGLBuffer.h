@@ -16,8 +16,10 @@ namespace Zero
       public:
         virtual void Bind() const override;
         virtual void Unbind() const override;
-        virtual void SetLayout(const VertexBufferLayout& layout) override;
-        virtual const VertexBufferLayout& GetLayout() const override;
+
+      public:
+        inline virtual void SetLayout(const VertexBufferLayout& layout) override { m_Layout = layout; }
+        inline virtual const VertexBufferLayout& GetLayout() const override { return m_Layout; }
 
       private:
         RendererID m_Id{};
@@ -36,7 +38,9 @@ namespace Zero
       public:
         virtual void Bind() const override;
         virtual void Unbind() const override;
-        virtual Length GetLength() const override;
+
+      public:
+        inline virtual Length GetLength() const override { return m_Length; }
 
       private:
         RendererID m_Id{};

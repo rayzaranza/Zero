@@ -37,16 +37,6 @@ namespace Zero
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    void OpenGLVertexBuffer::SetLayout(const VertexBufferLayout& layout)
-    {
-        m_Layout = layout;
-    }
-
-    const VertexBufferLayout& OpenGLVertexBuffer::GetLayout() const
-    {
-        return m_Layout;
-    }
-
     //=================================================================================================================
     //  OpenGL Index Buffer
     //=================================================================================================================
@@ -80,8 +70,4 @@ namespace Zero
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
-    Length OpenGLIndexBuffer::GetLength() const
-    {
-        return m_Length;
-    }
 }
