@@ -28,7 +28,7 @@ namespace Zero
 
         Matrix4 transform{ 1.0f };
         transform = glm::translate(transform, m_Position);
-        transform = glm::rotate(transform, glm::radians(m_Rotation), Vector3{ 0, 0, 1 });
+        transform = glm::rotate(transform, m_Rotation.Value, Vector3::Backward);
         m_ViewMatrix = glm::inverse(transform);
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
@@ -39,7 +39,7 @@ namespace Zero
         CalculateViewProjectionMatrix();
     }
 
-    void OrthographicCamera::SetRotation(const Degrees rotation)
+    void OrthographicCamera::SetRotation(const Radians rotation)
     {
         m_Rotation = rotation;
         CalculateViewProjectionMatrix();

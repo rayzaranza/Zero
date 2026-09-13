@@ -14,11 +14,11 @@ namespace Zero
         inline const Matrix4& GetProjectionMatrix() const { return m_ProjectionMatrix; };
         inline const Matrix4& GetViewProjectionMatrix() const { return m_ViewProjectionMatrix; };
         inline const Vector3& GetPosition() const { return m_Position; }
-        inline Degrees GetRotation() const { return m_Rotation; }
+        inline Radians GetRotation() const { return m_Rotation; }
 
       public:
         void SetPosition(const Vector3& position);
-        void SetRotation(const Degrees rotation);
+        void SetRotation(const Radians rotation);
         void SetProjectionMatrix(const F32 left, const F32 right, const F32 bottom, const F32 top);
 
       private:
@@ -29,6 +29,6 @@ namespace Zero
         Matrix4 m_ViewMatrix;
         Matrix4 m_ProjectionMatrix;
         Matrix4 m_ViewProjectionMatrix;
-        Degrees m_Rotation;
+        Radians m_Rotation;
     };
 }

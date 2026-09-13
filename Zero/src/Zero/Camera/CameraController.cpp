@@ -13,7 +13,7 @@ namespace Zero
         , m_TranslationSpeed{ m_ZoomLevel }
         , m_ZoomSpeed{ 0.1f }
         , m_Rotation{ 0.0f }
-        , m_RotationSpeed{ 90.0f }
+        , m_RotationSpeed{ 1.0f }
     {
         ZR_PROFILE_FUNCTION();
     }
