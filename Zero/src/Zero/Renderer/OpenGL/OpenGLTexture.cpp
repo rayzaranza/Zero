@@ -13,15 +13,27 @@ namespace Zero
 
     OpenGLTexture2D::OpenGLTexture2D(const Vector2u& size) : m_Size{ size }, m_Format{ GL_RGBA8, GL_RGBA }
     {
+        ZR_PROFILE_FUNCTION();
+
         SetupTextureBuffer();
     }
 
     OpenGLTexture2D::OpenGLTexture2D(const String& path) : m_Path{ path }
     {
+        ZR_PROFILE_FUNCTION();
+
         stbi_set_flip_vertically_on_load(1);
+
+        stbi_uc* image{ nullptr };
         Vector2i size{};
-        I32 channels;
-        stbi_uc* image{ stbi_load(path.c_str(), &size.x, &size.y, &channels, 0) };
+        I32 channels{};
+
+        {
+            ZR_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const String& path)");
+
+            image = stbi_load(path.c_str(), &size.x, &size.y, &channels, 0);
+        }
+
         ZR_CORE_ASSERT(image, "Failed to load image");
         m_Size = size;
         m_Format = GetTextureFormat(channels);
@@ -34,16 +46,22 @@ namespace Zero
 
     OpenGLTexture2D::~OpenGLTexture2D()
     {
+        ZR_PROFILE_FUNCTION();
+
         glDeleteTextures(1, &m_Id);
     }
 
     void OpenGLTexture2D::Bind(const U32 slot) const
     {
+        ZR_PROFILE_FUNCTION();
+
         glBindTextureUnit(0, m_Id);
     }
 
     void OpenGLTexture2D::SetData(const void* data, const U32 size)
     {
+        ZR_PROFILE_FUNCTION();
+
         const U32 bytesPerPixel{ m_Format.image == GL_RGBA ? 4u : 3u };
         ZR_CORE_ASSERT(size == m_Size.x * m_Size.y * bytesPerPixel, "Data must be entire texture");
         glTextureSubImage2D(m_Id, 0, 0, 0, m_Size.x, m_Size.y, m_Format.image, GL_UNSIGNED_BYTE, data);
@@ -51,6 +69,8 @@ namespace Zero
 
     void OpenGLTexture2D::SetupTextureBuffer()
     {
+        ZR_PROFILE_FUNCTION();
+
         glCreateTextures(GL_TEXTURE_2D, 1, &m_Id);
         glTextureStorage2D(m_Id, 1, m_Format.storage, m_Size.x, m_Size.y);
 

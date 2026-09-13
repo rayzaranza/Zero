@@ -13,5 +13,7 @@ Sandbox::Sandbox()
 
 Zero::Application* Zero::CreateApplication()
 {
+    ZR_PROFILE_FUNCTION();
+
     return new Sandbox();
 }

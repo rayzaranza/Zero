@@ -11,10 +11,14 @@ namespace Zero
     }
 
     OpenGLContext::~OpenGLContext()
-    {}
+    {
+        ZR_PROFILE_FUNCTION();
+    }
 
     void OpenGLContext::Initialize()
     {
+        ZR_PROFILE_FUNCTION();
+
         glfwMakeContextCurrent(m_WindowHandle);
         const I32 gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
         ZR_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
@@ -35,6 +39,8 @@ namespace Zero
 
     void OpenGLContext::SwapBuffers()
     {
+        ZR_PROFILE_FUNCTION();
+
         glfwSwapBuffers(m_WindowHandle);
     }
 }

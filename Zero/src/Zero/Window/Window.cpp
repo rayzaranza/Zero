@@ -13,27 +13,45 @@ namespace Zero
 
     Window::Window(const String& title, const Vector2i& size) : m_Data{ title, size }
     {
+        ZR_PROFILE_FUNCTION();
+
         Initialize();
     }
 
     Window::~Window()
     {
+        ZR_PROFILE_FUNCTION();
+
         Destroy();
     }
 
     void Window::Initialize()
     {
+        ZR_PROFILE_FUNCTION();
+
+        {
+            ZR_PROFILE_SCOPE("glfwInit");
+
         const I32 glfwInitSuccess{ glfwInit() };
         ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
         glfwSetErrorCallback(errorCallback);
+        }
+
+        {
+            ZR_PROFILE_SCOPE("glfwGetMonitors");
 
         I32 monitorCount{};
         GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+        }
 
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
+
+        {
+            ZR_PROFILE_SCOPE("glfwCreateWindow");
+
         m_WindowHandle = glfwCreateWindow(m_Data.Size.x, m_Data.Size.y, m_Data.Title.c_str(), nullptr, nullptr);
 
         m_RendererContext = new OpenGLContext(m_WindowHandle);
@@ -49,12 +67,16 @@ namespace Zero
 
     void Window::Destroy()
     {
+        ZR_PROFILE_FUNCTION();
+
         glfwDestroyWindow(m_WindowHandle);
         glfwTerminate();
     }
 
     void Window::setCallbacks()
     {
+        ZR_PROFILE_FUNCTION();
+
         glfwSetWindowSizeCallback(m_WindowHandle, [](GLFWwindow* window, const I32 width, const I32 height) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
             data.Size.x = width;
@@ -138,12 +160,16 @@ namespace Zero
 
     void Window::OnUpdate()
     {
+        ZR_PROFILE_FUNCTION();
+
         glfwPollEvents();
         m_RendererContext->SwapBuffers();
     }
 
     void SendWindowToSecondMonitor(GLFWwindow* window, const Vector2i& size)
     {
+        ZR_PROFILE_FUNCTION();
+
         I32 monitorCount{};
         GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
         GLFWmonitor* monitor{ monitors[1] };

@@ -24,11 +24,7 @@ namespace Zero
 
     void Renderer2D::Initialize()
     {
-        s_Data = new Renderer2DStorage{
-            .VertexArray = VertexArray::Create(),
-            .Shader = Shader::Create("D:/Zero/Sandbox/assets/shaders/Default.glsl"),
-            .DefaultTexture = Texture2D::Create(Vector2u{ 1 }),
-        };
+        ZR_PROFILE_FUNCTION();
 
         VertexBufferRef quadVertexBuffer{ VertexBuffer::Create(QUAD_VERTICES) };
         IndexBufferRef quadIndexBuffer{ IndexBuffer::Create(QUAD_INDICES) };
@@ -47,20 +43,28 @@ namespace Zero
 
     void Renderer2D::Destroy()
     {
+        ZR_PROFILE_FUNCTION();
+
         delete s_Data;
     }
 
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
+        ZR_PROFILE_FUNCTION();
+
         s_Data->Shader->Bind();
         s_Data->Shader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
     }
 
     void Renderer2D::EndScene()
-    {}
+    {
+        ZR_PROFILE_FUNCTION();
+    }
 
     void Renderer2D::DrawQuad(const Vector2& position, const Degrees rotation, const Vector2& scale, const Color& color)
     {
+        ZR_PROFILE_FUNCTION();
+
         s_Data->VertexArray->Bind();
 
         Matrix4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
@@ -75,6 +79,8 @@ namespace Zero
         const Vector2& position, const Degrees rotation, const Vector2& scale, const Texture2DRef& texture, const Color& tint
     )
     {
+        ZR_PROFILE_FUNCTION();
+
         s_Data->VertexArray->Bind();
 
         Matrix4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };

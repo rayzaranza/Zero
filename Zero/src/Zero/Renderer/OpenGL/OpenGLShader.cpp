@@ -9,6 +9,8 @@ namespace Zero
 {
     OpenGLShader::OpenGLShader(const String& filePath) : m_Name{ ExtractNameFromFilePath(filePath) }
     {
+        ZR_PROFILE_FUNCTION();
+
         const String source{ ReadFile(filePath) };
         const Map<U32, String> shaderSources{ PreProcess(source) };
         OpenGLShader::Compile(shaderSources);
@@ -16,17 +18,23 @@ namespace Zero
 
     OpenGLShader::OpenGLShader(const String& name, const String& vertexSource, const String& fragmentSource) : m_Name{ name }
     {
+        ZR_PROFILE_FUNCTION();
+
         const Map<U32, String> shaderSources{ { GL_VERTEX_SHADER, vertexSource }, { GL_FRAGMENT_SHADER, fragmentSource } };
         OpenGLShader::Compile(shaderSources);
     }
 
     OpenGLShader::~OpenGLShader()
     {
+        ZR_PROFILE_FUNCTION();
+
         glDeleteProgram(m_Id);
     }
 
     void OpenGLShader::Compile(const Map<U32, String>& shaderSources)
     {
+        ZR_PROFILE_FUNCTION();
+
         const U32 program{ glCreateProgram() };
 
         ZR_CORE_ASSERT(shaderSources.size() <= MAX_SHADERS_SUPPORTED, "Only 2 shaders are supported");
@@ -69,6 +77,8 @@ namespace Zero
 
     String OpenGLShader::ReadFile(const String& filePath)
     {
+        ZR_PROFILE_FUNCTION();
+
         String result{};
         std::ifstream inputStream{ filePath, std::ios::in | std::ios::binary };
 
@@ -88,6 +98,8 @@ namespace Zero
 
     Map<U32, String> OpenGLShader::PreProcess(const String& source)
     {
+        ZR_PROFILE_FUNCTION();
+
         Map<U32, String> shaderSources{};
 
         const char* typeToken{ "#type" };
@@ -125,52 +137,87 @@ namespace Zero
 
     void OpenGLShader::Bind() const
     {
+        ZR_PROFILE_FUNCTION();
+
         glUseProgram(m_Id);
     }
 
     void OpenGLShader::Unbind() const
     {
+        ZR_PROFILE_FUNCTION();
+
         glUseProgram(0);
     }
 
     void OpenGLShader::SetColor(const String& name, const Color& color) const
     {
+        ZR_PROFILE_FUNCTION();
+
         const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform4f(location, color.r, color.g, color.b, color.a);
     }
 
     void OpenGLShader::SetMatrix4(const String& name, const Matrix4& matrix) const
     {
-        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+        ZR_PROFILE_FUNCTION();
+
+        I32 location{};
+        {
+            ZR_PROFILE_SCOPE("Get Uniform Location");
+            location = glGetUniformLocation(m_Id, name.c_str());
+        }
+
+        {
+            ZR_PROFILE_SCOPE("Send Uniform");
+            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+        }
     }
 
     void OpenGLShader::SetVector4(const String& name, const Vector4& vector) const
     {
-        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
-        glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+        ZR_PROFILE_FUNCTION();
+
+        I32 location{};
+        {
+            ZR_PROFILE_SCOPE("Get Uniform Location");
+            location = glGetUniformLocation(m_Id, name.c_str());
+        }
+
+        {
+            ZR_PROFILE_SCOPE("Send Uniform");
+
+            glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+        }
     }
 
     void OpenGLShader::SetVector3(const String& name, const Vector3& vector) const
     {
+        ZR_PROFILE_FUNCTION();
+
         const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform3f(location, vector.x, vector.y, vector.z);
     }
 
     void OpenGLShader::SetFloat2(const String& name, const Vector2& vector) const
     {
+        ZR_PROFILE_FUNCTION();
+
         const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform2f(location, vector.x, vector.y);
     }
 
     void OpenGLShader::SetFloat(const String& name, const F32 value) const
     {
+        ZR_PROFILE_FUNCTION();
+
         const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform1f(location, value);
     }
 
     void OpenGLShader::SetInt(const String& name, const I32 value) const
     {
+        ZR_PROFILE_FUNCTION();
+
         const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
         glUniform1i(location, value);
     }

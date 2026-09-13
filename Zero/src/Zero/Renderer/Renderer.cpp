@@ -8,6 +8,8 @@ namespace Zero
 
     void Renderer::Initialize()
     {
+        ZR_PROFILE_FUNCTION();
+
         RenderCommand::Initialize();
         Renderer2D::Initialize();
     }

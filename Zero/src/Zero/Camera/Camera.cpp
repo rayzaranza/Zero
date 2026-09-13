@@ -10,17 +10,21 @@ namespace Zero
         , m_ProjectionMatrix{ glm::ortho(left, right, bottom, top, -1.0f, 1.0f) }
         , m_Rotation{ 0.0f }
     {
-        m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+        ZR_PROFILE_FUNCTION();
     }
 
     void OrthographicCamera::SetProjectionMatrix(const F32 left, const F32 right, const F32 bottom, const F32 top)
     {
+        ZR_PROFILE_FUNCTION();
+
         m_ProjectionMatrix = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
     void OrthographicCamera::CalculateViewProjectionMatrix()
     {
+        ZR_PROFILE_FUNCTION();
+
         Matrix4 transform{ 1.0f };
         transform = glm::translate(transform, m_Position);
         transform = glm::rotate(transform, glm::radians(m_Rotation), Vector3{ 0, 0, 1 });

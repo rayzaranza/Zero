@@ -8,6 +8,8 @@ namespace Zero
 {
     Texture2DRef Texture2D::Create(const Vector2u& size)
     {
+        ZR_PROFILE_FUNCTION();
+
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:
@@ -34,6 +36,8 @@ namespace Zero
 
     Texture2DRef Texture2D::Create(const String& path)
     {
+        ZR_PROFILE_FUNCTION();
+
         switch (Renderer::GetAPI())
         {
             case RendererAPI::API::None:

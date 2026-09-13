@@ -23,16 +23,15 @@ void ExampleLayer2D::OnAttach()
 }
 
 void ExampleLayer2D::OnDetach()
-{}
+{
+    ZR_PROFILE_FUNCTION();
+}
 
 void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 {
     ZR_PROFILE_FUNCTION();
 
-    {
-        ZR_PROFILE_SCOPE("Camera Controller Update");
-        m_CameraController.OnUpdate(deltaTime);
-    }
+    m_CameraController.OnUpdate(deltaTime);
 }
 
 void ExampleLayer2D::OnRender()
@@ -40,7 +39,8 @@ void ExampleLayer2D::OnRender()
     ZR_PROFILE_FUNCTION();
 
     {
-        ZR_PROFILE_SCOPE("Renderer Setup");
+        ZR_PROFILE_SCOPE("Renderer Prep");
+
         Zero::RenderCommand::Clear(Zero::Color::Black);
     }
 

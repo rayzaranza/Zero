@@ -6,6 +6,8 @@ namespace Zero
 {
     Matrix4 CalculcateModelMatrix(const Vector3& position, const Degrees rotation, const Vector3& scale)
     {
+        ZR_PROFILE_FUNCTION();
+
         Matrix4 modelMatrix{ 1.0f };
         modelMatrix = glm::translate(modelMatrix, position);
         modelMatrix = glm::rotate(modelMatrix, glm::radians(rotation), Vector3::Up);
