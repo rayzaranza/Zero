@@ -32,16 +32,16 @@ namespace Zero
         {
             ZR_PROFILE_SCOPE("glfwInit");
 
-        const I32 glfwInitSuccess{ glfwInit() };
-        ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
-        glfwSetErrorCallback(errorCallback);
+            const I32 glfwInitSuccess{ glfwInit() };
+            ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
+            glfwSetErrorCallback(errorCallback);
         }
 
         {
             ZR_PROFILE_SCOPE("glfwGetMonitors");
 
-        I32 monitorCount{};
-        GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+            I32 monitorCount{};
+            GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
         }
 
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -52,7 +52,8 @@ namespace Zero
         {
             ZR_PROFILE_SCOPE("glfwCreateWindow");
 
-        m_WindowHandle = glfwCreateWindow(m_Data.Size.x, m_Data.Size.y, m_Data.Title.c_str(), nullptr, nullptr);
+            m_WindowHandle = glfwCreateWindow(m_Data.Size.x, m_Data.Size.y, m_Data.Title.c_str(), nullptr, nullptr);
+        }
 
         m_RendererContext = new OpenGLContext(m_WindowHandle);
         m_RendererContext->Initialize();
