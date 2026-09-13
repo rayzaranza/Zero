@@ -67,7 +67,7 @@ void ExampleLayer::OnRender()
     Zero::Renderer::BeginScene(m_CameraController.GetCamera());
 
     m_QuadShader->Bind();
-    m_QuadShader->SetVector4("u_Color", m_QuadColor);
+    m_QuadShader->SetColor("u_Color", m_QuadColor);
 
     for (Zero::I32 y{ 0 }; y < 20; ++y)
     {
@@ -95,6 +95,6 @@ void ExampleLayer::OnRender()
 void ExampleLayer::OnUIRender()
 {
     ImGui::Begin("Settings");
-    ImGui::ColorEdit4("Quad Color", glm::value_ptr(static_cast<glm::vec4&>(m_QuadColor)));
+    ImGui::ColorEdit4("Quad Color", ValuePointer(m_QuadColor));
     ImGui::End();
 }

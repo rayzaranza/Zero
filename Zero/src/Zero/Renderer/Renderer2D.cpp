@@ -65,7 +65,24 @@ namespace Zero
         ZR_PROFILE_FUNCTION();
     }
 
-    void Renderer2D::DrawQuad(const Vector2& position, const Degrees rotation, const Vector2& scale, const Color& color)
+    void Renderer2D::DrawQuad(const QuadProperties& quad)
+    {
+        ZR_PROFILE_FUNCTION();
+
+        s_Data->VertexArray->Bind();
+
+        s_Data->Shader->SetMatrix4("u_ModelMatrix", CalculcateModelMatrix2D(quad.Position, quad.Rotation, quad.Scale));
+        s_Data->Shader->SetColor("u_Color", quad.Color);
+
+        if (quad.Texture == nullptr)
+            s_Data->DefaultTexture->Bind();
+        else
+            quad.Texture->Bind();
+
+        RenderCommand::DrawIndexed(s_Data->VertexArray);
+    }
+
+    void Renderer2D::DrawQuad(const Vector2& position, const Radians rotation, const Vector2& scale, const Color& color)
     {
         ZR_PROFILE_FUNCTION();
 
@@ -80,7 +97,7 @@ namespace Zero
     }
 
     void Renderer2D::DrawQuad(
-        const Vector2& position, const Degrees rotation, const Vector2& scale, const Texture2DRef& texture, const Color& tint
+        const Vector2& position, const Radians rotation, const Vector2& scale, const Texture2DRef& texture, const Color& tint
     )
     {
         ZR_PROFILE_FUNCTION();
