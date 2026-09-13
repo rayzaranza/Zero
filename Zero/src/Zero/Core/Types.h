@@ -3,6 +3,7 @@
 #include <array>
 #include <functional>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -30,7 +31,6 @@ namespace Zero
     using Boolean = bool;
     using Length = size_t;
 
-    using Degrees = F32;
     using Seconds = F32;
     using Milliseconds = F32;
 
@@ -171,4 +171,119 @@ namespace Zero
     inline Color Color::Magenta{ 1.0f, 0.0f, 1.0f, 1.0f };
     inline Color Color::Yellow{ 1.0f, 1.0f, 0.0f, 1.0f };
     inline Color Color::Transparent{ 0.0f, 0.0f, 0.0f, 0.0f };
+
+    //===============================================================================================================================
+    //  Degrees
+    //===============================================================================================================================
+    struct Radians;
+
+    struct Degrees
+    {
+        F32 Value;
+
+        explicit Degrees(F32 degrees) : Value{ degrees } {}
+        Degrees(Radians radians);
+
+        Radians ToRadians() const;
+
+        Degrees operator+(Degrees other) const { return Degrees{ Value + other.Value }; }
+        Degrees operator-(Degrees other) const { return Degrees{ Value - other.Value }; }
+
+        Degrees operator+(F32 scalar) const { return Degrees{ Value + scalar }; }
+        Degrees operator-(F32 scalar) const { return Degrees{ Value - scalar }; }
+
+        Degrees operator*(F32 scalar) const { return Degrees{ Value * scalar }; }
+        Degrees operator/(F32 scalar) const { return Degrees{ Value / scalar }; }
+
+        Degrees& operator+=(Degrees other)
+        {
+            Value += other.Value;
+            return *this;
+        }
+
+        Degrees& operator-=(Degrees other)
+        {
+            Value -= other.Value;
+            return *this;
+        }
+    };
+
+    //===============================================================================================================================
+    //  Radians
+    //===============================================================================================================================
+    struct Radians
+    {
+        F32 Value;
+
+        explicit Radians(F32 radians) : Value{ radians } {}
+        Radians(Degrees degrees) : Value{ glm::radians(degrees.Value) } {}
+
+        Degrees ToDegrees() const { return Degrees{ glm::degrees(Value) }; }
+
+        Radians operator+(Radians other) const { return Radians{ Value + other.Value }; }
+        Radians operator-(Radians other) const { return Radians{ Value - other.Value }; }
+
+        Radians operator+(F32 scalar) const { return Radians{ Value + scalar }; }
+        Radians operator-(F32 scalar) const { return Radians{ Value - scalar }; }
+
+        Radians operator*(F32 scalar) const { return Radians{ Value * scalar }; }
+        Radians operator/(F32 scalar) const { return Radians{ Value / scalar }; }
+
+        Radians& operator+=(Radians other)
+        {
+            Value += other.Value;
+            return *this;
+        }
+
+        Radians& operator-=(Radians other)
+        {
+            Value -= other.Value;
+            return *this;
+        }
+    };
+
+    inline Degrees::Degrees(Radians radians) : Value{ glm::degrees(radians.Value) }
+    {}
+
+    inline Radians Degrees::ToRadians() const
+    {
+        return Radians{ glm::radians(Value) };
+    }
+
+    inline Degrees operator+(F32 scalar, Degrees degrees)
+    {
+        return Degrees{ scalar + degrees.Value };
+    }
+    inline Degrees operator*(F32 scalar, Degrees degrees)
+    {
+        return Degrees{ scalar * degrees.Value };
+    }
+
+    //===============================================================================================================================
+    //  Raw Pointer Overloads
+    //===============================================================================================================================
+    inline F32* ValuePointer(Vector2& vector)
+    {
+        return glm::value_ptr(static_cast<glm::vec2&>(vector));
+    }
+
+    inline F32* ValuePointer(Vector3& vector)
+    {
+        return glm::value_ptr(static_cast<glm::vec3&>(vector));
+    }
+
+    inline F32* ValuePointer(Color& color)
+    {
+        return glm::value_ptr(static_cast<glm::vec4&>(color));
+    }
+
+    inline F32* ValuePointer(Degrees& degrees)
+    {
+        return &degrees.Value;
+    }
+
+    inline F32* ValuePointer(Radians& radians)
+    {
+        return &radians.Value;
+    }
 }
