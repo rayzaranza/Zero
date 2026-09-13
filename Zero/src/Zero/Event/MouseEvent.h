@@ -2,6 +2,7 @@
 
 #include "Zero/Core/Core.h"
 #include "Zero/Event/Event.h"
+#include "Zero/Input/MouseButton.h"
 
 namespace Zero
 {
@@ -61,14 +62,14 @@ namespace Zero
     class MouseButtonEvent : public Event
     {
       public:
-        inline I32 GetMouseButton() const { return m_Button; }
+        inline MouseButton GetMouseButton() const { return m_Button; }
         inline virtual I32 GetCategoryFlags() const override { return EventCategoryMouseButton | EventCategoryInput; };
 
       protected:
-        MouseButtonEvent(const I32 button) : m_Button{ button } {}
+        MouseButtonEvent(const MouseButton button) : m_Button{ button } {}
 
       protected:
-        I32 m_Button;
+        MouseButton m_Button;
     };
 
     //=====================================================================================================================================
@@ -77,7 +78,7 @@ namespace Zero
     class MouseButtonPressedEvent : public MouseButtonEvent
     {
       public:
-        MouseButtonPressedEvent(const I32 button) : MouseButtonEvent{ button } {}
+        MouseButtonPressedEvent(const MouseButton button) : MouseButtonEvent{ button } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::MouseButtonPressed; }
@@ -86,7 +87,7 @@ namespace Zero
         inline virtual String ToString() const override
         {
             std::stringstream stream{};
-            stream << "MouseButtonPressedEvent: " << m_Button;
+            stream << "MouseButtonPressedEvent: " << static_cast<U32>(m_Button);
             return stream.str();
         }
     };
@@ -97,7 +98,7 @@ namespace Zero
     class MouseButtonReleasedEvent : public MouseButtonEvent
     {
       public:
-        MouseButtonReleasedEvent(const I32 button) : MouseButtonEvent{ button } {}
+        MouseButtonReleasedEvent(const MouseButton button) : MouseButtonEvent{ button } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::MouseButtonReleased; }
@@ -106,7 +107,7 @@ namespace Zero
         inline virtual String ToString() const override
         {
             std::stringstream stream{};
-            stream << "MouseButtonReleasedEvent: " << m_Button;
+            stream << "MouseButtonReleasedEvent: " << static_cast<U32>(m_Button);
             return stream.str();
         }
     };

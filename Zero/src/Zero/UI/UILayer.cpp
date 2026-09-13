@@ -11,9 +11,10 @@
 
 namespace Zero
 {
-
     void UILayer::OnAttach()
     {
+        ZR_PROFILE_FUNCTION();
+
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
 
@@ -41,6 +42,8 @@ namespace Zero
 
     void UILayer::OnDetach()
     {
+        ZR_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
@@ -48,12 +51,13 @@ namespace Zero
 
     void UILayer::OnUIRender()
     {
-        static Boolean show{ true };
-        ImGui::ShowDemoWindow(&show);
+        ZR_PROFILE_FUNCTION();
     }
 
     void UILayer::Begin()
     {
+        ZR_PROFILE_FUNCTION();
+
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -61,6 +65,8 @@ namespace Zero
 
     void UILayer::End()
     {
+        ZR_PROFILE_FUNCTION();
+
         ImGuiIO& io{ ImGui::GetIO() };
         const Vector2& windowSize{ static_cast<Vector2>(Application::Get().GetWindow().GetSize()) };
         io.DisplaySize = ImVec2{ windowSize.x, windowSize.y };

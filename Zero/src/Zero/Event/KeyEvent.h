@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zero/Event/Event.h"
+#include "Zero/Input/KeyCode.h"
 
 namespace Zero
 {
@@ -10,14 +11,14 @@ namespace Zero
     class KeyEvent : public Event
     {
       public:
-        inline I32 GetKeyCode() const { return m_KeyCode; }
+        inline KeyCode GetKeyCode() const { return m_KeyCode; }
         inline virtual I32 GetCategoryFlags() const override { return EventCategoryKeyboard | EventCategoryInput; }
 
       protected:
-        KeyEvent(const I32 keyCode) : m_KeyCode{ keyCode } {}
+        KeyEvent(const KeyCode keyCode) : m_KeyCode{ keyCode } {}
 
       protected:
-        I32 m_KeyCode{};
+        KeyCode m_KeyCode{};
     };
 
     //=====================================================================================================================================
@@ -26,7 +27,7 @@ namespace Zero
     class KeyPressedEvent : public KeyEvent
     {
       public:
-        KeyPressedEvent(const I32 keyCode, const I32 repeatCount) : KeyEvent{ keyCode }, m_RepeatCount{ repeatCount } {}
+        KeyPressedEvent(const KeyCode keyCode, const I32 repeatCount) : KeyEvent{ keyCode }, m_RepeatCount{ repeatCount } {}
 
       public:
         inline I32 GetRepeatCount() const { return m_RepeatCount; }
@@ -36,7 +37,7 @@ namespace Zero
         inline virtual String ToString() const override
         {
             std::stringstream stream{};
-            stream << "KeyPressedEvent: " << m_KeyCode << " (repeats: " << m_RepeatCount << ")";
+            stream << "KeyPressedEvent: " << static_cast<char>(m_KeyCode) << " (repeats: " << m_RepeatCount << ")";
             return stream.str();
         }
 
@@ -50,7 +51,7 @@ namespace Zero
     class KeyReleasedEvent : public KeyEvent
     {
       public:
-        KeyReleasedEvent(const I32 keyCode) : KeyEvent{ keyCode } {}
+        KeyReleasedEvent(const KeyCode keyCode) : KeyEvent{ keyCode } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::KeyReleased; }
@@ -59,7 +60,7 @@ namespace Zero
         inline virtual String ToString() const override
         {
             std::stringstream stream{};
-            stream << "KeyReleasedEvent: " << m_KeyCode;
+            stream << "KeyReleasedEvent: " << static_cast<char>(m_KeyCode);
             return stream.str();
         }
     };
@@ -70,7 +71,7 @@ namespace Zero
     class KeyTypedEvent : public KeyEvent
     {
       public:
-        KeyTypedEvent(const I32 keyCode) : KeyEvent{ keyCode } {}
+        KeyTypedEvent(const KeyCode keyCode) : KeyEvent{ keyCode } {}
 
       public:
         inline static EventType GetStaticType() { return EventType::KeyTyped; }
@@ -79,7 +80,7 @@ namespace Zero
         inline virtual String ToString() const override
         {
             std::stringstream stream{};
-            stream << "KeyTypedEvent: " << m_KeyCode;
+            stream << "KeyTypedEvent: " << static_cast<char>(m_KeyCode);
             return stream.str();
         }
     };

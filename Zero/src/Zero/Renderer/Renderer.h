@@ -13,6 +13,7 @@ namespace Zero
     {
       public:
         static void Initialize();
+        static void Destroy();
         static void OnWindowResized(const Vector2u& size);
         static void BeginScene(OrthographicCamera& camera);
         static void Submit(const VertexArrayRef& vertexArray, const ShaderRef& shader, const Matrix4& transform = Matrix4{ 1.0f });
@@ -27,6 +28,6 @@ namespace Zero
             Matrix4 ViewProjectionMatrix{ 1.0f };
         };
 
-        static SceneData* s_SceneData;
+        static Scope<SceneData> s_SceneData;
     };
 }

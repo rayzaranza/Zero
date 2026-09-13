@@ -6,6 +6,7 @@ namespace Zero
     {
         for (Layer* layer : m_Layers)
         {
+            layer->OnDetach();
             delete layer;
         }
     }
@@ -23,9 +24,10 @@ namespace Zero
 
     void LayerStack::PopLayer(Layer* layer)
     {
-        Array<Layer*>::iterator layerIterator{ std::find(m_Layers.begin(), m_Layers.end(), layer) };
-        if (layerIterator != m_Layers.end())
+        Array<Layer*>::iterator layerIterator{ std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer) };
+        if (layerIterator != m_Layers.end() + m_LayerInsertIndex)
         {
+            layer->OnDetach();
             m_Layers.erase(layerIterator);
             m_LayerInsertIndex--;
         }
@@ -33,9 +35,10 @@ namespace Zero
 
     void LayerStack::PopOverlay(Layer* overlay)
     {
-        Array<Layer*>::iterator layerIterator{ std::find(m_Layers.begin(), m_Layers.end(), overlay) };
+        Array<Layer*>::iterator layerIterator{ std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), overlay) };
         if (layerIterator != m_Layers.end())
         {
+            overlay->OnDetach();
             m_Layers.erase(layerIterator);
         }
     }

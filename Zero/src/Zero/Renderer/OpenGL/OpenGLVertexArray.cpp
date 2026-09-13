@@ -4,30 +4,40 @@
 
 namespace Zero
 {
+    static U32 GetOpenGLTypeFromAttributeType(const AttributeType type);
+
     OpenGLVertexArray::OpenGLVertexArray()
     {
+        ZR_PROFILE_FUNCTION();
+
         glCreateVertexArrays(1, &m_Id);
     }
 
     OpenGLVertexArray::~OpenGLVertexArray()
     {
+        ZR_PROFILE_FUNCTION();
+
         glDeleteVertexArrays(1, &m_Id);
     }
 
     void OpenGLVertexArray::Bind() const
     {
+        ZR_PROFILE_FUNCTION();
+
         glBindVertexArray(m_Id);
     }
 
     void OpenGLVertexArray::Unbind() const
     {
+        ZR_PROFILE_FUNCTION();
+
         glBindVertexArray(0);
     }
 
-    static U32 GetOpenGLTypeFromAttributeType(const AttributeType type);
-
     void OpenGLVertexArray::AddVertexBuffer(const VertexBufferRef& vertexBuffer)
     {
+        ZR_PROFILE_FUNCTION();
+
         const VertexBufferLayout& layout{ vertexBuffer->GetLayout() };
         ZR_CORE_ASSERT(layout.GetAttributes().size(), "Vertex Buffer has no layout");
 
@@ -54,19 +64,11 @@ namespace Zero
 
     void OpenGLVertexArray::SetIndexBuffer(const IndexBufferRef& indexBuffer)
     {
+        ZR_PROFILE_FUNCTION();
+
         glBindVertexArray(m_Id);
         indexBuffer->Bind();
         m_IndexBuffer = indexBuffer;
-    }
-
-    const Array<VertexBufferRef>& OpenGLVertexArray::GetVertexBuffers() const
-    {
-        return m_VertexBuffers;
-    }
-
-    const IndexBufferRef& OpenGLVertexArray::GetIndexBuffer() const
-    {
-        return m_IndexBuffer;
     }
 
     U32 GetOpenGLTypeFromAttributeType(const AttributeType type)

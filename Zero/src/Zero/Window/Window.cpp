@@ -13,34 +13,53 @@ namespace Zero
 
     Window::Window(const String& title, const Vector2i& size) : m_Data{ title, size }
     {
+        ZR_PROFILE_FUNCTION();
+
         Initialize();
     }
 
     Window::~Window()
     {
+        ZR_PROFILE_FUNCTION();
+
         Destroy();
     }
 
     void Window::Initialize()
     {
-        const I32 glfwInitSuccess{ glfwInit() };
-        ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
-        glfwSetErrorCallback(errorCallback);
+        ZR_PROFILE_FUNCTION();
 
-        I32 monitorCount{};
-        GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+        {
+            ZR_PROFILE_SCOPE("glfwInit");
+
+            const I32 glfwInitSuccess{ glfwInit() };
+            ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
+            glfwSetErrorCallback(errorCallback);
+        }
+
+        {
+            ZR_PROFILE_SCOPE("glfwGetMonitors");
+
+            I32 monitorCount{};
+            GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
+        }
 
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_FALSE);
-        m_WindowHandle = glfwCreateWindow(m_Data.Size.x, m_Data.Size.y, m_Data.Title.c_str(), nullptr, nullptr);
+
+        {
+            ZR_PROFILE_SCOPE("glfwCreateWindow");
+
+            m_WindowHandle = glfwCreateWindow(m_Data.Size.x, m_Data.Size.y, m_Data.Title.c_str(), nullptr, nullptr);
+        }
 
         m_RendererContext = new OpenGLContext(m_WindowHandle);
         m_RendererContext->Initialize();
 
         glfwSetWindowUserPointer(m_WindowHandle, &m_Data);
-        glfwSwapInterval(1);
+        glfwSwapInterval(0);
 
         setCallbacks();
         SendWindowToSecondMonitor(m_WindowHandle, m_Data.Size);
@@ -49,12 +68,16 @@ namespace Zero
 
     void Window::Destroy()
     {
+        ZR_PROFILE_FUNCTION();
+
         glfwDestroyWindow(m_WindowHandle);
         glfwTerminate();
     }
 
     void Window::setCallbacks()
     {
+        ZR_PROFILE_FUNCTION();
+
         glfwSetWindowSizeCallback(m_WindowHandle, [](GLFWwindow* window, const I32 width, const I32 height) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
             data.Size.x = width;
@@ -83,23 +106,25 @@ namespace Zero
 
         glfwSetKeyCallback(m_WindowHandle, [](GLFWwindow* window, const I32 key, const I32 scanCode, const I32 action, const I32 mods) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
+            const KeyCode keyCode{ key };
+
             switch (action)
             {
                 case GLFW_PRESS:
                 {
-                    KeyPressedEvent event{ key, 0 };
+                    KeyPressedEvent event{ keyCode, 0 };
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_RELEASE:
                 {
-                    KeyReleasedEvent event{ key };
+                    KeyReleasedEvent event{ keyCode };
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_REPEAT:
                 {
-                    KeyPressedEvent event{ key, 1 };
+                    KeyPressedEvent event{ keyCode, 1 };
                     data.EventCallback(event);
                     break;
                 }
@@ -108,23 +133,25 @@ namespace Zero
 
         glfwSetCharCallback(m_WindowHandle, [](GLFWwindow* window, const U32 keyCode) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
-            KeyTypedEvent event{ static_cast<I32>(keyCode) };
+            KeyTypedEvent event{ static_cast<KeyCode>(keyCode) };
             data.EventCallback(event);
         });
 
         glfwSetMouseButtonCallback(m_WindowHandle, [](GLFWwindow* window, const I32 button, const I32 action, const I32 mods) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
+
+            const MouseButton mouseButton{ static_cast<MouseButton>(button) };
             switch (action)
             {
                 case GLFW_PRESS:
                 {
-                    MouseButtonPressedEvent event{ button };
+                    MouseButtonPressedEvent event{ mouseButton };
                     data.EventCallback(event);
                     break;
                 }
                 case GLFW_RELEASE:
                 {
-                    MouseButtonReleasedEvent event{ button };
+                    MouseButtonReleasedEvent event{ mouseButton };
                     data.EventCallback(event);
                     break;
                 }
@@ -134,12 +161,16 @@ namespace Zero
 
     void Window::OnUpdate()
     {
+        ZR_PROFILE_FUNCTION();
+
         glfwPollEvents();
         m_RendererContext->SwapBuffers();
     }
 
     void SendWindowToSecondMonitor(GLFWwindow* window, const Vector2i& size)
     {
+        ZR_PROFILE_FUNCTION();
+
         I32 monitorCount{};
         GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
         GLFWmonitor* monitor{ monitors[1] };

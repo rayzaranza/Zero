@@ -15,8 +15,8 @@ namespace Zero
         virtual void Unbind() const override;
         virtual void AddVertexBuffer(const VertexBufferRef& vertexBuffer) override;
         virtual void SetIndexBuffer(const IndexBufferRef& indexBuffer) override;
-        virtual const Array<VertexBufferRef>& GetVertexBuffers() const override;
-        virtual const IndexBufferRef& GetIndexBuffer() const override;
+        inline virtual const Array<VertexBufferRef>& GetVertexBuffers() const override { return m_VertexBuffers; }
+        inline virtual const IndexBufferRef& GetIndexBuffer() const override { return m_IndexBuffer; }
 
       private:
         RendererID m_Id{};

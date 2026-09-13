@@ -6,6 +6,8 @@ namespace Zero
 {
     void OpenGLRendererAPI::Initialize()
     {
+        ZR_PROFILE_FUNCTION();
+
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
@@ -22,8 +24,8 @@ namespace Zero
 
     void OpenGLRendererAPI::Clear(const Color& color) const
     {
-        SetClearColor(color);
-        Clear();
+        glClearColor(color.r, color.g, color.b, color.a);
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 
     void OpenGLRendererAPI::DrawIndexed(const VertexArrayRef& vertexArray)
