@@ -58,7 +58,7 @@ namespace Zero
     }
 
     template <typename T, typename... TArgs>
-    constexpr Ref<T> CreateScope(TArgs&&... args)
+    constexpr Scope<T> CreateScope(TArgs&&... args)
     {
         return std::make_unique<T>(std::forward<TArgs>(args)...);
     };
