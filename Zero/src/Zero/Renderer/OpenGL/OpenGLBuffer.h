@@ -10,12 +10,14 @@ namespace Zero
     class OpenGLVertexBuffer : public VertexBuffer
     {
       public:
+        OpenGLVertexBuffer(const U32 size);
         OpenGLVertexBuffer(const Array<F32>& vertices);
         virtual ~OpenGLVertexBuffer();
 
       public:
         virtual void Bind() const override;
         virtual void Unbind() const override;
+        virtual void SetData(const void* data, const U32 size) override;
 
       public:
         inline virtual void SetLayout(const VertexBufferLayout& layout) override { m_Layout = layout; }
@@ -32,7 +34,9 @@ namespace Zero
     class OpenGLIndexBuffer : public IndexBuffer
     {
       public:
+        OpenGLIndexBuffer(const U32 size);
         OpenGLIndexBuffer(const Array<U32>& indices);
+        OpenGLIndexBuffer(const U32* indices, const U32 size);
         virtual ~OpenGLIndexBuffer();
 
       public:

@@ -7,6 +7,15 @@ namespace Zero
     //=================================================================================================================
     //  OpenGL Vertex Buffer
     //=================================================================================================================
+    OpenGLVertexBuffer::OpenGLVertexBuffer(const U32 size)
+    {
+        ZR_PROFILE_FUNCTION();
+
+        glCreateBuffers(1, &m_Id);
+        glBindBuffer(GL_ARRAY_BUFFER, m_Id);
+        glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+    }
+
     OpenGLVertexBuffer::OpenGLVertexBuffer(const Array<F32>& vertices)
     {
         ZR_PROFILE_FUNCTION();
@@ -37,6 +46,12 @@ namespace Zero
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
+    void OpenGLVertexBuffer::SetData(const void* data, const U32 size)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_Id);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    }
+
     //=================================================================================================================
     //  OpenGL Index Buffer
     //=================================================================================================================
@@ -47,6 +62,24 @@ namespace Zero
         glCreateBuffers(1, &m_Id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Id);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Length * sizeof(U32), indices.data(), GL_STATIC_DRAW);
+    }
+
+    OpenGLIndexBuffer::OpenGLIndexBuffer(const U32* indices, const U32 size)
+    {
+        ZR_PROFILE_FUNCTION();
+
+        glCreateBuffers(1, &m_Id);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Id);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+    }
+
+    OpenGLIndexBuffer::OpenGLIndexBuffer(const U32 size)
+    {
+        ZR_PROFILE_FUNCTION();
+
+        glCreateBuffers(1, &m_Id);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Id);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
     }
 
     OpenGLIndexBuffer::~OpenGLIndexBuffer()

@@ -50,10 +50,36 @@ namespace Zero
         }
     }
 
+    VertexBufferRef VertexBuffer::Create(const U32 size)
+    {
+        switch (Renderer::GetAPI())
+        {
+            case RendererAPI::API::None:
+            {
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
+                return nullptr;
+            }
+            case RendererAPI::API::OpenGL:
+            {
+                return CreateRef<OpenGLVertexBuffer>(size);
+            }
+            case RendererAPI::API::Vulkan:
+            {
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                return nullptr;
+            }
+            default:
+            {
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
+                return nullptr;
+            }
+        }
+    }
+
     //======================================================================================
     //  Index Buffer
     //======================================================================================
-    IndexBufferRef IndexBuffer::Create(const Array<U32>& indices)
+    Ref<IndexBuffer> IndexBuffer::Create(const Array<U32>& indices)
     {
         switch (Renderer::GetAPI())
         {
@@ -65,6 +91,58 @@ namespace Zero
             case RendererAPI::API::OpenGL:
             {
                 return CreateRef<OpenGLIndexBuffer>(indices);
+            }
+            case RendererAPI::API::Vulkan:
+            {
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                return nullptr;
+            }
+            default:
+            {
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
+                return nullptr;
+            }
+        }
+    }
+
+    Ref<IndexBuffer> IndexBuffer::Create(const U32 size)
+    {
+        switch (Renderer::GetAPI())
+        {
+            case RendererAPI::API::None:
+            {
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
+                return nullptr;
+            }
+            case RendererAPI::API::OpenGL:
+            {
+                return CreateRef<OpenGLIndexBuffer>(size);
+            }
+            case RendererAPI::API::Vulkan:
+            {
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                return nullptr;
+            }
+            default:
+            {
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
+                return nullptr;
+            }
+        }
+    }
+
+    Ref<IndexBuffer> IndexBuffer::Create(const U32* indices, const U32 size)
+    {
+        switch (Renderer::GetAPI())
+        {
+            case RendererAPI::API::None:
+            {
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
+                return nullptr;
+            }
+            case RendererAPI::API::OpenGL:
+            {
+                return CreateRef<OpenGLIndexBuffer>(indices, size);
             }
             case RendererAPI::API::Vulkan:
             {

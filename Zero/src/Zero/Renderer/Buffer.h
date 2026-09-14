@@ -87,11 +87,13 @@ namespace Zero
       public:
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
+        virtual void SetData(const void* data, const U32 size) = 0;
         virtual void SetLayout(const VertexBufferLayout& layout) = 0;
         virtual const VertexBufferLayout& GetLayout() const = 0;
 
       public:
         static Ref<VertexBuffer> Create(const Array<F32>& vertices);
+        static Ref<VertexBuffer> Create(const U32 size);
     };
 
     using VertexBufferRef = Ref<VertexBuffer>;
@@ -110,6 +112,8 @@ namespace Zero
         virtual Length GetLength() const = 0;
 
       public:
+        static Ref<IndexBuffer> Create(const U32 size);
+        static Ref<IndexBuffer> Create(const U32* indices, const U32 size);
         static Ref<IndexBuffer> Create(const Array<U32>& indices);
     };
 
