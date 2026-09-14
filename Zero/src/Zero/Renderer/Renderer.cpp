@@ -19,7 +19,7 @@ namespace Zero
         Renderer2D::Destroy();
     }
 
-    void Renderer::OnWindowResized(const Vector2u& size)
+    void Renderer::OnWindowResized(const glm::uvec2& size)
     {
         RenderCommand::SetViewport({ 0, 0 }, size);
     }
@@ -29,7 +29,7 @@ namespace Zero
         s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
     }
 
-    void Renderer::Submit(const VertexArrayRef& vertexArray, const ShaderRef& shader, const Matrix4& modelMatrix)
+    void Renderer::Submit(const VertexArrayRef& vertexArray, const ShaderRef& shader, const glm::mat4& modelMatrix)
     {
         shader->Bind();
         shader->SetMatrix4("u_ViewProjectionMatrix", s_SceneData->ViewProjectionMatrix);

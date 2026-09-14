@@ -12,7 +12,7 @@ namespace Zero
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    void OpenGLRendererAPI::SetClearColor(const Color& color) const
+    void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) const
     {
         glClearColor(color.r, color.g, color.b, color.a);
     }
@@ -22,7 +22,7 @@ namespace Zero
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    void OpenGLRendererAPI::Clear(const Color& color) const
+    void OpenGLRendererAPI::Clear(const glm::vec4& color) const
     {
         glClearColor(color.r, color.g, color.b, color.a);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -34,7 +34,7 @@ namespace Zero
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    void OpenGLRendererAPI::SetViewport(const Vector2i& position, const Vector2u& size)
+    void OpenGLRendererAPI::SetViewport(const glm::ivec2& position, const glm::uvec2& size)
     {
         glViewport(position.x, position.y, size.x, size.y);
     }

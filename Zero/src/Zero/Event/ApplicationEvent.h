@@ -11,10 +11,10 @@ namespace Zero
     class WindowResizedEvent : public Event
     {
       public:
-        WindowResizedEvent(const Vector2i& size) : m_Size{ size } {}
+        WindowResizedEvent(const glm::ivec2& size) : m_Size{ size } {}
 
       public:
-        inline const Vector2i& GetSize() const { return m_Size; }
+        inline const glm::ivec2& GetSize() const { return m_Size; }
         inline static EventType GetStaticType() { return EventType::WindowResized; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "WindowResized"; }
@@ -27,7 +27,7 @@ namespace Zero
         }
 
       private:
-        Vector2i m_Size;
+        glm::ivec2 m_Size;
     };
 
     //======================================================================================

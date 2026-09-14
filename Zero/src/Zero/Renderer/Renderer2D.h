@@ -10,10 +10,10 @@ namespace Zero
       public:
         struct QuadProperties
         {
-            Vector2 Position{ 0.0f };
+            glm::vec2 Position{ 0.0f };
             Radians Rotation{ 0.0f };
-            Vector2 Scale{ 1.0f };
-            Color Color{ Color::White };
+            glm::vec2 Scale{ 1.0f };
+            glm::vec4 Color{ 1.0f };
             Texture2DRef Texture{ nullptr };
         };
 
@@ -27,9 +27,13 @@ namespace Zero
 
       public:
         static void DrawQuad(const QuadProperties& quad);
-        static void DrawQuad(const Vector2& position, const Radians rotation, const Vector2& scale, const Color& color);
+        static void DrawQuad(const glm::vec2& position, const Radians rotation, const glm::vec2& scale, const glm::vec4& color);
         static void DrawQuad(
-            const Vector2& position, const Radians rotation, const Vector2& scale, const Texture2DRef& texture, const Color& tint = Color::White
+            const glm::vec2& position,
+            const Radians rotation,
+            const glm::vec2& scale,
+            const Texture2DRef& texture,
+            const glm::vec4& tint = glm::vec4{ 1.0f }
         );
     };
 }

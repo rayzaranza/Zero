@@ -24,7 +24,7 @@ class ExampleLayer : public Zero::Layer
 
     Zero::OrthographicCameraController m_CameraController;
 
-    Zero::Vector3 m_QuadPosition;
-    Zero::Color m_QuadColor;
+    glm::vec3 m_QuadPosition;
+    glm::vec4 m_QuadColor;
     Zero::F32 m_QuadMovementSpeed;
 };

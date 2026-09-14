@@ -36,7 +36,7 @@ namespace Zero
         IndexBufferRef quadIndexBuffer{ IndexBuffer::Create(QUAD_INDICES) };
         s_Data->VertexArray->SetIndexBuffer(quadIndexBuffer);
 
-        s_Data->DefaultTexture = Texture2D::Create(Vector2u{ 1 });
+        s_Data->DefaultTexture = Texture2D::Create(glm::uvec2{ 1 });
         constexpr U32 defaultTextureData{ 0xffffffff };
         s_Data->DefaultTexture->SetData(&defaultTextureData, sizeof(U32));
 
@@ -82,13 +82,13 @@ namespace Zero
         RenderCommand::DrawIndexed(s_Data->VertexArray);
     }
 
-    void Renderer2D::DrawQuad(const Vector2& position, const Radians rotation, const Vector2& scale, const Color& color)
+    void Renderer2D::DrawQuad(const glm::vec2& position, const Radians rotation, const glm::vec2& scale, const glm::vec4& color)
     {
         ZR_PROFILE_FUNCTION();
 
         s_Data->VertexArray->Bind();
 
-        Matrix4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
+        glm::mat4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
         s_Data->Shader->SetMatrix4("u_ModelMatrix", modelMatrix);
         s_Data->Shader->SetColor("u_Color", color);
 
@@ -97,14 +97,14 @@ namespace Zero
     }
 
     void Renderer2D::DrawQuad(
-        const Vector2& position, const Radians rotation, const Vector2& scale, const Texture2DRef& texture, const Color& tint
+        const glm::vec2& position, const Radians rotation, const glm::vec2& scale, const Texture2DRef& texture, const glm::vec4& tint
     )
     {
         ZR_PROFILE_FUNCTION();
 
         s_Data->VertexArray->Bind();
 
-        Matrix4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
+        glm::mat4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
         s_Data->Shader->SetMatrix4("u_ModelMatrix", modelMatrix);
         s_Data->Shader->SetColor("u_Color", tint);
 

@@ -149,7 +149,7 @@ namespace Zero
         glUseProgram(0);
     }
 
-    void OpenGLShader::SetColor(const String& name, const Color& color) const
+    void OpenGLShader::SetColor(const String& name, const glm::vec4& color) const
     {
         ZR_PROFILE_FUNCTION();
 
@@ -157,7 +157,7 @@ namespace Zero
         glUniform4f(location, color.r, color.g, color.b, color.a);
     }
 
-    void OpenGLShader::SetMatrix4(const String& name, const Matrix4& matrix) const
+    void OpenGLShader::SetMatrix4(const String& name, const glm::mat4& matrix) const
     {
         ZR_PROFILE_FUNCTION();
 
@@ -173,7 +173,7 @@ namespace Zero
         }
     }
 
-    void OpenGLShader::SetVector4(const String& name, const Vector4& vector) const
+    void OpenGLShader::SetVector4(const String& name, const glm::vec4& vector) const
     {
         ZR_PROFILE_FUNCTION();
 
@@ -190,7 +190,7 @@ namespace Zero
         }
     }
 
-    void OpenGLShader::SetVector3(const String& name, const Vector3& vector) const
+    void OpenGLShader::SetVector3(const String& name, const glm::vec3& vector) const
     {
         ZR_PROFILE_FUNCTION();
 
@@ -198,7 +198,7 @@ namespace Zero
         glUniform3f(location, vector.x, vector.y, vector.z);
     }
 
-    void OpenGLShader::SetFloat2(const String& name, const Vector2& vector) const
+    void OpenGLShader::SetFloat2(const String& name, const glm::vec2& vector) const
     {
         ZR_PROFILE_FUNCTION();
 

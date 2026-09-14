@@ -28,7 +28,7 @@ namespace Zero
         F32 m_AspectRatio;
         F32 m_ZoomLevel;
         OrthographicCamera m_Camera;
-        Vector3 m_Position;
+        glm::vec3 m_Position;
         Radians m_Rotation;
         Radians m_RotationSpeed;
         F32 m_ZoomSpeed;

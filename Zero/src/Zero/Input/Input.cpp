@@ -22,12 +22,12 @@ namespace Zero
         return state == GLFW_PRESS;
     }
 
-    Vector2 Input::GetMousePosition()
+    glm::vec2 Input::GetMousePosition()
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
         F64 x, y;
         glfwGetCursorPos(window, &x, &y);
-        return Vector2{ static_cast<F32>(x), static_cast<F32>(y) };
+        return glm::vec2{ static_cast<F32>(x), static_cast<F32>(y) };
     }
 
 }

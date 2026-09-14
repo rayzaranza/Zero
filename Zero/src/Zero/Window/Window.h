@@ -4,6 +4,8 @@
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Renderer/RendererContext.h"
 
+#include <glm/glm.hpp>
+
 struct GLFWwindow;
 
 namespace Zero
@@ -19,7 +21,7 @@ namespace Zero
     struct WindowData
     {
         String Title{};
-        Vector2i Size{};
+        glm::ivec2 Size{};
         EventCallback EventCallback{};
     };
 
@@ -29,11 +31,11 @@ namespace Zero
     class Window
     {
       public:
-        Window(const String& title = "ZERO", const Vector2i& size = Vector2i{ 1280, 720 });
+        Window(const String& title = "ZERO", const glm::ivec2& size = glm::ivec2{ 1280, 720 });
         ~Window();
 
       public:
-        inline const Vector2i& GetSize() const { return m_Data.Size; }
+        inline const glm::ivec2& GetSize() const { return m_Data.Size; }
         inline GLFWwindow* GetWindowHandle() const { return m_WindowHandle; }
         inline void SetEventCallback(const EventCallback& callback) { m_Data.EventCallback = callback; }
         inline F32 GetAspectRatio() const { return static_cast<F32>(m_Data.Size.x) / static_cast<F32>(m_Data.Size.y); }
