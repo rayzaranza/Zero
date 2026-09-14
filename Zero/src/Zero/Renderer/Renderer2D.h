@@ -26,6 +26,7 @@ namespace Zero
       public:
         static void BeginScene(const OrthographicCamera& camera);
         static void EndScene();
+        static void Flush();
 
       public:
         static void DrawQuad(const QuadProperties& quad);
