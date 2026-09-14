@@ -10,6 +10,7 @@ ExampleLayer2D::ExampleLayer2D()
     : Zero::Layer{ "ExampleLayer2D" }
     , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
     , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
+    , m_QuadProperties{ .Texture{ m_Texture } }
 {}
 
 ExampleLayer2D::~ExampleLayer2D()
@@ -78,5 +79,6 @@ void ExampleLayer2D::OnUIRender()
     ImGui::DragFloat2("Scale", glm::value_ptr(m_QuadProperties.Scale), 0.001f);
     ImGui::SliderAngle("Rotation", &m_QuadProperties.Rotation);
     ImGui::ColorEdit4("Color", glm::value_ptr(m_QuadProperties.Color));
+    ImGui::DragFloat2("Texture Tiling", glm::value_ptr(m_QuadProperties.Tiling));
     ImGui::End();
 }

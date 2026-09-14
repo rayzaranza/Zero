@@ -198,7 +198,7 @@ namespace Zero
         glUniform3f(location, vector.x, vector.y, vector.z);
     }
 
-    void OpenGLShader::SetFloat2(const String& name, const glm::vec2& vector) const
+    void OpenGLShader::SetVector2(const String& name, const glm::vec2& vector) const
     {
         ZR_PROFILE_FUNCTION();
 

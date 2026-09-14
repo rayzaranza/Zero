@@ -5,6 +5,7 @@
 
 namespace Zero
 {
+
     class Renderer2D
     {
       public:
@@ -14,6 +15,7 @@ namespace Zero
             Radians Rotation{ 0.0f };
             glm::vec2 Scale{ 1.0f };
             glm::vec4 Color{ 1.0f };
+            glm::vec2 Tiling{ 1.0f };
             Texture2DRef Texture{ nullptr };
         };
 
@@ -33,7 +35,8 @@ namespace Zero
             const Radians rotation,
             const glm::vec2& scale,
             const Texture2DRef& texture,
-            const glm::vec4& tint = glm::vec4{ 1.0f }
+            const glm::vec4& tint = glm::vec4{ 1.0f },
+            const glm::vec2& tiling = glm::vec2{ 1.0f }
         );
     };
 }

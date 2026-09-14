@@ -24,10 +24,11 @@ in vec2 v_UV;
 
 uniform vec4 u_Color;
 uniform sampler2D u_Texture;
+uniform vec2 u_Tiling;
 
 out vec4 o_Color;
 
 void main()
 {
-    o_Color = texture(u_Texture, v_UV) * u_Color;
+    o_Color = texture(u_Texture, v_UV * u_Tiling) * u_Color;
 }

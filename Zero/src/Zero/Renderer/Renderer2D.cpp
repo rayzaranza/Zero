@@ -73,6 +73,7 @@ namespace Zero
 
         s_Data->Shader->SetMatrix4("u_ModelMatrix", CalculcateModelMatrix2D(quad.Position, quad.Rotation, quad.Scale));
         s_Data->Shader->SetColor("u_Color", quad.Color);
+        s_Data->Shader->SetVector2("u_Tiling", quad.Tiling);
 
         if (quad.Texture == nullptr)
             s_Data->DefaultTexture->Bind();
@@ -91,13 +92,19 @@ namespace Zero
         glm::mat4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
         s_Data->Shader->SetMatrix4("u_ModelMatrix", modelMatrix);
         s_Data->Shader->SetColor("u_Color", color);
+        s_Data->Shader->SetVector2("u_Tiling", glm::vec2{ 1.0f });
 
         s_Data->DefaultTexture->Bind();
         RenderCommand::DrawIndexed(s_Data->VertexArray);
     }
 
     void Renderer2D::DrawQuad(
-        const glm::vec2& position, const Radians rotation, const glm::vec2& scale, const Texture2DRef& texture, const glm::vec4& tint
+        const glm::vec2& position,
+        const Radians rotation,
+        const glm::vec2& scale,
+        const Texture2DRef& texture,
+        const glm::vec4& tint,
+        const glm::vec2& tiling
     )
     {
         ZR_PROFILE_FUNCTION();
@@ -107,6 +114,7 @@ namespace Zero
         glm::mat4 modelMatrix{ CalculcateModelMatrix2D(position, rotation, scale) };
         s_Data->Shader->SetMatrix4("u_ModelMatrix", modelMatrix);
         s_Data->Shader->SetColor("u_Color", tint);
+        s_Data->Shader->SetVector2("u_Tiling", tiling);
 
         texture->Bind();
         RenderCommand::DrawIndexed(s_Data->VertexArray);
