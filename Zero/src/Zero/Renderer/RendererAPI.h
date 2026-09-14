@@ -19,7 +19,7 @@ namespace Zero
         virtual void SetClearColor(const glm::vec4& color) const = 0;
         virtual void Clear() const = 0;
         virtual void Clear(const glm::vec4& color) const = 0;
-        virtual void DrawIndexed(const VertexArrayRef& vertexArray) = 0;
+        virtual void DrawIndexed(const VertexArrayRef& vertexArray, const U32 indexCount) = 0;
         virtual void SetViewport(const glm::ivec2& position, const glm::uvec2& size) = 0;
 
       public:

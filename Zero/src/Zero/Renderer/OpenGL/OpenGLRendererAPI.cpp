@@ -28,9 +28,10 @@ namespace Zero
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-    void OpenGLRendererAPI::DrawIndexed(const VertexArrayRef& vertexArray)
+    void OpenGLRendererAPI::DrawIndexed(const VertexArrayRef& vertexArray, const U32 indexCount)
     {
-        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetLength(), GL_UNSIGNED_INT, nullptr);
+        const U32 count{ indexCount ? indexCount : static_cast<U32>(vertexArray->GetIndexBuffer()->GetLength()) };
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
