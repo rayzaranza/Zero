@@ -14,9 +14,9 @@ namespace Zero
       public:
         static void Initialize();
         static void Destroy();
-        static void OnWindowResized(const Vector2u& size);
+        static void OnWindowResized(const glm::uvec2& size);
         static void BeginScene(OrthographicCamera& camera);
-        static void Submit(const VertexArrayRef& vertexArray, const ShaderRef& shader, const Matrix4& transform = Matrix4{ 1.0f });
+        static void Submit(const VertexArrayRef& vertexArray, const ShaderRef& shader, const glm::mat4& transform = glm::mat4{ 1.0f });
         static void EndScene();
 
       public:
@@ -25,7 +25,7 @@ namespace Zero
       private:
         struct SceneData
         {
-            Matrix4 ViewProjectionMatrix{ 1.0f };
+            glm::mat4 ViewProjectionMatrix{ 1.0f };
         };
 
         static Scope<SceneData> s_SceneData;

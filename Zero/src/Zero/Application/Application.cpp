@@ -119,7 +119,7 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        const Vector2i size{ event.GetSize() };
+        const glm::ivec2 size{ event.GetSize() };
 
         if (size.x == 0 || size.y == 0)
         {

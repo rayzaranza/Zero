@@ -65,7 +65,7 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        const Vector2i size{ event.GetSize() };
+        const glm::ivec2 size{ event.GetSize() };
         m_AspectRatio = static_cast<F32>(size.x) / static_cast<F32>(size.y);
         m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
         return false;

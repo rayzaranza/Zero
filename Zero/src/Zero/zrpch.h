@@ -6,6 +6,7 @@
 
 #include <array>
 #include <functional>
+#include <glm/glm.hpp>
 #include <iostream>
 #include <memory>
 #include <sstream>

@@ -63,7 +63,7 @@ void ExampleLayer::OnEvent(Zero::Event& event)
 
 void ExampleLayer::OnRender()
 {
-    Zero::RenderCommand::Clear(Zero::Color::Black);
+    Zero::RenderCommand::Clear(glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f });
     Zero::Renderer::BeginScene(m_CameraController.GetCamera());
 
     m_QuadShader->Bind();
@@ -73,8 +73,8 @@ void ExampleLayer::OnRender()
     {
         for (Zero::I32 x{ 0 }; x < 20; ++x)
         {
-            Zero::Vector3 position{ static_cast<Zero::F32>(x) * 0.11f, static_cast<Zero::F32>(y) * 0.11f, 0.0f };
-            Zero::Matrix4 quadModelMatrix{ glm::translate({ 1.0f }, position) * glm::scale({ 1.0f }, Zero::Vector3{ 0.1f }) };
+            glm::vec3 position{ static_cast<Zero::F32>(x) * 0.11f, static_cast<Zero::F32>(y) * 0.11f, 0.0f };
+            glm::mat4 quadModelMatrix{ glm::translate({ 1.0f }, position) * glm::scale({ 1.0f }, glm::vec3{ 0.1f }) };
             Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader, quadModelMatrix);
         }
     }
@@ -84,9 +84,9 @@ void ExampleLayer::OnRender()
     Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
 
     m_TransparentTexture->Bind();
-    Zero::Matrix4 transparentQuadTransform{ 1.0f };
-    transparentQuadTransform = glm::translate(transparentQuadTransform, Zero::Vector3{ 0.0f, 1.0f, 0.0f });
-    transparentQuadTransform = glm::scale(transparentQuadTransform, Zero::Vector3{ 0.25f });
+    glm::mat4 transparentQuadTransform{ 1.0f };
+    transparentQuadTransform = glm::translate(transparentQuadTransform, glm::vec3{ 0.0f, 1.0f, 0.0f });
+    transparentQuadTransform = glm::scale(transparentQuadTransform, glm::vec3{ 0.25f });
     Zero::Renderer::Submit(m_QuadVertexArray, textureShader);
 
     Zero::Renderer::EndScene();
@@ -95,6 +95,6 @@ void ExampleLayer::OnRender()
 void ExampleLayer::OnUIRender()
 {
     ImGui::Begin("Settings");
-    ImGui::ColorEdit4("Quad Color", ValuePointer(m_QuadColor));
+    ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadColor));
     ImGui::End();
 }

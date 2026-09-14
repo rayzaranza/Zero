@@ -26,14 +26,14 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        Matrix4 transform{ 1.0f };
+        glm::mat4 transform{ 1.0f };
         transform = glm::translate(transform, m_Position);
-        transform = glm::rotate(transform, m_Rotation.Value, Vector3::Backward);
+        transform = glm::rotate(transform, m_Rotation, glm::vec3{ 0.0f, 0.0f, 1.0f });
         m_ViewMatrix = glm::inverse(transform);
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
-    void OrthographicCamera::SetPosition(const Vector3& position)
+    void OrthographicCamera::SetPosition(const glm::vec3& position)
     {
         m_Position = position;
         CalculateViewProjectionMatrix();

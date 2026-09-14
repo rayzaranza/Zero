@@ -9,9 +9,9 @@
 
 namespace Zero
 {
-    static void SendWindowToSecondMonitor(GLFWwindow* window, const Vector2i& size);
+    static void SendWindowToSecondMonitor(GLFWwindow* window, const glm::ivec2& size);
 
-    Window::Window(const String& title, const Vector2i& size) : m_Data{ title, size }
+    Window::Window(const String& title, const glm::ivec2& size) : m_Data{ title, size }
     {
         ZR_PROFILE_FUNCTION();
 
@@ -94,13 +94,13 @@ namespace Zero
 
         glfwSetScrollCallback(m_WindowHandle, [](GLFWwindow* window, const F64 xOffset, const F64 yOffset) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
-            MouseScrolledEvent event{ Vector2{ static_cast<F32>(xOffset), static_cast<F32>(yOffset) } };
+            MouseScrolledEvent event{ glm::vec2{ static_cast<F32>(xOffset), static_cast<F32>(yOffset) } };
             data.EventCallback(event);
         });
 
         glfwSetCursorPosCallback(m_WindowHandle, [](GLFWwindow* window, const F64 x, const F64 y) {
             WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
-            MouseMovedEvent event{ Vector2{ static_cast<F32>(x), static_cast<F32>(y) } };
+            MouseMovedEvent event{ glm::vec2{ static_cast<F32>(x), static_cast<F32>(y) } };
             data.EventCallback(event);
         });
 
@@ -167,7 +167,7 @@ namespace Zero
         m_RendererContext->SwapBuffers();
     }
 
-    void SendWindowToSecondMonitor(GLFWwindow* window, const Vector2i& size)
+    void SendWindowToSecondMonitor(GLFWwindow* window, const glm::ivec2& size)
     {
         ZR_PROFILE_FUNCTION();
 
@@ -176,7 +176,7 @@ namespace Zero
         GLFWmonitor* monitor{ monitors[1] };
         const GLFWvidmode* mode{ glfwGetVideoMode(monitor) };
 
-        Vector2i position{};
+        glm::ivec2 position{};
         glfwGetMonitorPos(monitor, &position.x, &position.y);
         glfwSetWindowPos(window, position.x + (mode->width - size.x) / 2, position.y + (mode->height - size.y) / 2 - 24);
     }

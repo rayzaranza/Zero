@@ -6,7 +6,7 @@
 
 namespace Zero
 {
-    Texture2DRef Texture2D::Create(const Vector2u& size)
+    Texture2DRef Texture2D::Create(const glm::uvec2& size)
     {
         ZR_PROFILE_FUNCTION();
 

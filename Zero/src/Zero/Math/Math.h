@@ -2,6 +2,6 @@
 
 namespace Zero
 {
-    Matrix4 CalculcateModelMatrix(const Vector3& position, const Radians rotation, const Vector3& scale);
-    Matrix4 CalculcateModelMatrix2D(const Vector2& position, const Radians rotation, const Vector2& scale);
+    glm::mat4 CalculcateModelMatrix(const glm::vec3& position, const Radians rotation, const glm::vec3& scale);
+    glm::mat4 CalculcateModelMatrix2D(const glm::vec2& position, const Radians rotation, const glm::vec2& scale);
 }

@@ -39,7 +39,7 @@ void ExampleLayer2D::OnRender()
     {
         ZR_PROFILE_SCOPE("Renderer Prep");
 
-        Zero::RenderCommand::Clear(Zero::Color::Black);
+        Zero::RenderCommand::Clear(glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f });
     }
 
     {
@@ -74,9 +74,9 @@ void ExampleLayer2D::OnUIRender()
     ZR_PROFILE_FUNCTION();
 
     ImGui::Begin("Quad Properties");
-    ImGui::DragFloat2("Position", ValuePointer(m_QuadProperties.Position), 0.001f);
-    ImGui::DragFloat2("Scale", ValuePointer(m_QuadProperties.Scale), 0.001f);
-    ImGui::SliderAngle("Rotation", ValuePointer(m_QuadProperties.Rotation));
-    ImGui::ColorEdit4("Color", ValuePointer(m_QuadProperties.Color));
+    ImGui::DragFloat2("Position", glm::value_ptr(m_QuadProperties.Position), 0.001f);
+    ImGui::DragFloat2("Scale", glm::value_ptr(m_QuadProperties.Scale), 0.001f);
+    ImGui::SliderAngle("Rotation", &m_QuadProperties.Rotation);
+    ImGui::ColorEdit4("Color", glm::value_ptr(m_QuadProperties.Color));
     ImGui::End();
 }

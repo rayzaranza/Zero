@@ -11,7 +11,7 @@ namespace Zero
 {
     static OpenGLTexture2D::Format GetTextureFormat(const I32 channels);
 
-    OpenGLTexture2D::OpenGLTexture2D(const Vector2u& size) : m_Size{ size }, m_Format{ GL_RGBA8, GL_RGBA }
+    OpenGLTexture2D::OpenGLTexture2D(const glm::uvec2& size) : m_Size{ size }, m_Format{ GL_RGBA8, GL_RGBA }
     {
         ZR_PROFILE_FUNCTION();
 
@@ -24,24 +24,23 @@ namespace Zero
 
         stbi_set_flip_vertically_on_load(1);
 
-        stbi_uc* image{ nullptr };
-        Vector2i size{};
-        I32 channels{};
-
+        stbi_uc* imageData{ nullptr };
+        glm::ivec2 imageSize{};
+        I32 imageChannels{};
         {
             ZR_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const String& path)");
 
-            image = stbi_load(path.c_str(), &size.x, &size.y, &channels, 0);
+            imageData = stbi_load(path.c_str(), &imageSize.x, &imageSize.y, &imageChannels, 0);
         }
 
-        ZR_CORE_ASSERT(image, "Failed to load image");
-        m_Size = size;
-        m_Format = GetTextureFormat(channels);
+        ZR_CORE_ASSERT(imageData, "Failed to load image");
+        m_Size = imageSize;
+        m_Format = GetTextureFormat(imageChannels);
 
         SetupTextureBuffer();
-        glTextureSubImage2D(m_Id, 0, 0, 0, m_Size.x, m_Size.y, m_Format.image, GL_UNSIGNED_BYTE, image);
+        glTextureSubImage2D(m_Id, 0, 0, 0, m_Size.x, m_Size.y, m_Format.image, GL_UNSIGNED_BYTE, imageData);
 
-        stbi_image_free(image);
+        stbi_image_free(imageData);
     }
 
     OpenGLTexture2D::~OpenGLTexture2D()

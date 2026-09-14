@@ -12,10 +12,10 @@ namespace Zero
     class MouseMovedEvent : public Event
     {
       public:
-        MouseMovedEvent(const Vector2& position) : m_Position{ position } {}
+        MouseMovedEvent(const glm::vec2& position) : m_Position{ position } {}
 
       public:
-        inline const Vector2& GetPosition() const { return m_Position; }
+        inline const glm::vec2& GetPosition() const { return m_Position; }
         inline static EventType GetStaticType() { return EventType::MouseMoved; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "MouseMoved"; }
@@ -28,7 +28,7 @@ namespace Zero
         }
 
       private:
-        Vector2 m_Position;
+        glm::vec2 m_Position;
     };
 
     //=====================================================================================================================================
@@ -37,10 +37,10 @@ namespace Zero
     class MouseScrolledEvent : public Event
     {
       public:
-        MouseScrolledEvent(const Vector2& offset) : m_Offset{ offset } {}
+        MouseScrolledEvent(const glm::vec2& offset) : m_Offset{ offset } {}
 
       public:
-        inline const Vector2& GetOffset() const { return m_Offset; }
+        inline const glm::vec2& GetOffset() const { return m_Offset; }
         inline static EventType GetStaticType() { return EventType::MouseScrolled; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "MouseScrolled"; }
@@ -53,7 +53,7 @@ namespace Zero
         }
 
       private:
-        Vector2 m_Offset;
+        glm::vec2 m_Offset;
     };
 
     //=====================================================================================================================================

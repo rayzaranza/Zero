@@ -68,7 +68,7 @@ namespace Zero
         ZR_PROFILE_FUNCTION();
 
         ImGuiIO& io{ ImGui::GetIO() };
-        const Vector2& windowSize{ static_cast<Vector2>(Application::Get().GetWindow().GetSize()) };
+        const glm::vec2& windowSize{ Application::Get().GetWindow().GetSize() };
         io.DisplaySize = ImVec2{ windowSize.x, windowSize.y };
 
         ImGui::Render();
