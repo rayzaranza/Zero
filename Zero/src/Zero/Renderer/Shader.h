@@ -20,7 +20,7 @@ namespace Zero
         virtual void SetMatrix4(const String& name, const glm::mat4& matrix) const = 0;
         virtual void SetVector4(const String& name, const glm::vec4& vector) const = 0;
         virtual void SetVector3(const String& name, const glm::vec3& vector) const = 0;
-        virtual void SetFloat2(const String& name, const glm::vec2& vector) const = 0;
+        virtual void SetVector2(const String& name, const glm::vec2& vector) const = 0;
         virtual void SetFloat(const String& name, const F32 value) const = 0;
         virtual void SetInt(const String& name, const I32 value) const = 0;
 
