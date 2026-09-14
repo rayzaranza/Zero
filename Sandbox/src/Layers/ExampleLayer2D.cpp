@@ -6,11 +6,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <print>
 
+constexpr Zero::I32 QUADS_COUNT{ 6 };
+
 ExampleLayer2D::ExampleLayer2D()
     : Zero::Layer{ "ExampleLayer2D" }
     , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
     , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
-    , m_QuadProperties{ .Texture{ m_Texture } }
 {}
 
 ExampleLayer2D::~ExampleLayer2D()
@@ -19,6 +20,21 @@ ExampleLayer2D::~ExampleLayer2D()
 void ExampleLayer2D::OnAttach()
 {
     ZR_PROFILE_FUNCTION();
+
+    m_QuadsProperties.reserve(QUADS_COUNT);
+
+    for (Zero::I32 index{ 0 }; index < QUADS_COUNT; ++index)
+    {
+        const Zero::F32 i{ static_cast<Zero::F32>(index) };
+
+        const Zero::Renderer2D::QuadProperties quad{
+            .Position{ i * 1.12f, 0.0f },
+            .Rotation{ i * 360.0f },
+            .Color{ 1.0f - i * 0.123f, i * 0.33f, i * 0.1f, 1.0f },
+        };
+
+        m_QuadsProperties.push_back(quad);
+    }
 }
 
 void ExampleLayer2D::OnDetach()
@@ -31,6 +47,11 @@ void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
     ZR_PROFILE_FUNCTION();
 
     m_CameraController.OnUpdate(deltaTime);
+
+    for (Zero::Renderer2D::QuadProperties& quadProperties : m_QuadsProperties)
+    {
+        quadProperties.Rotation += deltaTime;
+    }
 }
 
 void ExampleLayer2D::OnRender()
@@ -47,9 +68,14 @@ void ExampleLayer2D::OnRender()
         ZR_PROFILE_SCOPE("Renderer Draw Scene");
 
         Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
-        Zero::Renderer2D::DrawQuad(m_QuadProperties);
-        Zero::Renderer2D::EndScene();
+
+        for (const Zero::Renderer2D::QuadProperties& quadProperties : m_QuadsProperties)
+        {
+            Zero::Renderer2D::DrawQuad(quadProperties);
+        }
     }
+
+    Zero::Renderer2D::EndScene();
 }
 
 void ExampleLayer2D::OnEvent(Zero::Event& event)
@@ -74,11 +100,11 @@ void ExampleLayer2D::OnUIRender()
 {
     ZR_PROFILE_FUNCTION();
 
-    ImGui::Begin("Quad Properties");
-    ImGui::DragFloat2("Position", glm::value_ptr(m_QuadProperties.Position), 0.001f);
-    ImGui::DragFloat2("Scale", glm::value_ptr(m_QuadProperties.Scale), 0.001f);
-    ImGui::SliderAngle("Rotation", &m_QuadProperties.Rotation);
-    ImGui::ColorEdit4("Color", glm::value_ptr(m_QuadProperties.Color));
-    ImGui::DragFloat2("Texture Tiling", glm::value_ptr(m_QuadProperties.Tiling));
-    ImGui::End();
+    // ImGui::Begin("Quad Properties");
+    //  ImGui::DragFloat2("Position", glm::value_ptr(m_QuadProperties.Position), 0.001f);
+    //  ImGui::DragFloat2("Scale", glm::value_ptr(m_QuadProperties.Scale), 0.001f);
+    //  ImGui::SliderAngle("Rotation", &m_QuadProperties.Rotation);
+    //  ImGui::ColorEdit4("Color", glm::value_ptr(m_QuadProperties.Color));
+    //  ImGui::DragFloat2("Texture Tiling", glm::value_ptr(m_QuadProperties.Tiling));
+    // ImGui::End();
 }
