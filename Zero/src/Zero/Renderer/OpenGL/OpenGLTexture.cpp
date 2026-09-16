@@ -54,7 +54,7 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        glBindTextureUnit(0, m_Id);
+        glBindTextureUnit(slot, m_Id);
     }
 
     void OpenGLTexture2D::SetData(const void* data, const U32 size)
