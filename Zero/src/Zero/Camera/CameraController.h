@@ -21,8 +21,8 @@ namespace Zero
         inline void SetZoomLevel(F32 zoomLevel) { m_ZoomLevel = zoomLevel; }
 
       private:
-        Boolean OnMouseScrolled(MouseScrolledEvent& event);
-        Boolean OnWindowResizedEvent(WindowResizedEvent& event);
+        bool OnMouseScrolled(MouseScrolledEvent& event);
+        bool OnWindowResizedEvent(WindowResizedEvent& event);
 
       private:
         F32 m_AspectRatio;

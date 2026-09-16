@@ -83,7 +83,7 @@ namespace Zero
 
       private:
         String m_Name;
-        Boolean m_IsStopped;
+        bool m_IsStopped;
         TimePoint m_StartTime;
     };
 }

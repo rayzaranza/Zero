@@ -53,11 +53,11 @@ namespace Zero
 
       public:
         inline virtual String ToString() const { return GetName(); }
-        inline Boolean IsHandled() const { return m_IsHandled; }
-        inline Boolean IsInCategory(EventCategory category) const { return GetCategoryFlags() & category; };
+        inline bool IsHandled() const { return m_IsHandled; }
+        inline bool IsInCategory(EventCategory category) const { return GetCategoryFlags() & category; };
 
       protected:
-        Boolean m_IsHandled{ false };
+        bool m_IsHandled{ false };
         friend class EventDispatcher;
     };
 
@@ -75,7 +75,7 @@ namespace Zero
         EventDispatcher(Event& event) : m_Event{ event } {}
 
       public:
-        template <typename T> Boolean Dispatch(Function<Boolean(T&)> function)
+        template <typename T> bool Dispatch(Function<bool(T&)> function)
         {
             if (m_Event.GetEventType() == T::GetStaticType())
             {

@@ -52,7 +52,7 @@ namespace Zero
         dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(OrthographicCameraController::OnWindowResizedEvent));
     }
 
-    Boolean OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)
+    bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event)
     {
         ZR_PROFILE_FUNCTION();
 
@@ -61,7 +61,7 @@ namespace Zero
         return false;
     }
 
-    Boolean OrthographicCameraController::OnWindowResizedEvent(WindowResizedEvent& event)
+    bool OrthographicCameraController::OnWindowResizedEvent(WindowResizedEvent& event)
     {
         ZR_PROFILE_FUNCTION();
 

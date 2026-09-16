@@ -8,14 +8,14 @@ namespace Zero
 {
     Input* Input::s_Instance{ new Input() };
 
-    Boolean Input::IsKeyPressed(const KeyCode keyCode)
+    bool Input::IsKeyPressed(const KeyCode keyCode)
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
         const I32 state{ glfwGetKey(window, static_cast<I32>(keyCode)) };
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
-    Boolean Input::IsMouseButtonPressed(const MouseButton button)
+    bool Input::IsMouseButtonPressed(const MouseButton button)
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
         const I32 state{ glfwGetMouseButton(window, static_cast<I32>(button)) };

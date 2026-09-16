@@ -17,7 +17,7 @@ class ExampleLayer2D : public Zero::Layer
     virtual void OnEvent(Zero::Event& event) override;
 
   public:
-    Zero::Boolean OnKeyPressed(Zero::KeyPressedEvent& event);
+    bool OnKeyPressed(Zero::KeyPressedEvent& event);
 
   private:
     Zero::OrthographicCameraController m_CameraController;

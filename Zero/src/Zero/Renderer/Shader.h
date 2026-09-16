@@ -46,7 +46,7 @@ namespace Zero
         ShaderRef Load(const String& filePath);
         ShaderRef Load(const String& name, const String& filePath);
         ShaderRef Get(const String& name);
-        Boolean Exists(const String& name) const;
+        bool Exists(const String& name) const;
 
       public:
         static Ref<ShaderLibrary> Create();

@@ -34,7 +34,7 @@ namespace Zero
         AttributeType Type;
         I32 Size;
         U32 ComponentCount;
-        Boolean IsNormalized;
+        bool IsNormalized;
         U32 Offset;
 
         VertexAttribute(const AttributeType type, const String& name)

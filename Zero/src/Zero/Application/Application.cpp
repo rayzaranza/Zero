@@ -109,13 +109,13 @@ namespace Zero
         }
     }
 
-    Boolean Application::OnWindowClosed(WindowClosedEvent& event)
+    bool Application::OnWindowClosed(WindowClosedEvent& event)
     {
         m_IsRunning = false;
         return true;
     }
 
-    Boolean Application::OnWindowResized(WindowResizedEvent& event)
+    bool Application::OnWindowResized(WindowResizedEvent& event)
     {
         ZR_PROFILE_FUNCTION();
 

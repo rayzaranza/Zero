@@ -49,7 +49,7 @@ namespace Zero
             glShaderSource(shader, 1, &sourceRaw, 0);
             glCompileShader(shader);
 
-            const Boolean isCompiled{ CheckShaderErrors(shader) };
+            const bool isCompiled{ CheckShaderErrors(shader) };
             ZR_CORE_ASSERT(isCompiled, "Shader compilation error");
 
             if (!isCompiled)
@@ -60,7 +60,7 @@ namespace Zero
         }
 
         glLinkProgram(program);
-        const Boolean isLinked{ CheckProgramErrors(program, shaderIds) };
+        const bool isLinked{ CheckProgramErrors(program, shaderIds) };
         ZR_CORE_ASSERT(isLinked, "Shader linking error");
 
         if (!isLinked)
@@ -246,7 +246,7 @@ namespace Zero
         return filePath.substr(lastSlashPosition, count);
     }
 
-    Boolean OpenGLShader::CheckShaderErrors(U32 shader)
+    bool OpenGLShader::CheckShaderErrors(U32 shader)
     {
         I32 isCompiled{};
         glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
@@ -265,7 +265,7 @@ namespace Zero
         return true;
     }
 
-    Boolean OpenGLShader::CheckProgramErrors(U32 program, const FixedArray<U32, MAX_SHADERS_SUPPORTED>& shaderIds)
+    bool OpenGLShader::CheckProgramErrors(U32 program, const FixedArray<U32, MAX_SHADERS_SUPPORTED>& shaderIds)
     {
         I32 isLinked{ 0 };
         glGetProgramiv(program, GL_LINK_STATUS, &isLinked);

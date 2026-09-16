@@ -31,8 +31,8 @@ namespace Zero
         String ReadFile(const String& filePath);
         Map<U32, String> PreProcess(const String& source);
         void Compile(const Map<U32, String>& shaderSources);
-        static Boolean CheckShaderErrors(U32 shader);
-        static Boolean CheckProgramErrors(U32 program, const FixedArray<U32, MAX_SHADERS_SUPPORTED>& shaderIds);
+        static bool CheckShaderErrors(U32 shader);
+        static bool CheckProgramErrors(U32 program, const FixedArray<U32, MAX_SHADERS_SUPPORTED>& shaderIds);
         static U32 StringToShaderType(const String& type);
         static String ExtractNameFromFilePath(const String& filePath);
 

@@ -8,8 +8,8 @@ namespace Zero
     class Input
     {
       public:
-        static Boolean IsKeyPressed(const KeyCode keyCode);
-        static Boolean IsMouseButtonPressed(const MouseButton button);
+        static bool IsKeyPressed(const KeyCode keyCode);
+        static bool IsMouseButtonPressed(const MouseButton button);
         static glm::vec2 GetMousePosition();
 
       private:

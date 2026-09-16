@@ -73,7 +73,7 @@ void ExampleLayer2D::OnEvent(Zero::Event& event)
     dispatcher.Dispatch<Zero::KeyPressedEvent>(ZR_BIND_FUNCTION(ExampleLayer2D::OnKeyPressed));
 }
 
-Zero::Boolean ExampleLayer2D::OnKeyPressed(Zero::KeyPressedEvent& event)
+bool ExampleLayer2D::OnKeyPressed(Zero::KeyPressedEvent& event)
 {
     if (event.GetKeyCode() == Zero::KeyCode::ESCAPE)
     {

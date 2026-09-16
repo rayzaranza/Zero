@@ -28,7 +28,6 @@ namespace Zero
     using I64 = int64_t;
 
     using String = std::string;
-    using Boolean = bool;
     using Length = size_t;
 
     using Seconds = F32;

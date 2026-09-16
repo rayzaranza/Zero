@@ -89,7 +89,7 @@ namespace Zero
         return m_Shaders[name];
     }
 
-    Boolean ShaderLibrary::Exists(const String& name) const
+    bool ShaderLibrary::Exists(const String& name) const
     {
         return m_Shaders.find(name) != m_Shaders.end();
     }
