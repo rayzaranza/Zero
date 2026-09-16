@@ -26,6 +26,9 @@ namespace Zero
         virtual void SetVector2(const String& name, const glm::vec2& vector) const override;
         virtual void SetFloat(const String& name, const F32 value) const override;
         virtual void SetInt(const String& name, const I32 value) const override;
+        virtual void SetUnsignedInt(const String& name, const U32 value) const override;
+        virtual void SetIntArray(const String& name, const I32* values, const U32 count) const override;
+        virtual void SetUnsignedIntArray(const String& name, const U32* values, const U32 count) const override;
 
       private:
         String ReadFile(const String& filePath);

@@ -23,6 +23,11 @@ namespace Zero
         virtual void SetVector2(const String& name, const glm::vec2& vector) const = 0;
         virtual void SetFloat(const String& name, const F32 value) const = 0;
         virtual void SetInt(const String& name, const I32 value) const = 0;
+        virtual void SetUnsignedInt(const String& name, const U32 value) const = 0;
+        virtual void SetIntArray(const String& name, const I32* values, const U32 count) const = 0;
+        virtual void SetUnsignedIntArray(const String& name, const U32* values, const U32 count) const = 0;
+
+        inline void SetTextureSlot(const String& name, const I32 slot) const { SetInt(name, slot); }
 
       public:
         static Ref<Shader> Create(const String& name, const String& vertexSource, const String& fragmentSource);

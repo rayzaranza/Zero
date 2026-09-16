@@ -222,6 +222,30 @@ namespace Zero
         glUniform1i(location, value);
     }
 
+    void OpenGLShader::SetUnsignedInt(const String& name, const U32 value) const
+    {
+        ZR_PROFILE_FUNCTION();
+
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform1ui(location, value);
+    }
+
+    void OpenGLShader::SetIntArray(const String& name, const I32* values, const U32 count) const
+    {
+        ZR_PROFILE_FUNCTION();
+
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform1iv(location, count, values);
+    }
+
+    void OpenGLShader::SetUnsignedIntArray(const String& name, const U32* values, const U32 count) const
+    {
+        ZR_PROFILE_FUNCTION();
+
+        const I32 location{ glGetUniformLocation(m_Id, name.c_str()) };
+        glUniform1uiv(location, count, values);
+    }
+
     U32 OpenGLShader::StringToShaderType(const String& type)
     {
         if (type == "vertex")
