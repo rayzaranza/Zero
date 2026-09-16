@@ -22,6 +22,7 @@ namespace Zero
         virtual void Bind(const U32 slot = 0) const override;
         inline virtual const glm::uvec2& GetSize() const override { return m_Size; }
         virtual void SetData(const void* data, const U32 size) override;
+        inline virtual RendererID GetRendererID() const override { return m_Id; }
 
       private:
         void SetupTextureBuffer();

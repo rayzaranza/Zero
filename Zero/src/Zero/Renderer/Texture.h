@@ -14,6 +14,7 @@ namespace Zero
         virtual void Bind(const U32 slot = 0) const = 0;
         virtual const glm::uvec2& GetSize() const = 0;
         virtual void SetData(const void* data, U32 size) = 0;
+        virtual RendererID GetRendererID() const = 0;
     };
 
     //======================================================================================
