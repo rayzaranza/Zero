@@ -19,6 +19,18 @@ namespace Zero
     static constexpr U32 MAX_INDICES{ MAX_QUADS * QUAD_INDEX_COUNT };
     static constexpr U32 MAX_TEXTURE_SLOTS{ 32u };
     static constexpr U32 DEFAULT_TEXTURE_SLOT_INDEX{ 0u };
+    static constexpr glm::vec2 QUAD_VERTEX_POSITIONS[4]{
+        { -0.5f, -0.5f },
+        { 0.5f, -0.5f },
+        { 0.5f, 0.5f },
+        { -0.5f, 0.5f },
+    };
+    static constexpr glm::vec2 QUAD_VERTEX_UVS[4]{
+        { 0.0f, 0.0f },
+        { 1.0f, 0.0f },
+        { 1.0f, 1.0f },
+        { 0.0f, 1.0f },
+    };
 
     //======================================================================================
     //  Quad Vertex
@@ -55,7 +67,6 @@ namespace Zero
     //  Helper Functions
     //======================================================================================
     static void GenerateQuadIndexBuffer();
-    static void SetQuadVertexData(const Renderer2D::QuadProperties& quad, const glm::vec2& uv, const F32 textureSlot);
 
     //======================================================================================
     //  Renderer2D Initializer
@@ -136,6 +147,14 @@ namespace Zero
         return static_cast<F32>(DEFAULT_TEXTURE_SLOT_INDEX);
     }
 
+    static glm::vec2 GetTansformedVertexPosition(const U32 index, const glm::mat4& transform)
+    {
+        const glm::vec4 position{ QUAD_VERTEX_POSITIONS[index], 0.0f, 1.0f };
+        const glm::vec4 result{ transform * position };
+
+        return { result.x, result.y };
+    }
+
     //======================================================================================
     //  Renderer2D draw quad with struct
     //======================================================================================
@@ -145,10 +164,20 @@ namespace Zero
 
         F32 textureIndex{ GetTextureSlot(quad) };
 
-        SetQuadVertexData(quad, { 0.0f, 0.0f }, textureIndex);
-        SetQuadVertexData(quad, { 1.0f, 0.0f }, textureIndex);
-        SetQuadVertexData(quad, { 1.0f, 1.0f }, textureIndex);
-        SetQuadVertexData(quad, { 0.0f, 1.0f }, textureIndex);
+        const glm::mat4 transform{ CalculcateModelMatrix2D(quad.Position, quad.Rotation, quad.Scale) };
+
+        for (U32 i{ 0u }; i < QUAD_VERTEX_COUNT; ++i)
+        {
+            *s_Data.QuadVertexBufferPointer = QuadVertex{
+                .Position{ GetTansformedVertexPosition(i, transform) },
+                .Color{ quad.Color },
+                .UV{ QUAD_VERTEX_UVS[i] },
+                .TextureSlot{ textureIndex },
+                .Tiling{ quad.Tiling },
+            };
+
+            s_Data.QuadVertexBufferPointer++;
+        }
 
         s_Data.QuadIndexCount += QUAD_INDEX_COUNT;
     }
@@ -167,8 +196,8 @@ namespace Zero
                 break;
             }
 
-                s_Data.Textures[i]->Bind(i);
-            }
+            s_Data.Textures[i]->Bind(i);
+        }
 
         RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
     }
@@ -191,16 +220,6 @@ namespace Zero
     //======================================================================================
     //  Helper Functions Definitions
     //======================================================================================
-    static void SetQuadVertexData(const Renderer2D::QuadProperties& quad, const glm::vec2& uv, const F32 textureSlot)
-    {
-        s_Data.QuadVertexBufferPointer->Position = quad.Position + (quad.Scale * uv);
-        s_Data.QuadVertexBufferPointer->Color = quad.Color;
-        s_Data.QuadVertexBufferPointer->UV = uv;
-        s_Data.QuadVertexBufferPointer->TextureSlot = textureSlot;
-        s_Data.QuadVertexBufferPointer->Tiling = quad.Tiling;
-        s_Data.QuadVertexBufferPointer++;
-    }
-
     void GenerateQuadIndexBuffer()
     {
         U32* quadIndices{ new U32[MAX_INDICES] };
