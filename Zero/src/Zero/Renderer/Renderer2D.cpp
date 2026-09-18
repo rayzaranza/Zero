@@ -162,11 +162,13 @@ namespace Zero
 
         for (U32 i{ 0u }; i < s_Data.Textures.size(); ++i)
         {
-            if (s_Data.Textures[i])
+            if (!s_Data.Textures[i])
             {
+                break;
+            }
+
                 s_Data.Textures[i]->Bind(i);
             }
-        }
 
         RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
     }
