@@ -64,13 +64,13 @@ namespace Zero
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Length * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
     }
 
-    OpenGLIndexBuffer::OpenGLIndexBuffer(const uint32_t* indices, const uint32_t size)
+    OpenGLIndexBuffer::OpenGLIndexBuffer(const uint32_t* indices, const uint32_t count) : m_Length{ count }
     {
         ZR_PROFILE_FUNCTION();
 
         glCreateBuffers(1, &m_Id);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_Id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, m_Id);
+        glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
     }
 
     OpenGLIndexBuffer::OpenGLIndexBuffer(const uint32_t size)

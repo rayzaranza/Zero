@@ -113,7 +113,7 @@ namespace Zero
 
       public:
         static Ref<IndexBuffer> Create(const uint32_t size);
-        static Ref<IndexBuffer> Create(const uint32_t* indices, const uint32_t size);
+        static Ref<IndexBuffer> Create(const uint32_t* indices, const uint32_t count);
         static Ref<IndexBuffer> Create(const Array<uint32_t>& indices);
     };
 

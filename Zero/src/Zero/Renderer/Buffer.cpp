@@ -131,7 +131,7 @@ namespace Zero
         }
     }
 
-    Ref<IndexBuffer> IndexBuffer::Create(const uint32_t* indices, const uint32_t size)
+    Ref<IndexBuffer> IndexBuffer::Create(const uint32_t* indices, const uint32_t count)
     {
         switch (Renderer::GetAPI())
         {
@@ -142,7 +142,7 @@ namespace Zero
             }
             case RendererAPI::API::OpenGL:
             {
-                return CreateRef<OpenGLIndexBuffer>(indices, size);
+                return CreateRef<OpenGLIndexBuffer>(indices, count);
             }
             case RendererAPI::API::Vulkan:
             {

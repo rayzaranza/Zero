@@ -34,9 +34,9 @@ namespace Zero
     class OpenGLIndexBuffer : public IndexBuffer
     {
       public:
-        OpenGLIndexBuffer(const uint32_t size);
+        OpenGLIndexBuffer(const uint32_t count);
         OpenGLIndexBuffer(const Array<uint32_t>& indices);
-        OpenGLIndexBuffer(const uint32_t* indices, const uint32_t size);
+        OpenGLIndexBuffer(const uint32_t* indices, const uint32_t count);
         virtual ~OpenGLIndexBuffer();
 
       public:
