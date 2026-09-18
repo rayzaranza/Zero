@@ -12,13 +12,13 @@ namespace Zero
     //======================================================================================
     //  Constants
     //======================================================================================
-    static constexpr U32 QUAD_INDEX_COUNT{ 6u };
-    static constexpr U32 QUAD_VERTEX_COUNT{ 4u };
-    static constexpr U32 MAX_QUADS{ 10000u };
-    static constexpr U32 MAX_VERTICES{ MAX_QUADS * QUAD_VERTEX_COUNT };
-    static constexpr U32 MAX_INDICES{ MAX_QUADS * QUAD_INDEX_COUNT };
-    static constexpr U32 MAX_TEXTURE_SLOTS{ 32u };
-    static constexpr U32 DEFAULT_TEXTURE_SLOT_INDEX{ 0u };
+    static constexpr uint32_t QUAD_INDEX_COUNT{ 6u };
+    static constexpr uint32_t QUAD_VERTEX_COUNT{ 4u };
+    static constexpr uint32_t MAX_QUADS{ 10000u };
+    static constexpr uint32_t MAX_VERTICES{ MAX_QUADS * QUAD_VERTEX_COUNT };
+    static constexpr uint32_t MAX_INDICES{ MAX_QUADS * QUAD_INDEX_COUNT };
+    static constexpr uint32_t MAX_TEXTURE_SLOTS{ 32u };
+    static constexpr uint32_t DEFAULT_TEXTURE_SLOT_INDEX{ 0u };
     static constexpr glm::vec2 QUAD_VERTEX_POSITIONS[4]{
         { -0.5f, -0.5f },
         { 0.5f, -0.5f },
@@ -40,7 +40,7 @@ namespace Zero
         glm::vec2 Position{ 0.0f };
         glm::vec4 Color{ 1.0f };
         glm::vec2 UV{ 0.0f };
-        F32 TextureSlot{ 0.0f };
+        float TextureSlot{ 0.0f };
         glm::vec2 Tiling{ 1.0f };
     };
 
@@ -54,11 +54,18 @@ namespace Zero
         ShaderRef QuadShader{};
         Texture2DRef DefaultTexture{};
 
-        U32 QuadIndexCount{ 0u };
+        uint32_t QuadIndexCount{ 0u };
         QuadVertex* QuadVertexBufferBase{ nullptr };
         QuadVertex* QuadVertexBufferPointer{ nullptr };
 
         FixedArray<Texture2DRef, MAX_TEXTURE_SLOTS> Textures{};
+
+      public:
+        struct Statistics
+        {
+            uint32_t DrawCalls{ 0u };
+            uint32_t QuadCount{ 0u };
+        };
     };
 
     static Renderer2DData s_Data{};
@@ -92,8 +99,8 @@ namespace Zero
 
         GenerateQuadIndexBuffer();
 
-        I32 textureSamplers[MAX_TEXTURE_SLOTS]{};
-        for (U32 i{ 0u }; i < MAX_TEXTURE_SLOTS; ++i)
+        int32_t textureSamplers[MAX_TEXTURE_SLOTS]{};
+        for (uint32_t i{ 0u }; i < MAX_TEXTURE_SLOTS; ++i)
         {
             textureSamplers[i] = i;
         }
@@ -103,7 +110,7 @@ namespace Zero
         s_Data.QuadShader->SetIntArray("u_Textures", textureSamplers, MAX_TEXTURE_SLOTS);
 
         s_Data.DefaultTexture = Texture2D::Create(glm::uvec2{ 1u });
-        constexpr U32 defaultTextureData{ 0xffffffff };
+        constexpr uint32_t defaultTextureData{ 0xffffffff };
         s_Data.DefaultTexture->SetData(&defaultTextureData, sizeof(defaultTextureData));
         s_Data.Textures[DEFAULT_TEXTURE_SLOT_INDEX] = s_Data.DefaultTexture;
     }
@@ -123,31 +130,31 @@ namespace Zero
         s_Data.QuadVertexBufferPointer = s_Data.QuadVertexBufferBase;
     }
 
-    static F32 GetTextureSlot(const Renderer2D::QuadProperties& quad)
+    static float GetTextureSlot(const Renderer2D::QuadProperties& quad)
     {
         if (quad.Texture == nullptr)
         {
-            return static_cast<F32>(DEFAULT_TEXTURE_SLOT_INDEX);
+            return static_cast<float>(DEFAULT_TEXTURE_SLOT_INDEX);
         }
 
-        for (U32 i{ 0u }; i < MAX_TEXTURE_SLOTS; i++)
+        for (uint32_t i{ 0u }; i < MAX_TEXTURE_SLOTS; i++)
         {
             if (s_Data.Textures[i] == nullptr)
             {
                 s_Data.Textures[i] = quad.Texture;
-                return static_cast<F32>(i);
+                return static_cast<float>(i);
             }
 
             if (s_Data.Textures[i]->GetRendererID() == quad.Texture->GetRendererID())
             {
-                return static_cast<F32>(i);
+                return static_cast<float>(i);
             }
         }
 
-        return static_cast<F32>(DEFAULT_TEXTURE_SLOT_INDEX);
+        return static_cast<float>(DEFAULT_TEXTURE_SLOT_INDEX);
     }
 
-    static glm::vec2 GetTansformedVertexPosition(const U32 index, const glm::mat4& transform)
+    static glm::vec2 GetTansformedVertexPosition(const uint32_t index, const glm::mat4& transform)
     {
         const glm::vec4 position{ QUAD_VERTEX_POSITIONS[index], 0.0f, 1.0f };
         const glm::vec4 result{ transform * position };
@@ -162,11 +169,11 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        F32 textureIndex{ GetTextureSlot(quad) };
+        float textureIndex{ GetTextureSlot(quad) };
 
         const glm::mat4 transform{ CalculcateModelMatrix2D(quad.Position, quad.Rotation, quad.Scale) };
 
-        for (U32 i{ 0u }; i < QUAD_VERTEX_COUNT; ++i)
+        for (uint32_t i{ 0u }; i < QUAD_VERTEX_COUNT; ++i)
         {
             *s_Data.QuadVertexBufferPointer = QuadVertex{
                 .Position{ GetTansformedVertexPosition(i, transform) },
@@ -189,7 +196,7 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        for (U32 i{ 0u }; i < s_Data.Textures.size(); ++i)
+        for (uint32_t i{ 0u }; i < s_Data.Textures.size(); ++i)
         {
             if (!s_Data.Textures[i])
             {
@@ -206,7 +213,7 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        const U32 dataSize{ static_cast<U32>((U8*)s_Data.QuadVertexBufferPointer - (U8*)s_Data.QuadVertexBufferBase) };
+        const uint32_t dataSize{ static_cast<uint32_t>((uint8_t*)s_Data.QuadVertexBufferPointer - (uint8_t*)s_Data.QuadVertexBufferBase) };
         s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
         Flush();
@@ -222,10 +229,10 @@ namespace Zero
     //======================================================================================
     void GenerateQuadIndexBuffer()
     {
-        U32* quadIndices{ new U32[MAX_INDICES] };
+        uint32_t* quadIndices{ new uint32_t[MAX_INDICES] };
 
-        U32 offset{ 0u };
-        for (U32 index{ 0u }; index < MAX_INDICES; index += QUAD_INDEX_COUNT)
+        uint32_t offset{ 0u };
+        for (uint32_t index{ 0u }; index < MAX_INDICES; index += QUAD_INDEX_COUNT)
         {
             quadIndices[index + 0u] = offset + 0u;
             quadIndices[index + 1u] = offset + 1u;

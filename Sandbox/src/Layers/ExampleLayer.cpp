@@ -69,11 +69,11 @@ void ExampleLayer::OnRender()
     m_QuadShader->Bind();
     m_QuadShader->SetColor("u_Color", m_QuadColor);
 
-    for (Zero::I32 y{ 0 }; y < 20; ++y)
+    for (int32_t y{ 0 }; y < 20; ++y)
     {
-        for (Zero::I32 x{ 0 }; x < 20; ++x)
+        for (int32_t x{ 0 }; x < 20; ++x)
         {
-            glm::vec3 position{ static_cast<Zero::F32>(x) * 0.11f, static_cast<Zero::F32>(y) * 0.11f, 0.0f };
+            glm::vec3 position{ static_cast<float>(x) * 0.11f, static_cast<float>(y) * 0.11f, 0.0f };
             glm::mat4 quadModelMatrix{ glm::translate({ 1.0f }, position) * glm::scale({ 1.0f }, glm::vec3{ 0.1f }) };
             Zero::Renderer::Submit(m_QuadVertexArray, m_QuadShader, quadModelMatrix);
         }

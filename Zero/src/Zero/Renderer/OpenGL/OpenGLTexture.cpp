@@ -9,7 +9,7 @@
 
 namespace Zero
 {
-    static OpenGLTexture2D::Format GetTextureFormat(const I32 channels);
+    static OpenGLTexture2D::Format GetTextureFormat(const int32_t channels);
 
     OpenGLTexture2D::OpenGLTexture2D(const glm::uvec2& size) : m_Size{ size }, m_Format{ GL_RGBA8, GL_RGBA }
     {
@@ -18,7 +18,7 @@ namespace Zero
         SetupTextureBuffer();
     }
 
-    OpenGLTexture2D::OpenGLTexture2D(const String& path) : m_Path{ path }
+    OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : m_Path{ path }
     {
         ZR_PROFILE_FUNCTION();
 
@@ -26,9 +26,9 @@ namespace Zero
 
         stbi_uc* imageData{ nullptr };
         glm::ivec2 imageSize{};
-        I32 imageChannels{};
+        int32_t imageChannels{};
         {
-            ZR_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const String& path)");
+            ZR_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const std::string& path)");
 
             imageData = stbi_load(path.c_str(), &imageSize.x, &imageSize.y, &imageChannels, 0);
         }
@@ -50,18 +50,18 @@ namespace Zero
         glDeleteTextures(1, &m_Id);
     }
 
-    void OpenGLTexture2D::Bind(const U32 slot) const
+    void OpenGLTexture2D::Bind(const uint32_t slot) const
     {
         ZR_PROFILE_FUNCTION();
 
         glBindTextureUnit(slot, m_Id);
     }
 
-    void OpenGLTexture2D::SetData(const void* data, const U32 size)
+    void OpenGLTexture2D::SetData(const void* data, const uint32_t size)
     {
         ZR_PROFILE_FUNCTION();
 
-        const U32 bytesPerPixel{ m_Format.image == GL_RGBA ? 4u : 3u };
+        const uint32_t bytesPerPixel{ m_Format.image == GL_RGBA ? 4u : 3u };
         ZR_CORE_ASSERT(size == m_Size.x * m_Size.y * bytesPerPixel, "Data must be entire texture");
         glTextureSubImage2D(m_Id, 0, 0, 0, m_Size.x, m_Size.y, m_Format.image, GL_UNSIGNED_BYTE, data);
     }
@@ -80,7 +80,7 @@ namespace Zero
         glTextureParameteri(m_Id, GL_TEXTURE_WRAP_T, GL_REPEAT);
     }
 
-    OpenGLTexture2D::Format GetTextureFormat(const I32 channels)
+    OpenGLTexture2D::Format GetTextureFormat(const int32_t channels)
     {
         switch (channels)
         {

@@ -4,7 +4,7 @@
 
 namespace Zero
 {
-    static U32 GetOpenGLTypeFromAttributeType(const AttributeType type);
+    static uint32_t GetOpenGLTypeFromAttributeType(const AttributeType type);
 
     OpenGLVertexArray::OpenGLVertexArray()
     {
@@ -44,7 +44,7 @@ namespace Zero
         glBindVertexArray(m_Id);
         vertexBuffer->Bind();
 
-        I32 location{ 0 };
+        int32_t location{ 0 };
         for (const VertexAttribute& attribute : layout)
         {
             glEnableVertexAttribArray(location);
@@ -71,7 +71,7 @@ namespace Zero
         m_IndexBuffer = indexBuffer;
     }
 
-    U32 GetOpenGLTypeFromAttributeType(const AttributeType type)
+    uint32_t GetOpenGLTypeFromAttributeType(const AttributeType type)
     {
         switch (type)
         {

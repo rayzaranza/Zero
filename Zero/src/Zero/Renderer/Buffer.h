@@ -7,7 +7,7 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute Type
     //======================================================================================
-    enum class AttributeType : U8
+    enum class AttributeType : uint8_t
     {
         Float,
         Vector2,
@@ -25,19 +25,19 @@ namespace Zero
     //======================================================================================
     //  Vertex Attribute
     //======================================================================================
-    I32 GetSizeFromAttributeType(const AttributeType type);
-    U32 GetComponentCountFromAttributeType(const AttributeType type);
+    int32_t GetSizeFromAttributeType(const AttributeType type);
+    uint32_t GetComponentCountFromAttributeType(const AttributeType type);
 
     struct VertexAttribute
     {
-        String Name;
+        std::string Name;
         AttributeType Type;
-        I32 Size;
-        U32 ComponentCount;
+        int32_t Size;
+        uint32_t ComponentCount;
         bool IsNormalized;
-        U32 Offset;
+        uint32_t Offset;
 
-        VertexAttribute(const AttributeType type, const String& name)
+        VertexAttribute(const AttributeType type, const std::string& name)
             : Name{ name }
             , Type{ type }
             , Size{ GetSizeFromAttributeType(type) }
@@ -59,7 +59,7 @@ namespace Zero
         }
 
       public:
-        inline U32 GetStride() const { return m_Stride; }
+        inline uint32_t GetStride() const { return m_Stride; }
         inline const Array<VertexAttribute>& GetAttributes() const { return m_Attributes; }
 
       public:
@@ -73,7 +73,7 @@ namespace Zero
 
       private:
         Array<VertexAttribute> m_Attributes;
-        U32 m_Stride{};
+        uint32_t m_Stride{};
     };
 
     //======================================================================================
@@ -87,13 +87,13 @@ namespace Zero
       public:
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
-        virtual void SetData(const void* data, const U32 size) = 0;
+        virtual void SetData(const void* data, const uint32_t size) = 0;
         virtual void SetLayout(const VertexBufferLayout& layout) = 0;
         virtual const VertexBufferLayout& GetLayout() const = 0;
 
       public:
-        static Ref<VertexBuffer> Create(const Array<F32>& vertices);
-        static Ref<VertexBuffer> Create(const U32 size);
+        static Ref<VertexBuffer> Create(const Array<float>& vertices);
+        static Ref<VertexBuffer> Create(const uint32_t size);
     };
 
     using VertexBufferRef = Ref<VertexBuffer>;
@@ -109,12 +109,12 @@ namespace Zero
       public:
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
-        virtual Length GetLength() const = 0;
+        virtual size_t GetLength() const = 0;
 
       public:
-        static Ref<IndexBuffer> Create(const U32 size);
-        static Ref<IndexBuffer> Create(const U32* indices, const U32 size);
-        static Ref<IndexBuffer> Create(const Array<U32>& indices);
+        static Ref<IndexBuffer> Create(const uint32_t size);
+        static Ref<IndexBuffer> Create(const uint32_t* indices, const uint32_t size);
+        static Ref<IndexBuffer> Create(const Array<uint32_t>& indices);
     };
 
     using IndexBufferRef = Ref<IndexBuffer>;

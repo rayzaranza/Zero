@@ -5,7 +5,7 @@
 
 namespace Zero
 {
-    OrthographicCameraController::OrthographicCameraController(F32 aspectRatio)
+    OrthographicCameraController::OrthographicCameraController(float aspectRatio)
         : m_AspectRatio{ aspectRatio }
         , m_ZoomLevel{ 1.0f }
         , m_Camera{ -m_AspectRatio, m_AspectRatio }
@@ -66,7 +66,7 @@ namespace Zero
         ZR_PROFILE_FUNCTION();
 
         const glm::ivec2 size{ event.GetSize() };
-        m_AspectRatio = static_cast<F32>(size.x) / static_cast<F32>(size.y);
+        m_AspectRatio = static_cast<float>(size.x) / static_cast<float>(size.y);
         m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
         return false;
     }

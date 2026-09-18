@@ -4,7 +4,7 @@
 
 namespace Zero
 {
-    glm::mat4 CalculcateModelMatrix(const glm::vec3& position, const Radians rotation, const glm::vec3& scale)
+    glm::mat4 CalculcateModelMatrix(const glm::vec3& position, const float rotation, const glm::vec3& scale)
     {
         ZR_PROFILE_FUNCTION();
 
@@ -22,7 +22,7 @@ namespace Zero
         return modelMatrix;
     }
 
-    glm::mat4 CalculcateModelMatrix2D(const glm::vec2& position, const Radians rotation, const glm::vec2& scale)
+    glm::mat4 CalculcateModelMatrix2D(const glm::vec2& position, const float rotation, const glm::vec2& scale)
     {
         return CalculcateModelMatrix(glm::vec3{ position, 0.0f }, rotation, glm::vec3{ scale, 1.0f });
     }

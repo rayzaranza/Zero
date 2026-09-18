@@ -5,7 +5,7 @@
 
 namespace Zero
 {
-    ShaderRef Shader::Create(const String& filePath)
+    ShaderRef Shader::Create(const std::string& filePath)
     {
         switch (Renderer::GetAPI())
         {
@@ -31,7 +31,7 @@ namespace Zero
         }
     }
 
-    ShaderRef Shader::Create(const String& name, const String& vertexSource, const String& fragmentSource)
+    ShaderRef Shader::Create(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
     {
         switch (Renderer::GetAPI())
         {
@@ -57,7 +57,7 @@ namespace Zero
         }
     }
 
-    void ShaderLibrary::Add(const String& name, const ShaderRef& shader)
+    void ShaderLibrary::Add(const std::string& name, const ShaderRef& shader)
     {
         ZR_CORE_ASSERT(!Exists(name), "Shader already exists");
         m_Shaders[name] = shader;
@@ -65,31 +65,31 @@ namespace Zero
 
     void ShaderLibrary::Add(const ShaderRef& shader)
     {
-        const String& name{ shader->GetName() };
+        const std::string& name{ shader->GetName() };
         Add(name, shader);
     }
 
-    ShaderRef ShaderLibrary::Load(const String& filePath)
+    ShaderRef ShaderLibrary::Load(const std::string& filePath)
     {
         ShaderRef shader{ Shader::Create(filePath) };
         Add(shader);
         return shader;
     }
 
-    ShaderRef ShaderLibrary::Load(const String& name, const String& filePath)
+    ShaderRef ShaderLibrary::Load(const std::string& name, const std::string& filePath)
     {
         ShaderRef shader{ Shader::Create(filePath) };
         Add(name, shader);
         return shader;
     }
 
-    ShaderRef ShaderLibrary::Get(const String& name)
+    ShaderRef ShaderLibrary::Get(const std::string& name)
     {
         ZR_CORE_ASSERT(Exists(name), "Shader not found");
         return m_Shaders[name];
     }
 
-    bool ShaderLibrary::Exists(const String& name) const
+    bool ShaderLibrary::Exists(const std::string& name) const
     {
         return m_Shaders.find(name) != m_Shaders.end();
     }

@@ -20,7 +20,7 @@ namespace Zero
     //=====================================================================================================================================
     struct WindowData
     {
-        String Title{};
+        std::string Title{};
         glm::ivec2 Size{};
         EventCallback EventCallback{};
     };
@@ -31,14 +31,14 @@ namespace Zero
     class Window
     {
       public:
-        Window(const String& title = "ZERO", const glm::ivec2& size = glm::ivec2{ 1280, 720 });
+        Window(const std::string& title = "ZERO", const glm::ivec2& size = glm::ivec2{ 1280, 720 });
         ~Window();
 
       public:
         inline const glm::ivec2& GetSize() const { return m_Data.Size; }
         inline GLFWwindow* GetWindowHandle() const { return m_WindowHandle; }
         inline void SetEventCallback(const EventCallback& callback) { m_Data.EventCallback = callback; }
-        inline F32 GetAspectRatio() const { return static_cast<F32>(m_Data.Size.x) / static_cast<F32>(m_Data.Size.y); }
+        inline float GetAspectRatio() const { return static_cast<float>(m_Data.Size.x) / static_cast<float>(m_Data.Size.y); }
 
       public:
         void OnUpdate();
@@ -52,6 +52,9 @@ namespace Zero
 
       private:
         void setCallbacks();
-        inline static void errorCallback(const I32 error, const char* description) { ZR_CORE_ERROR("GLFW Error ({}): {}", error, description); }
+        inline static void errorCallback(const int32_t error, const char* description)
+        {
+            ZR_CORE_ERROR("GLFW Error ({}): {}", error, description);
+        }
     };
 }

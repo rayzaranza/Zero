@@ -79,7 +79,7 @@ namespace Zero
         {
             ZR_PROFILE_SCOPE("RunLoop");
 
-            const Seconds time = static_cast<Seconds>(glfwGetTime());
+            const float time = static_cast<float>(glfwGetTime());
             DeltaTime deltaTime{ time - m_LastFrameTime };
             m_LastFrameTime = time;
 

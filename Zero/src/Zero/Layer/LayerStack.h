@@ -23,6 +23,6 @@ namespace Zero
 
       private:
         Array<Layer*> m_Layers{};
-        U32 m_LayerInsertIndex{ 0 };
+        uint32_t m_LayerInsertIndex{ 0 };
     };
 }

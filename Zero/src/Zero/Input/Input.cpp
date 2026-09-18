@@ -11,23 +11,23 @@ namespace Zero
     bool Input::IsKeyPressed(const KeyCode keyCode)
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
-        const I32 state{ glfwGetKey(window, static_cast<I32>(keyCode)) };
+        const int32_t state{ glfwGetKey(window, static_cast<int32_t>(keyCode)) };
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
     bool Input::IsMouseButtonPressed(const MouseButton button)
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
-        const I32 state{ glfwGetMouseButton(window, static_cast<I32>(button)) };
+        const int32_t state{ glfwGetMouseButton(window, static_cast<int32_t>(button)) };
         return state == GLFW_PRESS;
     }
 
     glm::vec2 Input::GetMousePosition()
     {
         GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
-        F64 x, y;
+        double x, y;
         glfwGetCursorPos(window, &x, &y);
-        return glm::vec2{ static_cast<F32>(x), static_cast<F32>(y) };
+        return glm::vec2{ static_cast<float>(x), static_cast<float>(y) };
     }
 
 }

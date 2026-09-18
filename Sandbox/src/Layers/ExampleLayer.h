@@ -26,5 +26,5 @@ class ExampleLayer : public Zero::Layer
 
     glm::vec3 m_QuadPosition;
     glm::vec4 m_QuadColor;
-    Zero::F32 m_QuadMovementSpeed;
+    float m_QuadMovementSpeed;
 };

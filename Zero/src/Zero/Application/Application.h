@@ -38,7 +38,7 @@ namespace Zero
         bool m_IsMinimized;
         LayerStack m_LayerStack;
         UILayer* m_UILayer;
-        Seconds m_LastFrameTime;
+        float m_LastFrameTime;
 
       private:
         static Application* s_Instance;

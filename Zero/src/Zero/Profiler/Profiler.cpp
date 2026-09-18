@@ -5,7 +5,7 @@ namespace Zero
     Profiler::Profiler() : m_CurrentSession{ nullptr }, m_ProfileCount{ 0 }
     {}
 
-    void Profiler::BeginSession(const String& name, const String& filePath)
+    void Profiler::BeginSession(const std::string& name, const std::string& filePath)
     {
         m_OutputStream.open(filePath);
         WriteHeader();
@@ -26,7 +26,7 @@ namespace Zero
         if (m_ProfileCount++ > 0)
             m_OutputStream << ",";
 
-        String name{ result.Name };
+        std::string name{ result.Name };
         std::replace(name.begin(), name.end(), '"', '\'');
 
         m_OutputStream << "{";
