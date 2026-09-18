@@ -10,29 +10,6 @@
 namespace Zero
 {
     //======================================================================================
-    //  Constants
-    //======================================================================================
-    static constexpr uint32_t QUAD_INDEX_COUNT{ 6u };
-    static constexpr uint32_t QUAD_VERTEX_COUNT{ 4u };
-    static constexpr uint32_t MAX_QUADS{ 10000u };
-    static constexpr uint32_t MAX_VERTICES{ MAX_QUADS * QUAD_VERTEX_COUNT };
-    static constexpr uint32_t MAX_INDICES{ MAX_QUADS * QUAD_INDEX_COUNT };
-    static constexpr uint32_t MAX_TEXTURE_SLOTS{ 32u };
-    static constexpr uint32_t DEFAULT_TEXTURE_SLOT_INDEX{ 0u };
-    static constexpr glm::vec2 QUAD_VERTEX_POSITIONS[4]{
-        { -0.5f, -0.5f },
-        { 0.5f, -0.5f },
-        { 0.5f, 0.5f },
-        { -0.5f, 0.5f },
-    };
-    static constexpr glm::vec2 QUAD_VERTEX_UVS[4]{
-        { 0.0f, 0.0f },
-        { 1.0f, 0.0f },
-        { 1.0f, 1.0f },
-        { 0.0f, 1.0f },
-    };
-
-    //======================================================================================
     //  Quad Vertex
     //======================================================================================
     struct QuadVertex
@@ -58,22 +35,13 @@ namespace Zero
         QuadVertex* QuadVertexBufferBase{ nullptr };
         QuadVertex* QuadVertexBufferPointer{ nullptr };
 
-        FixedArray<Texture2DRef, MAX_TEXTURE_SLOTS> Textures{};
+        FixedArray<Texture2DRef, Renderer2D::MAX_TEXTURE_SLOTS> Textures{};
+        uint32_t TextureSlotIndex{ 1u };
 
-      public:
-        struct Statistics
-        {
-            uint32_t DrawCalls{ 0u };
-            uint32_t QuadCount{ 0u };
-        };
+        Renderer2D::Statistics Stats{};
     };
 
     static Renderer2DData s_Data{};
-
-    //======================================================================================
-    //  Helper Functions
-    //======================================================================================
-    static void GenerateQuadIndexBuffer();
 
     //======================================================================================
     //  Renderer2D Initializer
@@ -83,8 +51,8 @@ namespace Zero
         ZR_PROFILE_FUNCTION();
 
         s_Data.QuadVertexArray = VertexArray::Create();
+        s_Data.QuadVertexBuffer = VertexBuffer::Create(MAX_VERTICES * sizeof(QuadVertex));
 
-        s_Data.QuadVertexBuffer = VertexBuffer::Create(MAX_QUADS * sizeof(QuadVertex));
         s_Data.QuadVertexBuffer->SetLayout(
             { { AttributeType::Vector2, "a_Position" },
               { AttributeType::Vector4, "a_Color" },
@@ -94,10 +62,30 @@ namespace Zero
         );
 
         s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
-
         s_Data.QuadVertexBufferBase = new QuadVertex[MAX_VERTICES];
 
-        GenerateQuadIndexBuffer();
+        uint32_t* quadIndices{ new uint32_t[MAX_INDICES] };
+        uint32_t offset{ 0u };
+        for (uint32_t i{ 0u }; i < MAX_INDICES; i += QUAD_INDEX_COUNT)
+        {
+            quadIndices[i + 0u] = offset + 0u;
+            quadIndices[i + 1u] = offset + 1u;
+            quadIndices[i + 2u] = offset + 2u;
+
+            quadIndices[i + 3u] = offset + 2u;
+            quadIndices[i + 4u] = offset + 3u;
+            quadIndices[i + 5u] = offset + 0u;
+
+            offset += QUAD_VERTEX_COUNT;
+        }
+
+        Ref<IndexBuffer> quadIndexBuffer{ IndexBuffer::Create(quadIndices, MAX_INDICES) };
+        s_Data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
+        delete[] quadIndices;
+
+        s_Data.DefaultTexture = Texture2D::Create(glm::uvec2{ 1u });
+        constexpr uint32_t defaultTextureData{ 0xffffffff };
+        s_Data.DefaultTexture->SetData(&defaultTextureData, sizeof(uint32_t));
 
         int32_t textureSamplers[MAX_TEXTURE_SLOTS]{};
         for (uint32_t i{ 0u }; i < MAX_TEXTURE_SLOTS; ++i)
@@ -109,9 +97,6 @@ namespace Zero
         s_Data.QuadShader->Bind();
         s_Data.QuadShader->SetIntArray("u_Textures", textureSamplers, MAX_TEXTURE_SLOTS);
 
-        s_Data.DefaultTexture = Texture2D::Create(glm::uvec2{ 1u });
-        constexpr uint32_t defaultTextureData{ 0xffffffff };
-        s_Data.DefaultTexture->SetData(&defaultTextureData, sizeof(defaultTextureData));
         s_Data.Textures[DEFAULT_TEXTURE_SLOT_INDEX] = s_Data.DefaultTexture;
     }
 
@@ -128,35 +113,13 @@ namespace Zero
 
         s_Data.QuadIndexCount = 0u;
         s_Data.QuadVertexBufferPointer = s_Data.QuadVertexBufferBase;
-    }
 
-    static float GetTextureSlot(const Renderer2D::QuadProperties& quad)
-    {
-        if (quad.Texture == nullptr)
-        {
-            return static_cast<float>(DEFAULT_TEXTURE_SLOT_INDEX);
-        }
-
-        for (uint32_t i{ 0u }; i < MAX_TEXTURE_SLOTS; i++)
-        {
-            if (s_Data.Textures[i] == nullptr)
-            {
-                s_Data.Textures[i] = quad.Texture;
-                return static_cast<float>(i);
-            }
-
-            if (s_Data.Textures[i]->GetRendererID() == quad.Texture->GetRendererID())
-            {
-                return static_cast<float>(i);
-            }
-        }
-
-        return static_cast<float>(DEFAULT_TEXTURE_SLOT_INDEX);
+        s_Data.TextureSlotIndex = 1u;
     }
 
     static glm::vec2 GetTansformedVertexPosition(const uint32_t index, const glm::mat4& transform)
     {
-        const glm::vec4 position{ QUAD_VERTEX_POSITIONS[index], 0.0f, 1.0f };
+        const glm::vec4 position{ Renderer2D::QUAD_VERTEX_POSITIONS[index], 0.0f, 1.0f };
         const glm::vec4 result{ transform * position };
 
         return { result.x, result.y };
@@ -169,11 +132,15 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        float textureIndex{ GetTextureSlot(quad) };
+        if (s_Data.QuadIndexCount >= MAX_INDICES)
+        {
+            FlushAndReset();
+        }
 
+        const float textureIndex{ 0.0f };
         const glm::mat4 transform{ CalculcateModelMatrix2D(quad.Position, quad.Rotation, quad.Scale) };
 
-        for (uint32_t i{ 0u }; i < QUAD_VERTEX_COUNT; ++i)
+        for (uint32_t i{ 0u }; i < 4u; ++i)
         {
             *s_Data.QuadVertexBufferPointer = QuadVertex{
                 .Position{ GetTansformedVertexPosition(i, transform) },
@@ -187,6 +154,53 @@ namespace Zero
         }
 
         s_Data.QuadIndexCount += QUAD_INDEX_COUNT;
+        s_Data.Stats.QuadCount++;
+    }
+
+    void Renderer2D::DrawQuad(const QuadProperties& quad, const Ref<Texture2D>& texture)
+    {
+        ZR_PROFILE_FUNCTION();
+
+        if (s_Data.QuadIndexCount >= MAX_INDICES)
+        {
+            FlushAndReset();
+        }
+
+        float textureIndex{ 0.0f };
+
+        for (uint32_t i{ 1u }; i < s_Data.TextureSlotIndex; i++)
+        {
+            if (s_Data.Textures[i]->GetRendererID() == texture->GetRendererID())
+            {
+                textureIndex = static_cast<float>(i);
+                break;
+            }
+        }
+
+        if (textureIndex == 0.0f)
+        {
+            textureIndex = static_cast<float>(s_Data.TextureSlotIndex);
+            s_Data.Textures[s_Data.TextureSlotIndex] = texture;
+            s_Data.TextureSlotIndex++;
+        }
+
+        const glm::mat4 transform{ CalculcateModelMatrix2D(quad.Position, quad.Rotation, quad.Scale) };
+
+        for (uint32_t i{ 0u }; i < 4u; ++i)
+        {
+            *s_Data.QuadVertexBufferPointer = QuadVertex{
+                .Position{ GetTansformedVertexPosition(i, transform) },
+                .Color{ quad.Color },
+                .UV{ QUAD_VERTEX_UVS[i] },
+                .TextureSlot{ textureIndex },
+                .Tiling{ quad.Tiling },
+            };
+
+            s_Data.QuadVertexBufferPointer++;
+        }
+
+        s_Data.QuadIndexCount += QUAD_INDEX_COUNT;
+        s_Data.Stats.QuadCount++;
     }
 
     //======================================================================================
@@ -196,24 +210,20 @@ namespace Zero
     {
         ZR_PROFILE_FUNCTION();
 
-        for (uint32_t i{ 0u }; i < s_Data.Textures.size(); ++i)
+        for (uint32_t i{ 0u }; i < s_Data.TextureSlotIndex; i++)
         {
-            if (!s_Data.Textures[i])
-            {
-                break;
-            }
-
             s_Data.Textures[i]->Bind(i);
         }
 
         RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
+        s_Data.Stats.DrawCalls++;
     }
 
     void Renderer2D::EndScene()
     {
         ZR_PROFILE_FUNCTION();
 
-        const uint32_t dataSize{ static_cast<uint32_t>((uint8_t*)s_Data.QuadVertexBufferPointer - (uint8_t*)s_Data.QuadVertexBufferBase) };
+        uint32_t dataSize{ static_cast<uint32_t>((uint8_t*)s_Data.QuadVertexBufferPointer - (uint8_t*)s_Data.QuadVertexBufferBase) };
         s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
         Flush();
@@ -224,27 +234,26 @@ namespace Zero
         ZR_PROFILE_FUNCTION();
     }
 
-    //======================================================================================
-    //  Helper Functions Definitions
-    //======================================================================================
-    void GenerateQuadIndexBuffer()
+    void Renderer2D::FlushAndReset()
     {
-        uint32_t* quadIndices{ new uint32_t[MAX_INDICES] };
+        EndScene();
 
-        uint32_t offset{ 0u };
-        for (uint32_t index{ 0u }; index < MAX_INDICES; index += QUAD_INDEX_COUNT)
-        {
-            quadIndices[index + 0u] = offset + 0u;
-            quadIndices[index + 1u] = offset + 1u;
-            quadIndices[index + 2u] = offset + 2u;
-            quadIndices[index + 3u] = offset + 2u;
-            quadIndices[index + 4u] = offset + 3u;
-            quadIndices[index + 5u] = offset + 0u;
-            offset += QUAD_VERTEX_COUNT;
-        }
+        s_Data.QuadIndexCount = 0u;
+        s_Data.QuadVertexBufferPointer = s_Data.QuadVertexBufferBase;
 
-        IndexBufferRef quadIndexBuffer{ IndexBuffer::Create(quadIndices, MAX_INDICES) };
-        s_Data.QuadVertexArray->SetIndexBuffer(quadIndexBuffer);
-        delete[] quadIndices;
+        s_Data.TextureSlotIndex = 1u;
+    }
+
+    //======================================================================================
+    //  Stats
+    //======================================================================================
+    void Renderer2D::ResetStats()
+    {
+        memset(&s_Data.Stats, 0u, sizeof(Statistics));
+    }
+
+    const Renderer2D::Statistics& Renderer2D::GetStats()
+    {
+        return s_Data.Stats;
     }
 }
