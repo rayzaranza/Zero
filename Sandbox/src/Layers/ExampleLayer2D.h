@@ -23,5 +23,5 @@ class ExampleLayer2D : public Zero::Layer
     Zero::OrthographicCameraController m_CameraController;
     Zero::Texture2DRef m_Texture;
     Zero::Texture2DRef m_TextureB;
-    Zero::Array<Zero::Renderer2D::QuadProperties> m_QuadsProperties;
+    Zero::Array<Zero::Renderer2D::QuadProperties> m_Quads;
 };

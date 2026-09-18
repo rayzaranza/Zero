@@ -38,6 +38,9 @@ void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 {
     ZR_PROFILE_FUNCTION();
 
+    m_Quads[2].Tiling.y += deltaTime;
+    m_Quads[2].Rotation += deltaTime;
+
     m_CameraController.OnUpdate(deltaTime);
 }
 
