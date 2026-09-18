@@ -15,6 +15,12 @@ ExampleLayer2D::ExampleLayer2D()
     , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
     , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
     , m_TextureB{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png") }
+    , m_Quads{
+        { .Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } },
+        { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Color{ 0.2f, 0.3f, 0.8f, 1.0f } },
+        { .Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Texture{ m_Texture } },
+        { .Position{ -1.1f, -0.5f }, .Scale{ 0.2f }, .Texture{ m_TextureB } },
+    }
 {}
 
 //======================================================================================
@@ -51,10 +57,10 @@ void ExampleLayer2D::OnRender()
 
         Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-        Zero::Renderer2D::DrawQuad({ .Position{ -0.5f, 0.0f }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } });
-        Zero::Renderer2D::DrawQuad({ .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Color{ 0.2f, 0.3f, 0.8f, 1.0f } });
-        Zero::Renderer2D::DrawQuad({ .Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Texture{ m_Texture } });
-        Zero::Renderer2D::DrawQuad({ .Position{ -1.1f, -0.5f }, .Scale{ 0.2f }, .Texture{ m_TextureB } });
+        for (const auto& quad : m_Quads)
+        {
+            Zero::Renderer2D::DrawQuad(quad);
+        }
 
         Zero::Renderer2D::EndScene();
     }
