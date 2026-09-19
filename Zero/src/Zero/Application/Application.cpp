@@ -89,10 +89,10 @@ namespace Zero
                     ZR_PROFILE_SCOPE("LayerStack OnUpdate");
 
                     for (Layer* layer : m_LayerStack)
+                    {
                         layer->OnUpdate(deltaTime);
-
-                    for (Layer* layer : m_LayerStack)
                         layer->OnRender();
+                    }
                 }
 
                 m_UILayer->Begin();
