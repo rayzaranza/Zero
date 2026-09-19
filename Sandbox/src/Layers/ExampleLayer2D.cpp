@@ -2,10 +2,6 @@
 
 #include <imgui.h>
 
-#include <chrono>
-#include <glm/gtc/type_ptr.hpp>
-#include <print>
-
 //======================================================================================
 //  Creation
 //======================================================================================
@@ -16,10 +12,21 @@ ExampleLayer2D::ExampleLayer2D()
     , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
     , m_TextureB{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png") }
     , m_Quads{
-        { .Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } },
-        { .Position{ -1.1f, -0.5f }, .Scale{ 0.2f } },
-        { .Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Color{ 0.1f, 0.4f, 0.1f, 1.0f } },
-        { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Texture{ m_Texture } },
+        {.Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } },
+        {.Position{ -1.1f, -0.5f }, .Scale{ 0.2f } },
+        {.Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Color{ 0.1f, 0.4f, 0.1f, 1.0f } },
+        {.Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Texture{ m_Texture } },
+    },
+    m_Particle{
+        .Position{ 0.0f, 0.0f },
+        .Velocity{ 0.0f, 0.0f },
+        .VelocityVariation{ 3.0f, 1.0f },
+        .ColorBegin{ 254 / 255.0f, 212 / 255.0f, 124 / 255.0f, 1.0f },
+        .ColorEnd{ 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f },
+        .SizeBegin{ 0.5f },
+        .SizeEnd{ 0.0f },
+        .SizeVariation{ 0.3f },
+        .LifeTime{ 5.0f },
     }
 {}
 
@@ -41,6 +48,26 @@ void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
     m_Quads[1].Rotation += deltaTime * 2.0f;
 
     m_CameraController.OnUpdate(deltaTime);
+
+    if (Zero::Input::IsMouseButtonPressed(Zero::MouseButton::LEFT))
+    {
+        const glm::vec2& mouse{ Zero::Input::GetMousePosition() };
+        const glm::uvec2& size{ Zero::Application::Get().GetWindow().GetSize() };
+
+        auto bounds{ m_CameraController.GetBounds() };
+
+        const glm::vec2& pos{ m_CameraController.GetCamera().GetPosition() };
+        const float x{ (mouse.x / size.x) * bounds.GetWidth() - bounds.GetWidth() * 0.5f };
+        const float y{ bounds.GetHeight() * 0.5f - (mouse.y / size.y) * bounds.GetHeight() };
+        m_Particle.Position = { x + pos.x, y + pos.y };
+
+        for (int32_t i{ 0 }; i < 50; i++)
+        {
+            m_ParticleSystem.Emit(m_Particle);
+        }
+    }
+
+    m_ParticleSystem.OnUpdate(deltaTime);
 }
 
 //======================================================================================
@@ -70,14 +97,14 @@ void ExampleLayer2D::OnRender()
             }
         }
 
-        Zero::Renderer2D::EndScene();
-
-        Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
         for (const auto& quad : m_Quads)
         {
             Zero::Renderer2D::DrawQuad(quad);
         }
+
         Zero::Renderer2D::EndScene();
+
+        m_ParticleSystem.OnRender(m_CameraController.GetCamera());
     }
 }
 

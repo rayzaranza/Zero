@@ -2,6 +2,8 @@
 
 #include <Zero.h>
 
+#include "../ParticleSystem.h"
+
 class ExampleLayer2D : public Zero::Layer
 {
   public:
@@ -25,4 +27,7 @@ class ExampleLayer2D : public Zero::Layer
     Zero::Texture2DRef m_TextureB;
     Zero::Array<Zero::QuadProperties> m_Quads;
     float m_Rotation{ 0.0f };
+
+    ParticleProps m_Particle;
+    ParticleSystem m_ParticleSystem;
 };
