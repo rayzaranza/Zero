@@ -95,7 +95,7 @@ namespace Zero
 #   define ZR_PROFILE_SCOPE(name) ::Zero::ProfilerTimer timer##__LINE__(name)
 #   define ZR_PROFILE_FUNCTION() ZR_PROFILE_SCOPE(__FUNCSIG__)
 #else
-#   define ZR_PROFILE_BEGIN_SESSION(name)
+#   define ZR_PROFILE_BEGIN_SESSION(name, filePath)
 #   define ZR_PROFILE_END_SESSION()
 #   define ZR_PROFILE_SCOPE(name)
 #   define ZR_PROFILE_FUNCTION()
