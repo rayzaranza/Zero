@@ -18,8 +18,8 @@ ExampleLayer2D::ExampleLayer2D()
     , m_Quads{
         { .Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } },
         { .Position{ -1.1f, -0.5f }, .Scale{ 0.2f } },
-        { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Color{ 0.2f, 0.3f, 0.8f, 1.0f } },
         { .Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Color{ 0.1f, 0.4f, 0.1f, 1.0f } },
+        { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Texture{ m_Texture } },
     }
 {}
 
@@ -37,6 +37,8 @@ void ExampleLayer2D::OnAttach()
 void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 {
     ZR_PROFILE_FUNCTION();
+
+    m_Quads[1].Rotation += deltaTime * 2.0f;
 
     m_CameraController.OnUpdate(deltaTime);
 }
@@ -58,15 +60,23 @@ void ExampleLayer2D::OnRender()
         ZR_PROFILE_SCOPE("Renderer Draw");
 
         Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
+        for (float y{ -5.0f }; y < 5.0f; y += 0.1f)
+        {
+            for (float x{ -5.0f }; x < 5.0f; x += 0.1f)
+            {
+                Zero::Renderer2D::DrawQuad(
+                    { .Position{ x, y }, .Scale{ 0.09f }, .Color{ (x + 5.0f) / 10.0f, 0.0f, (y + 5.0f) / 10.0f, 1.0f } }
+                );
+            }
+        }
 
-        Zero::Renderer2D::DrawQuad(
-            { .Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } }, m_Texture
-        );
+        Zero::Renderer2D::EndScene();
 
-        Zero::Renderer2D::DrawQuad({ .Position{ -1.1f, -0.5f }, .Scale{ 0.2f } });
-        Zero::Renderer2D::DrawQuad({ .Position{ 1.1f, -0.5f }, .Scale{ 0.2f } }, m_TextureB);
-        Zero::Renderer2D::DrawQuad(m_Quads[3]);
-
+        Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
+        for (const auto& quad : m_Quads)
+        {
+            Zero::Renderer2D::DrawQuad(quad);
+        }
         Zero::Renderer2D::EndScene();
     }
 }
@@ -78,7 +88,7 @@ void ExampleLayer2D::OnUIRender()
 {
     ZR_PROFILE_FUNCTION();
 
-    const Zero::Renderer2D::Statistics& stats{ Zero::Renderer2D::GetStats() };
+    const Zero::RenderStats& stats{ Zero::Renderer2D::GetStats() };
 
     ImGui::Begin("Settings");
     ImGui::Text("Renderer2D Stats");
