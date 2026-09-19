@@ -7,6 +7,9 @@
 
     "src/Layers/ExampleLayer2D.h"
     "src/Layers/ExampleLayer2D.cpp"
+
+    "src/ParticleSystem.h"
+    "src/ParticleSystem.cpp"
 )
 
 target_link_libraries(Sandbox
