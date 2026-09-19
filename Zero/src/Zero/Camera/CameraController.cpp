@@ -8,9 +8,10 @@ namespace Zero
     OrthographicCameraController::OrthographicCameraController(float aspectRatio)
         : m_AspectRatio{ aspectRatio }
         , m_ZoomLevel{ 1.0f }
-        , m_Camera{ -m_AspectRatio, m_AspectRatio }
-        , m_Position{ 0.0f }
+        , m_Bounds{ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }
+        , m_Camera{ m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top }
         , m_TranslationSpeed{ m_ZoomLevel }
+        , m_Position{ 0.0f }
         , m_ZoomSpeed{ 0.1f }
         , m_Rotation{ 0.0f }
         , m_RotationSpeed{ 1.0f }
@@ -57,7 +58,8 @@ namespace Zero
         ZR_PROFILE_FUNCTION();
 
         m_ZoomLevel = std::fmax(m_ZoomLevel - event.GetOffset().y * m_ZoomSpeed, 0.1f);
-        m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+        m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+        m_Camera.SetProjectionMatrix(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
         return false;
     }
 
@@ -67,7 +69,8 @@ namespace Zero
 
         const glm::ivec2 size{ event.GetSize() };
         m_AspectRatio = static_cast<float>(size.x) / static_cast<float>(size.y);
-        m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+        m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+        m_Camera.SetProjectionMatrix(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
         return false;
     }
 }

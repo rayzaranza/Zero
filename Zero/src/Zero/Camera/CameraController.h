@@ -7,6 +7,17 @@
 
 namespace Zero
 {
+    struct OrthographicCameraBounds
+    {
+        float Left{};
+        float Right{};
+        float Bottom{};
+        float Top{};
+
+        inline float GetWidth() const { return Right - Left; }
+        inline float GetHeight() const { return Top - Bottom; }
+    };
+
     class OrthographicCameraController
     {
       public:
@@ -19,6 +30,7 @@ namespace Zero
         inline OrthographicCamera& GetCamera() { return m_Camera; }
         inline float GetZoomLevel() const { return m_ZoomLevel; }
         inline void SetZoomLevel(float zoomLevel) { m_ZoomLevel = zoomLevel; }
+        inline const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
 
       private:
         bool OnMouseScrolled(MouseScrolledEvent& event);
@@ -27,6 +39,7 @@ namespace Zero
       private:
         float m_AspectRatio;
         float m_ZoomLevel;
+        OrthographicCameraBounds m_Bounds;
         OrthographicCamera m_Camera;
         glm::vec3 m_Position;
         float m_Rotation;
