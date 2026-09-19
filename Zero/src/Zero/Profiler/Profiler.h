@@ -61,7 +61,8 @@ namespace Zero
         using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 
       public:
-        ProfilerTimer(const std::string& name) : m_Name{ name }, m_IsStopped{ false }, m_StartTime{ std::chrono::high_resolution_clock::now() } {}
+        ProfilerTimer(const std::string& name) : m_Name{ name }, m_IsStopped{ false }, m_StartTime{ std::chrono::high_resolution_clock::now() }
+        {}
 
         ~ProfilerTimer()
         {
@@ -88,9 +89,7 @@ namespace Zero
     };
 }
 
-#define ZR_ENABLE_PROFILER 1
-
-#if ZR_ENABLE_PROFILER
+#ifdef ZR_ENABLE_PROFILER
 #   define ZR_PROFILE_BEGIN_SESSION(name, filePath) ::Zero::Profiler::Get().BeginSession(name, filePath)
 #   define ZR_PROFILE_END_SESSION() ::Zero::Profiler::Get().EndSession()
 #   define ZR_PROFILE_SCOPE(name) ::Zero::ProfilerTimer timer##__LINE__(name)
