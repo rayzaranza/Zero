@@ -4,11 +4,11 @@
 
 #include "Layers/ExampleLayer.h"
 #include "Layers/ExampleLayer2D.h"
+#include "Layers/GameLayer.h"
 
 Sandbox::Sandbox()
 {
-    // PushLayer(new ExampleLayer());
-    PushLayer(new ExampleLayer2D());
+    PushLayer(new GameLayer());
 }
 
 Zero::Application* Zero::CreateApplication()

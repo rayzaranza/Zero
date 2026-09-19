@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zero/Camera/Camera.h"
+#include "Zero/Renderer/SubTexture2D.h"
 #include "Zero/Renderer/Texture.h"
 
 namespace Zero
@@ -19,7 +20,7 @@ namespace Zero
     static constexpr glm::vec2 QUAD_VERTEX_UVS[4]{ { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
     //======================================================================================
-    //  QuadProperties
+    //  Quad Properties
     //======================================================================================
     struct QuadProperties
     {
@@ -28,6 +29,19 @@ namespace Zero
         glm::vec2 Scale{ 1.0f };
         glm::vec4 Color{ 1.0f };
         Ref<Texture2D> Texture{ nullptr };
+        Ref<SubTexture2D> SubTexture{ nullptr };
+        glm::vec2 Tiling{ 1.0f };
+    };
+
+    //======================================================================================
+    //  Quad Vertex
+    //======================================================================================
+    struct QuadVertex
+    {
+        glm::vec2 Position{ 0.0f };
+        glm::vec4 Color{ 1.0f };
+        glm::vec2 UV{ 0.0f };
+        float TextureSlot{ 0.0f };
         glm::vec2 Tiling{ 1.0f };
     };
 
@@ -61,4 +75,5 @@ namespace Zero
       private:
         static void FlushAndReset();
     };
+
 }
