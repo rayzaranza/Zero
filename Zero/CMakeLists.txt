@@ -119,6 +119,8 @@ add_library(Zero STATIC
     #=====================================================================================================================================
     "${ZR_SRC}/Renderer/Texture.h"
     "${ZR_SRC}/Renderer/Texture.cpp"
+    "${ZR_SRC}/Renderer/SubTexture2D.h"
+    "${ZR_SRC}/Renderer/SubTexture2D.cpp"
     "${ZR_SRC}/Renderer/OpenGL/OpenGLTexture.h"
     "${ZR_SRC}/Renderer/OpenGL/OpenGLTexture.cpp"
 

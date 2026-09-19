@@ -38,6 +38,7 @@
 #include "Zero/Renderer/Renderer2D.h"
 #include "Zero/Renderer/RendererAPI.h"
 #include "Zero/Renderer/Shader.h"
+#include "Zero/Renderer/SubTexture2D.h"
 #include "Zero/Renderer/Texture.h"
 
 //======================================================================================
