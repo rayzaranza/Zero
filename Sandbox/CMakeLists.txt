@@ -8,6 +8,9 @@
     "src/Layers/ExampleLayer2D.h"
     "src/Layers/ExampleLayer2D.cpp"
 
+    "src/Layers/GameLayer.h"
+    "src/Layers/GameLayer.cpp"
+
     "src/ParticleSystem.h"
     "src/ParticleSystem.cpp"
 )
