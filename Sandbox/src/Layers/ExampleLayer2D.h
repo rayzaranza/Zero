@@ -17,10 +17,12 @@ class ExampleLayer2D : public Zero::Layer
     virtual void OnEvent(Zero::Event& event) override;
 
   public:
-    Zero::Boolean OnKeyPressed(Zero::KeyPressedEvent& event);
+    bool OnKeyPressed(Zero::KeyPressedEvent& event);
 
   private:
     Zero::OrthographicCameraController m_CameraController;
     Zero::Texture2DRef m_Texture;
-    Zero::Array<Zero::Renderer2D::QuadProperties> m_QuadsProperties;
+    Zero::Texture2DRef m_TextureB;
+    Zero::Array<Zero::QuadProperties> m_Quads;
+    float m_Rotation{ 0.0f };
 };

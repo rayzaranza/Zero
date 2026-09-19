@@ -11,37 +11,11 @@
 
 namespace Zero
 {
-    //===========================================================================================
-    //  Primitives
-    //===========================================================================================
-    using F32 = float;
-    using F64 = double;
-
-    using U8 = uint8_t;
-    using U16 = uint16_t;
-    using U32 = uint32_t;
-    using U64 = uint64_t;
-
-    using I8 = int8_t;
-    using I16 = int16_t;
-    using I32 = int32_t;
-    using I64 = int64_t;
-
-    using String = std::string;
-    using Boolean = bool;
-    using Length = size_t;
-
-    using Seconds = F32;
-    using Milliseconds = F32;
-    using Degrees = F32;
-    using Radians = F32;
-    using RendererID = U32;
-
     //===============================================================================================================================
     //  Containers
     //===============================================================================================================================
     template <typename T> using Array = std::vector<T>;
-    template <typename T, Length S> using FixedArray = std::array<T, S>;
+    template <typename T, size_t S> using FixedArray = std::array<T, S>;
     template <typename K, typename V> using Map = std::unordered_map<K, V>;
     template <typename A, typename B> using Pair = std::pair<A, B>;
 

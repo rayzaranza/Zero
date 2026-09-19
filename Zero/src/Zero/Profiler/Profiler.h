@@ -14,10 +14,10 @@ namespace Zero
     //======================================================================================
     struct ProfileResult
     {
-        String Name{};
-        I64 Start{};
-        I64 End{};
-        U64 ThreadID{};
+        std::string Name{};
+        int64_t Start{};
+        int64_t End{};
+        uint64_t ThreadID{};
     };
 
     //======================================================================================
@@ -25,7 +25,7 @@ namespace Zero
     //======================================================================================
     struct ProfilerSession
     {
-        String Name{};
+        std::string Name{};
     };
 
     //======================================================================================
@@ -37,7 +37,7 @@ namespace Zero
         Profiler();
 
       public:
-        void BeginSession(const String& name, const String& filePath = "results.json");
+        void BeginSession(const std::string& name, const std::string& filePath = "results.json");
         void EndSession();
         void WriteProfile(const ProfileResult& result);
         void WriteHeader();
@@ -49,7 +49,7 @@ namespace Zero
       private:
         ProfilerSession* m_CurrentSession;
         std::ofstream m_OutputStream{};
-        I32 m_ProfileCount;
+        int32_t m_ProfileCount;
     };
 
     //======================================================================================
@@ -61,7 +61,8 @@ namespace Zero
         using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 
       public:
-        ProfilerTimer(const String& name) : m_Name{ name }, m_IsStopped{ false }, m_StartTime{ std::chrono::high_resolution_clock::now() } {}
+        ProfilerTimer(const std::string& name) : m_Name{ name }, m_IsStopped{ false }, m_StartTime{ std::chrono::high_resolution_clock::now() }
+        {}
 
         ~ProfilerTimer()
         {
@@ -73,24 +74,22 @@ namespace Zero
         void Stop()
         {
             const TimePoint endTime{ std::chrono::high_resolution_clock::now() };
-            const I64 start{ std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count() };
-            const I64 end{ std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count() };
-            const U64 threadId{ std::hash<std::thread::id>{}(std::this_thread::get_id()) };
+            const int64_t start{ std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count() };
+            const int64_t end{ std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count() };
+            const uint64_t threadId{ std::hash<std::thread::id>{}(std::this_thread::get_id()) };
 
             Profiler::Get().WriteProfile({ m_Name, start, end, threadId });
             m_IsStopped = true;
         }
 
       private:
-        String m_Name;
-        Boolean m_IsStopped;
+        std::string m_Name;
+        bool m_IsStopped;
         TimePoint m_StartTime;
     };
 }
 
-#define ZR_ENABLE_PROFILER 1
-
-#if ZR_ENABLE_PROFILER
+#ifdef ZR_ENABLE_PROFILER
 #   define ZR_PROFILE_BEGIN_SESSION(name, filePath) ::Zero::Profiler::Get().BeginSession(name, filePath)
 #   define ZR_PROFILE_END_SESSION() ::Zero::Profiler::Get().EndSession()
 #   define ZR_PROFILE_SCOPE(name) ::Zero::ProfilerTimer timer##__LINE__(name)

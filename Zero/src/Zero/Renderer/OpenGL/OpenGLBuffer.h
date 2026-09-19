@@ -10,19 +10,21 @@ namespace Zero
     class OpenGLVertexBuffer : public VertexBuffer
     {
       public:
-        OpenGLVertexBuffer(const Array<F32>& vertices);
+        OpenGLVertexBuffer(const uint32_t size);
+        OpenGLVertexBuffer(const Array<float>& vertices);
         virtual ~OpenGLVertexBuffer();
 
       public:
         virtual void Bind() const override;
         virtual void Unbind() const override;
+        virtual void SetData(const void* data, const uint32_t size) override;
 
       public:
         inline virtual void SetLayout(const VertexBufferLayout& layout) override { m_Layout = layout; }
         inline virtual const VertexBufferLayout& GetLayout() const override { return m_Layout; }
 
       private:
-        RendererID m_Id{};
+        uint32_t m_Id{};
         VertexBufferLayout m_Layout{};
     };
 
@@ -32,7 +34,9 @@ namespace Zero
     class OpenGLIndexBuffer : public IndexBuffer
     {
       public:
-        OpenGLIndexBuffer(const Array<U32>& indices);
+        OpenGLIndexBuffer(const uint32_t count);
+        OpenGLIndexBuffer(const Array<uint32_t>& indices);
+        OpenGLIndexBuffer(const uint32_t* indices, const uint32_t count);
         virtual ~OpenGLIndexBuffer();
 
       public:
@@ -40,10 +44,10 @@ namespace Zero
         virtual void Unbind() const override;
 
       public:
-        inline virtual Length GetLength() const override { return m_Length; }
+        inline virtual size_t GetLength() const override { return m_Length; }
 
       private:
-        RendererID m_Id{};
-        Length m_Length;
+        uint32_t m_Id{};
+        size_t m_Length;
     };
 }

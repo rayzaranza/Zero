@@ -19,8 +19,8 @@ namespace Zero
         inline static EventType GetStaticType() { return EventType::MouseMoved; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "MouseMoved"; }
-        inline virtual I32 GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
-        inline virtual String ToString() const override
+        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
+        inline virtual std::string ToString() const override
         {
             std::stringstream stream{};
             stream << "MouseMovedEvent: " << m_Position.x << ", " << m_Position.y;
@@ -44,8 +44,8 @@ namespace Zero
         inline static EventType GetStaticType() { return EventType::MouseScrolled; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "MouseScrolled"; }
-        inline virtual I32 GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
-        inline String ToString() const override
+        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
+        inline std::string ToString() const override
         {
             std::stringstream stream{};
             stream << "MouseScrolledEvent: " << m_Offset.x << ", " << m_Offset.y;
@@ -63,7 +63,7 @@ namespace Zero
     {
       public:
         inline MouseButton GetMouseButton() const { return m_Button; }
-        inline virtual I32 GetCategoryFlags() const override { return EventCategoryMouseButton | EventCategoryInput; };
+        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryMouseButton | EventCategoryInput; };
 
       protected:
         MouseButtonEvent(const MouseButton button) : m_Button{ button } {}
@@ -84,10 +84,10 @@ namespace Zero
         inline static EventType GetStaticType() { return EventType::MouseButtonPressed; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "MouseButtonPressed"; }
-        inline virtual String ToString() const override
+        inline virtual std::string ToString() const override
         {
             std::stringstream stream{};
-            stream << "MouseButtonPressedEvent: " << static_cast<U32>(m_Button);
+            stream << "MouseButtonPressedEvent: " << static_cast<uint32_t>(m_Button);
             return stream.str();
         }
     };
@@ -104,10 +104,10 @@ namespace Zero
         inline static EventType GetStaticType() { return EventType::MouseButtonReleased; }
         inline virtual EventType GetEventType() const override { return GetStaticType(); }
         inline virtual const char* GetName() const override { return "MouseButtonReleased"; }
-        inline virtual String ToString() const override
+        inline virtual std::string ToString() const override
         {
             std::stringstream stream{};
-            stream << "MouseButtonReleasedEvent: " << static_cast<U32>(m_Button);
+            stream << "MouseButtonReleasedEvent: " << static_cast<uint32_t>(m_Button);
             return stream.str();
         }
     };

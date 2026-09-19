@@ -9,7 +9,7 @@ namespace Zero
     class Layer
     {
       public:
-        Layer(const String& name = "Layer") : m_Name{ name } {}
+        Layer(const std::string& name = "Layer") : m_Name{ name } {}
 
       public:
         inline virtual void OnAttach() {}
@@ -20,9 +20,9 @@ namespace Zero
         inline virtual void OnEvent(Event& event) {}
 
       public:
-        inline const String& GetName() const { return m_Name; }
+        inline const std::string& GetName() const { return m_Name; }
 
       private:
-        String m_Name{};
+        std::string m_Name{};
     };
 }

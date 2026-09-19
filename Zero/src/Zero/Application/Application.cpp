@@ -79,7 +79,7 @@ namespace Zero
         {
             ZR_PROFILE_SCOPE("RunLoop");
 
-            const Seconds time = static_cast<Seconds>(glfwGetTime());
+            const float time = static_cast<float>(glfwGetTime());
             DeltaTime deltaTime{ time - m_LastFrameTime };
             m_LastFrameTime = time;
 
@@ -89,10 +89,10 @@ namespace Zero
                     ZR_PROFILE_SCOPE("LayerStack OnUpdate");
 
                     for (Layer* layer : m_LayerStack)
+                    {
                         layer->OnUpdate(deltaTime);
-
-                    for (Layer* layer : m_LayerStack)
                         layer->OnRender();
+                    }
                 }
 
                 m_UILayer->Begin();
@@ -109,13 +109,13 @@ namespace Zero
         }
     }
 
-    Boolean Application::OnWindowClosed(WindowClosedEvent& event)
+    bool Application::OnWindowClosed(WindowClosedEvent& event)
     {
         m_IsRunning = false;
         return true;
     }
 
-    Boolean Application::OnWindowResized(WindowResizedEvent& event)
+    bool Application::OnWindowResized(WindowResizedEvent& event)
     {
         ZR_PROFILE_FUNCTION();
 

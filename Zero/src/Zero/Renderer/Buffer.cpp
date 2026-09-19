@@ -10,7 +10,7 @@ namespace Zero
     //======================================================================================
     void VertexBufferLayout::CalculateOffsetsAndStride()
     {
-        U32 offset{ 0 };
+        uint32_t offset{ 0 };
         m_Stride = 0;
 
         for (VertexAttribute& attribute : m_Attributes)
@@ -24,7 +24,7 @@ namespace Zero
     //======================================================================================
     //  Vertex Buffer
     //======================================================================================
-    VertexBufferRef VertexBuffer::Create(const Array<F32>& vertices)
+    VertexBufferRef VertexBuffer::Create(const Array<float>& vertices)
     {
         switch (Renderer::GetAPI())
         {
@@ -50,10 +50,36 @@ namespace Zero
         }
     }
 
+    VertexBufferRef VertexBuffer::Create(const uint32_t size)
+    {
+        switch (Renderer::GetAPI())
+        {
+            case RendererAPI::API::None:
+            {
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
+                return nullptr;
+            }
+            case RendererAPI::API::OpenGL:
+            {
+                return CreateRef<OpenGLVertexBuffer>(size);
+            }
+            case RendererAPI::API::Vulkan:
+            {
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                return nullptr;
+            }
+            default:
+            {
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
+                return nullptr;
+            }
+        }
+    }
+
     //======================================================================================
     //  Index Buffer
     //======================================================================================
-    IndexBufferRef IndexBuffer::Create(const Array<U32>& indices)
+    Ref<IndexBuffer> IndexBuffer::Create(const Array<uint32_t>& indices)
     {
         switch (Renderer::GetAPI())
         {
@@ -79,10 +105,62 @@ namespace Zero
         }
     }
 
+    Ref<IndexBuffer> IndexBuffer::Create(const uint32_t size)
+    {
+        switch (Renderer::GetAPI())
+        {
+            case RendererAPI::API::None:
+            {
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
+                return nullptr;
+            }
+            case RendererAPI::API::OpenGL:
+            {
+                return CreateRef<OpenGLIndexBuffer>(size);
+            }
+            case RendererAPI::API::Vulkan:
+            {
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                return nullptr;
+            }
+            default:
+            {
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
+                return nullptr;
+            }
+        }
+    }
+
+    Ref<IndexBuffer> IndexBuffer::Create(const uint32_t* indices, const uint32_t count)
+    {
+        switch (Renderer::GetAPI())
+        {
+            case RendererAPI::API::None:
+            {
+                ZR_CORE_ASSERT(false, "Renderer API set to None");
+                return nullptr;
+            }
+            case RendererAPI::API::OpenGL:
+            {
+                return CreateRef<OpenGLIndexBuffer>(indices, count);
+            }
+            case RendererAPI::API::Vulkan:
+            {
+                ZR_CORE_ASSERT(false, "Vulkan Renderer API not supported");
+                return nullptr;
+            }
+            default:
+            {
+                ZR_CORE_ASSERT(false, "Unknown Renderer API");
+                return nullptr;
+            }
+        }
+    }
+
     //======================================================================================
     //  Vertex Attribute Type Helpers
     //======================================================================================
-    I32 GetSizeFromAttributeType(const AttributeType type)
+    int32_t GetSizeFromAttributeType(const AttributeType type)
     {
         switch (type)
         {
@@ -106,7 +184,7 @@ namespace Zero
         }
     }
 
-    U32 GetComponentCountFromAttributeType(const AttributeType type)
+    uint32_t GetComponentCountFromAttributeType(const AttributeType type)
     {
         switch (type)
         {

@@ -29,16 +29,16 @@ namespace Zero
         inline Window& GetWindow() const { return *m_Window; }
 
       private:
-        Boolean OnWindowClosed(WindowClosedEvent& event);
-        Boolean OnWindowResized(WindowResizedEvent& event);
+        bool OnWindowClosed(WindowClosedEvent& event);
+        bool OnWindowResized(WindowResizedEvent& event);
 
       private:
         Scope<Window> m_Window;
-        Boolean m_IsRunning;
-        Boolean m_IsMinimized;
+        bool m_IsRunning;
+        bool m_IsMinimized;
         LayerStack m_LayerStack;
         UILayer* m_UILayer;
-        Seconds m_LastFrameTime;
+        float m_LastFrameTime;
 
       private:
         static Application* s_Instance;

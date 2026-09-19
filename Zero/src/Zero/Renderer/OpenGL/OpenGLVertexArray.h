@@ -19,7 +19,7 @@ namespace Zero
         inline virtual const IndexBufferRef& GetIndexBuffer() const override { return m_IndexBuffer; }
 
       private:
-        RendererID m_Id{};
+        uint32_t m_Id{};
         Array<VertexBufferRef> m_VertexBuffers{};
         IndexBufferRef m_IndexBuffer{};
     };

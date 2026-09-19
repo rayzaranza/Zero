@@ -6,78 +6,102 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <print>
 
-constexpr Zero::I32 QUADS_COUNT{ 6 };
+//======================================================================================
+//  Creation
+//======================================================================================
 
 ExampleLayer2D::ExampleLayer2D()
     : Zero::Layer{ "ExampleLayer2D" }
     , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
     , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
+    , m_TextureB{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png") }
+    , m_Quads{
+        { .Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } },
+        { .Position{ -1.1f, -0.5f }, .Scale{ 0.2f } },
+        { .Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Color{ 0.1f, 0.4f, 0.1f, 1.0f } },
+        { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Texture{ m_Texture } },
+    }
 {}
 
-ExampleLayer2D::~ExampleLayer2D()
-{}
-
+//======================================================================================
+//  Setup
+//======================================================================================
 void ExampleLayer2D::OnAttach()
 {
     ZR_PROFILE_FUNCTION();
-
-    m_QuadsProperties.reserve(QUADS_COUNT);
-
-    for (Zero::I32 index{ 0 }; index < QUADS_COUNT; ++index)
-    {
-        const Zero::F32 i{ static_cast<Zero::F32>(index) };
-
-        const Zero::Renderer2D::QuadProperties quad{
-            .Position{ i * 1.12f, 0.0f },
-            .Rotation{ i * 360.0f },
-            .Color{ 1.0f - i * 0.123f, i * 0.33f, i * 0.1f, 1.0f },
-        };
-
-        m_QuadsProperties.push_back(quad);
-    }
 }
 
-void ExampleLayer2D::OnDetach()
-{
-    ZR_PROFILE_FUNCTION();
-}
-
+//======================================================================================
+//  Update
+//======================================================================================
 void ExampleLayer2D::OnUpdate(const Zero::DeltaTime deltaTime)
 {
     ZR_PROFILE_FUNCTION();
 
-    m_CameraController.OnUpdate(deltaTime);
+    m_Quads[1].Rotation += deltaTime * 2.0f;
 
-    for (Zero::Renderer2D::QuadProperties& quadProperties : m_QuadsProperties)
+    m_CameraController.OnUpdate(deltaTime);
+}
+
+//======================================================================================
+//  Render
+//======================================================================================
+void ExampleLayer2D::OnRender()
+{
+    Zero::Renderer2D::ResetStats();
+
+    ZR_PROFILE_FUNCTION();
     {
-        quadProperties.Rotation += deltaTime;
+        ZR_PROFILE_SCOPE("Renderer Setup");
+
+        Zero::RenderCommand::Clear({ 0.02f, 0.02f, 0.022f, 1.0f });
+    }
+    {
+        ZR_PROFILE_SCOPE("Renderer Draw");
+
+        Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
+        for (float y{ -5.0f }; y < 5.0f; y += 0.1f)
+        {
+            for (float x{ -5.0f }; x < 5.0f; x += 0.1f)
+            {
+                Zero::Renderer2D::DrawQuad(
+                    { .Position{ x, y }, .Scale{ 0.09f }, .Color{ (x + 5.0f) / 10.0f, 0.0f, (y + 5.0f) / 10.0f, 1.0f } }
+                );
+            }
+        }
+
+        Zero::Renderer2D::EndScene();
+
+        Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
+        for (const auto& quad : m_Quads)
+        {
+            Zero::Renderer2D::DrawQuad(quad);
+        }
+        Zero::Renderer2D::EndScene();
     }
 }
 
-void ExampleLayer2D::OnRender()
+//======================================================================================
+//  UI
+//======================================================================================
+void ExampleLayer2D::OnUIRender()
 {
     ZR_PROFILE_FUNCTION();
 
-    {
-        ZR_PROFILE_SCOPE("Renderer Prep");
+    const Zero::RenderStats& stats{ Zero::Renderer2D::GetStats() };
 
-        Zero::RenderCommand::Clear(glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f });
-    }
-
-    {
-        ZR_PROFILE_SCOPE("Renderer Draw Scene");
-
-        Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
-
-        for (const Zero::Renderer2D::QuadProperties& quadProperties : m_QuadsProperties)
-        {
-            Zero::Renderer2D::DrawQuad(quadProperties);
-        }
-    }
-
-    Zero::Renderer2D::EndScene();
+    ImGui::Begin("Settings");
+    ImGui::Text("Renderer2D Stats");
+    ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+    ImGui::Text("Quads: %d", stats.QuadCount);
+    ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
+    ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+    ImGui::End();
 }
 
+//======================================================================================
+//  Events
+//======================================================================================
 void ExampleLayer2D::OnEvent(Zero::Event& event)
 {
     m_CameraController.OnEvent(event);
@@ -85,7 +109,7 @@ void ExampleLayer2D::OnEvent(Zero::Event& event)
     dispatcher.Dispatch<Zero::KeyPressedEvent>(ZR_BIND_FUNCTION(ExampleLayer2D::OnKeyPressed));
 }
 
-Zero::Boolean ExampleLayer2D::OnKeyPressed(Zero::KeyPressedEvent& event)
+bool ExampleLayer2D::OnKeyPressed(Zero::KeyPressedEvent& event)
 {
     if (event.GetKeyCode() == Zero::KeyCode::ESCAPE)
     {
@@ -96,15 +120,13 @@ Zero::Boolean ExampleLayer2D::OnKeyPressed(Zero::KeyPressedEvent& event)
     return false;
 }
 
-void ExampleLayer2D::OnUIRender()
+//======================================================================================
+//  Destroy
+//======================================================================================
+void ExampleLayer2D::OnDetach()
 {
     ZR_PROFILE_FUNCTION();
-
-    // ImGui::Begin("Quad Properties");
-    //  ImGui::DragFloat2("Position", glm::value_ptr(m_QuadProperties.Position), 0.001f);
-    //  ImGui::DragFloat2("Scale", glm::value_ptr(m_QuadProperties.Scale), 0.001f);
-    //  ImGui::SliderAngle("Rotation", &m_QuadProperties.Rotation);
-    //  ImGui::ColorEdit4("Color", glm::value_ptr(m_QuadProperties.Color));
-    //  ImGui::DragFloat2("Texture Tiling", glm::value_ptr(m_QuadProperties.Tiling));
-    // ImGui::End();
 }
+
+ExampleLayer2D::~ExampleLayer2D()
+{}

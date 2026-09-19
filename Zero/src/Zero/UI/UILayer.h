@@ -20,6 +20,6 @@ namespace Zero
         void End();
 
       private:
-        Seconds m_Time;
+        float m_Time;
     };
 }

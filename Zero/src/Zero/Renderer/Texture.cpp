@@ -34,7 +34,7 @@ namespace Zero
         }
     }
 
-    Texture2DRef Texture2D::Create(const String& path)
+    Texture2DRef Texture2D::Create(const std::string& path)
     {
         ZR_PROFILE_FUNCTION();
 

@@ -11,9 +11,10 @@ namespace Zero
         virtual ~Texture() = default;
 
       public:
-        virtual void Bind(const U32 slot = 0) const = 0;
+        virtual void Bind(const uint32_t slot = 0) const = 0;
         virtual const glm::uvec2& GetSize() const = 0;
-        virtual void SetData(const void* data, U32 size) = 0;
+        virtual void SetData(const void* data, uint32_t size) = 0;
+        virtual uint32_t GetRendererID() const = 0;
     };
 
     //======================================================================================
@@ -23,7 +24,7 @@ namespace Zero
     {
       public:
         static Ref<Texture2D> Create(const glm::uvec2& size);
-        static Ref<Texture2D> Create(const String& path);
+        static Ref<Texture2D> Create(const std::string& path);
     };
 
     using Texture2DRef = Ref<Texture2D>;

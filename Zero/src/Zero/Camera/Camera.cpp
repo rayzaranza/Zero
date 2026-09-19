@@ -4,7 +4,7 @@
 
 namespace Zero
 {
-    OrthographicCamera::OrthographicCamera(const F32 left, const F32 right, const F32 bottom, const F32 top)
+    OrthographicCamera::OrthographicCamera(const float left, const float right, const float bottom, const float top)
         : m_Position{ 0.0f }
         , m_ViewMatrix{ 1.0f }
         , m_ProjectionMatrix{ glm::ortho(left, right, bottom, top, -1.0f, 1.0f) }
@@ -14,7 +14,7 @@ namespace Zero
         ZR_PROFILE_FUNCTION();
     }
 
-    void OrthographicCamera::SetProjectionMatrix(const F32 left, const F32 right, const F32 bottom, const F32 top)
+    void OrthographicCamera::SetProjectionMatrix(const float left, const float right, const float bottom, const float top)
     {
         ZR_PROFILE_FUNCTION();
 
@@ -39,7 +39,7 @@ namespace Zero
         CalculateViewProjectionMatrix();
     }
 
-    void OrthographicCamera::SetRotation(const Radians rotation)
+    void OrthographicCamera::SetRotation(const float rotation)
     {
         m_Rotation = rotation;
         CalculateViewProjectionMatrix();
