@@ -10,32 +10,20 @@
 namespace Zero
 {
     //======================================================================================
-    //  Quad Vertex
-    //======================================================================================
-    struct QuadVertex
-    {
-        glm::vec2 Position{ 0.0f };
-        glm::vec4 Color{ 1.0f };
-        glm::vec2 UV{ 0.0f };
-        float TextureSlot{ 0.0f };
-        glm::vec2 Tiling{ 1.0f };
-    };
-
-    //======================================================================================
-    //  Renderer2D Data
+    //  Storage
     //======================================================================================
     struct Renderer2DData
     {
-        VertexArrayRef QuadVertexArray{};
-        VertexBufferRef QuadVertexBuffer{};
-        ShaderRef QuadShader{};
-        Texture2DRef DefaultTexture{};
+        Ref<VertexArray> QuadVertexArray{};
+        Ref<VertexBuffer> QuadVertexBuffer{};
+        Ref<Shader> QuadShader{};
+        Ref<Texture2D> DefaultTexture{};
 
         uint32_t QuadIndexCount{ 0u };
         QuadVertex* QuadVertexBufferBase{ nullptr };
         QuadVertex* QuadVertexBufferPointer{ nullptr };
 
-        FixedArray<Texture2DRef, MAX_TEXTURE_SLOTS> Textures{};
+        FixedArray<Ref<Texture2D>, MAX_TEXTURE_SLOTS> Textures{};
         uint32_t TextureSlotIndex{ 1u };
 
         RenderStats Stats{};
@@ -44,7 +32,7 @@ namespace Zero
     static Renderer2DData s_Data{};
 
     //======================================================================================
-    //  Renderer2D Initializer
+    //  Renderer 2D
     //======================================================================================
     void Renderer2D::Initialize()
     {
@@ -100,9 +88,6 @@ namespace Zero
         s_Data.Textures[DEFAULT_TEXTURE_SLOT_INDEX] = s_Data.DefaultTexture;
     }
 
-    //======================================================================================
-    //  Renderer2D Begin Scene
-    //======================================================================================
     void Renderer2D::BeginScene(const OrthographicCamera& camera)
     {
         ZR_PROFILE_FUNCTION();
@@ -125,9 +110,6 @@ namespace Zero
         return { result.x, result.y };
     }
 
-    //======================================================================================
-    //  Renderer2D draw quad with struct
-    //======================================================================================
     void Renderer2D::DrawQuad(const QuadProperties& quad)
     {
         ZR_PROFILE_FUNCTION();
@@ -138,12 +120,13 @@ namespace Zero
         }
 
         float textureIndex{ 0.0f };
+        const Ref<Texture2D> texture{ quad.SubTexture ? quad.SubTexture->GetTexture() : quad.Texture };
 
-        if (quad.Texture)
+        if (texture)
         {
             for (uint32_t i{ 1u }; i < s_Data.TextureSlotIndex; i++)
             {
-                if (s_Data.Textures[i]->GetRendererID() == quad.Texture->GetRendererID())
+                if (s_Data.Textures[i]->GetRendererID() == texture->GetRendererID())
                 {
                     textureIndex = static_cast<float>(i);
                     break;
@@ -153,19 +136,20 @@ namespace Zero
             if (textureIndex == 0.0f)
             {
                 textureIndex = static_cast<float>(s_Data.TextureSlotIndex);
-                s_Data.Textures[s_Data.TextureSlotIndex] = quad.Texture;
+                s_Data.Textures[s_Data.TextureSlotIndex] = texture;
                 s_Data.TextureSlotIndex++;
             }
         }
 
         const glm::mat4 transform{ CalculcateModelMatrix2D(quad.Position, quad.Rotation, quad.Scale) };
+        const glm::vec2* uvs{ quad.SubTexture ? quad.SubTexture->GetUVs() : QUAD_VERTEX_UVS };
 
         for (uint32_t i{ 0u }; i < 4u; ++i)
         {
             *s_Data.QuadVertexBufferPointer = QuadVertex{
                 .Position{ GetTansformedVertexPosition(i, transform) },
                 .Color{ quad.Color },
-                .UV{ QUAD_VERTEX_UVS[i] },
+                .UV{ uvs[i] },
                 .TextureSlot{ textureIndex },
                 .Tiling{ quad.Tiling },
             };
@@ -177,9 +161,6 @@ namespace Zero
         s_Data.Stats.QuadCount++;
     }
 
-    //======================================================================================
-    //  Renderer2D Flush/Submit
-    //======================================================================================
     void Renderer2D::Flush()
     {
         ZR_PROFILE_FUNCTION();
@@ -218,9 +199,6 @@ namespace Zero
         s_Data.TextureSlotIndex = 1u;
     }
 
-    //======================================================================================
-    //  Stats
-    //======================================================================================
     void Renderer2D::ResetStats()
     {
         memset(&s_Data.Stats, 0u, sizeof(RenderStats));
