@@ -1,5 +1,4 @@
 #pragma once
-
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -7,86 +6,60 @@
 #include <string>
 #include <thread>
 
-namespace Zero
-{
-    //======================================================================================
-    //  Profile Result
-    //======================================================================================
-    struct ProfileResult
-    {
-        std::string Name{};
-        int64_t Start{};
-        int64_t End{};
-        uint64_t ThreadID{};
-    };
+namespace Zero {
+  struct ProfileResult {
+    std::string Name{};
+    int64_t Start{};
+    int64_t End{};
+    uint64_t ThreadID{};
+  };
 
-    //======================================================================================
-    //  Profiler Session
-    //======================================================================================
-    struct ProfilerSession
-    {
-        std::string Name{};
-    };
+  struct ProfilerSession {
+    std::string Name{};
+  };
 
-    //======================================================================================
-    //  Profiler
-    //======================================================================================
-    class Profiler
-    {
-      public:
-        Profiler();
+  class Profiler {
+  public:
+    Profiler();
+    void BeginSession(const std::string& name, const std::string& filePath = "results.json");
+    void EndSession();
+    void WriteProfile(const ProfileResult& result);
+    void WriteHeader();
+    void WriteFooter();
+    static Profiler& Get();
 
-      public:
-        void BeginSession(const std::string& name, const std::string& filePath = "results.json");
-        void EndSession();
-        void WriteProfile(const ProfileResult& result);
-        void WriteHeader();
-        void WriteFooter();
+  private:
+    ProfilerSession* m_CurrentSession;
+    std::ofstream m_OutputStream{};
+    int32_t m_ProfileCount;
+  };
 
-      public:
-        static Profiler& Get();
+  class ProfilerTimer {
+  private:
+    using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 
-      private:
-        ProfilerSession* m_CurrentSession;
-        std::ofstream m_OutputStream{};
-        int32_t m_ProfileCount;
-    };
+  public:
+    ProfilerTimer(const std::string& name) : m_Name{ name }, m_IsStopped{ false }, m_StartTime{ std::chrono::high_resolution_clock::now() } {}
 
-    //======================================================================================
-    //  Profiler Timer
-    //======================================================================================
-    class ProfilerTimer
-    {
-      private:
-        using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
+    ~ProfilerTimer() {
+      if (!m_IsStopped)
+        Stop();
+    }
 
-      public:
-        ProfilerTimer(const std::string& name) : m_Name{ name }, m_IsStopped{ false }, m_StartTime{ std::chrono::high_resolution_clock::now() }
-        {}
+    void Stop() {
+      const TimePoint endTime{ std::chrono::high_resolution_clock::now() };
+      const int64_t start{ std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count() };
+      const int64_t end{ std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count() };
+      const uint64_t threadId{ std::hash<std::thread::id>{}(std::this_thread::get_id()) };
+      Profiler::Get().WriteProfile({ m_Name, start, end, threadId });
+      m_IsStopped = true;
+    }
 
-        ~ProfilerTimer()
-        {
-            if (!m_IsStopped)
-                Stop();
-        }
-
-      public:
-        void Stop()
-        {
-            const TimePoint endTime{ std::chrono::high_resolution_clock::now() };
-            const int64_t start{ std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTime).time_since_epoch().count() };
-            const int64_t end{ std::chrono::time_point_cast<std::chrono::microseconds>(endTime).time_since_epoch().count() };
-            const uint64_t threadId{ std::hash<std::thread::id>{}(std::this_thread::get_id()) };
-
-            Profiler::Get().WriteProfile({ m_Name, start, end, threadId });
-            m_IsStopped = true;
-        }
-
-      private:
-        std::string m_Name;
-        bool m_IsStopped;
-        TimePoint m_StartTime;
-    };
+  private:
+    std::string m_Name;
+    bool m_IsStopped;
+    TimePoint m_StartTime;
+  };
 }
 
 #ifdef ZR_ENABLE_PROFILER

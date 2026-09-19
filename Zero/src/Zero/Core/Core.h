@@ -1,10 +1,7 @@
 #pragma once
-
 #include <functional>
+#define ZR_BIND_FUNCTION(fn) std::bind(&fn, this, std::placeholders::_1)
 
-//===============================================================================================
-//  Platform
-//===============================================================================================
 #ifdef _WIN32
 #   define ZR_PLATFORM_WINDOWS
 
@@ -36,32 +33,23 @@
 
 #endif
 
-//===============================================================================================
-//  Assertions
-//===============================================================================================
 #ifdef ZR_ENABLE_ASSERTS
-#   define ZR_ASSERT(x, ...)                                                                                                                   \
-    {                                                                                                                                          \
-        if (!(x))                                                                                                                              \
-        {                                                                                                                                      \
-            ZR_ERROR("Assertion failed: {}", __VA_ARGS__);                                                                                     \
-            __debugbreak();                                                                                                                    \
-        }                                                                                                                                      \
-    }
-#   define ZR_CORE_ASSERT(x, ...)                                                                                                              \
-    {                                                                                                                                          \
-        if (!(x))                                                                                                                              \
-        {                                                                                                                                      \
-            ZR_CORE_ERROR("Assertion failed: {}", __VA_ARGS__);                                                                                \
-            __debugbreak();                                                                                                                    \
-        }                                                                                                                                      \
-    }
+#   define ZR_ASSERT(x, ...)                                                                                                                                   \
+  {                                                                                                                                                            \
+    if (!(x)) {                                                                                                                                                \
+      ZR_ERROR("Assertion failed: {}", __VA_ARGS__);                                                                                                           \
+      __debugbreak();                                                                                                                                          \
+    }                                                                                                                                                          \
+  }
+#   define ZR_CORE_ASSERT(x, ...)                                                                                                                              \
+  {                                                                                                                                                            \
+    if (!(x)) {                                                                                                                                                \
+      ZR_CORE_ERROR("Assertion failed: {}", __VA_ARGS__);                                                                                                      \
+      __debugbreak();                                                                                                                                          \
+    }                                                                                                                                                          \
+  }
 #else
 #   define ZR_ASSERT(x, ...)
 #   define ZR_CORE_ASSERT(x, ...)
 #endif
 
-//===============================================================================================
-//  Event Function Binding
-//===============================================================================================
-#define ZR_BIND_FUNCTION(fn) std::bind(&fn, this, std::placeholders::_1)

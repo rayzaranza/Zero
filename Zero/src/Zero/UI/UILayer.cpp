@@ -1,86 +1,64 @@
 #include "UILayer.h"
-
+#include "Zero/Application/Application.h"
+#include <GLFW/glfw3.h>
+#include <glad/glad.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
+Zero::UILayer::UILayer() : Layer{ "UILayer" }, m_Time{ 0.0f } {
+}
 
-#include "Zero/Application/Application.h"
+void Zero::UILayer::OnAttach() {
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
 
-namespace Zero
-{
-    void UILayer::OnAttach()
-    {
-        ZR_PROFILE_FUNCTION();
+  ImGuiIO& io{ ImGui::GetIO() };
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+  io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+  io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
+  ImGui::StyleColorsDark();
+  ImGuiStyle& style{ ImGui::GetStyle() };
+  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+    style.WindowRounding = 0.0f;
+    style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+  }
 
-        ImGuiIO& io{ ImGui::GetIO() };
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+  const Application& application{ Application::Get() };
+  GLFWwindow* window{ application.GetWindow().GetWindowHandle() };
+  ImGui_ImplGlfw_InitForOpenGL(window, true);
+  ImGui_ImplOpenGL3_Init("#version 460 core");
+}
 
-        ImGui::StyleColorsDark();
+void Zero::UILayer::OnDetach() {
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
+}
 
-        ImGuiStyle& style{ ImGui::GetStyle() };
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            style.WindowRounding = 0.0f;
-            style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-        }
+void Zero::UILayer::OnUIRender() {
+}
 
-        const Application& application{ Application::Get() };
-        GLFWwindow* window{ application.GetWindow().GetWindowHandle() };
+void Zero::UILayer::Begin() {
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
+}
 
-        ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL3_Init("#version 460 core");
-    }
+void Zero::UILayer::End() {
+  ImGuiIO& io{ ImGui::GetIO() };
+  const glm::vec2& windowSize{ Application::Get().GetWindow().GetSize() };
+  io.DisplaySize = ImVec2{ windowSize.x, windowSize.y };
 
-    void UILayer::OnDetach()
-    {
-        ZR_PROFILE_FUNCTION();
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        ImGui_ImplOpenGL3_Shutdown();
-        ImGui_ImplGlfw_Shutdown();
-        ImGui::DestroyContext();
-    }
-
-    void UILayer::OnUIRender()
-    {
-        ZR_PROFILE_FUNCTION();
-    }
-
-    void UILayer::Begin()
-    {
-        ZR_PROFILE_FUNCTION();
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-    }
-
-    void UILayer::End()
-    {
-        ZR_PROFILE_FUNCTION();
-
-        ImGuiIO& io{ ImGui::GetIO() };
-        const glm::vec2& windowSize{ Application::Get().GetWindow().GetSize() };
-        io.DisplaySize = ImVec2{ windowSize.x, windowSize.y };
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            GLFWwindow* backupCurrentContext{ glfwGetCurrentContext() };
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
-            glfwMakeContextCurrent(backupCurrentContext);
-        }
-    }
-
+  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+    GLFWwindow* backupCurrentContext{ glfwGetCurrentContext() };
+    ImGui::UpdatePlatformWindows();
+    ImGui::RenderPlatformWindowsDefault();
+    glfwMakeContextCurrent(backupCurrentContext);
+  }
 }

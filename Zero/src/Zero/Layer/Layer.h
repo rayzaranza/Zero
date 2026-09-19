@@ -1,28 +1,21 @@
 #pragma once
-
 #include "Zero/Core/Core.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Time/DeltaTime.h"
 
-namespace Zero
-{
-    class Layer
-    {
-      public:
-        Layer(const std::string& name = "Layer") : m_Name{ name } {}
+namespace Zero {
+  class Layer {
+  public:
+    Layer(const std::string& name = "Layer");
+    virtual void OnAttach();
+    virtual void OnDetach();
+    virtual void OnUpdate(const DeltaTime deltaTime) {};
+    virtual void OnRender();
+    virtual void OnUIRender();
+    virtual void OnEvent(Event& event);
+    const std::string& GetName() const;
 
-      public:
-        inline virtual void OnAttach() {}
-        inline virtual void OnDetach() {}
-        inline virtual void OnUpdate(const DeltaTime deltaTime) {}
-        inline virtual void OnRender() {}
-        inline virtual void OnUIRender() {}
-        inline virtual void OnEvent(Event& event) {}
-
-      public:
-        inline const std::string& GetName() const { return m_Name; }
-
-      private:
-        std::string m_Name{};
-    };
+  private:
+    std::string m_Name;
+  };
 }

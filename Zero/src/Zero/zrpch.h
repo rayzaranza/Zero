@@ -1,9 +1,7 @@
 #pragma once
-
 #include "Zero/Core/Types.h"
 #include "Zero/Logger/Logger.h"
 #include "Zero/Profiler/Profiler.h"
-
 #include <array>
 #include <functional>
 #include <glm/glm.hpp>
@@ -13,8 +11,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
 #ifdef ZR_PLATFORM_WINDOWS
-#   define NOMINMAX
-#   include <Windows.h>
+#define NOMINMAX
+#include <Windows.h>
 #endif
