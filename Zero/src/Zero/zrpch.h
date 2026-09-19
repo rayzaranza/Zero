@@ -15,5 +15,6 @@
 #include <vector>
 
 #ifdef ZR_PLATFORM_WINDOWS
+#   define NOMINMAX
 #   include <Windows.h>
 #endif
