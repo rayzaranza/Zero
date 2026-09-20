@@ -105,16 +105,17 @@ add_library(Zero STATIC
   "${ZR_SRC}/Profiler/Profiler.cpp"
 )
 
-target_include_directories(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
-target_precompile_headers(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h")
+target_include_directories(Zero PUBLIC
+  "${CMAKE_CURRENT_SOURCE_DIR}/src"
+  "${Stb_INCLUDE_DIR}"
+)
 
 target_link_libraries(Zero PUBLIC
   glm::glm 
   glad::glad 
   glfw
   spdlog::spdlog
-  imgui::imgui
-  ${Stb_INCLUDE_DIR}
+  imgui::imgui  
 )
 
 target_compile_definitions(Zero PUBLIC
@@ -122,3 +123,5 @@ target_compile_definitions(Zero PUBLIC
   GLFW_INCLUDE_NONE
   IMGUI_IMPL_OPENGL_LOADER_GLAD
 )
+
+target_precompile_headers(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h")
