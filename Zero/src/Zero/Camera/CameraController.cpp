@@ -59,6 +59,12 @@ float Zero::CameraOrthographicController::GetZoomLevel() const {
 
 void Zero::CameraOrthographicController::SetZoomLevel(float zoomLevel) {
   m_ZoomLevel = zoomLevel;
+  CalculateView();
+}
+
+void Zero::CameraOrthographicController::CalculateView() {
+  m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
+  m_Camera.SetProjectionMatrix(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
 }
 
 const Zero::CameraOrthographicBounds& Zero::CameraOrthographicController::GetBounds() const {
@@ -67,16 +73,14 @@ const Zero::CameraOrthographicBounds& Zero::CameraOrthographicController::GetBou
 
 bool Zero::CameraOrthographicController::OnMouseScrolled(MouseScrolledEvent& event) {
   m_ZoomLevel = std::fmax(m_ZoomLevel - event.GetOffset().y * m_ZoomSpeed, 0.1f);
-  m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
-  m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+  CalculateView();
   return false;
 }
 
 bool Zero::CameraOrthographicController::OnWindowResizedEvent(WindowResizedEvent& event) {
   const glm::ivec2 size{ event.GetSize() };
   m_AspectRatio = static_cast<float>(size.x) / static_cast<float>(size.y);
-  m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
-  m_Camera.SetProjectionMatrix(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+  CalculateView();
   return false;
 }
 

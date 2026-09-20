@@ -24,6 +24,7 @@ namespace Zero {
     CameraOrthographic& GetCamera();
     float GetZoomLevel() const;
     void SetZoomLevel(float zoomLevel);
+    void CalculateView();
 
   private:
     bool OnMouseScrolled(MouseScrolledEvent& event);
