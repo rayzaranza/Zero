@@ -77,6 +77,12 @@ add_library(Zero STATIC
   "${ZR_SRC}/Renderer/Buffer/VertexArray.OpenGL.h"
   "${ZR_SRC}/Renderer/Buffer/VertexArray.OpenGL.cpp"
 
+  "${ZR_SRC}/Renderer/Framebuffer.h"
+  "${ZR_SRC}/Renderer/Framebuffer.cpp"
+  "${ZR_SRC}/Renderer/Framebuffer.OpenGL.h"
+  "${ZR_SRC}/Renderer/Framebuffer.OpenGL.cpp"
+
+
   "${ZR_SRC}/Renderer/Shader/Shader.h"
   "${ZR_SRC}/Renderer/Shader/Shader.cpp"
   "${ZR_SRC}/Renderer/Shader/Shader.OpenGL.h"
