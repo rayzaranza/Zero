@@ -8,6 +8,7 @@ namespace Zero {
     virtual ~FramebufferOpenGL();
     virtual void Bind() const override;
     virtual void Unbind() const override;
+    virtual void Resize(const glm::vec2& size) override;
     virtual const FramebufferProps& GetProps() const override;
     virtual uint32_t GetColorAttachmentRendererID() const override;
     void Invalidate();

@@ -21,5 +21,6 @@ namespace Zero {
     Ref<Texture2D> m_TextureCheckerboard;
     Array<QuadProperties> m_Quads;
     float m_Rotation{ 0.0f };
+    glm::vec2 m_ViewportSize{};
   };
 }

@@ -17,7 +17,7 @@ void Zero::EditorLayer::OnAttach() {
     { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Texture{ m_Texture } },
   };
 
-  m_Framebuffer = Framebuffer::Create({ .Width{ 1280u }, .Height{ 720u } });
+  m_Framebuffer = Framebuffer::Create({ .Size{ 1280u, 720u } });
 }
 
 void Zero::EditorLayer::OnDetach() {
@@ -40,6 +40,7 @@ void Zero::EditorLayer::OnRender() {
       Zero::Renderer2D::DrawQuad({ .Position{ x, y }, .Scale{ 0.09f }, .Color{ (x + 5.0f) / 10.0f, 0.0f, (y + 5.0f) / 10.0f, 1.0f } });
     }
   }
+
   for (const auto& quad : m_Quads) {
     Zero::Renderer2D::DrawQuad(quad);
   }
@@ -102,9 +103,20 @@ void Zero::EditorLayer::OnUIRender() {
   ImGui::Text("Quads: %d", stats.QuadCount);
   ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
   ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), ImVec2{ 1280.0f, 720.0f }, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
   ImGui::End();
+
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
+  ImGui::Begin("Viewport");
+  const ImVec2 panelSize{ ImGui::GetContentRegionAvail() };
+  const glm::vec2 viewportPanelSize{ panelSize.x, panelSize.y };
+  if (m_ViewportSize != viewportPanelSize) {
+    m_Framebuffer->Resize(viewportPanelSize);
+    m_ViewportSize = viewportPanelSize;
+    m_CameraController.OnResize(viewportPanelSize);
+  }
+  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), { m_ViewportSize.x, m_ViewportSize.y }, { 0.0f, 1.0f }, { 1.0f, 0.0f });
+  ImGui::End();
+  ImGui::PopStyleVar();
 
   ImGui::End();
 }

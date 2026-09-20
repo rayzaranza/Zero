@@ -3,8 +3,7 @@
 
 namespace Zero {
   struct FramebufferProps {
-    uint32_t Width{ 1280u };
-    uint32_t Height{ 1280u };
+    glm::uvec2 Size{ 1280u, 720u };
     uint32_t Samples{ 1u };
     bool SwapChainTarget{ false };
   };
@@ -13,6 +12,7 @@ namespace Zero {
   public:
     virtual void Bind() const = 0;
     virtual void Unbind() const = 0;
+    virtual void Resize(const glm::vec2& size) = 0;
     virtual uint32_t GetColorAttachmentRendererID() const = 0;
     virtual const FramebufferProps& GetProps() const = 0;
     static Ref<Framebuffer> Create(const FramebufferProps& props);
