@@ -113,6 +113,9 @@ add_library(Zero STATIC
   "${ZR_SRC}/Time/DeltaTime.h"
   "${ZR_SRC}/Profiler/Profiler.h"
   "${ZR_SRC}/Profiler/Profiler.cpp"
+
+  "${ZR_SRC}/Scene/Scene.h"
+  "${ZR_SRC}/Scene/Scene.cpp"
 )
 
 target_include_directories(Zero PUBLIC
@@ -125,7 +128,7 @@ target_link_libraries(Zero PUBLIC
   glad::glad 
   glfw
   spdlog::spdlog
-  imgui::imgui  
+  imgui::imgui
   EnTT::EnTT
 )
 
