@@ -2,7 +2,7 @@
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/KeyEvent.h"
 #include "Zero/Event/MouseEvent.h"
-#include "Zero/Renderer/RendererContext.OpenGL.h"
+#include "Zero/Renderer/GraphicsContext.OpenGL.h"
 #include <GLFW/glfw3.h>
 
 static void SendWindowToSecondMonitor(GLFWwindow* window, const glm::ivec2& size);
@@ -46,7 +46,7 @@ void Zero::Window::Initialize() {
 
   m_WindowHandle = glfwCreateWindow(m_Data.Size.x, m_Data.Size.y, m_Data.Title.c_str(), nullptr, nullptr);
 
-  m_RendererContext = new RendererContextOpenGL(m_WindowHandle);
+  m_RendererContext = new GraphicsContextOpenGL(m_WindowHandle);
   m_RendererContext->Initialize();
 
   glfwSetWindowUserPointer(m_WindowHandle, &m_Data);

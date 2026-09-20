@@ -1,13 +1,13 @@
 #pragma once
-#include "RendererContext.h"
+#include "GraphicsContext.h"
 
 struct GLFWwindow;
 
 namespace Zero {
-  class RendererContextOpenGL : public RendererContext {
+  class GraphicsContextOpenGL : public GraphicsContext {
   public:
-    RendererContextOpenGL(GLFWwindow* windowHandle);
-    ~RendererContextOpenGL();
+    GraphicsContextOpenGL(GLFWwindow* windowHandle);
+    ~GraphicsContextOpenGL();
     virtual void Initialize() override;
     virtual void SwapBuffers() override;
 

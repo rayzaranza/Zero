@@ -56,9 +56,10 @@ add_library(Zero STATIC
   "${ZR_SRC}/Renderer/RendererAPI.cpp"
   "${ZR_SRC}/Renderer/RendererAPI.OpenGL.h"
   "${ZR_SRC}/Renderer/RendererAPI.OpenGL.cpp"
-  "${ZR_SRC}/Renderer/RendererContext.h"
-  "${ZR_SRC}/Renderer/RendererContext.OpenGL.h"
-  "${ZR_SRC}/Renderer/RendererContext.OpenGL.cpp"
+
+  "${ZR_SRC}/Renderer/GraphicsContext.h"
+  "${ZR_SRC}/Renderer/GraphicsContext.OpenGL.h"
+  "${ZR_SRC}/Renderer/GraphicsContext.OpenGL.cpp"
 
   "${ZR_SRC}/Renderer/Buffer/VertexAttribute.h"
   "${ZR_SRC}/Renderer/Buffer/VertexAttribute.cpp"

@@ -1,7 +1,7 @@
 #pragma once
 #include "Zero/Core/Core.h"
 #include "Zero/Event/ApplicationEvent.h"
-#include "Zero/Renderer/RendererContext.h"
+#include "Zero/Renderer/GraphicsContext.h"
 #include <glm/glm.hpp>
 
 struct GLFWwindow;
@@ -31,7 +31,7 @@ namespace Zero {
     void SetCallbacks();
     static void ErrorCallback(const int32_t error, const char* description);
     GLFWwindow* m_WindowHandle;
-    RendererContext* m_RendererContext;
+    GraphicsContext* m_RendererContext;
     WindowData m_Data;
   };
 }
