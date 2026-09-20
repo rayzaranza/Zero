@@ -6,10 +6,10 @@
 
 Zero::Application* Zero::Application::s_Instance{ nullptr };
 
-Zero::Application::Application() : m_IsRunning{ true }, m_IsMinimized{ false }, m_LastFrameTime{ 0.0f } {
+Zero::Application::Application(const std::string& name) : m_IsRunning{ true }, m_IsMinimized{ false }, m_LastFrameTime{ 0.0f } {
   ZR_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
   s_Instance = this;
-  m_Window = CreateScope<Window>();
+  m_Window = CreateScope<Window>(name);
   m_Window->SetEventCallback(ZR_BIND_FUNCTION(Application::OnEvent));
   m_UILayer = new UILayer();
   PushOverlay(m_UILayer);

@@ -11,7 +11,7 @@
 namespace Zero {
   class Application {
   public:
-    Application();
+    Application(const std::string& name = "Zero");
     virtual ~Application();
     void Run();
     void OnEvent(Event& event);
