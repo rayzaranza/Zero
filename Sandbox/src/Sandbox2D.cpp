@@ -16,8 +16,6 @@ void Sandbox2D::OnAttach() {
     { .Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Color{ 0.1f, 0.4f, 0.1f, 1.0f } },
     { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Texture{ m_Texture } },
   };
-
-  m_Framebuffer = Zero::Framebuffer::Create({ .Width{ 1280u }, .Height{ 720u } });
 }
 
 void Sandbox2D::OnDetach() {
@@ -31,7 +29,6 @@ void Sandbox2D::OnUpdate(const Zero::DeltaTime deltaTime) {
 void Sandbox2D::OnRender() {
   Zero::Renderer2D::ResetStats();
 
-  m_Framebuffer->Bind();
   Zero::RenderCommand::Clear({ 0.02f, 0.02f, 0.022f, 1.0f });
 
   Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -45,67 +42,16 @@ void Sandbox2D::OnRender() {
   }
 
   Zero::Renderer2D::EndScene();
-  m_Framebuffer->Unbind();
 }
 
 void Sandbox2D::OnUIRender() {
   const Zero::RenderStats& stats{ Zero::Renderer2D::GetStats() };
-
-  static bool isOpen{ true };
-  static bool isFullscreenPersistant{ true };
-  bool isFullscreen{ isFullscreenPersistant };
-  static ImGuiDockNodeFlags dockSpaceFlags{ ImGuiDockNodeFlags_None };
-
-  ImGuiWindowFlags windowFlags{ ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking };
-  if (isFullscreen) {
-    ImGuiViewport* viewport{ ImGui::GetMainViewport() };
-    ImGui::SetNextWindowPos(viewport->Pos);
-    ImGui::SetNextWindowSize(viewport->Size);
-    ImGui::SetNextWindowViewport(viewport->ID);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-    windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-    windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-  }
-
-  if (dockSpaceFlags & ImGuiDockNodeFlags_PassthruCentralNode) {
-    windowFlags |= ImGuiWindowFlags_NoBackground;
-  }
-
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
-  ImGui::Begin("Zero DockSpace Demo", &isOpen, windowFlags);
-  ImGui::PopStyleVar();
-
-  if (isFullscreen) {
-    ImGui::PopStyleVar(2);
-  }
-
-  ImGuiIO& io{ ImGui::GetIO() };
-  if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
-    ImGuiID dockSpaceId{ ImGui::GetID("ZeroDockSpace") };
-    ImGui::DockSpace(dockSpaceId, ImVec2{ 0.0f, 0.0f }, dockSpaceFlags);
-  }
-
-  if (ImGui::BeginMenuBar()) {
-    if (ImGui::BeginMenu("File")) {
-      if (ImGui::MenuItem("Exit")) {
-        Zero::Application::Get().Close();
-      }
-      ImGui::EndMenu();
-    }
-    ImGui::EndMenuBar();
-  }
-
   ImGui::Begin("Settings");
   ImGui::Text("Renderer2D Stats");
   ImGui::Text("Draw Calls: %d", stats.DrawCalls);
   ImGui::Text("Quads: %d", stats.QuadCount);
   ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
   ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-
-  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), ImVec2{ 1280.0f, 720.0f });
-  ImGui::End();
-
   ImGui::End();
 }
 
