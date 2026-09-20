@@ -7,31 +7,33 @@
 struct GLFWwindow;
 
 namespace Zero {
-  using EventCallback = Function<void(Event&)>;
 
-  struct WindowData {
-    std::string Title{};
-    glm::ivec2 Size{};
-    EventCallback EventCallback{};
-  };
+using EventCallback = Function<void(Event&)>;
 
-  class Window {
-  public:
-    Window(const std::string& title = "Zero", const glm::ivec2& size = glm::ivec2{ 1280, 720 });
-    ~Window();
-    const glm::ivec2& GetSize() const;
-    GLFWwindow* GetWindowHandle() const;
-    void SetEventCallback(const EventCallback& callback);
-    float GetAspectRatio() const;
-    void OnUpdate();
-    void Initialize();
-    void Destroy();
+struct WindowProps {
+  std::string Title{ "Zero" };
+  glm::uvec2 Size{ 1920u, 1080u };
+  EventCallback EventCallback{};
+};
 
-  private:
-    void SetCallbacks();
-    static void ErrorCallback(const int32_t error, const char* description);
-    GLFWwindow* m_WindowHandle;
-    GraphicsContext* m_RendererContext;
-    WindowData m_Data;
-  };
+class Window {
+public:
+  Window(const WindowProps& props);
+  ~Window();
+  const glm::ivec2& GetSize() const;
+  GLFWwindow* GetWindowHandle() const;
+  void SetEventCallback(const EventCallback& callback);
+  float GetAspectRatio() const;
+  void OnUpdate();
+  void Initialize();
+  void Destroy();
+
+private:
+  void SetCallbacks();
+  static void ErrorCallback(const int32_t error, const char* description);
+  GLFWwindow* m_WindowHandle;
+  GraphicsContext* m_RendererContext;
+  WindowProps m_Props;
+};
+
 }
