@@ -2,18 +2,20 @@
 
 static constexpr uint32_t s_MapWidth{ 24u };
 static constexpr uint32_t s_MapHeight{ 12u };
-static const char* s_MapTiles{ "~~~~~~~~~~~~~~~~~~~~~~~~"
-                               "~~~~~DDDDDDDDDD~~~~~~~~~"
-                               "~~~DDDD~~DDDDDDDDD~~~~~~"
-                               "~~~DDDDDDDDDDDDDDDD~~~~~"
-                               "~~~DDDDDDDD~~DDDD~~~~~~~"
-                               "~~~~DDDDDDD~~DD~~~~~~~~~"
-                               "~~~~~DDDDDDDD~~~~~~~~~~~"
-                               "~~~~~~~~DDD~~~~~~~~~~~~~"
-                               "~~~~~~~~~~~~~DDDD~~~~~~~"
-                               "~~~~~~~~~~~~~~DDD~~~~~~~"
-                               "~~~~~~~~~~~~~~~~~~~~~~~~"
-                               "~~~~~~~~~~~~~~~~~~~~~~~~" };
+static const char* s_MapTiles{
+  "~~~~~~~~~~~~~~~~~~~~~~~~"
+  "~~~~~DDDDDDDDDD~~~~~~~~~"
+  "~~~DDDD~~DDDDDDDDD~~~~~~"
+  "~~~DDDDDDDDDDDDDDDD~~~~~"
+  "~~~DDDDDDDD~~DDDD~~~~~~~"
+  "~~~~DDDDDDD~~DD~~~~~~~~~"
+  "~~~~~DDDDDDDD~~~~~~~~~~~"
+  "~~~~~~~~DDD~~~~~~~~~~~~~"
+  "~~~~~~~~~~~~~DDDD~~~~~~~"
+  "~~~~~~~~~~~~~~DDD~~~~~~~"
+  "~~~~~~~~~~~~~~~~~~~~~~~~"
+  "~~~~~~~~~~~~~~~~~~~~~~~~",
+};
 
 Zero::Map<char, Zero::Ref<Zero::SubTexture2D>> GameLayer::s_TextureMap{};
 
@@ -50,10 +52,6 @@ void GameLayer::OnRender() {
       Zero::Renderer2D::DrawQuad({ .Position{ x - (s_MapWidth / 2.0f), s_MapHeight - y - s_MapHeight / 2.0f }, .SubTexture{ texture } });
     }
   }
-
-  // Zero::Renderer2D::DrawQuad({ .Position{ 0.0f, 0.0f }, .SubTexture{ m_TextureStairs } });
-  // Zero::Renderer2D::DrawQuad({ .Position{ 1.0f, 0.0f }, .SubTexture{ m_TextureBarrel } });
-  // Zero::Renderer2D::DrawQuad({ .Position{ -1.0f, 0.0f }, .Scale{ 1.0f, 2.0f }, .SubTexture{ m_TextureTree } });
 
   Zero::Renderer2D::EndScene();
 }
