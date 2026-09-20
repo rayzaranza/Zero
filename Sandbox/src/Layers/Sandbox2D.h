@@ -16,7 +16,7 @@ public:
 private:
   Zero::CameraOrthographicController m_CameraController;
   Zero::Ref<Zero::Texture2D> m_Texture;
-  Zero::Ref<Zero::Texture2D> m_TextureB;
+  Zero::Ref<Zero::Texture2D> m_TextureCheckerboard;
   Zero::Array<Zero::QuadProperties> m_Quads;
   float m_Rotation{ 0.0f };
 };

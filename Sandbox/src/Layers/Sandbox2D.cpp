@@ -5,7 +5,7 @@ Sandbox2D::Sandbox2D()
   : Zero::Layer{ "Sandbox2D" }
   , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
   , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
-  , m_TextureB{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png") }
+  , m_TextureCheckerboard{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png") }
   , m_Quads{
     { .Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } },
     { .Position{ -1.1f, -0.5f }, .Scale{ 0.2f } },
@@ -98,6 +98,8 @@ void Sandbox2D::OnUIRender() {
   ImGui::Text("Quads: %d", stats.QuadCount);
   ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
   ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+  ImGui::Image(m_TextureCheckerboard->GetRendererID(), ImVec2{ 256.0f, 256.0f });
   ImGui::End();
 
   ImGui::End();
