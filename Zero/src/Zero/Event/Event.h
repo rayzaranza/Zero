@@ -1,95 +1,68 @@
 #pragma once
-
 #include "Zero/Core/Core.h"
 
-namespace Zero
-{
-    //======================================================================================
-    //  Event Type
-    //======================================================================================
-    enum class EventType : uint8_t
-    {
-        None,
-        WindowClosed,
-        WindowResized,
-        WindowFocused,
-        WindowLostFocus,
-        WindowMoved,
-        ApplicationTicked,
-        ApplicationUpdated,
-        ApplicationRendered,
-        KeyPressed,
-        KeyReleased,
-        KeyTyped,
-        MouseButtonPressed,
-        MouseButtonReleased,
-        MouseMoved,
-        MouseScrolled,
-    };
+namespace Zero {
+  enum class EventType : uint8_t {
+    None,
+    WindowClosed,
+    WindowResized,
+    WindowFocused,
+    WindowLostFocus,
+    WindowMoved,
+    ApplicationTicked,
+    ApplicationUpdated,
+    ApplicationRendered,
+    KeyPressed,
+    KeyReleased,
+    KeyTyped,
+    MouseButtonPressed,
+    MouseButtonReleased,
+    MouseMoved,
+    MouseScrolled,
+  };
 
-    //======================================================================================
-    //  Event Category
-    //======================================================================================
-    enum EventCategory : uint8_t
-    {
-        None,
-        EventCategoryApplication = 1 << 0,
-        EventCategoryInput = 1 << 1,
-        EventCategoryKeyboard = 1 << 2,
-        EventCategoryMouse = 1 << 3,
-        EventCategoryMouseButton = 1 << 4,
-    };
+  enum EventCategory : uint8_t {
+    None,
+    EventCategoryApplication = 1 << 0,
+    EventCategoryInput = 1 << 1,
+    EventCategoryKeyboard = 1 << 2,
+    EventCategoryMouse = 1 << 3,
+    EventCategoryMouseButton = 1 << 4,
+  };
 
-    //======================================================================================
-    //  Event
-    //======================================================================================
-    class Event
-    {
-      public:
-        virtual ~Event() = default;
-        virtual EventType GetEventType() const = 0;
-        virtual const char* GetName() const = 0;
-        virtual int32_t GetCategoryFlags() const = 0;
+  class Event {
+  public:
+    virtual ~Event() = default;
+    virtual EventType GetEventType() const = 0;
+    virtual const char* GetName() const = 0;
+    virtual int32_t GetCategoryFlags() const = 0;
+    virtual std::string ToString() const;
+    bool IsHandled() const;
+    bool IsInCategory(EventCategory category) const;
 
-      public:
-        inline virtual std::string ToString() const { return GetName(); }
-        inline bool IsHandled() const { return m_IsHandled; }
-        inline bool IsInCategory(EventCategory category) const { return GetCategoryFlags() & category; };
+  protected:
+    bool m_IsHandled{ false };
+    friend class EventDispatcher;
+  };
 
-      protected:
-        bool m_IsHandled{ false };
-        friend class EventDispatcher;
-    };
+  class EventDispatcher {
+  public:
+    EventDispatcher(Event& event);
 
-    inline std::ostream& operator<<(std::ostream& stream, const Event& event)
-    {
-        return stream << event.ToString();
+    template <typename T>
+    bool Dispatch(Function<bool(T&)> function) {
+      if (m_Event.GetEventType() == T::GetStaticType()) {
+        m_Event.m_IsHandled = function(*(T*)&m_Event);
+        return true;
+      }
+      return false;
     }
 
-    //======================================================================================
-    //  Event Dispatcher
-    //======================================================================================
-    class EventDispatcher
-    {
-      public:
-        EventDispatcher(Event& event) : m_Event{ event } {}
-
-      public:
-        template <typename T> bool Dispatch(Function<bool(T&)> function)
-        {
-            if (m_Event.GetEventType() == T::GetStaticType())
-            {
-                m_Event.m_IsHandled = function(*(T*)&m_Event);
-                return true;
-            }
-            return false;
-        }
-
-      private:
-        Event& m_Event;
-    };
-
+  private:
+    Event& m_Event;
+  };
 }
 
-template <> struct fmt::formatter<Zero::Event> : fmt::ostream_formatter
-{};
+std::ostream& operator<<(std::ostream& stream, const Zero::Event& event);
+
+template <> struct fmt::formatter<Zero::Event> : fmt::ostream_formatter {};

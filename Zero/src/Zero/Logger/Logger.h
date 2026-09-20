@@ -5,19 +5,17 @@
 
 #include "Zero/Core/Core.h"
 
-namespace Zero
-{
-    class Logger
-    {
-      private:
-        static Ref<spdlog::logger> s_CoreLogger;
-        static Ref<spdlog::logger> s_ClientLogger;
+namespace Zero {
+  class Logger {
+  public:
+    static void Initialize();
+    static Ref<spdlog::logger>& GetCoreLogger();
+    static Ref<spdlog::logger>& GetClientLogger();
 
-      public:
-        static void Initialize();
-        inline static Ref<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
-        inline static Ref<spdlog::logger>& GetClientLogger() { return s_ClientLogger; };
-    };
+  private:
+    static Ref<spdlog::logger> s_CoreLogger;
+    static Ref<spdlog::logger> s_ClientLogger;
+  };
 }
 
 #define ZR_CORE_LOG(...) ::Zero::Logger::GetCoreLogger()->trace(__VA_ARGS__)

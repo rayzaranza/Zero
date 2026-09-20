@@ -1,19 +1,13 @@
 #include "Sandbox.h"
-
-#include <Zero/Core/EntryPoint.h>
-
 #include "Layers/ExampleLayer.h"
 #include "Layers/ExampleLayer2D.h"
 #include "Layers/GameLayer.h"
+#include <Zero/Core/EntryPoint.h>
 
-Sandbox::Sandbox()
-{
-    PushLayer(new GameLayer());
+Sandbox::Sandbox() {
+  PushLayer(new GameLayer());
 }
 
-Zero::Application* Zero::CreateApplication()
-{
-    ZR_PROFILE_FUNCTION();
-
-    return new Sandbox();
+Zero::Application* Zero::CreateApplication() {
+  return new Sandbox();
 }

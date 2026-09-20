@@ -1,30 +1,24 @@
 #pragma once
-
 #include <Zero.h>
 
-class ExampleLayer : public Zero::Layer
-{
-  public:
-    ExampleLayer();
+class ExampleLayer : public Zero::Layer {
+public:
+  ExampleLayer();
+  virtual void OnAttach() override;
+  virtual void OnDetach() override;
+  virtual void OnUpdate(const Zero::DeltaTime deltaTime) override;
+  virtual void OnEvent(Zero::Event& event) override;
+  virtual void OnRender() override;
+  virtual void OnUIRender() override;
 
-  public:
-    virtual void OnAttach() override;
-    virtual void OnDetach() override;
-    virtual void OnUpdate(const Zero::DeltaTime deltaTime) override;
-    virtual void OnEvent(Zero::Event& event) override;
-    virtual void OnRender() override;
-    virtual void OnUIRender() override;
-
-  private:
-    Zero::ShaderLibraryRef m_ShaderLibrary;
-    Zero::ShaderRef m_QuadShader;
-    Zero::VertexArrayRef m_QuadVertexArray;
-    Zero::Texture2DRef m_Texture;
-    Zero::Texture2DRef m_TransparentTexture;
-
-    Zero::OrthographicCameraController m_CameraController;
-
-    glm::vec3 m_QuadPosition;
-    glm::vec4 m_QuadColor;
-    float m_QuadMovementSpeed;
+private:
+  Zero::Ref<Zero::ShaderLibrary> m_ShaderLibrary;
+  Zero::Ref<Zero::Shader> m_QuadShader;
+  Zero::Ref<Zero::VertexArray> m_QuadVertexArray;
+  Zero::Ref<Zero::Texture2D> m_Texture;
+  Zero::Ref<Zero::Texture2D> m_TransparentTexture;
+  Zero::CameraOrthographicController m_CameraController;
+  glm::vec3 m_QuadPosition;
+  glm::vec4 m_QuadColor;
+  float m_QuadMovementSpeed;
 };

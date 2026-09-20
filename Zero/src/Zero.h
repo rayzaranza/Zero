@@ -1,5 +1,4 @@
 #pragma once
-
 //======================================================================================
 //  Core
 //======================================================================================
@@ -32,14 +31,16 @@
 //======================================================================================
 //  Renderer
 //======================================================================================
-#include "Zero/Renderer/Buffer.h"
+#include "Zero/Renderer/Buffer/IndexBuffer.h"
+#include "Zero/Renderer/Buffer/VertexArray.h"
+#include "Zero/Renderer/Buffer/VertexBuffer.h"
 #include "Zero/Renderer/RenderCommand.h"
 #include "Zero/Renderer/Renderer.h"
 #include "Zero/Renderer/Renderer2D.h"
 #include "Zero/Renderer/RendererAPI.h"
-#include "Zero/Renderer/Shader.h"
-#include "Zero/Renderer/SubTexture2D.h"
-#include "Zero/Renderer/Texture.h"
+#include "Zero/Renderer/Shader/Shader.h"
+#include "Zero/Renderer/Texture/SubTexture2D.h"
+#include "Zero/Renderer/Texture/Texture.h"
 
 //======================================================================================
 //  Camera

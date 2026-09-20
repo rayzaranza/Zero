@@ -1,96 +1,59 @@
 #pragma once
-
+#include "Event.h"
 #include "Zero/Core/Core.h"
-#include "Zero/Event/Event.h"
 
-namespace Zero
-{
-    //======================================================================================
-    //  Window Resized Event
-    //======================================================================================
-    class WindowResizedEvent : public Event
-    {
-      public:
-        WindowResizedEvent(const glm::ivec2& size) : m_Size{ size } {}
+namespace Zero {
+  class WindowResizedEvent : public Event {
+  public:
+    WindowResizedEvent(const glm::ivec2& size);
+    const glm::ivec2& GetSize() const;
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual int32_t GetCategoryFlags() const override;
+    virtual std::string ToString() const override;
 
-      public:
-        inline const glm::ivec2& GetSize() const { return m_Size; }
-        inline static EventType GetStaticType() { return EventType::WindowResized; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "WindowResized"; }
-        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override
-        {
-            std::stringstream stream{};
-            stream << GetName() << ": " << m_Size.x << ", " << m_Size.y;
-            return stream.str();
-        }
+  private:
+    glm::ivec2 m_Size;
+  };
 
-      private:
-        glm::ivec2 m_Size;
-    };
+  class WindowClosedEvent : public Event {
+  public:
+    WindowClosedEvent() = default;
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual int32_t GetCategoryFlags() const override;
+    virtual std::string ToString() const override;
+  };
 
-    //======================================================================================
-    //  Window Closed Event
-    //======================================================================================
-    class WindowClosedEvent : public Event
-    {
-      public:
-        WindowClosedEvent() = default;
+  class ApplicationTickedEvent : public Event {
+  public:
+    ApplicationTickedEvent() = default;
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual int32_t GetCategoryFlags() const override;
+    virtual std::string ToString() const override;
+  };
 
-      public:
-        inline static EventType GetStaticType() { return EventType::WindowClosed; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "WindowClosed"; }
-        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override { return GetName(); }
-    };
+  class ApplicationUpdatedEvent : public Event {
+  public:
+    ApplicationUpdatedEvent() = default;
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual int32_t GetCategoryFlags() const override;
+    virtual std::string ToString() const override;
+  };
 
-    //======================================================================================
-    //  Application Ticked Event
-    //======================================================================================
-    class ApplicationTickedEvent : public Event
-    {
-      public:
-        ApplicationTickedEvent() = default;
-
-      public:
-        inline static EventType GetStaticType() { return EventType::ApplicationTicked; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "ApplicationTicked"; }
-        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override { return GetName(); }
-    };
-
-    //======================================================================================
-    //  Application Updated Event
-    //======================================================================================
-    class ApplicationUpdatedEvent : public Event
-    {
-      public:
-        ApplicationUpdatedEvent() = default;
-
-      public:
-        inline static EventType GetStaticType() { return EventType::ApplicationUpdated; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "ApplicationUpdated"; }
-        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override { return GetName(); }
-    };
-
-    //======================================================================================
-    //  Application Rendered Event
-    //======================================================================================
-    class ApplicationRenderedEvent : public Event
-    {
-      public:
-        ApplicationRenderedEvent() = default;
-
-      public:
-        inline static EventType GetStaticType() { return EventType::ApplicationRendered; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "ApplicationRendered"; }
-        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryApplication; }
-        inline virtual std::string ToString() const override { return GetName(); }
-    };
+  class ApplicationRenderedEvent : public Event {
+  public:
+    ApplicationRenderedEvent() = default;
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual int32_t GetCategoryFlags() const override;
+    virtual std::string ToString() const override;
+  };
 }

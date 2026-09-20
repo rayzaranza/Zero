@@ -1,74 +1,39 @@
-BasedOnStyle: Microsoft
+BasedOnStyle: LLVM
 Language: Cpp
 Standard: c++23
-
-IndentWidth: 4
+IndentWidth: 2
+ContinuationIndentWidth: 2
+ConstructorInitializerIndentWidth: 2
 UseTab: Never
-
-ColumnLimit: 144
-
-Cpp11BracedListStyle: Block
-
+ColumnLimit: 160
+Cpp11BracedListStyle: false
 SpaceBeforeCpp11BracedList: false
 SpaceBeforeAssignmentOperators: true
 IndentAccessModifiers: false
 FixNamespaceComments: false
 IndentCaseLabels: true
-
 IndentPPDirectives: Leave
 BreakConstructorInitializers: BeforeComma
 NamespaceIndentation: All
 PointerAlignment: Left
 ReferenceAlignment: Left
-BreakBeforeBraces: Custom
-
-BraceWrapping:
-    AfterNamespace: true
-    AfterClass: true
-    AfterStruct: true
-    AfterUnion: true
-    AfterFunction: true
-    AfterControlStatement: Always
-    BeforeCatch: true
-    BeforeElse: true
-    BeforeWhile: true
-    IndentBraces: false
-    SplitEmptyFunction: false 
-    SplitEmptyRecord: false
-    AfterCaseLabel: true
-
-SeparateDefinitionBlocks: Leave
+BreakBeforeBraces: Attach
+SeparateDefinitionBlocks: Always
+MaxEmptyLinesToKeep: 1
 PackConstructorInitializers: CurrentLine
 AllowShortCaseLabelsOnASingleLine: true
-
 AlignConsecutiveShortCaseStatements:
-    Enabled: true
-    AcrossEmptyLines: true
-    AcrossComments: true
-    AlignCaseColons: false
-
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCaseColons: false
 AlignAfterOpenBracket: BlockIndent
-
 PackParameters:
-    BinPack: OnePerLine
-
+  BinPack: OnePerLine
 PackArguments:
-    BinPack: OnePerLine
-
+  BinPack: OnePerLine
 AllowAllArgumentsOnNextLine: true
 AllowShortFunctionsOnASingleLine: InlineOnly
 BreakTemplateDeclarations: Leave
-
-IncludeBlocks: Regroup
-IncludeCategories:
-  - Regex:    '^<[[:alnum:]_]+\.h>$'
-    Priority: 1
-  - Regex:    '^<.*\.h>$'
-    Priority: 2
-  - Regex:    '^"Zero/'
-    Priority: 3
-  - Regex:    '.*'
-    Priority: 4
-
 SortIncludes: true
 AlignTrailingComments: true

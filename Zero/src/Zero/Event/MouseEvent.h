@@ -1,114 +1,62 @@
 #pragma once
-
+#include "Event.h"
 #include "Zero/Core/Core.h"
-#include "Zero/Event/Event.h"
 #include "Zero/Input/MouseButton.h"
 
-namespace Zero
-{
-    //=====================================================================================================================================
-    //  Mouse Moved Event
-    //=====================================================================================================================================
-    class MouseMovedEvent : public Event
-    {
-      public:
-        MouseMovedEvent(const glm::vec2& position) : m_Position{ position } {}
+namespace Zero {
+  class MouseMovedEvent : public Event {
+  public:
+    MouseMovedEvent(const glm::vec2& position);
+    const glm::vec2& GetPosition() const;
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual int32_t GetCategoryFlags() const override;
+    virtual std::string ToString() const override;
 
-      public:
-        inline const glm::vec2& GetPosition() const { return m_Position; }
-        inline static EventType GetStaticType() { return EventType::MouseMoved; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "MouseMoved"; }
-        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
-        inline virtual std::string ToString() const override
-        {
-            std::stringstream stream{};
-            stream << "MouseMovedEvent: " << m_Position.x << ", " << m_Position.y;
-            return stream.str();
-        }
+  private:
+    glm::vec2 m_Position;
+  };
 
-      private:
-        glm::vec2 m_Position;
-    };
+  class MouseScrolledEvent : public Event {
+  public:
+    MouseScrolledEvent(const glm::vec2& offset);
+    const glm::vec2& GetOffset() const;
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual int32_t GetCategoryFlags() const override;
+    std::string ToString() const override;
 
-    //=====================================================================================================================================
-    //  Mouse Scrolled Event
-    //=====================================================================================================================================
-    class MouseScrolledEvent : public Event
-    {
-      public:
-        MouseScrolledEvent(const glm::vec2& offset) : m_Offset{ offset } {}
+  private:
+    glm::vec2 m_Offset;
+  };
 
-      public:
-        inline const glm::vec2& GetOffset() const { return m_Offset; }
-        inline static EventType GetStaticType() { return EventType::MouseScrolled; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "MouseScrolled"; }
-        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryMouse | EventCategoryInput; }
-        inline std::string ToString() const override
-        {
-            std::stringstream stream{};
-            stream << "MouseScrolledEvent: " << m_Offset.x << ", " << m_Offset.y;
-            return stream.str();
-        }
+  class MouseButtonEvent : public Event {
+  public:
+    MouseButton GetMouseButton() const;
+    virtual int32_t GetCategoryFlags() const override;
 
-      private:
-        glm::vec2 m_Offset;
-    };
+  protected:
+    MouseButtonEvent(const MouseButton button);
+    MouseButton m_Button;
+  };
 
-    //=====================================================================================================================================
-    //  Mouse Button Event
-    //=====================================================================================================================================
-    class MouseButtonEvent : public Event
-    {
-      public:
-        inline MouseButton GetMouseButton() const { return m_Button; }
-        inline virtual int32_t GetCategoryFlags() const override { return EventCategoryMouseButton | EventCategoryInput; };
+  class MouseButtonPressedEvent : public MouseButtonEvent {
+  public:
+    MouseButtonPressedEvent(const MouseButton button);
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual std::string ToString() const override;
+  };
 
-      protected:
-        MouseButtonEvent(const MouseButton button) : m_Button{ button } {}
-
-      protected:
-        MouseButton m_Button;
-    };
-
-    //=====================================================================================================================================
-    //  Mouse Button Pressed Event
-    //=====================================================================================================================================
-    class MouseButtonPressedEvent : public MouseButtonEvent
-    {
-      public:
-        MouseButtonPressedEvent(const MouseButton button) : MouseButtonEvent{ button } {}
-
-      public:
-        inline static EventType GetStaticType() { return EventType::MouseButtonPressed; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "MouseButtonPressed"; }
-        inline virtual std::string ToString() const override
-        {
-            std::stringstream stream{};
-            stream << "MouseButtonPressedEvent: " << static_cast<uint32_t>(m_Button);
-            return stream.str();
-        }
-    };
-
-    //=====================================================================================================================================
-    //  Mouse Button Released Event
-    //=====================================================================================================================================
-    class MouseButtonReleasedEvent : public MouseButtonEvent
-    {
-      public:
-        MouseButtonReleasedEvent(const MouseButton button) : MouseButtonEvent{ button } {}
-
-      public:
-        inline static EventType GetStaticType() { return EventType::MouseButtonReleased; }
-        inline virtual EventType GetEventType() const override { return GetStaticType(); }
-        inline virtual const char* GetName() const override { return "MouseButtonReleased"; }
-        inline virtual std::string ToString() const override
-        {
-            std::stringstream stream{};
-            stream << "MouseButtonReleasedEvent: " << static_cast<uint32_t>(m_Button);
-            return stream.str();
-        }
-    };
+  class MouseButtonReleasedEvent : public MouseButtonEvent {
+  public:
+    MouseButtonReleasedEvent(const MouseButton button);
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual std::string ToString() const override;
+  };
 }
