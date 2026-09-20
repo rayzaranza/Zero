@@ -14,7 +14,7 @@ FixNamespaceComments: false
 IndentCaseLabels: true
 IndentPPDirectives: Leave
 BreakConstructorInitializers: BeforeComma
-NamespaceIndentation: All
+NamespaceIndentation: None
 PointerAlignment: Left
 ReferenceAlignment: Left
 BreakBeforeBraces: Attach
@@ -37,3 +37,5 @@ AllowShortFunctionsOnASingleLine: InlineOnly
 BreakTemplateDeclarations: Leave
 SortIncludes: true
 AlignTrailingComments: true
+EmptyLineBeforeAccessModifier: Leave
+WrapNamespaceBodyWithEmptyLines: Always
