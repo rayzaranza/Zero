@@ -1,6 +1,8 @@
 #include "Framebuffer.OpenGL.h"
 #include <glad/glad.h>
 
+static constexpr uint32_t MAX_FRAMEBUFFER_SIZE{ 8192u };
+
 Zero::FramebufferOpenGL::FramebufferOpenGL(const FramebufferProps& props) : m_Props{ props } {
   Invalidate();
 }
@@ -20,7 +22,11 @@ void Zero::FramebufferOpenGL::Unbind() const {
   glBindFramebuffer(GL_FRAMEBUFFER, 0u);
 }
 
-void Zero::FramebufferOpenGL::Resize(const glm::vec2& size) {
+void Zero::FramebufferOpenGL::Resize(const glm::uvec2& size) {
+  if (size.x == 0u || size.y == 0u || size.x > MAX_FRAMEBUFFER_SIZE || size.y > MAX_FRAMEBUFFER_SIZE) {
+    ZR_CORE_WARN("Attempted to resize framebuffer to {}, {}", size.x, size.y);
+    return;
+  }
   m_Props.Size = size;
   Invalidate();
 }

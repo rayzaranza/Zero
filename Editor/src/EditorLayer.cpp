@@ -136,15 +136,19 @@ void Zero::EditorLayer::RenderViewportPanel() {
   Application::Get().GetUILayer()->SetIsBlockingEvents(!m_IsViewportFocused || !m_IsViewportHovered);
 
   const ImVec2 panelSize{ ImGui::GetContentRegionAvail() };
-  const glm::vec2 viewportPanelSize{ panelSize.x, panelSize.y };
-
-  if (m_ViewportSize != viewportPanelSize) {
+  const glm::uvec2 viewportPanelSize{ panelSize.x, panelSize.y };
+  if (m_ViewportSize != viewportPanelSize && viewportPanelSize.x > 0u && viewportPanelSize.y > 0u) {
     m_Framebuffer->Resize(viewportPanelSize);
     m_ViewportSize = viewportPanelSize;
     m_CameraController.OnResize(viewportPanelSize);
   }
 
-  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), { m_ViewportSize.x, m_ViewportSize.y }, { 0.0f, 1.0f }, { 1.0f, 0.0f });
+  ImGui::Image(
+    m_Framebuffer->GetColorAttachmentRendererID(),
+    ImVec2{ static_cast<float>(m_ViewportSize.x), static_cast<float>(m_ViewportSize.y) },
+    ImVec2{ 0.0f, 1.0f },
+    ImVec2{ 1.0f, 0.0f }
+  );
   ImGui::End();
   ImGui::PopStyleVar();
 }

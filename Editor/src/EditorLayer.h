@@ -24,7 +24,7 @@ private:
   Array<QuadProperties> m_Quads;
   float m_Rotation{ 0.0f };
   float m_RotationSpeed{ 1.0f };
-  glm::vec2 m_ViewportSize{};
+  glm::uvec2 m_ViewportSize{};
   bool m_IsViewportFocused{ false };
   bool m_IsViewportHovered{ false };
 };
