@@ -34,6 +34,7 @@
 #include "Zero/Renderer/Buffer/IndexBuffer.h"
 #include "Zero/Renderer/Buffer/VertexArray.h"
 #include "Zero/Renderer/Buffer/VertexBuffer.h"
+#include "Zero/Renderer/Framebuffer.h"
 #include "Zero/Renderer/RenderCommand.h"
 #include "Zero/Renderer/Renderer.h"
 #include "Zero/Renderer/Renderer2D.h"

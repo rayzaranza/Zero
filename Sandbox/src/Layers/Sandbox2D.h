@@ -14,6 +14,7 @@ public:
   bool OnKeyPressed(Zero::KeyPressedEvent& event);
 
 private:
+  Zero::Ref<Zero::Framebuffer> m_Framebuffer{};
   Zero::CameraOrthographicController m_CameraController;
   Zero::Ref<Zero::Texture2D> m_Texture;
   Zero::Ref<Zero::Texture2D> m_TextureCheckerboard;

@@ -1,23 +1,23 @@
 #include "Sandbox2D.h"
 #include <imgui.h>
 
-Sandbox2D::Sandbox2D()
-  : Zero::Layer{ "Sandbox2D" }
-  , m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() }
-  , m_Texture{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg") }
-  , m_TextureCheckerboard{ Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png") }
-  , m_Quads{
-    { .Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } },
-    { .Position{ -1.1f, -0.5f }, .Scale{ 0.2f } },
-    { .Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Color{ 0.1f, 0.4f, 0.1f, 1.0f } },
-    { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Texture{ m_Texture } },
-  } {
+Sandbox2D::Sandbox2D() : Zero::Layer{ "Sandbox2D" }, m_CameraController{ Zero::Application::Get().GetWindow().GetAspectRatio() } {
 }
 
 Sandbox2D::~Sandbox2D() {
 }
 
 void Sandbox2D::OnAttach() {
+  m_Texture = Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
+  m_TextureCheckerboard = Zero::Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png");
+  m_Quads = {
+    { .Position{ -0.5f, 0.0f }, .Rotation{ glm::radians(45.0f) }, .Scale{ 0.5f }, .Color{ 0.8f, 0.2f, 0.3f, 1.0f } },
+    { .Position{ -1.1f, -0.5f }, .Scale{ 0.2f } },
+    { .Position{ 0.5f, -0.2f }, .Scale{ 1.0f }, .Color{ 0.1f, 0.4f, 0.1f, 1.0f } },
+    { .Position{ 0.5f, -0.5f }, .Scale{ 0.5f, 0.75f }, .Texture{ m_Texture } },
+  };
+
+  m_Framebuffer = Zero::Framebuffer::Create({ .Width{ 1280u }, .Height{ 720u } });
 }
 
 void Sandbox2D::OnDetach() {
@@ -30,6 +30,8 @@ void Sandbox2D::OnUpdate(const Zero::DeltaTime deltaTime) {
 
 void Sandbox2D::OnRender() {
   Zero::Renderer2D::ResetStats();
+
+  m_Framebuffer->Bind();
   Zero::RenderCommand::Clear({ 0.02f, 0.02f, 0.022f, 1.0f });
 
   Zero::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -41,7 +43,9 @@ void Sandbox2D::OnRender() {
   for (const auto& quad : m_Quads) {
     Zero::Renderer2D::DrawQuad(quad);
   }
+
   Zero::Renderer2D::EndScene();
+  m_Framebuffer->Unbind();
 }
 
 void Sandbox2D::OnUIRender() {
@@ -99,7 +103,7 @@ void Sandbox2D::OnUIRender() {
   ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
   ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
 
-  ImGui::Image(m_TextureCheckerboard->GetRendererID(), ImVec2{ 256.0f, 256.0f });
+  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), ImVec2{ 1280.0f, 720.0f });
   ImGui::End();
 
   ImGui::End();
