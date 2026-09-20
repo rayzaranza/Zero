@@ -41,6 +41,14 @@ void Zero::UILayer::OnDetach() {
 void Zero::UILayer::OnUIRender() {
 }
 
+void Zero::UILayer::OnEvent(Event& event) {
+  if (m_IsBlockingEvents) {
+    ImGuiIO& io{ ImGui::GetIO() };
+    event.IsHandled |= event.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+    event.IsHandled |= event.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+  }
+}
+
 void Zero::UILayer::Begin() {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
@@ -61,4 +69,8 @@ void Zero::UILayer::End() {
     ImGui::RenderPlatformWindowsDefault();
     glfwMakeContextCurrent(backupCurrentContext);
   }
+}
+
+void Zero::UILayer::SetIsBlockingEvents(const bool isBlocking) {
+  m_IsBlockingEvents = isBlocking;
 }

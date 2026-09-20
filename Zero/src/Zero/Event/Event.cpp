@@ -4,10 +4,6 @@ std::string Zero::Event::ToString() const {
   return GetName();
 }
 
-bool Zero::Event::IsHandled() const {
-  return m_IsHandled;
-}
-
 bool Zero::Event::IsInCategory(EventCategory category) const {
   return GetCategoryFlags() & category;
 }
@@ -15,6 +11,6 @@ bool Zero::Event::IsInCategory(EventCategory category) const {
 Zero::EventDispatcher::EventDispatcher(Event& event) : m_Event{ event } {
 }
 
-std::ostream& operator<<(std::ostream& stream, const Zero::Event& event) {
+std::ostream& Zero::operator<<(std::ostream& stream, const Event& event) {
   return stream << event.ToString();
 }

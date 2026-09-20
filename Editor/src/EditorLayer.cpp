@@ -24,8 +24,10 @@ void Zero::EditorLayer::OnDetach() {
 }
 
 void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime) {
-  m_Quads[1].Rotation += deltaTime * 2.0f;
-  m_CameraController.OnUpdate(deltaTime);
+  m_Quads[1].Rotation += m_RotationSpeed * deltaTime;
+
+  if (m_IsViewportFocused)
+    m_CameraController.OnUpdate(deltaTime);
 }
 
 void Zero::EditorLayer::OnRender() {
@@ -103,20 +105,10 @@ void Zero::EditorLayer::OnUIRender() {
   ImGui::Text("Quads: %d", stats.QuadCount);
   ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
   ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+  ImGui::DragFloat("Quad Rotation Speed", &m_RotationSpeed, 0.1f);
   ImGui::End();
 
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
-  ImGui::Begin("Viewport");
-  const ImVec2 panelSize{ ImGui::GetContentRegionAvail() };
-  const glm::vec2 viewportPanelSize{ panelSize.x, panelSize.y };
-  if (m_ViewportSize != viewportPanelSize) {
-    m_Framebuffer->Resize(viewportPanelSize);
-    m_ViewportSize = viewportPanelSize;
-    m_CameraController.OnResize(viewportPanelSize);
-  }
-  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), { m_ViewportSize.x, m_ViewportSize.y }, { 0.0f, 1.0f }, { 1.0f, 0.0f });
-  ImGui::End();
-  ImGui::PopStyleVar();
+  RenderViewportPanel();
 
   ImGui::End();
 }
@@ -133,4 +125,26 @@ bool Zero::EditorLayer::OnKeyPressed(KeyPressedEvent& event) {
     return true;
   }
   return false;
+}
+
+void Zero::EditorLayer::RenderViewportPanel() {
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
+  ImGui::Begin("Viewport");
+
+  m_IsViewportFocused = ImGui::IsWindowFocused();
+  m_IsViewportHovered = ImGui::IsWindowHovered();
+  Application::Get().GetUILayer()->SetIsBlockingEvents(!m_IsViewportFocused || !m_IsViewportHovered);
+
+  const ImVec2 panelSize{ ImGui::GetContentRegionAvail() };
+  const glm::vec2 viewportPanelSize{ panelSize.x, panelSize.y };
+
+  if (m_ViewportSize != viewportPanelSize) {
+    m_Framebuffer->Resize(viewportPanelSize);
+    m_ViewportSize = viewportPanelSize;
+    m_CameraController.OnResize(viewportPanelSize);
+  }
+
+  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), { m_ViewportSize.x, m_ViewportSize.y }, { 0.0f, 1.0f }, { 1.0f, 0.0f });
+  ImGui::End();
+  ImGui::PopStyleVar();
 }
