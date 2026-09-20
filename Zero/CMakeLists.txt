@@ -120,9 +120,10 @@ target_link_libraries(Zero PUBLIC
 )
 
 target_compile_definitions(Zero PUBLIC
-  ZR_ENABLE_ASSERTS
-  GLFW_INCLUDE_NONE
-  IMGUI_IMPL_OPENGL_LOADER_GLAD
+  "ZR_ENABLE_ASSERTS"
+  "ZR_PLATFORM_WINDOWS"
+  "GLFW_INCLUDE_NONE"
+  "IMGUI_IMPL_OPENGL_LOADER_GLAD"
 )
 
 target_precompile_headers(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h")
