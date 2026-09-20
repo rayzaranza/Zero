@@ -13,10 +13,14 @@ const glm::vec2* Zero::SubTexture2D::GetUVs() const {
   return m_UVs;
 }
 
-Zero::Ref<Zero::SubTexture2D>
-Zero::SubTexture2D::CreateFromUVs(const Ref<Texture2D>& texture, const glm::vec2& position, const glm::vec2& cellSize, const glm::vec2& spriteSize) {
-  const glm::vec2& sheetSize{ texture->GetSize() };
-  const glm::vec2 min{ (position.x * cellSize.x) / sheetSize.x, (position.y * cellSize.y) / sheetSize.y };
-  const glm::vec2 max{ ((position.x + spriteSize.x) * cellSize.x) / sheetSize.x, ((position.y + spriteSize.y) * cellSize.y) / sheetSize.y };
-  return CreateRef<SubTexture2D>(texture, min, max);
+Zero::Ref<Zero::SubTexture2D> Zero::SubTexture2D::CreateFromUVs(const SubTexture2DProps& subTexture) {
+  const glm::vec2& sheet{ subTexture.Texture->GetSize() };
+  const glm::vec2& pos{ static_cast<glm::vec2>(subTexture.Offset) };
+  const glm::vec2& cell{ static_cast<glm::vec2>(subTexture.CellSize) };
+  const glm::vec2& sprite{ static_cast<glm::vec2>(subTexture.SpriteSize) };
+
+  const glm::vec2 min{ (pos.x * cell.x) / sheet.x, (pos.y * cell.y) / sheet.y };
+  const glm::vec2 max{ ((pos.x + sprite.x) * cell.x) / sheet.x, ((pos.y + sprite.y) * cell.y) / sheet.y };
+
+  return CreateRef<SubTexture2D>(subTexture.Texture, min, max);
 }
