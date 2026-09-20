@@ -16,3 +16,4 @@ project(Zero LANGUAGES CXX)
 
 add_subdirectory(Zero)
 add_subdirectory(Sandbox)
+add_subdirectory(Editor)

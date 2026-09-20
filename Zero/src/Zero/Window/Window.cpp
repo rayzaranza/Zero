@@ -2,7 +2,7 @@
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/KeyEvent.h"
 #include "Zero/Event/MouseEvent.h"
-#include "Zero/Renderer/RendererContext.OpenGL.h"
+#include "Zero/Renderer/GraphicsContext.OpenGL.h"
 #include <GLFW/glfw3.h>
 
 static void SendWindowToSecondMonitor(GLFWwindow* window, const glm::ivec2& size);
@@ -15,10 +15,26 @@ Zero::Window::~Window() {
   Destroy();
 }
 
+const glm::ivec2& Zero::Window::GetSize() const {
+  return m_Data.Size;
+}
+
+GLFWwindow* Zero::Window::GetWindowHandle() const {
+  return m_WindowHandle;
+}
+
+void Zero::Window::SetEventCallback(const EventCallback& callback) {
+  m_Data.EventCallback = callback;
+}
+
+float Zero::Window::GetAspectRatio() const {
+  return static_cast<float>(m_Data.Size.x) / static_cast<float>(m_Data.Size.y);
+}
+
 void Zero::Window::Initialize() {
   const int32_t glfwInitSuccess{ glfwInit() };
   ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
-  glfwSetErrorCallback(errorCallback);
+  glfwSetErrorCallback(ErrorCallback);
 
   int32_t monitorCount{};
   GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
@@ -30,13 +46,13 @@ void Zero::Window::Initialize() {
 
   m_WindowHandle = glfwCreateWindow(m_Data.Size.x, m_Data.Size.y, m_Data.Title.c_str(), nullptr, nullptr);
 
-  m_RendererContext = new RendererContextOpenGL(m_WindowHandle);
+  m_RendererContext = new GraphicsContextOpenGL(m_WindowHandle);
   m_RendererContext->Initialize();
 
   glfwSetWindowUserPointer(m_WindowHandle, &m_Data);
   glfwSwapInterval(0);
 
-  setCallbacks();
+  SetCallbacks();
   SendWindowToSecondMonitor(m_WindowHandle, m_Data.Size);
   ZR_CORE_LOG("Window created: {} ({}, {})", m_Data.Title, m_Data.Size.x, m_Data.Size.y);
 }
@@ -46,7 +62,7 @@ void Zero::Window::Destroy() {
   glfwTerminate();
 }
 
-void Zero::Window::setCallbacks() {
+void Zero::Window::SetCallbacks() {
   glfwSetWindowSizeCallback(m_WindowHandle, [](GLFWwindow* window, const int32_t width, const int32_t height) {
     WindowData& data{ *(WindowData*)glfwGetWindowUserPointer(window) };
     data.Size.x = width;
@@ -118,6 +134,10 @@ void Zero::Window::setCallbacks() {
       }
     }
   });
+}
+
+void Zero::Window::ErrorCallback(const int32_t error, const char* description) {
+  ZR_CORE_ERROR("GLFW Error ({}): {}", error, description);
 }
 
 void Zero::Window::OnUpdate() {

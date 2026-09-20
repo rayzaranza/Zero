@@ -6,13 +6,16 @@
 
 Zero::Application* Zero::Application::s_Instance{ nullptr };
 
-Zero::Application::Application() : m_IsRunning{ true }, m_IsMinimized{ false }, m_LastFrameTime{ 0.0f } {
+Zero::Application::Application(const std::string& name) : m_IsRunning{ true }, m_IsMinimized{ false }, m_LastFrameTime{ 0.0f } {
   ZR_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
   s_Instance = this;
-  m_Window = CreateScope<Window>();
+
+  m_Window = CreateScope<Window>(name);
   m_Window->SetEventCallback(ZR_BIND_FUNCTION(Application::OnEvent));
+
   m_UILayer = new UILayer();
   PushOverlay(m_UILayer);
+
   Renderer::Initialize();
 }
 
@@ -25,10 +28,10 @@ void Zero::Application::OnEvent(Event& event) {
   dispatcher.Dispatch<WindowClosedEvent>(ZR_BIND_FUNCTION(Application::OnWindowClosed));
   dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(Application::OnWindowResized));
 
-  for (Array<Layer*>::iterator iterator{ m_LayerStack.end() }; iterator != m_LayerStack.begin();) {
-    (*--iterator)->OnEvent(event);
-    if (event.IsHandled())
+  for (auto layer{ m_LayerStack.rbegin() }; layer != m_LayerStack.rend(); ++layer) {
+    if (event.IsHandled)
       break;
+    (*layer)->OnEvent(event);
   }
 }
 
@@ -54,6 +57,10 @@ const Zero::Window& Zero::Application::GetWindow() const {
   return *m_Window;
 }
 
+Zero::UILayer* Zero::Application::GetUILayer() const {
+  return m_UILayer;
+}
+
 void Zero::Application::Run() {
   while (m_IsRunning) {
     const float time = static_cast<float>(glfwGetTime());
@@ -61,18 +68,14 @@ void Zero::Application::Run() {
     m_LastFrameTime = time;
 
     if (!m_IsMinimized) {
-      for (Layer* layer : m_LayerStack) {
+      for (Layer* layer : m_LayerStack)
         layer->OnUpdate(deltaTime);
-      }
-
-      for (Layer* layer : m_LayerStack) {
+      for (Layer* layer : m_LayerStack)
         layer->OnRender();
-      }
 
       m_UILayer->Begin();
-      for (Layer* layer : m_LayerStack) {
+      for (Layer* layer : m_LayerStack)
         layer->OnUIRender();
-      }
       m_UILayer->End();
     }
     m_Window->OnUpdate();

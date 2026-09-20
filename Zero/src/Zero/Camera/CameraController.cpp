@@ -45,6 +45,11 @@ void Zero::CameraOrthographicController::OnEvent(Event& event) {
   dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(CameraOrthographicController::OnWindowResizedEvent));
 }
 
+void Zero::CameraOrthographicController::OnResize(const glm::uvec2& size) {
+  m_AspectRatio = static_cast<float>(size.x) / static_cast<float>(size.y);
+  CalculateView();
+}
+
 const Zero::CameraOrthographic& Zero::CameraOrthographicController::GetCamera() const {
   return m_Camera;
 }
@@ -78,9 +83,7 @@ bool Zero::CameraOrthographicController::OnMouseScrolled(MouseScrolledEvent& eve
 }
 
 bool Zero::CameraOrthographicController::OnWindowResizedEvent(WindowResizedEvent& event) {
-  const glm::ivec2 size{ event.GetSize() };
-  m_AspectRatio = static_cast<float>(size.x) / static_cast<float>(size.y);
-  CalculateView();
+  OnResize(event.GetSize());
   return false;
 }
 

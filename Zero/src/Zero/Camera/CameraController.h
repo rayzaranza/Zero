@@ -19,6 +19,7 @@ namespace Zero {
     CameraOrthographicController(float aspectRatio);
     void OnUpdate(const DeltaTime deltaTime);
     void OnEvent(Event& event);
+    void OnResize(const glm::uvec2& size);
     const CameraOrthographicBounds& GetBounds() const;
     const CameraOrthographic& GetCamera() const;
     CameraOrthographic& GetCamera();

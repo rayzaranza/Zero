@@ -40,3 +40,11 @@ Zero::Array<Zero::Layer*>::iterator Zero::LayerStack::begin() {
 Zero::Array<Zero::Layer*>::iterator Zero::LayerStack::end() {
   return m_Layers.end();
 }
+
+Zero::Array<Zero::Layer*>::reverse_iterator Zero::LayerStack::rbegin() {
+  return m_Layers.rbegin();
+}
+
+Zero::Array<Zero::Layer*>::reverse_iterator Zero::LayerStack::rend() {
+  return m_Layers.rend();
+}

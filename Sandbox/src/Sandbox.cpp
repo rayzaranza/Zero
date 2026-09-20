@@ -1,11 +1,9 @@
 #include "Sandbox.h"
-#include "Layers/ExampleLayer.h"
-#include "Layers/ExampleLayer2D.h"
-#include "Layers/GameLayer.h"
+#include "Sandbox2D.h"
 #include <Zero/Core/EntryPoint.h>
 
 Sandbox::Sandbox() {
-  PushLayer(new GameLayer());
+  PushLayer(new Sandbox2D());
 }
 
 Zero::Application* Zero::CreateApplication() {

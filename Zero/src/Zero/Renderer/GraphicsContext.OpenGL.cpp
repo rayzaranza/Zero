@@ -1,15 +1,15 @@
-#include "RendererContext.OpenGL.h"
+#include "GraphicsContext.OpenGL.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
-Zero::RendererContextOpenGL::RendererContextOpenGL(GLFWwindow* windowHandle) : m_WindowHandle{ windowHandle } {
+Zero::GraphicsContextOpenGL::GraphicsContextOpenGL(GLFWwindow* windowHandle) : m_WindowHandle{ windowHandle } {
   ZR_CORE_ASSERT(windowHandle, "Window handle is null");
 }
 
-Zero::RendererContextOpenGL::~RendererContextOpenGL() {
+Zero::GraphicsContextOpenGL::~GraphicsContextOpenGL() {
 }
 
-void Zero::RendererContextOpenGL::Initialize() {
+void Zero::GraphicsContextOpenGL::Initialize() {
   glfwMakeContextCurrent(m_WindowHandle);
   const int32_t gladLoadSuccess{ gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) };
   ZR_CORE_ASSERT(gladLoadSuccess, "Failed to load GLAD");
@@ -24,6 +24,6 @@ void Zero::RendererContextOpenGL::Initialize() {
 # endif
 }
 
-void Zero::RendererContextOpenGL::SwapBuffers() {
+void Zero::GraphicsContextOpenGL::SwapBuffers() {
   glfwSwapBuffers(m_WindowHandle);
 }

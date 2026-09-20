@@ -56,9 +56,10 @@ add_library(Zero STATIC
   "${ZR_SRC}/Renderer/RendererAPI.cpp"
   "${ZR_SRC}/Renderer/RendererAPI.OpenGL.h"
   "${ZR_SRC}/Renderer/RendererAPI.OpenGL.cpp"
-  "${ZR_SRC}/Renderer/RendererContext.h"
-  "${ZR_SRC}/Renderer/RendererContext.OpenGL.h"
-  "${ZR_SRC}/Renderer/RendererContext.OpenGL.cpp"
+
+  "${ZR_SRC}/Renderer/GraphicsContext.h"
+  "${ZR_SRC}/Renderer/GraphicsContext.OpenGL.h"
+  "${ZR_SRC}/Renderer/GraphicsContext.OpenGL.cpp"
 
   "${ZR_SRC}/Renderer/Buffer/VertexAttribute.h"
   "${ZR_SRC}/Renderer/Buffer/VertexAttribute.cpp"
@@ -76,6 +77,12 @@ add_library(Zero STATIC
   "${ZR_SRC}/Renderer/Buffer/VertexArray.cpp"
   "${ZR_SRC}/Renderer/Buffer/VertexArray.OpenGL.h"
   "${ZR_SRC}/Renderer/Buffer/VertexArray.OpenGL.cpp"
+
+  "${ZR_SRC}/Renderer/Framebuffer.h"
+  "${ZR_SRC}/Renderer/Framebuffer.cpp"
+  "${ZR_SRC}/Renderer/Framebuffer.OpenGL.h"
+  "${ZR_SRC}/Renderer/Framebuffer.OpenGL.cpp"
+
 
   "${ZR_SRC}/Renderer/Shader/Shader.h"
   "${ZR_SRC}/Renderer/Shader/Shader.cpp"
@@ -99,20 +106,24 @@ add_library(Zero STATIC
   "${ZR_SRC}/Profiler/Profiler.cpp"
 )
 
-target_include_directories(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
-target_precompile_headers(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h")
+target_include_directories(Zero PUBLIC
+  "${CMAKE_CURRENT_SOURCE_DIR}/src"
+  "${Stb_INCLUDE_DIR}"
+)
 
 target_link_libraries(Zero PUBLIC
   glm::glm 
   glad::glad 
   glfw
   spdlog::spdlog
-  imgui::imgui
-  ${Stb_INCLUDE_DIR}
+  imgui::imgui  
 )
 
 target_compile_definitions(Zero PUBLIC
-  ZR_ENABLE_ASSERTS
-  GLFW_INCLUDE_NONE
-  IMGUI_IMPL_OPENGL_LOADER_GLAD
+  "ZR_ENABLE_ASSERTS"
+  "ZR_PLATFORM_WINDOWS"
+  "GLFW_INCLUDE_NONE"
+  "IMGUI_IMPL_OPENGL_LOADER_GLAD"
 )
+
+target_precompile_headers(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h")

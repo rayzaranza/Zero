@@ -2,8 +2,6 @@
 #include "Zero/Application/Application.h"
 #include <GLFW/glfw3.h>
 
-Zero::Input* Zero::Input::s_Instance{ new Input() };
-
 bool Zero::Input::IsKeyPressed(const KeyCode keyCode) {
   GLFWwindow* window{ Application::Get().GetWindow().GetWindowHandle() };
   const int32_t state{ glfwGetKey(window, static_cast<int32_t>(keyCode)) };
