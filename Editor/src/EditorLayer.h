@@ -27,7 +27,10 @@ private:
   Ref<Texture2D> m_TextureCheckerboard;
   Array<QuadProps> m_Quads;
   Ref<Scene> m_ActiveScene;
-  Entity m_QuadEntity;
+  Entity m_QuadEntity{};
+  Entity m_CameraEntity{};
+  Entity m_CameraB{};
+  bool m_IsMainCameraActive{ true };
   glm::uvec2 m_ViewportSize{};
   float m_Rotation{ 0.0f };
   float m_RotationSpeed{ 1.0f };

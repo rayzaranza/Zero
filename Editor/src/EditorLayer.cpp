@@ -1,4 +1,5 @@
 #include "EditorLayer.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 Zero::EditorLayer::EditorLayer() : Layer{ "EditorLayer" }, m_CameraController{ Application::Get().GetWindow().GetAspectRatio() } {
 }
@@ -14,6 +15,13 @@ void Zero::EditorLayer::OnAttach() {
 
   m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
   m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
+
+  m_CameraEntity = m_ActiveScene->CreateEntity("Camera Main");
+  m_CameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+
+  m_CameraB = m_ActiveScene->CreateEntity("Camera B");
+  CameraComponent& cameraComponentB{ m_CameraB.AddComponent<CameraComponent>(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f)) };
+  cameraComponentB.IsMain = false;
 }
 
 void Zero::EditorLayer::OnDetach() {
@@ -28,15 +36,10 @@ void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime) {
 
 void Zero::EditorLayer::OnRender() {
   Renderer2D::ResetStats();
-
   m_Framebuffer->Bind();
   RenderCommand::SetClearColor({ 0.02f, 0.02f, 0.022f, 1.0f });
   RenderCommand::Clear();
-
-  Renderer2D::BeginScene(m_CameraController.GetCamera());
   m_ActiveScene->OnRender();
-  Renderer2D::EndScene();
-
   m_Framebuffer->Unbind();
 }
 
@@ -127,6 +130,13 @@ void Zero::EditorLayer::RenderSettingsPanel() {
     ImGui::Text("%s", m_QuadEntity.GetComponent<TagComponent>().Tag.c_str());
     ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadEntity.GetComponent<SpriteComponent>().Color));
     ImGui::Separator();
+  }
+
+  ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
+
+  if (ImGui::Checkbox("Camera A", &m_IsMainCameraActive)) {
+    m_CameraEntity.GetComponent<CameraComponent>().IsMain = m_IsMainCameraActive;
+    m_CameraB.GetComponent<CameraComponent>().IsMain = !m_IsMainCameraActive;
   }
 
   ImGui::End();
