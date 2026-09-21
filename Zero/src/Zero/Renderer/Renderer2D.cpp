@@ -81,7 +81,7 @@ static glm::vec2 GetTansformedVertexPosition(const uint32_t index, const glm::ma
   return { result.x, result.y };
 }
 
-void Zero::Renderer2D::DrawQuad(const QuadProperties& quad) {
+void Zero::Renderer2D::DrawQuad(const QuadProps& quad) {
   if (s_Data.QuadIndexCount >= MAX_INDICES) {
     FlushAndReset();
   }
@@ -102,12 +102,11 @@ void Zero::Renderer2D::DrawQuad(const QuadProperties& quad) {
     }
   }
 
-  const glm::mat4 transform{ CalculcateModelMatrix2D(quad.Position, quad.Rotation, quad.Scale) };
   const glm::vec2* uvs{ quad.SubTexture ? quad.SubTexture->GetUVs() : QUAD_VERTEX_UVS };
 
   for (uint32_t i{ 0u }; i < 4u; ++i) {
     *s_Data.QuadVertexBufferPointer = QuadVertex{
-      .Position{ GetTansformedVertexPosition(i, transform) },
+      .Position{ GetTansformedVertexPosition(i, quad.Transform) },
       .Color{ quad.Color },
       .UV{ uvs[i] },
       .TextureSlot{ textureIndex },

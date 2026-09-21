@@ -21,7 +21,7 @@ private:
   CameraOrthographicController m_CameraController;
   Ref<Texture2D> m_Texture;
   Ref<Texture2D> m_TextureCheckerboard;
-  Array<QuadProperties> m_Quads;
+  Array<QuadProps> m_Quads;
   float m_Rotation{ 0.0f };
   float m_RotationSpeed{ 1.0f };
   glm::uvec2 m_ViewportSize{};
