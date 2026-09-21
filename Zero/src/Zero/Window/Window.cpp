@@ -15,7 +15,7 @@ Zero::Window::~Window() {
   Destroy();
 }
 
-const glm::ivec2& Zero::Window::GetSize() const {
+const glm::uvec2& Zero::Window::GetSize() const {
   return m_Props.Size;
 }
 

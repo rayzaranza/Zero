@@ -20,14 +20,13 @@ class Window {
 public:
   Window(const WindowProps& props);
   ~Window();
-  const glm::ivec2& GetSize() const;
+  const glm::uvec2& GetSize() const;
   GLFWwindow* GetWindowHandle() const;
   void SetEventCallback(const EventCallback& callback);
   float GetAspectRatio() const;
   void OnUpdate();
   void Initialize();
   void Destroy();
-
 private:
   void SetCallbacks();
   static void ErrorCallback(const int32_t error, const char* description);
