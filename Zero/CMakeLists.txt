@@ -6,12 +6,10 @@ find_package(imgui CONFIG REQUIRED)
 find_package(Stb REQUIRED)
 
 include(FetchContent)
-FetchContent_Declare(
-  EnTT
+FetchContent_Declare(EnTT
   GIT_REPOSITORY https://github.com/skypjack/entt
   GIT_TAG 85c6bba014049b5de8fad49d25424df2f1f6a8c1
 )
-
 FetchContent_MakeAvailable(EnTT)
 
 set(ZR_SRC "src/Zero")
@@ -92,7 +90,6 @@ add_library(Zero STATIC
   "${ZR_SRC}/Renderer/Framebuffer.OpenGL.h"
   "${ZR_SRC}/Renderer/Framebuffer.OpenGL.cpp"
 
-
   "${ZR_SRC}/Renderer/Shader/Shader.h"
   "${ZR_SRC}/Renderer/Shader/Shader.cpp"
   "${ZR_SRC}/Renderer/Shader/Shader.OpenGL.h"
@@ -116,6 +113,8 @@ add_library(Zero STATIC
 
   "${ZR_SRC}/Scene/Scene.h"
   "${ZR_SRC}/Scene/Scene.cpp"
+  "${ZR_SRC}/Scene/Components.h"
+  "${ZR_SRC}/Scene/Components.cpp"
 )
 
 target_include_directories(Zero PUBLIC
