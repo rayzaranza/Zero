@@ -66,6 +66,15 @@ void Zero::Renderer2D::Initialize() {
   s_Data.QuadShader->SetIntArray("u_Textures", textureSamplers, MAX_TEXTURE_SLOTS);
 }
 
+void Zero::Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform) {
+  s_Data.QuadShader->Bind();
+  s_Data.QuadShader->SetMatrix4("u_ViewProjectionMatrix", camera.GetProjection() * glm::inverse(transform));
+  s_Data.QuadShader->SetMatrix4("u_ModelMatrix", { 1.0f });
+  s_Data.QuadIndexCount = 0u;
+  s_Data.QuadVertexBufferPointer = s_Data.QuadVertexBufferBase;
+  s_Data.TextureSlotIndex = 1u;
+}
+
 void Zero::Renderer2D::BeginScene(const CameraOrthographic& camera) {
   s_Data.QuadShader->Bind();
   s_Data.QuadShader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
