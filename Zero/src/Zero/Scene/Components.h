@@ -1,4 +1,5 @@
 #pragma once
+#include "Zero/Camera/Camera.h"
 
 namespace Zero {
 
@@ -14,8 +15,8 @@ struct TransformComponent {
   TransformComponent() = default;
   TransformComponent(const TransformComponent&) = default;
   TransformComponent(const glm::mat4& transform);
-  operator glm::mat4&();
   operator const glm::mat4&() const;
+  operator glm::mat4&();
 };
 
 struct SpriteComponent {
@@ -23,6 +24,14 @@ struct SpriteComponent {
   SpriteComponent() = default;
   SpriteComponent(const SpriteComponent&) = default;
   SpriteComponent(const glm::vec4& color);
+};
+
+struct CameraComponent {
+  Camera Camera{};
+  bool IsMain{ true };
+  CameraComponent() = default;
+  CameraComponent(const CameraComponent&) = default;
+  CameraComponent(const glm::mat4& projection);
 };
 
 }

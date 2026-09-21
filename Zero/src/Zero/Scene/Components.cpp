@@ -16,3 +16,6 @@ Zero::SpriteComponent::SpriteComponent(const glm::vec4& color) : Color{ color } 
 
 Zero::TagComponent::TagComponent(const std::string& tag) : Tag{ tag } {
 }
+
+Zero::CameraComponent::CameraComponent(const glm::mat4& projection) : Camera{ projection } {
+}
