@@ -1,5 +1,6 @@
 #pragma once
 #include <Zero.h>
+#include <imgui.h>
 
 namespace Zero {
 
@@ -17,6 +18,8 @@ public:
 
 private:
   void RenderViewportPanel();
+  void RenderSettingsPanel();
+  void SetupDockspace(bool isFullscreen, ImGuiWindowFlags windowFlags, ImGuiDockNodeFlags dockSpaceFlags);
   Ref<Framebuffer> m_Framebuffer{};
   CameraOrthographicController m_CameraController;
   Ref<Texture2D> m_Texture;
@@ -27,6 +30,9 @@ private:
   glm::uvec2 m_ViewportSize{};
   bool m_IsViewportFocused{ false };
   bool m_IsViewportHovered{ false };
+  Ref<Scene> m_ActiveScene;
+  entt::entity m_QuadEntity;
+  glm::vec4 m_QuadColor{ 1.0f };
 };
 
 }
