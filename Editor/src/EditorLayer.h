@@ -8,6 +8,7 @@ class EditorLayer : public Layer {
 public:
   EditorLayer();
   ~EditorLayer();
+public:
   virtual void OnAttach() override;
   virtual void OnDetach() override;
   virtual void OnUpdate(const DeltaTime deltaTime) override;
@@ -15,24 +16,23 @@ public:
   virtual void OnUIRender() override;
   virtual void OnEvent(Event& event) override;
   bool OnKeyPressed(KeyPressedEvent& event);
-
 private:
   void RenderViewportPanel();
   void RenderSettingsPanel();
   void SetupDockspace(bool isFullscreen, ImGuiWindowFlags windowFlags, ImGuiDockNodeFlags dockSpaceFlags);
-  Ref<Framebuffer> m_Framebuffer{};
+private:
   CameraOrthographicController m_CameraController;
+  Ref<Framebuffer> m_Framebuffer{};
   Ref<Texture2D> m_Texture;
   Ref<Texture2D> m_TextureCheckerboard;
   Array<QuadProps> m_Quads;
+  Ref<Scene> m_ActiveScene;
+  Entity m_QuadEntity;
+  glm::uvec2 m_ViewportSize{};
   float m_Rotation{ 0.0f };
   float m_RotationSpeed{ 1.0f };
-  glm::uvec2 m_ViewportSize{};
   bool m_IsViewportFocused{ false };
   bool m_IsViewportHovered{ false };
-  Ref<Scene> m_ActiveScene;
-  entt::entity m_QuadEntity;
-  glm::vec4 m_QuadColor{ 1.0f };
 };
 
 }

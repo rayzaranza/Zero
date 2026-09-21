@@ -2,10 +2,15 @@
 
 namespace Zero {
 
+struct TagComponent {
+  std::string Tag{};
+  TagComponent() = default;
+  TagComponent(const TagComponent&) = default;
+  TagComponent(const std::string& tag);
+};
+
 struct TransformComponent {
-public:
   glm::mat4 Transform{ 1.0f };
-public:
   TransformComponent() = default;
   TransformComponent(const TransformComponent&) = default;
   TransformComponent(const glm::mat4& transform);
@@ -14,9 +19,7 @@ public:
 };
 
 struct SpriteComponent {
-public:
   glm::vec4 Color{ 1.0f };
-public:
   SpriteComponent() = default;
   SpriteComponent(const SpriteComponent&) = default;
   SpriteComponent(const glm::vec4& color);

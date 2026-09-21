@@ -12,9 +12,8 @@ void Zero::EditorLayer::OnAttach() {
   m_Framebuffer = Framebuffer::Create({ .Size{ 1280u, 720u } });
   m_ActiveScene = CreateRef<Scene>();
 
-  m_QuadEntity = m_ActiveScene->CreateEntity();
-  m_ActiveScene->GetRegistry().emplace<TransformComponent>(m_QuadEntity);
-  m_ActiveScene->GetRegistry().emplace<SpriteComponent>(m_QuadEntity, m_QuadColor);
+  m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
+  m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
 }
 
 void Zero::EditorLayer::OnDetach() {
@@ -111,16 +110,24 @@ void Zero::EditorLayer::RenderViewportPanel() {
 void Zero::EditorLayer::RenderSettingsPanel() {
   const RenderStats& stats{ Renderer2D::GetStats() };
   ImGui::Begin("Settings");
-
-  ImGui::Text("Renderer2D Stats");
+  ImGui::BeginGroup();
+  ImGui::Text("Render Stats");
   ImGui::Text("Draw Calls: %d", stats.DrawCalls);
   ImGui::Text("Quads: %d", stats.QuadCount);
   ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
   ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+  ImGui::EndGroup();
+
+  ImGui::Separator();
 
   ImGui::DragFloat("Quad Rotation Speed", &m_RotationSpeed, 0.1f);
-  auto& quadColor{ m_ActiveScene->GetRegistry().get<SpriteComponent>(m_QuadEntity).Color };
-  ImGui::ColorEdit4("Quad Color", glm::value_ptr(quadColor));
+
+  if (m_QuadEntity) {
+    ImGui::Separator();
+    ImGui::Text("%s", m_QuadEntity.GetComponent<TagComponent>().Tag.c_str());
+    ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadEntity.GetComponent<SpriteComponent>().Color));
+    ImGui::Separator();
+  }
 
   ImGui::End();
 }

@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "Components.h"
+#include "Entity.h"
 #include "Zero/Renderer/Renderer2D.h"
 
 Zero::Scene::Scene() {
@@ -18,10 +19,9 @@ void Zero::Scene::OnRender() {
   }
 }
 
-entt::entity Zero::Scene::CreateEntity() {
-  return m_Registry.create();
-}
-
-entt::registry& Zero::Scene::GetRegistry() {
-  return m_Registry;
+Zero::Entity Zero::Scene::CreateEntity(const std::string& name) {
+  Entity entity{ m_Registry.create(), this };
+  entity.AddComponent<TransformComponent>();
+  entity.AddComponent<TagComponent>(name);
+  return entity;
 }

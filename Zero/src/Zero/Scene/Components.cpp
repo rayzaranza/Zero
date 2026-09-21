@@ -13,3 +13,6 @@ Zero::TransformComponent::operator const glm::mat4&() const {
 
 Zero::SpriteComponent::SpriteComponent(const glm::vec4& color) : Color{ color } {
 }
+
+Zero::TagComponent::TagComponent(const std::string& tag) : Tag{ tag } {
+}

@@ -115,6 +115,8 @@ add_library(Zero STATIC
   "${ZR_SRC}/Scene/Scene.cpp"
   "${ZR_SRC}/Scene/Components.h"
   "${ZR_SRC}/Scene/Components.cpp"
+  "${ZR_SRC}/Scene/Entity.h"
+  "${ZR_SRC}/Scene/Entity.cpp"
 )
 
 target_include_directories(Zero PUBLIC
