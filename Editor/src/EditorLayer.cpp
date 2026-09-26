@@ -14,7 +14,6 @@ void Zero::EditorLayer::OnAttach() {
   m_ActiveScene = CreateRef<Scene>();
   m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
   m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
-  m_QuadEntity.AddComponent<TransformComponent>();
 
   m_CameraEntityA = m_ActiveScene->CreateEntity("Camera A");
   m_CameraEntityA.AddComponent<CameraComponent>();
