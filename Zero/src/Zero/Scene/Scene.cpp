@@ -10,6 +10,14 @@ Zero::Scene::~Scene() {
 }
 
 void Zero::Scene::OnUpdate(const DeltaTime deltaTime) {
+  m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nativeScript) {
+    if (!nativeScript.Instance) {
+      nativeScript.InstantiateFunction();
+      nativeScript.Instance->m_Entity = Entity{ entity, this };
+      nativeScript.OnCreateFunction(nativeScript.Instance);
+    }
+    nativeScript.OnUpdateFunction(nativeScript.Instance, deltaTime);
+  });
 }
 
 void Zero::Scene::OnRender() {

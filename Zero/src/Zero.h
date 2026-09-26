@@ -60,3 +60,4 @@
 #include "Zero/Scene/Components.h"
 #include "Zero/Scene/Entity.h"
 #include "Zero/Scene/Scene.h"
+#include "Zero/Scene/ScriptableEntity.h"
