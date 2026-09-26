@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneCamera.h"
+#include "ScriptableEntity.h"
 
 namespace Zero {
 
@@ -34,4 +35,20 @@ struct CameraComponent {
   CameraComponent(const CameraComponent&) = default;
 };
 
+struct NativeScriptComponent {
+  ScriptableEntity* Instance{ nullptr };
+  ScriptableEntity* (*InstantiateScript)();
+  void (*DestroyScript)(NativeScriptComponent*);
+  template <typename T> void Bind();
+};
+
+}
+
+template <typename T>
+void Zero::NativeScriptComponent::Bind() {
+  InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+  DestroyScript = [](NativeScriptComponent* nativeScript) {
+    delete nativeScript->Instance;
+    nativeScript->Instance = nullptr;
+  };
 }

@@ -14,7 +14,6 @@ void Zero::EditorLayer::OnAttach() {
   m_ActiveScene = CreateRef<Scene>();
   m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
   m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
-  m_QuadEntity.AddComponent<TransformComponent>();
 
   m_CameraEntityA = m_ActiveScene->CreateEntity("Camera A");
   m_CameraEntityA.AddComponent<CameraComponent>();
@@ -24,6 +23,32 @@ void Zero::EditorLayer::OnAttach() {
   cameraComponentB.IsMain = false;
 
   RenderCommand::SetClearColor({ 0.02f, 0.02f, 0.022f, 1.0f });
+
+  class CameraController : public ScriptableEntity {
+  public:
+    void OnCreate() {}
+
+    void OnDestroy() {}
+
+    void OnUpdate(const DeltaTime deltaTime) {
+      auto& transform{ GetComponent<TransformComponent>().Transform };
+      const float speed{ 5.0f };
+
+      if (Input::IsKeyPressed(KeyCode::A)) {
+        transform[3][0] -= speed * deltaTime;
+      } else if (Input::IsKeyPressed(KeyCode::D)) {
+        transform[3][0] += speed * deltaTime;
+      }
+
+      if (Input::IsKeyPressed(KeyCode::W)) {
+        transform[3][1] += speed * deltaTime;
+      } else if (Input::IsKeyPressed(KeyCode::S)) {
+        transform[3][1] -= speed * deltaTime;
+      }
+    }
+  };
+
+  m_CameraEntityA.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 }
 
 void Zero::EditorLayer::OnDetach() {

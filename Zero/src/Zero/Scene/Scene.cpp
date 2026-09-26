@@ -10,13 +10,21 @@ Zero::Scene::~Scene() {
 }
 
 void Zero::Scene::OnUpdate(const DeltaTime deltaTime) {
+  m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nativeScript) {
+    if (!nativeScript.Instance) {
+      nativeScript.Instance = nativeScript.InstantiateScript();
+      nativeScript.Instance->m_Entity = Entity{ entity, this };
+      nativeScript.Instance->OnCreate();
+    }
+    nativeScript.Instance->OnUpdate(deltaTime);
+  });
 }
 
 void Zero::Scene::OnRender() {
   Camera* cameraMain{ nullptr };
   glm::mat4* cameraTransform{ nullptr };
 
-  for (const auto& [entity, transform, camera] : m_Registry.view<TransformComponent, CameraComponent>().each()) {
+  for (const auto [entity, transform, camera] : m_Registry.view<TransformComponent, CameraComponent>().each()) {
     if (camera.IsMain) {
       cameraMain = &camera.Camera;
       cameraTransform = &transform.Transform;
@@ -35,15 +43,11 @@ void Zero::Scene::OnRender() {
 
 void Zero::Scene::OnViewportResize(const glm::uvec2& size) {
   m_ViewportSize = size;
-
-  const auto& view{ m_Registry.view<CameraComponent>() };
-
-  for (entt::entity entity : view) {
-    CameraComponent& cameraComponent{ view.get<CameraComponent>(entity) };
+  m_Registry.view<CameraComponent>().each([=](auto entity, CameraComponent& cameraComponent) {
     if (!cameraComponent.IsAspectRatioFixed) {
       cameraComponent.Camera.SetViewportSize(size);
     }
-  }
+  });
 }
 
 Zero::Entity Zero::Scene::CreateEntity(const std::string& name) {
