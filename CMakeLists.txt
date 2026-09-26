@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.20)
+﻿cmake_minimum_required(VERSION 3.28)
 
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
@@ -15,5 +15,5 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 project(Zero LANGUAGES CXX)
 
 add_subdirectory(Zero)
-add_subdirectory(Sandbox)
 add_subdirectory(Editor)
+add_subdirectory(Sandbox)

@@ -11,6 +11,7 @@ public:
   virtual void Unbind() const override;
   virtual void Resize(const glm::uvec2& size) override;
   virtual const FramebufferProps& GetProps() const override;
+  virtual const glm::uvec2& GetSize() const override;
   virtual uint32_t GetColorAttachmentRendererID() const override;
   void Invalidate();
 

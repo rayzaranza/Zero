@@ -2,7 +2,7 @@
 #include "Zero/Input/Input.h"
 #include "Zero/Input/KeyCode.h"
 
-Zero::CameraOrthographicController::CameraOrthographicController(float aspectRatio)
+Zero::CameraOrthographicController::CameraOrthographicController(const float aspectRatio)
   : m_AspectRatio{ aspectRatio }
   , m_ZoomLevel{ 1.0f }
   , m_Bounds{ -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel }
@@ -77,7 +77,8 @@ const Zero::CameraOrthographicBounds& Zero::CameraOrthographicController::GetBou
 }
 
 bool Zero::CameraOrthographicController::OnMouseScrolled(MouseScrolledEvent& event) {
-  m_ZoomLevel = std::fmax(m_ZoomLevel - event.GetOffset().y * m_ZoomSpeed, 0.1f);
+  m_ZoomLevel -= event.GetOffset().y * m_ZoomSpeed;
+  m_ZoomLevel = std::fmax(m_ZoomLevel, m_ZoomSpeed);
   CalculateView();
   return false;
 }

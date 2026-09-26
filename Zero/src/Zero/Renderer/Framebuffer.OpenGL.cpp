@@ -35,6 +35,10 @@ const Zero::FramebufferProps& Zero::FramebufferOpenGL::GetProps() const {
   return m_Props;
 }
 
+const glm::uvec2& Zero::FramebufferOpenGL::GetSize() const {
+  return m_Props.Size;
+}
+
 uint32_t Zero::FramebufferOpenGL::GetColorAttachmentRendererID() const {
   return m_ColorAttachment;
 }

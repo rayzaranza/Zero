@@ -5,6 +5,13 @@ find_package(spdlog CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(Stb REQUIRED)
 
+include(FetchContent)
+FetchContent_Declare(EnTT
+  GIT_REPOSITORY https://github.com/skypjack/entt
+  GIT_TAG 85c6bba014049b5de8fad49d25424df2f1f6a8c1
+)
+FetchContent_MakeAvailable(EnTT)
+
 set(ZR_SRC "src/Zero")
 
 add_library(Zero STATIC
@@ -83,7 +90,6 @@ add_library(Zero STATIC
   "${ZR_SRC}/Renderer/Framebuffer.OpenGL.h"
   "${ZR_SRC}/Renderer/Framebuffer.OpenGL.cpp"
 
-
   "${ZR_SRC}/Renderer/Shader/Shader.h"
   "${ZR_SRC}/Renderer/Shader/Shader.cpp"
   "${ZR_SRC}/Renderer/Shader/Shader.OpenGL.h"
@@ -104,6 +110,15 @@ add_library(Zero STATIC
   "${ZR_SRC}/Time/DeltaTime.h"
   "${ZR_SRC}/Profiler/Profiler.h"
   "${ZR_SRC}/Profiler/Profiler.cpp"
+
+  "${ZR_SRC}/Scene/Scene.h"
+  "${ZR_SRC}/Scene/Scene.cpp"
+  "${ZR_SRC}/Scene/Components.h"
+  "${ZR_SRC}/Scene/Components.cpp"
+  "${ZR_SRC}/Scene/Entity.h"
+  "${ZR_SRC}/Scene/Entity.cpp"
+  "${ZR_SRC}/Scene/SceneCamera.h"
+  "${ZR_SRC}/Scene/SceneCamera.cpp"
 )
 
 target_include_directories(Zero PUBLIC
@@ -116,14 +131,15 @@ target_link_libraries(Zero PUBLIC
   glad::glad 
   glfw
   spdlog::spdlog
-  imgui::imgui  
+  imgui::imgui
+  EnTT::EnTT
 )
 
 target_compile_definitions(Zero PUBLIC
-  "ZR_ENABLE_ASSERTS"
-  "ZR_PLATFORM_WINDOWS"
-  "GLFW_INCLUDE_NONE"
-  "IMGUI_IMPL_OPENGL_LOADER_GLAD"
+  ZR_ENABLE_ASSERTS
+  ZR_PLATFORM_WINDOWS
+  GLFW_INCLUDE_NONE
+  IMGUI_IMPL_OPENGL_LOADER_GLAD
 )
 
 target_precompile_headers(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h")

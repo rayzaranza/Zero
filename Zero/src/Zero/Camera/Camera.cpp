@@ -1,6 +1,13 @@
 #include "Zero/Camera/Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 
+Zero::Camera::Camera(const glm::mat4& projection) : m_Projection{ projection } {
+}
+
+const glm::mat4& Zero::Camera::GetProjection() const {
+  return m_Projection;
+}
+
 Zero::CameraOrthographic::CameraOrthographic(const float left, const float right, const float bottom, const float top)
   : m_Position{ 0.0f }
   , m_ViewMatrix{ 1.0f }
