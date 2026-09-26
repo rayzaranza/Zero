@@ -17,5 +17,5 @@ bool Zero::Entity::operator==(const Entity& entity) const {
 }
 
 bool Zero::Entity::operator!=(const Entity& entity) const {
-  return !operator==(entity);
+  return !(operator==(entity));
 }
