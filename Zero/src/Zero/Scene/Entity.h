@@ -10,11 +10,15 @@ public:
   Entity(const Entity&) = default;
   Entity(entt::entity handle, Scene* scene);
 public:
-  template <typename T> bool HasComponent();
+  template <typename T> bool HasComponent() const;
   template <typename T> T& GetComponent();
+  template <typename T> const T& GetComponent() const;
   template <typename T> void RemoveComponent();
   template <typename T, typename... TArgs> T& AddComponent(TArgs&&... args);
   operator bool() const;
+  operator uint32_t() const;
+  bool operator==(const Entity& entity) const;
+  bool operator!=(const Entity& entity) const;
 private:
   entt::entity m_EntityHandle{ entt::null };
   Scene* m_Scene{ nullptr };
@@ -23,12 +27,18 @@ private:
 }
 
 template <typename T>
-bool Zero::Entity::HasComponent() {
+bool Zero::Entity::HasComponent() const {
   return m_Scene->m_Registry.any_of<T>(m_EntityHandle);
 }
 
 template <typename T>
 T& Zero::Entity::GetComponent() {
+  ZR_CORE_ASSERT(HasComponent<T>(), "Entity does not have component");
+  return m_Scene->m_Registry.get<T>(m_EntityHandle);
+}
+
+template <typename T>
+const T& Zero::Entity::GetComponent() const {
   ZR_CORE_ASSERT(HasComponent<T>(), "Entity does not have component");
   return m_Scene->m_Registry.get<T>(m_EntityHandle);
 }
