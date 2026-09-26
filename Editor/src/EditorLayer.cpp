@@ -22,8 +22,6 @@ void Zero::EditorLayer::OnAttach() {
   CameraComponent& cameraComponentB{ m_CameraEntityB.AddComponent<CameraComponent>() };
   cameraComponentB.IsMain = false;
 
-  RenderCommand::SetClearColor({ 0.02f, 0.02f, 0.022f, 1.0f });
-
   class CameraController : public ScriptableEntity {
   public:
     void OnCreate() {}
@@ -49,6 +47,8 @@ void Zero::EditorLayer::OnAttach() {
   };
 
   m_CameraEntityA.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+  m_CameraEntityB.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+  m_HierarchyPanel.SetContext(m_ActiveScene);
 }
 
 void Zero::EditorLayer::OnDetach() {
@@ -73,6 +73,7 @@ void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime) {
 void Zero::EditorLayer::OnRender() {
   Renderer2D::ResetStats();
   m_Framebuffer->Bind();
+  RenderCommand::SetClearColor({ 0.02f, 0.02f, 0.022f, 1.0f });
   RenderCommand::Clear();
   m_ActiveScene->OnRender();
   m_Framebuffer->Unbind();
@@ -97,8 +98,11 @@ void Zero::EditorLayer::OnUIRender() {
     ImGuiID dockSpaceId{ ImGui::GetID("ZeroDockSpace") };
     ImGui::DockSpace(dockSpaceId, ImVec2{ 0.0f, 0.0f }, dockSpaceFlags);
   }
+
+  m_HierarchyPanel.OnUIRender();
   RenderSettingsPanel();
   RenderViewportPanel();
+
   ImGui::End();
 }
 
@@ -133,6 +137,7 @@ void Zero::EditorLayer::RenderViewportPanel() {
 
 void Zero::EditorLayer::RenderSettingsPanel() {
   const RenderStats& stats{ Renderer2D::GetStats() };
+
   ImGui::Begin("Settings");
   ImGui::BeginGroup();
   ImGui::Text("Render Stats");

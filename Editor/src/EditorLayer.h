@@ -1,4 +1,5 @@
 #pragma once
+#include "Panels/SceneHierarchyPanel.h"
 #include <Zero.h>
 #include <imgui.h>
 
@@ -36,6 +37,7 @@ private:
   float m_RotationSpeed{ 1.0f };
   bool m_IsViewportFocused{ false };
   bool m_IsViewportHovered{ false };
+  SceneHierarchyPanel m_HierarchyPanel;
 };
 
 }
