@@ -1,5 +1,5 @@
 #pragma once
-#include "Zero/Camera/Camera.h"
+#include "SceneCamera.h"
 
 namespace Zero {
 
@@ -27,11 +27,11 @@ struct SpriteComponent {
 };
 
 struct CameraComponent {
-  Camera Camera{};
+  SceneCamera Camera{};
   bool IsMain{ true };
+  bool IsAspectRatioFixed{ false };
   CameraComponent() = default;
   CameraComponent(const CameraComponent&) = default;
-  CameraComponent(const glm::mat4& projection);
 };
 
 }

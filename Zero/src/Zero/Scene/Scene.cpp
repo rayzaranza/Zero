@@ -26,10 +26,23 @@ void Zero::Scene::OnRender() {
 
   if (cameraMain) {
     Renderer2D::BeginScene(*cameraMain, *cameraTransform);
-    for (const auto& [entity, transform, sprite] : m_Registry.view<const TransformComponent, const SpriteComponent>().each()) {
+    for (const auto [entity, transform, sprite] : m_Registry.view<TransformComponent, SpriteComponent>().each()) {
       Renderer2D::DrawQuad({ transform, sprite.Color });
     }
     Renderer2D::EndScene();
+  }
+}
+
+void Zero::Scene::OnViewportResize(const glm::uvec2& size) {
+  m_ViewportSize = size;
+
+  const auto& view{ m_Registry.view<CameraComponent>() };
+
+  for (entt::entity entity : view) {
+    CameraComponent& cameraComponent{ view.get<CameraComponent>(entity) };
+    if (!cameraComponent.IsAspectRatioFixed) {
+      cameraComponent.Camera.SetViewportSize(size);
+    }
   }
 }
 

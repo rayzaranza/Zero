@@ -5,10 +5,12 @@ namespace Zero {
 
 class Camera {
 public:
-  Camera(const glm::mat4& projection = glm::mat4{ 1.0f });
+  Camera() = default;
+  Camera(const glm::mat4& projection);
+  virtual ~Camera() = default;
   const glm::mat4& GetProjection() const;
-private:
-  glm::mat4 m_Projection;
+protected:
+  glm::mat4 m_Projection{ 1.0f };
 };
 
 class CameraOrthographic {

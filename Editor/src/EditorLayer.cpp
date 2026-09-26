@@ -12,32 +12,42 @@ void Zero::EditorLayer::OnAttach() {
   m_TextureCheckerboard = Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png");
   m_Framebuffer = Framebuffer::Create({ .Size{ 1280u, 720u } });
   m_ActiveScene = CreateRef<Scene>();
-
   m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
   m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
+  m_QuadEntity.AddComponent<TransformComponent>();
 
-  m_CameraEntity = m_ActiveScene->CreateEntity("Camera Main");
-  m_CameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+  m_CameraEntityA = m_ActiveScene->CreateEntity("Camera A");
+  m_CameraEntityA.AddComponent<CameraComponent>();
 
-  m_CameraB = m_ActiveScene->CreateEntity("Camera B");
-  CameraComponent& cameraComponentB{ m_CameraB.AddComponent<CameraComponent>(glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f)) };
+  m_CameraEntityB = m_ActiveScene->CreateEntity("Camera B");
+  CameraComponent& cameraComponentB{ m_CameraEntityB.AddComponent<CameraComponent>() };
   cameraComponentB.IsMain = false;
+
+  RenderCommand::SetClearColor({ 0.02f, 0.02f, 0.022f, 1.0f });
 }
 
 void Zero::EditorLayer::OnDetach() {
 }
 
 void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime) {
+  if (m_ViewportSize.x > 0u && m_ViewportSize.y > 0u && (m_Framebuffer->GetSize().x != m_ViewportSize.x || m_Framebuffer->GetSize().y != m_ViewportSize.y)) {
+    m_Framebuffer->Resize(m_ViewportSize);
+    m_CameraController.OnResize(m_ViewportSize);
+    m_ActiveScene->OnViewportResize(m_ViewportSize);
+  }
+
+  m_Rotation += m_RotationSpeed * deltaTime;
+
   if (m_IsViewportFocused) {
     m_CameraController.OnUpdate(deltaTime);
   }
+
   m_ActiveScene->OnUpdate(deltaTime);
 }
 
 void Zero::EditorLayer::OnRender() {
   Renderer2D::ResetStats();
   m_Framebuffer->Bind();
-  RenderCommand::SetClearColor({ 0.02f, 0.02f, 0.022f, 1.0f });
   RenderCommand::Clear();
   m_ActiveScene->OnRender();
   m_Framebuffer->Unbind();
@@ -51,7 +61,6 @@ void Zero::EditorLayer::OnUIRender() {
   static ImGuiWindowFlags windowFlags{ ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking };
 
   SetupDockspace(isFullscreen, windowFlags, dockSpaceFlags);
-
   ImGui::Begin("Zero DockSpace Demo", &isOpen, windowFlags);
   ImGui::PopStyleVar();
   if (isFullscreen) {
@@ -63,10 +72,8 @@ void Zero::EditorLayer::OnUIRender() {
     ImGuiID dockSpaceId{ ImGui::GetID("ZeroDockSpace") };
     ImGui::DockSpace(dockSpaceId, ImVec2{ 0.0f, 0.0f }, dockSpaceFlags);
   }
-
   RenderSettingsPanel();
   RenderViewportPanel();
-
   ImGui::End();
 }
 
@@ -92,20 +99,9 @@ void Zero::EditorLayer::RenderViewportPanel() {
   m_IsViewportHovered = ImGui::IsWindowHovered();
   Application::Get().GetUILayer()->SetIsBlockingEvents(!m_IsViewportFocused || !m_IsViewportHovered);
 
-  const ImVec2 panelSize{ ImGui::GetContentRegionAvail() };
-  const glm::uvec2 viewportPanelSize{ panelSize.x, panelSize.y };
-  if (m_ViewportSize != viewportPanelSize && viewportPanelSize.x > 0u && viewportPanelSize.y > 0u) {
-    m_Framebuffer->Resize(viewportPanelSize);
-    m_ViewportSize = viewportPanelSize;
-    m_CameraController.OnResize(viewportPanelSize);
-  }
-
-  ImGui::Image(
-    m_Framebuffer->GetColorAttachmentRendererID(),
-    ImVec2{ static_cast<float>(m_ViewportSize.x), static_cast<float>(m_ViewportSize.y) },
-    ImVec2{ 0.0f, 1.0f },
-    ImVec2{ 1.0f, 0.0f }
-  );
+  const ImVec2 viewportPanelSize{ ImGui::GetContentRegionAvail() };
+  m_ViewportSize = { static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y) };
+  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
   ImGui::End();
   ImGui::PopStyleVar();
 }
@@ -132,11 +128,17 @@ void Zero::EditorLayer::RenderSettingsPanel() {
     ImGui::Separator();
   }
 
-  ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_CameraEntity.GetComponent<TransformComponent>().Transform[3]));
+  ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_CameraEntityA.GetComponent<TransformComponent>().Transform[3]));
 
   if (ImGui::Checkbox("Camera A", &m_IsMainCameraActive)) {
-    m_CameraEntity.GetComponent<CameraComponent>().IsMain = m_IsMainCameraActive;
-    m_CameraB.GetComponent<CameraComponent>().IsMain = !m_IsMainCameraActive;
+    m_CameraEntityA.GetComponent<CameraComponent>().IsMain = m_IsMainCameraActive;
+    m_CameraEntityB.GetComponent<CameraComponent>().IsMain = !m_IsMainCameraActive;
+  }
+
+  SceneCamera& cameraB{ m_CameraEntityB.GetComponent<CameraComponent>().Camera };
+  float cameraBSize{ cameraB.GetOrthographicSize() };
+  if (ImGui::DragFloat("Camera B Size", &cameraBSize)) {
+    cameraB.SetOrthographicSize(cameraBSize);
   }
 
   ImGui::End();

@@ -17,6 +17,7 @@ public:
   virtual void Resize(const glm::uvec2& size) = 0;
   virtual uint32_t GetColorAttachmentRendererID() const = 0;
   virtual const FramebufferProps& GetProps() const = 0;
+  virtual const glm::uvec2& GetSize() const = 0;
   static Ref<Framebuffer> Create(const FramebufferProps& props);
 };
 

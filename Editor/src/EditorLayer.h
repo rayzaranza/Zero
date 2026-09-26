@@ -28,10 +28,10 @@ private:
   Array<QuadProps> m_Quads;
   Ref<Scene> m_ActiveScene;
   Entity m_QuadEntity{};
-  Entity m_CameraEntity{};
-  Entity m_CameraB{};
+  Entity m_CameraEntityA{};
+  Entity m_CameraEntityB{};
+  glm::uvec2 m_ViewportSize{ 0u, 0u };
   bool m_IsMainCameraActive{ true };
-  glm::uvec2 m_ViewportSize{};
   float m_Rotation{ 0.0f };
   float m_RotationSpeed{ 1.0f };
   bool m_IsViewportFocused{ false };
