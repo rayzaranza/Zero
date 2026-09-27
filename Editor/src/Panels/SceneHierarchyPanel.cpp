@@ -3,14 +3,18 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
+
 Zero::SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context) : m_Context{ context } {
 }
+
 
 void Zero::SceneHierarchyPanel::SetContext(const Ref<Scene>& context) {
   m_Context = context;
 }
 
-static void DrawVector3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
+
+static void
+DrawVector3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f) {
   ImGui::PushID(label.c_str());
   ImGui::Columns(2);
   ImGui::SetColumnWidth(0, columnWidth);
@@ -24,7 +28,11 @@ static void DrawVector3Control(const std::string& label, glm::vec3& values, floa
   ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
   ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
   ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.7f, 0.08f, 0.12f, 1.0f });
-  if (ImGui::Button("X", buttonSize)) values.x = resetValue;
+
+  if (ImGui::Button("X", buttonSize)) {
+    values.x = resetValue;
+  }
+
   ImGui::PopStyleColor(3);
   ImGui::SameLine();
   ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
@@ -34,7 +42,11 @@ static void DrawVector3Control(const std::string& label, glm::vec3& values, floa
   ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.3f, 1.0f });
   ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.4f, 1.0f });
   ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.15f, 0.62f, 0.2f, 1.0f });
-  if (ImGui::Button("Y", buttonSize)) values.y = resetValue;
+
+  if (ImGui::Button("Y", buttonSize)) {
+    values.y = resetValue;
+  }
+
   ImGui::PopStyleColor(3);
   ImGui::SameLine();
   ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
@@ -44,7 +56,11 @@ static void DrawVector3Control(const std::string& label, glm::vec3& values, floa
   ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
   ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
   ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.18f, 0.7f, 1.0f });
-  if (ImGui::Button("Z", buttonSize)) values.z = resetValue;
+
+  if (ImGui::Button("Z", buttonSize)) {
+    values.z = resetValue;
+  }
+
   ImGui::PopStyleColor(3);
   ImGui::SameLine();
   ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
@@ -54,6 +70,7 @@ static void DrawVector3Control(const std::string& label, glm::vec3& values, floa
   ImGui::Columns(1);
   ImGui::PopID();
 }
+
 
 void Zero::SceneHierarchyPanel::OnUIRender() {
   ImGui::Begin("Scene Hierarchy");
@@ -66,7 +83,16 @@ void Zero::SceneHierarchyPanel::OnUIRender() {
   if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) {
     m_SelectedEntity = {};
   }
+
+  if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems)) {
+    if (ImGui::MenuItem("Create Empty Entity")) {
+      m_Context->CreateEntity("Empty Entity");
+    }
+    ImGui::EndPopup();
+  }
+
   ImGui::End();
+
   ImGui::Begin("Properties");
   if (m_SelectedEntity) {
     DrawComponents(m_SelectedEntity);
@@ -74,17 +100,29 @@ void Zero::SceneHierarchyPanel::OnUIRender() {
   ImGui::End();
 }
 
+
 void Zero::SceneHierarchyPanel::DrawEntityNode(Entity entity) {
   const std::string& tag{ entity.GetComponent<TagComponent>().Tag };
-  const ImGuiTreeNodeFlags flags{ ((m_SelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow };
+  const ImGuiTreeNodeFlags selectedFlag{ m_SelectedEntity == entity ? ImGuiTreeNodeFlags_Selected : 0 };
+  const ImGuiTreeNodeFlags flags{ selectedFlag | ImGuiTreeNodeFlags_OpenOnArrow };
   const bool isExpanded{ ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str()) };
+
   if (ImGui::IsItemClicked()) {
     m_SelectedEntity = entity;
   }
+
+  if (ImGui::BeginPopupContextItem()) {
+    if (ImGui::MenuItem("Destroy Entity")) {
+      m_Context->DestroyEntity(entity);
+    }
+    ImGui::EndPopup();
+  }
+
   if (isExpanded) {
     ImGui::TreePop();
   }
 }
+
 
 void Zero::SceneHierarchyPanel::DrawComponents(Entity entity) {
   if (entity.HasComponent<TagComponent>()) {
@@ -92,6 +130,7 @@ void Zero::SceneHierarchyPanel::DrawComponents(Entity entity) {
     char buffer[256];
     memset(buffer, 0, sizeof(buffer));
     strcpy_s(buffer, sizeof(buffer), tag.c_str());
+
     if (ImGui::InputText("Tag", buffer, sizeof(buffer))) {
       tag = std::string(buffer);
     }
@@ -161,7 +200,6 @@ void Zero::SceneHierarchyPanel::DrawComponents(Entity entity) {
         if (ImGui::DragFloat("Far", &orthographicFarClip)) {
           camera.SetOrthographicFarClip(orthographicFarClip);
         }
-
         ImGui::Checkbox("Fixed Aspect Ratio", &cameraComponent.IsAspectRatioFixed);
       }
 

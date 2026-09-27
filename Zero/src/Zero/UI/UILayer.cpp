@@ -6,8 +6,10 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+
 Zero::UILayer::UILayer() : Layer{ "UILayer" }, m_Time{ 0.0f } {
 }
+
 
 void Zero::UILayer::OnAttach() {
   IMGUI_CHECKVERSION();
@@ -32,14 +34,17 @@ void Zero::UILayer::OnAttach() {
   ImGui_ImplOpenGL3_Init("#version 460 core");
 }
 
+
 void Zero::UILayer::OnDetach() {
   ImGui_ImplOpenGL3_Shutdown();
   ImGui_ImplGlfw_Shutdown();
   ImGui::DestroyContext();
 }
 
+
 void Zero::UILayer::OnUIRender() {
 }
+
 
 void Zero::UILayer::OnEvent(Event& event) {
   if (m_IsBlockingEvents) {
@@ -49,11 +54,13 @@ void Zero::UILayer::OnEvent(Event& event) {
   }
 }
 
+
 void Zero::UILayer::Begin() {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
 }
+
 
 void Zero::UILayer::End() {
   ImGuiIO& io{ ImGui::GetIO() };
@@ -70,6 +77,7 @@ void Zero::UILayer::End() {
     glfwMakeContextCurrent(backupCurrentContext);
   }
 }
+
 
 void Zero::UILayer::SetIsBlockingEvents(const bool isBlocking) {
   m_IsBlockingEvents = isBlocking;

@@ -1,6 +1,8 @@
 #pragma once
 
+
 #ifdef ZR_PLATFORM_WINDOWS
+
 extern Zero::Application* Zero::CreateApplication();
 
 int main(int argc, char** argv) {
@@ -9,4 +11,5 @@ int main(int argc, char** argv) {
   application->Run();
   delete application;
 }
+
 #endif

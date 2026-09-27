@@ -1,11 +1,14 @@
 #include "Framebuffer.OpenGL.h"
 #include <glad/glad.h>
 
+
 static constexpr uint32_t MAX_FRAMEBUFFER_SIZE{ 8192u };
+
 
 Zero::FramebufferOpenGL::FramebufferOpenGL(const FramebufferProps& props) : m_Props{ props } {
   Invalidate();
 }
+
 
 Zero::FramebufferOpenGL::~FramebufferOpenGL() {
   glDeleteFramebuffers(1, &m_RendererID);
@@ -13,14 +16,17 @@ Zero::FramebufferOpenGL::~FramebufferOpenGL() {
   glDeleteTextures(1, &m_DepthAttachment);
 }
 
+
 void Zero::FramebufferOpenGL::Bind() const {
   glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
   glViewport(0, 0, m_Props.Size.x, m_Props.Size.y);
 }
 
+
 void Zero::FramebufferOpenGL::Unbind() const {
   glBindFramebuffer(GL_FRAMEBUFFER, 0u);
 }
+
 
 void Zero::FramebufferOpenGL::Resize(const glm::uvec2& size) {
   if (size.x == 0u || size.y == 0u || size.x > MAX_FRAMEBUFFER_SIZE || size.y > MAX_FRAMEBUFFER_SIZE) {
@@ -31,17 +37,21 @@ void Zero::FramebufferOpenGL::Resize(const glm::uvec2& size) {
   Invalidate();
 }
 
+
 const Zero::FramebufferProps& Zero::FramebufferOpenGL::GetProps() const {
   return m_Props;
 }
+
 
 const glm::uvec2& Zero::FramebufferOpenGL::GetSize() const {
   return m_Props.Size;
 }
 
+
 uint32_t Zero::FramebufferOpenGL::GetColorAttachmentRendererID() const {
   return m_ColorAttachment;
 }
+
 
 void Zero::FramebufferOpenGL::Invalidate() {
   if (m_RendererID) {

@@ -3,11 +3,14 @@
 #include "Entity.h"
 #include "Zero/Renderer/Renderer2D.h"
 
+
 Zero::Scene::Scene() {
 }
 
+
 Zero::Scene::~Scene() {
 }
+
 
 void Zero::Scene::OnUpdate(const DeltaTime deltaTime) {
   m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nativeScript) {
@@ -19,6 +22,7 @@ void Zero::Scene::OnUpdate(const DeltaTime deltaTime) {
     nativeScript.Instance->OnUpdate(deltaTime);
   });
 }
+
 
 void Zero::Scene::OnRender() {
   Camera* cameraMain{ nullptr };
@@ -41,6 +45,7 @@ void Zero::Scene::OnRender() {
   }
 }
 
+
 void Zero::Scene::OnViewportResize(const glm::uvec2& size) {
   m_ViewportSize = size;
   m_Registry.view<CameraComponent>().each([=](auto entity, CameraComponent& cameraComponent) {
@@ -50,9 +55,15 @@ void Zero::Scene::OnViewportResize(const glm::uvec2& size) {
   });
 }
 
+
 Zero::Entity Zero::Scene::CreateEntity(const std::string& name) {
   Entity entity{ m_Registry.create(), this };
   entity.AddComponent<TransformComponent>();
   entity.AddComponent<TagComponent>(name);
   return entity;
+}
+
+
+void Zero::Scene::DestroyEntity(Entity entity) {
+  m_Registry.destroy(entity);
 }

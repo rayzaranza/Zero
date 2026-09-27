@@ -3,20 +3,28 @@
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 
+
 Zero::ShaderOpenGL::ShaderOpenGL(const std::string& filePath) : m_Name{ ExtractNameFromFilePath(filePath) } {
   const std::string source{ ReadFile(filePath) };
   const Map<uint32_t, std::string> shaderSources{ PreProcess(source) };
   ShaderOpenGL::Compile(shaderSources);
 }
 
-Zero::ShaderOpenGL::ShaderOpenGL(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource) : m_Name{ name } {
-  const Map<uint32_t, std::string> shaderSources{ { GL_VERTEX_SHADER, vertexSource }, { GL_FRAGMENT_SHADER, fragmentSource } };
+
+Zero::ShaderOpenGL::ShaderOpenGL(
+  const std::string& name, const std::string& vertexSource, const std::string& fragmentSource
+)
+  : m_Name{ name } {
+  const Map<uint32_t, std::string> shaderSources{ { GL_VERTEX_SHADER, vertexSource },
+                                                  { GL_FRAGMENT_SHADER, fragmentSource } };
   ShaderOpenGL::Compile(shaderSources);
 }
+
 
 Zero::ShaderOpenGL::~ShaderOpenGL() {
   glDeleteProgram(m_Id);
 }
+
 
 void Zero::ShaderOpenGL::Compile(const Map<uint32_t, std::string>& shaderSources) {
   const uint32_t program{ glCreateProgram() };
@@ -34,8 +42,7 @@ void Zero::ShaderOpenGL::Compile(const Map<uint32_t, std::string>& shaderSources
     const bool isCompiled{ CheckShaderErrors(shader) };
     ZR_CORE_ASSERT(isCompiled, "Shader compilation error");
 
-    if (!isCompiled)
-      continue;
+    if (!isCompiled) continue;
 
     glAttachShader(program, shader);
     shaderIds[shaderIdIndex++] = shader;
@@ -45,8 +52,7 @@ void Zero::ShaderOpenGL::Compile(const Map<uint32_t, std::string>& shaderSources
   const bool isLinked{ CheckProgramErrors(program, shaderIds) };
   ZR_CORE_ASSERT(isLinked, "Shader linking error");
 
-  if (!isLinked)
-    return;
+  if (!isLinked) return;
 
   for (uint32_t shaderId : shaderIds) {
     glDetachShader(program, shaderId);
@@ -55,6 +61,7 @@ void Zero::ShaderOpenGL::Compile(const Map<uint32_t, std::string>& shaderSources
 
   m_Id = program;
 }
+
 
 std::string Zero::ShaderOpenGL::ReadFile(const std::string& filePath) {
   std::string result{};
@@ -73,6 +80,7 @@ std::string Zero::ShaderOpenGL::ReadFile(const std::string& filePath) {
   return result;
 }
 
+
 Zero::Map<uint32_t, std::string> Zero::ShaderOpenGL::PreProcess(const std::string& source) {
   Map<uint32_t, std::string> shaderSources{};
   const char* typeToken{ "#type" };
@@ -83,8 +91,7 @@ Zero::Map<uint32_t, std::string> Zero::ShaderOpenGL::PreProcess(const std::strin
     const size_t endOfLine{ source.find_first_of("\r\n", position) };
     ZR_CORE_ASSERT(endOfLine != std::string::npos, "Syntax error");
 
-    if (endOfLine == std::string::npos)
-      break;
+    if (endOfLine == std::string::npos) break;
 
     const size_t typeNameBegin{ position + typeTokenLength + 1 };
     const std::string typeName{ source.substr(typeNameBegin, endOfLine - typeNameBegin) };
@@ -94,8 +101,7 @@ Zero::Map<uint32_t, std::string> Zero::ShaderOpenGL::PreProcess(const std::strin
     const size_t nextLinePosition{ source.find_first_of("\r\n", endOfLine) };
     position = source.find(typeToken, nextLinePosition);
 
-    if (!type)
-      continue;
+    if (!type) continue;
 
     const size_t blockEnd{ position == std::string::npos ? source.size() : position };
     shaderSources[type] = source.substr(nextLinePosition, blockEnd - nextLinePosition);
@@ -104,22 +110,27 @@ Zero::Map<uint32_t, std::string> Zero::ShaderOpenGL::PreProcess(const std::strin
   return shaderSources;
 }
 
+
 void Zero::ShaderOpenGL::Bind() const {
   glUseProgram(m_Id);
 }
+
 
 void Zero::ShaderOpenGL::Unbind() const {
   glUseProgram(0);
 }
 
+
 const std::string& Zero::ShaderOpenGL::GetName() const {
   return m_Name;
 }
+
 
 void Zero::ShaderOpenGL::SetColor(const std::string& name, const glm::vec4& color) const {
   const int32_t location{ glGetUniformLocation(m_Id, name.c_str()) };
   glUniform4f(location, color.r, color.g, color.b, color.a);
 }
+
 
 void Zero::ShaderOpenGL::SetMatrix4(const std::string& name, const glm::mat4& matrix) const {
   int32_t location{};
@@ -127,46 +138,57 @@ void Zero::ShaderOpenGL::SetMatrix4(const std::string& name, const glm::mat4& ma
   glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
+
 void Zero::ShaderOpenGL::SetVector4(const std::string& name, const glm::vec4& vector) const {
   int32_t location{};
   location = glGetUniformLocation(m_Id, name.c_str());
   glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
 }
 
+
 void Zero::ShaderOpenGL::SetVector3(const std::string& name, const glm::vec3& vector) const {
   const int32_t location{ glGetUniformLocation(m_Id, name.c_str()) };
   glUniform3f(location, vector.x, vector.y, vector.z);
 }
+
 
 void Zero::ShaderOpenGL::SetVector2(const std::string& name, const glm::vec2& vector) const {
   const int32_t location{ glGetUniformLocation(m_Id, name.c_str()) };
   glUniform2f(location, vector.x, vector.y);
 }
 
+
 void Zero::ShaderOpenGL::SetFloat(const std::string& name, const float value) const {
   const int32_t location{ glGetUniformLocation(m_Id, name.c_str()) };
   glUniform1f(location, value);
 }
+
 
 void Zero::ShaderOpenGL::SetInt(const std::string& name, const int32_t value) const {
   const int32_t location{ glGetUniformLocation(m_Id, name.c_str()) };
   glUniform1i(location, value);
 }
 
+
 void Zero::ShaderOpenGL::SetUnsignedInt(const std::string& name, const uint32_t value) const {
   const int32_t location{ glGetUniformLocation(m_Id, name.c_str()) };
   glUniform1ui(location, value);
 }
+
 
 void Zero::ShaderOpenGL::SetIntArray(const std::string& name, const int32_t* values, const uint32_t count) const {
   const int32_t location{ glGetUniformLocation(m_Id, name.c_str()) };
   glUniform1iv(location, count, values);
 }
 
-void Zero::ShaderOpenGL::SetUnsignedIntArray(const std::string& name, const uint32_t* values, const uint32_t count) const {
+
+void Zero::ShaderOpenGL::SetUnsignedIntArray(
+  const std::string& name, const uint32_t* values, const uint32_t count
+) const {
   const int32_t location{ glGetUniformLocation(m_Id, name.c_str()) };
   glUniform1uiv(location, count, values);
 }
+
 
 uint32_t Zero::ShaderOpenGL::StringToShaderType(const std::string& type) {
   if (type == "vertex") {
@@ -182,13 +204,16 @@ uint32_t Zero::ShaderOpenGL::StringToShaderType(const std::string& type) {
   return 0;
 }
 
+
 std::string Zero::ShaderOpenGL::ExtractNameFromFilePath(const std::string& filePath) {
   size_t lastSlashPosition{ filePath.find_last_of("/\\") };
   lastSlashPosition = lastSlashPosition == std::string::npos ? 0 : lastSlashPosition + 1;
   size_t lastDotPosition{ filePath.rfind(".") };
-  size_t count{ lastDotPosition == std::string::npos ? filePath.size() - lastSlashPosition : lastDotPosition - lastSlashPosition };
+  size_t count{ lastDotPosition == std::string::npos ? filePath.size() - lastSlashPosition
+                                                     : lastDotPosition - lastSlashPosition };
   return filePath.substr(lastSlashPosition, count);
 }
+
 
 bool Zero::ShaderOpenGL::CheckShaderErrors(uint32_t shader) {
   int32_t isCompiled{};
@@ -207,7 +232,10 @@ bool Zero::ShaderOpenGL::CheckShaderErrors(uint32_t shader) {
   return true;
 }
 
-bool Zero::ShaderOpenGL::CheckProgramErrors(uint32_t program, const FixedArray<uint32_t, MAX_SHADERS_SUPPORTED>& shaderIds) {
+
+bool Zero::ShaderOpenGL::CheckProgramErrors(
+  uint32_t program, const FixedArray<uint32_t, MAX_SHADERS_SUPPORTED>& shaderIds
+) {
   int32_t isLinked{ 0 };
   glGetProgramiv(program, GL_LINK_STATUS, &isLinked);
   if (isLinked == GL_FALSE) {

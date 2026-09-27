@@ -1,11 +1,16 @@
 #include "EditorLayer.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-Zero::EditorLayer::EditorLayer() : Layer{ "EditorLayer" }, m_CameraController{ Application::Get().GetWindow().GetAspectRatio() } {
+
+Zero::EditorLayer::EditorLayer()
+  : Layer{ "EditorLayer" }
+  , m_CameraController{ Application::Get().GetWindow().GetAspectRatio() } {
 }
+
 
 Zero::EditorLayer::~EditorLayer() {
 }
+
 
 void Zero::EditorLayer::OnAttach() {
   m_Texture = Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
@@ -26,9 +31,11 @@ void Zero::EditorLayer::OnAttach() {
 
   class CameraController : public ScriptableEntity {
   public:
-    void OnCreate() {}
+    void OnCreate() {
+    }
 
-    void OnDestroy() {}
+    void OnDestroy() {
+    }
 
     void OnUpdate(const DeltaTime deltaTime) {
       glm::vec3& translation{ GetComponent<TransformComponent>().Translation };
@@ -51,11 +58,16 @@ void Zero::EditorLayer::OnAttach() {
   m_HierarchyPanel.SetContext(m_ActiveScene);
 }
 
+
 void Zero::EditorLayer::OnDetach() {
 }
 
+
 void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime) {
-  if (m_ViewportSize.x > 0u && m_ViewportSize.y > 0u && (m_Framebuffer->GetSize().x != m_ViewportSize.x || m_Framebuffer->GetSize().y != m_ViewportSize.y)) {
+  if (
+    m_ViewportSize.x > 0u && m_ViewportSize.y > 0u &&
+    (m_Framebuffer->GetSize().x != m_ViewportSize.x || m_Framebuffer->GetSize().y != m_ViewportSize.y)
+  ) {
     m_Framebuffer->Resize(m_ViewportSize);
     m_CameraController.OnResize(m_ViewportSize);
     m_ActiveScene->OnViewportResize(m_ViewportSize);
@@ -68,6 +80,7 @@ void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime) {
   m_ActiveScene->OnUpdate(deltaTime);
 }
 
+
 void Zero::EditorLayer::OnRender() {
   Renderer2D::ResetStats();
   m_Framebuffer->Bind();
@@ -76,6 +89,7 @@ void Zero::EditorLayer::OnRender() {
   m_ActiveScene->OnRender();
   m_Framebuffer->Unbind();
 }
+
 
 void Zero::EditorLayer::OnUIRender() {
   static bool isOpen{ true };
@@ -104,11 +118,13 @@ void Zero::EditorLayer::OnUIRender() {
   ImGui::End();
 }
 
+
 void Zero::EditorLayer::OnEvent(Event& event) {
   m_CameraController.OnEvent(event);
   EventDispatcher dispatcher{ event };
   dispatcher.Dispatch<KeyPressedEvent>(ZR_BIND_FUNCTION(EditorLayer::OnKeyPressed));
 }
+
 
 bool Zero::EditorLayer::OnKeyPressed(KeyPressedEvent& event) {
   if (event.GetKeyCode() == KeyCode::ESCAPE) {
@@ -117,6 +133,7 @@ bool Zero::EditorLayer::OnKeyPressed(KeyPressedEvent& event) {
   }
   return false;
 }
+
 
 void Zero::EditorLayer::RenderViewportPanel() {
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
@@ -128,10 +145,13 @@ void Zero::EditorLayer::RenderViewportPanel() {
 
   const ImVec2 viewportPanelSize{ ImGui::GetContentRegionAvail() };
   m_ViewportSize = { static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y) };
-  ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+  ImGui::Image(
+    m_Framebuffer->GetColorAttachmentRendererID(), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f }
+  );
   ImGui::End();
   ImGui::PopStyleVar();
 }
+
 
 void Zero::EditorLayer::RenderSettingsPanel() {
   const RenderStats& stats{ Renderer2D::GetStats() };
@@ -143,7 +163,10 @@ void Zero::EditorLayer::RenderSettingsPanel() {
   ImGui::End();
 }
 
-void Zero::EditorLayer::SetupDockspace(bool isFullscreen, ImGuiWindowFlags windowFlags, ImGuiDockNodeFlags dockSpaceFlags) {
+
+void Zero::EditorLayer::SetupDockspace(
+  bool isFullscreen, ImGuiWindowFlags windowFlags, ImGuiDockNodeFlags dockSpaceFlags
+) {
   if (isFullscreen) {
     ImGuiViewport* viewport{ ImGui::GetMainViewport() };
     ImGui::SetNextWindowPos(viewport->Pos);
@@ -151,7 +174,8 @@ void Zero::EditorLayer::SetupDockspace(bool isFullscreen, ImGuiWindowFlags windo
     ImGui::SetNextWindowViewport(viewport->ID);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-    windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+    windowFlags |=
+      ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
     windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
   }
 

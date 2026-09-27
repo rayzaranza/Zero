@@ -7,6 +7,7 @@
 #include "Zero/Math/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
 
+
 struct Renderer2DData {
   Zero::Ref<Zero::VertexArray> QuadVertexArray{};
   Zero::Ref<Zero::VertexBuffer> QuadVertexBuffer{};
@@ -20,7 +21,9 @@ struct Renderer2DData {
   Zero::RenderStats Stats{};
 };
 
+
 static Renderer2DData s_Data{};
+
 
 void Zero::Renderer2D::Initialize() {
   s_Data.QuadVertexArray = VertexArray::Create();
@@ -66,6 +69,7 @@ void Zero::Renderer2D::Initialize() {
   s_Data.QuadShader->SetIntArray("u_Textures", textureSamplers, MAX_TEXTURE_SLOTS);
 }
 
+
 void Zero::Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform) {
   s_Data.QuadShader->Bind();
   s_Data.QuadShader->SetMatrix4("u_ViewProjectionMatrix", camera.GetProjection() * glm::inverse(transform));
@@ -74,6 +78,7 @@ void Zero::Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transfo
   s_Data.QuadVertexBufferPointer = s_Data.QuadVertexBufferBase;
   s_Data.TextureSlotIndex = 1u;
 }
+
 
 void Zero::Renderer2D::BeginScene(const CameraOrthographic& camera) {
   s_Data.QuadShader->Bind();
@@ -84,11 +89,13 @@ void Zero::Renderer2D::BeginScene(const CameraOrthographic& camera) {
   s_Data.TextureSlotIndex = 1u;
 }
 
+
 static glm::vec3 GetTansformedVertexPosition(const uint32_t index, const glm::mat4& transform) {
   const glm::vec4 position{ Zero::QUAD_VERTEX_POSITIONS[index], 1.0f };
   const glm::vec4 result{ transform * position };
   return glm::vec3{ result.x, result.y, result.z };
 }
+
 
 void Zero::Renderer2D::DrawQuad(const QuadProps& quad) {
   if (s_Data.QuadIndexCount >= MAX_INDICES) {
@@ -128,6 +135,7 @@ void Zero::Renderer2D::DrawQuad(const QuadProps& quad) {
   s_Data.Stats.QuadCount++;
 }
 
+
 void Zero::Renderer2D::Flush() {
   for (uint32_t i{ 0u }; i < s_Data.TextureSlotIndex; i++) {
     s_Data.Textures[i]->Bind(i);
@@ -136,14 +144,19 @@ void Zero::Renderer2D::Flush() {
   s_Data.Stats.DrawCalls++;
 }
 
+
 void Zero::Renderer2D::EndScene() {
-  uint32_t dataSize{ static_cast<uint32_t>((uint8_t*)s_Data.QuadVertexBufferPointer - (uint8_t*)s_Data.QuadVertexBufferBase) };
+  uint32_t dataSize{
+    static_cast<uint32_t>((uint8_t*)s_Data.QuadVertexBufferPointer - (uint8_t*)s_Data.QuadVertexBufferBase)
+  };
   s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
   Flush();
 }
 
+
 void Zero::Renderer2D::Destroy() {
 }
+
 
 void Zero::Renderer2D::FlushAndReset() {
   EndScene();
@@ -152,17 +165,21 @@ void Zero::Renderer2D::FlushAndReset() {
   s_Data.TextureSlotIndex = 1u;
 }
 
+
 void Zero::Renderer2D::ResetStats() {
   memset(&s_Data.Stats, 0u, sizeof(RenderStats));
 }
+
 
 const Zero::RenderStats& Zero::Renderer2D::GetStats() {
   return s_Data.Stats;
 }
 
+
 uint32_t Zero::RenderStats::GetTotalVertexCount() const {
   return QuadCount * QUAD_VERTEX_COUNT;
 }
+
 
 uint32_t Zero::RenderStats::GetTotalIndexCount() const {
   return QuadCount * QUAD_INDEX_COUNT;

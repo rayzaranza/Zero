@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
+
 namespace Zero {
 
 class Camera {
@@ -8,14 +9,18 @@ public:
   Camera() = default;
   Camera(const glm::mat4& projection);
   virtual ~Camera() = default;
+
   const glm::mat4& GetProjection() const;
+
 protected:
   glm::mat4 m_Projection{ 1.0f };
 };
 
+
 class CameraOrthographic {
 public:
   CameraOrthographic(const float left, const float right, const float bottom = -1.0f, const float top = 1.0f);
+
   const glm::mat4& GetViewMatrix() const;
   const glm::mat4& GetProjectionMatrix() const;
   const glm::mat4& GetViewProjectionMatrix() const;
@@ -24,8 +29,10 @@ public:
   void SetPosition(const glm::vec3& position);
   void SetRotation(const float rotation);
   void SetProjectionMatrix(const float left, const float right, const float bottom, const float top);
+
 private:
   void CalculateViewProjectionMatrix();
+
   glm::vec3 m_Position;
   glm::mat4 m_ViewMatrix;
   glm::mat4 m_ProjectionMatrix;
