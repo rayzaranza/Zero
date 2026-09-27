@@ -26,7 +26,7 @@ void Zero::Renderer2D::Initialize() {
   s_Data.QuadVertexArray = VertexArray::Create();
   s_Data.QuadVertexBuffer = VertexBuffer::Create(MAX_VERTICES * sizeof(QuadVertex));
   s_Data.QuadVertexBuffer->SetLayout(
-    { { VertexAttributeType::Vector2, "a_Position" },
+    { { VertexAttributeType::Vector3, "a_Position" },
       { VertexAttributeType::Vector4, "a_Color" },
       { VertexAttributeType::Vector2, "a_UV" },
       { VertexAttributeType::Float, "a_TextureSlot" },
@@ -84,10 +84,10 @@ void Zero::Renderer2D::BeginScene(const CameraOrthographic& camera) {
   s_Data.TextureSlotIndex = 1u;
 }
 
-static glm::vec2 GetTansformedVertexPosition(const uint32_t index, const glm::mat4& transform) {
-  const glm::vec4 position{ Zero::QUAD_VERTEX_POSITIONS[index], 0.0f, 1.0f };
+static glm::vec3 GetTansformedVertexPosition(const uint32_t index, const glm::mat4& transform) {
+  const glm::vec4 position{ Zero::QUAD_VERTEX_POSITIONS[index], 1.0f };
   const glm::vec4 result{ transform * position };
-  return { result.x, result.y };
+  return glm::vec3{ result.x, result.y, result.z };
 }
 
 void Zero::Renderer2D::DrawQuad(const QuadProps& quad) {

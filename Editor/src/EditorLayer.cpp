@@ -15,6 +15,8 @@ void Zero::EditorLayer::OnAttach() {
   m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
   m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
 
+  Entity quadB{ m_ActiveScene->CreateEntity("Quad B") };
+  quadB.AddComponent<SpriteComponent>(glm::vec4{ 1.0f, 0.0f, 0.2f, 1.0f });
   m_CameraEntityA = m_ActiveScene->CreateEntity("Camera A");
   m_CameraEntityA.AddComponent<CameraComponent>();
 
@@ -30,14 +32,12 @@ void Zero::EditorLayer::OnAttach() {
 
     void OnUpdate(const DeltaTime deltaTime) {
       auto& transform{ GetComponent<TransformComponent>().Transform };
-      const float speed{ 5.0f };
-
+      constexpr float speed{ 5.0f };
       if (Input::IsKeyPressed(KeyCode::A)) {
         transform[3][0] -= speed * deltaTime;
       } else if (Input::IsKeyPressed(KeyCode::D)) {
         transform[3][0] += speed * deltaTime;
       }
-
       if (Input::IsKeyPressed(KeyCode::W)) {
         transform[3][1] += speed * deltaTime;
       } else if (Input::IsKeyPressed(KeyCode::S)) {
@@ -60,8 +60,6 @@ void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime) {
     m_CameraController.OnResize(m_ViewportSize);
     m_ActiveScene->OnViewportResize(m_ViewportSize);
   }
-
-  m_Rotation += m_RotationSpeed * deltaTime;
 
   if (m_IsViewportFocused) {
     m_CameraController.OnUpdate(deltaTime);
@@ -137,40 +135,11 @@ void Zero::EditorLayer::RenderViewportPanel() {
 
 void Zero::EditorLayer::RenderSettingsPanel() {
   const RenderStats& stats{ Renderer2D::GetStats() };
-
-  ImGui::Begin("Settings");
-  ImGui::BeginGroup();
-  ImGui::Text("Render Stats");
+  ImGui::Begin("Renderer2D Stats");
   ImGui::Text("Draw Calls: %d", stats.DrawCalls);
   ImGui::Text("Quads: %d", stats.QuadCount);
   ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
   ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
-  ImGui::EndGroup();
-
-  ImGui::Separator();
-
-  ImGui::DragFloat("Quad Rotation Speed", &m_RotationSpeed, 0.1f);
-
-  if (m_QuadEntity) {
-    ImGui::Separator();
-    ImGui::Text("%s", m_QuadEntity.GetComponent<TagComponent>().Tag.c_str());
-    ImGui::ColorEdit4("Quad Color", glm::value_ptr(m_QuadEntity.GetComponent<SpriteComponent>().Color));
-    ImGui::Separator();
-  }
-
-  ImGui::DragFloat3("Camera Transform", glm::value_ptr(m_CameraEntityA.GetComponent<TransformComponent>().Transform[3]));
-
-  if (ImGui::Checkbox("Camera A", &m_IsMainCameraActive)) {
-    m_CameraEntityA.GetComponent<CameraComponent>().IsMain = m_IsMainCameraActive;
-    m_CameraEntityB.GetComponent<CameraComponent>().IsMain = !m_IsMainCameraActive;
-  }
-
-  SceneCamera& cameraB{ m_CameraEntityB.GetComponent<CameraComponent>().Camera };
-  float cameraBSize{ cameraB.GetOrthographicSize() };
-  if (ImGui::DragFloat("Camera B Size", &cameraBSize)) {
-    cameraB.SetOrthographicSize(cameraBSize);
-  }
-
   ImGui::End();
 }
 

@@ -56,7 +56,75 @@ void Zero::SceneHierarchyPanel::DrawComponents(Entity entity) {
   if (entity.HasComponent<TransformComponent>()) {
     if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform")) {
       glm::mat4& transform{ entity.GetComponent<TransformComponent>().Transform };
-      ImGui::DragFloat2("Position", glm::value_ptr(transform[3]), 0.1f);
+      ImGui::DragFloat3("Position", glm::value_ptr(transform[3]), 0.1f);
+      ImGui::TreePop();
+    }
+  }
+
+  if (entity.HasComponent<CameraComponent>()) {
+    if (ImGui::TreeNodeEx((void*)typeid(CameraComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Camera")) {
+      CameraComponent& cameraComponent{ entity.GetComponent<CameraComponent>() };
+      SceneCamera& camera{ cameraComponent.Camera };
+
+      ImGui::Checkbox("Main Camera", &cameraComponent.IsMain);
+
+      const char* projectionTypeStrings[]{ "Perspective", "Orthographic" };
+      const char* currentProjectionTypeString{ projectionTypeStrings[static_cast<int>(camera.GetProjectionType())] };
+
+      if (ImGui::BeginCombo("Projection", currentProjectionTypeString)) {
+        for (int i{ 0 }; i < 2; ++i) {
+          bool isSelected{ currentProjectionTypeString == projectionTypeStrings[i] };
+          if (ImGui::Selectable(projectionTypeStrings[i], isSelected)) {
+            currentProjectionTypeString = projectionTypeStrings[i];
+            camera.SetProjectionType(static_cast<SceneCamera::ProjectionType>(i));
+          }
+          if (isSelected) {
+            ImGui::SetItemDefaultFocus();
+          }
+        }
+        ImGui::EndCombo();
+      }
+
+      if (camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective) {
+        float perspectiveVerticalFOV{ glm::degrees(camera.GetPerspectiveVerticalFOV()) };
+        if (ImGui::DragFloat("Vertical FOV", &perspectiveVerticalFOV)) {
+          camera.SetPerspectiveVerticalFOV(glm::radians(perspectiveVerticalFOV));
+        }
+        float perspectiveNearClip{ camera.GetPerspectiveNearClip() };
+        if (ImGui::DragFloat("Near", &perspectiveNearClip)) {
+          camera.SetPerspectiveNearClip(perspectiveNearClip);
+        }
+        float perspectiveFarClip{ camera.GetPerspectiveFarClip() };
+        if (ImGui::DragFloat("Far", &perspectiveFarClip)) {
+          camera.SetPerspectiveFarClip(perspectiveFarClip);
+        }
+      }
+
+      if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic) {
+        float orthographicSize{ camera.GetOrthographicSize() };
+        if (ImGui::DragFloat("Size", &orthographicSize)) {
+          camera.SetOrthographicSize(orthographicSize);
+        }
+        float orthographicNearClip{ camera.GetOrthographicNearClip() };
+        if (ImGui::DragFloat("Near", &orthographicNearClip)) {
+          camera.SetOrthographicNearClip(orthographicNearClip);
+        }
+        float orthographicFarClip{ camera.GetOrthographicFarClip() };
+        if (ImGui::DragFloat("Far", &orthographicFarClip)) {
+          camera.SetOrthographicFarClip(orthographicFarClip);
+        }
+
+        ImGui::Checkbox("Fixed Aspect Ratio", &cameraComponent.IsAspectRatioFixed);
+      }
+
+      ImGui::TreePop();
+    }
+  }
+
+  if (entity.HasComponent<SpriteComponent>()) {
+    if (ImGui::TreeNodeEx((void*)typeid(SpriteComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Sprite")) {
+      SpriteComponent& spriteComponent{ entity.GetComponent<SpriteComponent>() };
+      ImGui::ColorEdit4("Color", glm::value_ptr(spriteComponent.Color));
       ImGui::TreePop();
     }
   }
