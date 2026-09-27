@@ -21,22 +21,19 @@ void Zero::CameraOrthographicController::OnUpdate(const DeltaTime deltaTime) {
 
   if (Input::IsKeyPressed(KeyCode::D)) {
     m_Position.x += m_TranslationSpeed * deltaTime;
-  }
-  else if (Input::IsKeyPressed(KeyCode::A)) {
+  } else if (Input::IsKeyPressed(KeyCode::A)) {
     m_Position.x -= m_TranslationSpeed * deltaTime;
   }
 
   if (Input::IsKeyPressed(KeyCode::W)) {
     m_Position.y += m_TranslationSpeed * deltaTime;
-  }
-  else if (Input::IsKeyPressed(KeyCode::S)) {
+  } else if (Input::IsKeyPressed(KeyCode::S)) {
     m_Position.y -= m_TranslationSpeed * deltaTime;
   }
 
   if (Input::IsKeyPressed(KeyCode::Q)) {
     m_Rotation += m_RotationSpeed * deltaTime;
-  }
-  else if (Input::IsKeyPressed(KeyCode::E)) {
+  } else if (Input::IsKeyPressed(KeyCode::E)) {
     m_Rotation -= m_RotationSpeed * deltaTime;
   }
 
