@@ -5,7 +5,7 @@ IndentWidth: 2
 ContinuationIndentWidth: 2
 ConstructorInitializerIndentWidth: 2
 UseTab: Never
-ColumnLimit: 160
+ColumnLimit: 120
 Cpp11BracedListStyle: false
 SpaceBeforeCpp11BracedList: false
 SpaceBeforeAssignmentOperators: true
@@ -18,9 +18,14 @@ NamespaceIndentation: None
 PointerAlignment: Left
 ReferenceAlignment: Left
 BreakBeforeBraces: Attach
-SeparateDefinitionBlocks: Always
-MaxEmptyLinesToKeep: 1
+KeepEmptyLines:
+  AtEndOfFile: true
+  AtStartOfBlock: false
+  AtStartOfFile: false
 PackConstructorInitializers: CurrentLine
+SeparateDefinitionBlocks: Leave
+MaxEmptyLinesToKeep: 2
+AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: true
 AlignConsecutiveShortCaseStatements:
   Enabled: true
@@ -30,10 +35,12 @@ AlignConsecutiveShortCaseStatements:
 AlignAfterOpenBracket: BlockIndent
 PackParameters:
   BinPack: OnePerLine
+  BreakAfter: 4
 PackArguments:
   BinPack: OnePerLine
+  BreakAfter: 4
 AllowAllArgumentsOnNextLine: true
-AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortFunctionsOnASingleLine: None
 BreakTemplateDeclarations: Leave
 SortIncludes: true
 AlignTrailingComments: true

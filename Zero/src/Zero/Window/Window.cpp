@@ -5,31 +5,39 @@
 #include "Zero/Renderer/GraphicsContext.OpenGL.h"
 #include <GLFW/glfw3.h>
 
+
 static void SendWindowToSecondMonitor(GLFWwindow* window, const glm::ivec2& size);
+
 
 Zero::Window::Window(const WindowProps& props) : m_Props{ props } {
   Initialize();
 }
 
+
 Zero::Window::~Window() {
   Destroy();
 }
+
 
 const glm::uvec2& Zero::Window::GetSize() const {
   return m_Props.Size;
 }
 
+
 GLFWwindow* Zero::Window::GetWindowHandle() const {
   return m_WindowHandle;
 }
 
-void Zero::Window::SetEventCallback(const EventCallback& callback) {
+
+void Zero::Window::SetEventCallback(const Function<void(Event&)>& callback) {
   m_Props.EventCallback = callback;
 }
+
 
 float Zero::Window::GetAspectRatio() const {
   return static_cast<float>(m_Props.Size.x) / static_cast<float>(m_Props.Size.y);
 }
+
 
 void Zero::Window::Initialize() {
   const int32_t glfwInitSuccess{ glfwInit() };
@@ -57,10 +65,12 @@ void Zero::Window::Initialize() {
   ZR_CORE_LOG("Window created: {} ({}, {})", m_Props.Title, m_Props.Size.x, m_Props.Size.y);
 }
 
+
 void Zero::Window::Destroy() {
   glfwDestroyWindow(m_WindowHandle);
   glfwTerminate();
 }
+
 
 void Zero::Window::SetCallbacks() {
   glfwSetWindowSizeCallback(m_WindowHandle, [](GLFWwindow* window, const int32_t width, const int32_t height) {
@@ -89,28 +99,31 @@ void Zero::Window::SetCallbacks() {
     data.EventCallback(event);
   });
 
-  glfwSetKeyCallback(m_WindowHandle, [](GLFWwindow* window, const int32_t key, const int32_t scanCode, const int32_t action, const int32_t mods) {
-    WindowProps& data{ *(WindowProps*)glfwGetWindowUserPointer(window) };
-    const KeyCode keyCode{ key };
+  glfwSetKeyCallback(
+    m_WindowHandle,
+    [](GLFWwindow* window, const int32_t key, const int32_t scanCode, const int32_t action, const int32_t mods) {
+      WindowProps& data{ *(WindowProps*)glfwGetWindowUserPointer(window) };
+      const KeyCode keyCode{ key };
 
-    switch (action) {
-      case GLFW_PRESS: {
-        KeyPressedEvent event{ keyCode, 0 };
-        data.EventCallback(event);
-        break;
-      }
-      case GLFW_RELEASE: {
-        KeyReleasedEvent event{ keyCode };
-        data.EventCallback(event);
-        break;
-      }
-      case GLFW_REPEAT: {
-        KeyPressedEvent event{ keyCode, 1 };
-        data.EventCallback(event);
-        break;
+      switch (action) {
+        case GLFW_PRESS: {
+          KeyPressedEvent event{ keyCode, 0 };
+          data.EventCallback(event);
+          break;
+        }
+        case GLFW_RELEASE: {
+          KeyReleasedEvent event{ keyCode };
+          data.EventCallback(event);
+          break;
+        }
+        case GLFW_REPEAT: {
+          KeyPressedEvent event{ keyCode, 1 };
+          data.EventCallback(event);
+          break;
+        }
       }
     }
-  });
+  );
 
   glfwSetCharCallback(m_WindowHandle, [](GLFWwindow* window, const uint32_t keyCode) {
     WindowProps& data{ *(WindowProps*)glfwGetWindowUserPointer(window) };
@@ -118,32 +131,37 @@ void Zero::Window::SetCallbacks() {
     data.EventCallback(event);
   });
 
-  glfwSetMouseButtonCallback(m_WindowHandle, [](GLFWwindow* window, const int32_t button, const int32_t action, const int32_t mods) {
-    WindowProps& data{ *(WindowProps*)glfwGetWindowUserPointer(window) };
-    const MouseButton mouseButton{ static_cast<MouseButton>(button) };
-    switch (action) {
-      case GLFW_PRESS: {
-        MouseButtonPressedEvent event{ mouseButton };
-        data.EventCallback(event);
-        break;
-      }
-      case GLFW_RELEASE: {
-        MouseButtonReleasedEvent event{ mouseButton };
-        data.EventCallback(event);
-        break;
+  glfwSetMouseButtonCallback(
+    m_WindowHandle, [](GLFWwindow* window, const int32_t button, const int32_t action, const int32_t mods) {
+      WindowProps& data{ *(WindowProps*)glfwGetWindowUserPointer(window) };
+      const MouseButton mouseButton{ static_cast<MouseButton>(button) };
+      switch (action) {
+        case GLFW_PRESS: {
+          MouseButtonPressedEvent event{ mouseButton };
+          data.EventCallback(event);
+          break;
+        }
+        case GLFW_RELEASE: {
+          MouseButtonReleasedEvent event{ mouseButton };
+          data.EventCallback(event);
+          break;
+        }
       }
     }
-  });
+  );
 }
+
 
 void Zero::Window::ErrorCallback(const int32_t error, const char* description) {
   ZR_CORE_ERROR("GLFW Error ({}): {}", error, description);
 }
 
+
 void Zero::Window::OnUpdate() {
   glfwPollEvents();
   m_RendererContext->SwapBuffers();
 }
+
 
 void SendWindowToSecondMonitor(GLFWwindow* window, const glm::ivec2& size) {
   int32_t monitorCount{};

@@ -1,22 +1,24 @@
 #pragma once
-
+#include "Zero/Core/Core.h"
 #include <spdlog/fmt/ostr.h>
 #include <spdlog/spdlog.h>
 
-#include "Zero/Core/Core.h"
 
 namespace Zero {
-  class Logger {
-  public:
-    static void Initialize();
-    static Ref<spdlog::logger>& GetCoreLogger();
-    static Ref<spdlog::logger>& GetClientLogger();
 
-  private:
-    static Ref<spdlog::logger> s_CoreLogger;
-    static Ref<spdlog::logger> s_ClientLogger;
-  };
+class Logger {
+public:
+  static void Initialize();
+  static Ref<spdlog::logger>& GetCoreLogger();
+  static Ref<spdlog::logger>& GetClientLogger();
+
+private:
+  static Ref<spdlog::logger> s_CoreLogger;
+  static Ref<spdlog::logger> s_ClientLogger;
+};
+
 }
+
 
 #define ZR_CORE_LOG(...) ::Zero::Logger::GetCoreLogger()->trace(__VA_ARGS__)
 #define ZR_CORE_INFO(...) ::Zero::Logger::GetCoreLogger()->info(__VA_ARGS__)

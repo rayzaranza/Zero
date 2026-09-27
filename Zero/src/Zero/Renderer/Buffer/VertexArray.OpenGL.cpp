@@ -2,23 +2,29 @@
 #include "VertexAttribute.h"
 #include <glad/glad.h>
 
+
 static uint32_t GetOpenGLTypeFromAttributeType(const Zero::VertexAttributeType type);
+
 
 Zero::VertexArrayOpenGL::VertexArrayOpenGL() {
   glCreateVertexArrays(1, &m_Id);
 }
 
+
 Zero::VertexArrayOpenGL::~VertexArrayOpenGL() {
   glDeleteVertexArrays(1, &m_Id);
 }
+
 
 void Zero::VertexArrayOpenGL::Bind() const {
   glBindVertexArray(m_Id);
 }
 
+
 void Zero::VertexArrayOpenGL::Unbind() const {
   glBindVertexArray(0);
 }
+
 
 void Zero::VertexArrayOpenGL::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
   const VertexBufferLayout& layout{ vertexBuffer->GetLayout() };
@@ -43,19 +49,23 @@ void Zero::VertexArrayOpenGL::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuf
   m_VertexBuffers.push_back(vertexBuffer);
 }
 
+
 void Zero::VertexArrayOpenGL::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
   glBindVertexArray(m_Id);
   indexBuffer->Bind();
   m_IndexBuffer = indexBuffer;
 }
 
+
 const Zero::Array<Zero::Ref<Zero::VertexBuffer>>& Zero::VertexArrayOpenGL::GetVertexBuffers() const {
   return m_VertexBuffers;
 }
 
+
 const Zero::Ref<Zero::IndexBuffer>& Zero::VertexArrayOpenGL::GetIndexBuffer() const {
   return m_IndexBuffer;
 }
+
 
 uint32_t GetOpenGLTypeFromAttributeType(const Zero::VertexAttributeType type) {
   switch (type) {

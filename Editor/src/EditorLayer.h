@@ -3,13 +3,14 @@
 #include <Zero.h>
 #include <imgui.h>
 
+
 namespace Zero {
 
 class EditorLayer : public Layer {
 public:
   EditorLayer();
   ~EditorLayer();
-public:
+
   virtual void OnAttach() override;
   virtual void OnDetach() override;
   virtual void OnUpdate(const DeltaTime deltaTime) override;
@@ -17,11 +18,12 @@ public:
   virtual void OnUIRender() override;
   virtual void OnEvent(Event& event) override;
   bool OnKeyPressed(KeyPressedEvent& event);
+
 private:
   void RenderViewportPanel();
   void RenderSettingsPanel();
   void SetupDockspace(bool isFullscreen, ImGuiWindowFlags windowFlags, ImGuiDockNodeFlags dockSpaceFlags);
-private:
+
   CameraOrthographicController m_CameraController;
   Ref<Framebuffer> m_Framebuffer{};
   Ref<Texture2D> m_Texture;

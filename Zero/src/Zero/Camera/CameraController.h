@@ -4,6 +4,7 @@
 #include "Zero/Event/MouseEvent.h"
 #include "Zero/Time/DeltaTime.h"
 
+
 namespace Zero {
 
 struct CameraOrthographicBounds {
@@ -11,13 +12,16 @@ struct CameraOrthographicBounds {
   float Right{};
   float Bottom{};
   float Top{};
+
   float GetWidth() const;
   float GetHeight() const;
 };
 
+
 class CameraOrthographicController {
 public:
   CameraOrthographicController(const float aspectRatio);
+
   void OnUpdate(const DeltaTime deltaTime);
   void OnEvent(Event& event);
   void OnResize(const glm::uvec2& size);
@@ -27,9 +31,11 @@ public:
   float GetZoomLevel() const;
   void SetZoomLevel(float zoomLevel);
   void CalculateView();
+
 private:
   bool OnMouseScrolled(MouseScrolledEvent& event);
   bool OnWindowResizedEvent(WindowResizedEvent& event);
+
   glm::vec3 m_Position;
   float m_AspectRatio;
   float m_ZoomLevel;

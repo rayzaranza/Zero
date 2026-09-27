@@ -1,11 +1,14 @@
 #include "RendererAPI.h"
 #include "RendererAPI.OpenGL.h"
 
+
 Zero::RendererAPI::API Zero::RendererAPI::s_API{ RendererAPI::API::OpenGL };
+
 
 Zero::RendererAPI::API Zero::RendererAPI::GetAPI() {
   return s_API;
 }
+
 
 Zero::Scope<Zero::RendererAPI> Zero::RendererAPI::Create() {
   switch (s_API) {

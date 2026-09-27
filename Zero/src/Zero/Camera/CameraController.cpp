@@ -2,6 +2,7 @@
 #include "Zero/Input/Input.h"
 #include "Zero/Input/KeyCode.h"
 
+
 Zero::CameraOrthographicController::CameraOrthographicController(const float aspectRatio)
   : m_AspectRatio{ aspectRatio }
   , m_ZoomLevel{ 1.0f }
@@ -14,24 +15,28 @@ Zero::CameraOrthographicController::CameraOrthographicController(const float asp
   , m_RotationSpeed{ 1.0f } {
 }
 
+
 void Zero::CameraOrthographicController::OnUpdate(const DeltaTime deltaTime) {
   m_TranslationSpeed = m_ZoomLevel;
 
   if (Input::IsKeyPressed(KeyCode::D)) {
     m_Position.x += m_TranslationSpeed * deltaTime;
-  } else if (Input::IsKeyPressed(KeyCode::A)) {
+  }
+  else if (Input::IsKeyPressed(KeyCode::A)) {
     m_Position.x -= m_TranslationSpeed * deltaTime;
   }
 
   if (Input::IsKeyPressed(KeyCode::W)) {
     m_Position.y += m_TranslationSpeed * deltaTime;
-  } else if (Input::IsKeyPressed(KeyCode::S)) {
+  }
+  else if (Input::IsKeyPressed(KeyCode::S)) {
     m_Position.y -= m_TranslationSpeed * deltaTime;
   }
 
   if (Input::IsKeyPressed(KeyCode::Q)) {
     m_Rotation += m_RotationSpeed * deltaTime;
-  } else if (Input::IsKeyPressed(KeyCode::E)) {
+  }
+  else if (Input::IsKeyPressed(KeyCode::E)) {
     m_Rotation -= m_RotationSpeed * deltaTime;
   }
 
@@ -39,42 +44,51 @@ void Zero::CameraOrthographicController::OnUpdate(const DeltaTime deltaTime) {
   m_Camera.SetRotation(m_Rotation);
 }
 
+
 void Zero::CameraOrthographicController::OnEvent(Event& event) {
   EventDispatcher dispatcher{ event };
   dispatcher.Dispatch<MouseScrolledEvent>(ZR_BIND_FUNCTION(CameraOrthographicController::OnMouseScrolled));
   dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(CameraOrthographicController::OnWindowResizedEvent));
 }
 
+
 void Zero::CameraOrthographicController::OnResize(const glm::uvec2& size) {
   m_AspectRatio = static_cast<float>(size.x) / static_cast<float>(size.y);
   CalculateView();
 }
 
+
 const Zero::CameraOrthographic& Zero::CameraOrthographicController::GetCamera() const {
   return m_Camera;
 }
+
 
 Zero::CameraOrthographic& Zero::CameraOrthographicController::GetCamera() {
   return m_Camera;
 }
 
+
 float Zero::CameraOrthographicController::GetZoomLevel() const {
   return m_ZoomLevel;
 }
+
 
 void Zero::CameraOrthographicController::SetZoomLevel(float zoomLevel) {
   m_ZoomLevel = zoomLevel;
   CalculateView();
 }
 
+
 void Zero::CameraOrthographicController::CalculateView() {
   m_Bounds = { -m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel };
   m_Camera.SetProjectionMatrix(m_Bounds.Left, m_Bounds.Right, m_Bounds.Bottom, m_Bounds.Top);
 }
 
+
 const Zero::CameraOrthographicBounds& Zero::CameraOrthographicController::GetBounds() const {
   return m_Bounds;
 }
+
 
 bool Zero::CameraOrthographicController::OnMouseScrolled(MouseScrolledEvent& event) {
   m_ZoomLevel -= event.GetOffset().y * m_ZoomSpeed;
@@ -83,14 +97,17 @@ bool Zero::CameraOrthographicController::OnMouseScrolled(MouseScrolledEvent& eve
   return false;
 }
 
+
 bool Zero::CameraOrthographicController::OnWindowResizedEvent(WindowResizedEvent& event) {
   OnResize(event.GetSize());
   return false;
 }
 
+
 float Zero::CameraOrthographicBounds::GetWidth() const {
   return Right - Left;
 }
+
 
 float Zero::CameraOrthographicBounds::GetHeight() const {
   return Top - Bottom;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Zero/Core/Core.h"
 
+
 namespace Zero {
 
 struct FramebufferProps {
@@ -8,6 +9,7 @@ struct FramebufferProps {
   uint32_t Samples{ 1u };
   bool SwapChainTarget{ false };
 };
+
 
 class Framebuffer {
 public:

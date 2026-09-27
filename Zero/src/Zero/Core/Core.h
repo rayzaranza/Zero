@@ -1,7 +1,10 @@
 #pragma once
 #include <functional>
 
-#define ZR_BIND_FUNCTION(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
+#define ZR_BIND_FUNCTION(fn)                                                                                           \
+  [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
+
 
 #ifdef _WIN32
 # define ZR_PLATFORM_WINDOWS
@@ -29,20 +32,21 @@
 # error "Unknown platorm"
 #endif
 
+
 #ifdef ZR_ENABLE_ASSERTS
-# define ZR_ASSERT(x, ...)                                                                                                                                     \
-  {                                                                                                                                                            \
-    if (!(x)) {                                                                                                                                                \
-      ZR_ERROR("Assertion failed: {}", __VA_ARGS__);                                                                                                           \
-      __debugbreak();                                                                                                                                          \
-    }                                                                                                                                                          \
+# define ZR_ASSERT(x, ...)                                                                                             \
+  {                                                                                                                    \
+    if (!(x)) {                                                                                                        \
+      ZR_ERROR("Assertion failed: {}", __VA_ARGS__);                                                                   \
+      __debugbreak();                                                                                                  \
+    }                                                                                                                  \
   }
-# define ZR_CORE_ASSERT(x, ...)                                                                                                                                \
-  {                                                                                                                                                            \
-    if (!(x)) {                                                                                                                                                \
-      ZR_CORE_ERROR("Assertion failed: {}", __VA_ARGS__);                                                                                                      \
-      __debugbreak();                                                                                                                                          \
-    }                                                                                                                                                          \
+# define ZR_CORE_ASSERT(x, ...)                                                                                        \
+  {                                                                                                                    \
+    if (!(x)) {                                                                                                        \
+      ZR_CORE_ERROR("Assertion failed: {}", __VA_ARGS__);                                                              \
+      __debugbreak();                                                                                                  \
+    }                                                                                                                  \
   }
 #else
 # define ZR_ASSERT(x, ...)
