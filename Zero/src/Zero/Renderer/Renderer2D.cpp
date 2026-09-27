@@ -137,9 +137,14 @@ void Zero::Renderer2D::DrawQuad(const QuadProps& quad) {
 
 
 void Zero::Renderer2D::Flush() {
+  if (s_Data.QuadIndexCount == 0u) {
+    return;
+  }
+
   for (uint32_t i{ 0u }; i < s_Data.TextureSlotIndex; i++) {
     s_Data.Textures[i]->Bind(i);
   }
+
   RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
   s_Data.Stats.DrawCalls++;
 }
