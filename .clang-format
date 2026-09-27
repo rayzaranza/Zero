@@ -39,3 +39,4 @@ SortIncludes: true
 AlignTrailingComments: true
 EmptyLineBeforeAccessModifier: Leave
 WrapNamespaceBodyWithEmptyLines: Always
+AllowShortIfStatementsOnASingleLine: WithoutElse
