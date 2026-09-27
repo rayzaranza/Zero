@@ -81,7 +81,7 @@ void Zero::SceneHierarchyPanel::OnUIRender() {
   }
 
   if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) {
-    m_SelectedEntity = {};
+    m_SelectionContext = {};
   }
 
   if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems)) {
@@ -94,8 +94,8 @@ void Zero::SceneHierarchyPanel::OnUIRender() {
   ImGui::End();
 
   ImGui::Begin("Properties");
-  if (m_SelectedEntity) {
-    DrawComponents(m_SelectedEntity);
+  if (m_SelectionContext) {
+    DrawComponents(m_SelectionContext);
   }
   ImGui::End();
 }
@@ -103,12 +103,12 @@ void Zero::SceneHierarchyPanel::OnUIRender() {
 
 void Zero::SceneHierarchyPanel::DrawEntityNode(Entity entity) {
   const std::string& tag{ entity.GetComponent<TagComponent>().Tag };
-  const ImGuiTreeNodeFlags selectedFlag{ m_SelectedEntity == entity ? ImGuiTreeNodeFlags_Selected : 0 };
+  const ImGuiTreeNodeFlags selectedFlag{ m_SelectionContext == entity ? ImGuiTreeNodeFlags_Selected : 0 };
   const ImGuiTreeNodeFlags flags{ selectedFlag | ImGuiTreeNodeFlags_OpenOnArrow };
   const bool isExpanded{ ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str()) };
 
   if (ImGui::IsItemClicked()) {
-    m_SelectedEntity = entity;
+    m_SelectionContext = entity;
   }
 
   if (ImGui::BeginPopupContextItem()) {

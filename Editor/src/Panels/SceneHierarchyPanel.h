@@ -15,7 +15,7 @@ public:
 
 private:
   Ref<Scene> m_Context;
-  Entity m_SelectedEntity{};
+  Entity m_SelectionContext{};
 };
 
 }
