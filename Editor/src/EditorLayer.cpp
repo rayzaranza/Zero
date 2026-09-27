@@ -31,17 +31,17 @@ void Zero::EditorLayer::OnAttach() {
     void OnDestroy() {}
 
     void OnUpdate(const DeltaTime deltaTime) {
-      auto& transform{ GetComponent<TransformComponent>().Transform };
+      glm::vec3& translation{ GetComponent<TransformComponent>().Translation };
       constexpr float speed{ 5.0f };
       if (Input::IsKeyPressed(KeyCode::A)) {
-        transform[3][0] -= speed * deltaTime;
+        translation.x -= speed * deltaTime;
       } else if (Input::IsKeyPressed(KeyCode::D)) {
-        transform[3][0] += speed * deltaTime;
+        translation.x += speed * deltaTime;
       }
       if (Input::IsKeyPressed(KeyCode::W)) {
-        transform[3][1] += speed * deltaTime;
+        translation.y += speed * deltaTime;
       } else if (Input::IsKeyPressed(KeyCode::S)) {
-        transform[3][1] -= speed * deltaTime;
+        translation.y -= speed * deltaTime;
       }
     }
   };

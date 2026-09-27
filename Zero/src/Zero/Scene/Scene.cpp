@@ -22,20 +22,20 @@ void Zero::Scene::OnUpdate(const DeltaTime deltaTime) {
 
 void Zero::Scene::OnRender() {
   Camera* cameraMain{ nullptr };
-  glm::mat4* cameraTransform{ nullptr };
+  glm::mat4 cameraTransform;
 
   for (const auto [entity, transform, camera] : m_Registry.view<TransformComponent, CameraComponent>().each()) {
     if (camera.IsMain) {
       cameraMain = &camera.Camera;
-      cameraTransform = &transform.Transform;
+      cameraTransform = transform.GetTransform();
       break;
     }
   }
 
   if (cameraMain) {
-    Renderer2D::BeginScene(*cameraMain, *cameraTransform);
+    Renderer2D::BeginScene(*cameraMain, cameraTransform);
     for (const auto [entity, transform, sprite] : m_Registry.view<TransformComponent, SpriteComponent>().each()) {
-      Renderer2D::DrawQuad({ transform, sprite.Color });
+      Renderer2D::DrawQuad({ transform.GetTransform(), sprite.Color });
     }
     Renderer2D::EndScene();
   }

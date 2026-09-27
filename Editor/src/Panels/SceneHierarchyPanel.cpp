@@ -55,8 +55,8 @@ void Zero::SceneHierarchyPanel::DrawComponents(Entity entity) {
 
   if (entity.HasComponent<TransformComponent>()) {
     if (ImGui::TreeNodeEx((void*)typeid(TransformComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform")) {
-      glm::mat4& transform{ entity.GetComponent<TransformComponent>().Transform };
-      ImGui::DragFloat3("Position", glm::value_ptr(transform[3]), 0.1f);
+      TransformComponent& transform{ entity.GetComponent<TransformComponent>() };
+      ImGui::DragFloat3("Translation", glm::value_ptr(transform.Translation), 0.1f);
       ImGui::TreePop();
     }
   }
