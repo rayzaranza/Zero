@@ -21,6 +21,10 @@ void Zero::UILayer::OnAttach() {
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
+  constexpr float fontSize{ 16.0f };
+  io.Fonts->AddFontFromFileTTF("D:/Zero/Editor/assets/fonts/Rubik/Rubik-Medium.ttf", fontSize);
+  io.FontDefault = io.Fonts->AddFontFromFileTTF("D:/Zero/Editor/assets/fonts/Rubik/Rubik-Regular.ttf", fontSize);
+
   ImGui::StyleColorsDark();
   ImGuiStyle& style{ ImGui::GetStyle() };
   if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
