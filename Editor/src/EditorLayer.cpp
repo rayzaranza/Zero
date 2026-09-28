@@ -118,11 +118,16 @@ void Zero::EditorLayer::OnUIRender() {
 
   ImGui::Begin("Zero DockSpace Demo", &isOpen, windowFlags);
   ImGui::PopStyleVar();
+
   if (isFullscreen) {
     ImGui::PopStyleVar(2);
   }
 
   ImGuiIO& io{ ImGui::GetIO() };
+  ImGuiStyle& style{ ImGui::GetStyle() };
+  const float minWindowWidth{ style.WindowMinSize.x };
+  style.WindowMinSize.x = 256.0f;
+
   if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
     ImGuiID dockSpaceId{ ImGui::GetID("ZeroDockSpace") };
     ImGui::DockSpace(dockSpaceId, ImVec2{ 0.0f, 0.0f }, dockSpaceFlags);
@@ -191,4 +196,3 @@ void Zero::EditorLayer::RenderSettingsPanel() {
   ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
   ImGui::End();
 }
-
