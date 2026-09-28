@@ -22,7 +22,6 @@ public:
 private:
   void RenderViewportPanel();
   void RenderSettingsPanel();
-  void SetupDockspace(bool isFullscreen, ImGuiWindowFlags windowFlags, ImGuiDockNodeFlags dockSpaceFlags);
 
   CameraOrthographicController m_CameraController;
   Ref<Framebuffer> m_Framebuffer{};
