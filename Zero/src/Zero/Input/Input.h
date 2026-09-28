@@ -2,6 +2,7 @@
 #include "KeyCode.h"
 #include "MouseButton.h"
 
+
 namespace Zero {
 
 class Input {

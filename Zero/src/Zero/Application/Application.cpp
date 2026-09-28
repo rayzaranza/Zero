@@ -4,9 +4,14 @@
 #include "Zero/Renderer/Renderer.h"
 #include <GLFW/glfw3.h>
 
+
 Zero::Application* Zero::Application::s_Instance{ nullptr };
 
-Zero::Application::Application(const std::string& name) : m_IsRunning{ true }, m_IsMinimized{ false }, m_LastFrameTime{ 0.0f } {
+
+Zero::Application::Application(const std::string& name)
+  : m_IsRunning{ true }
+  , m_IsMinimized{ false }
+  , m_LastFrameTime{ 0.0f } {
   ZR_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
   s_Instance = this;
 
@@ -19,9 +24,11 @@ Zero::Application::Application(const std::string& name) : m_IsRunning{ true }, m
   Renderer::Initialize();
 }
 
+
 Zero::Application::~Application() {
   Renderer::Destroy();
 }
+
 
 void Zero::Application::OnEvent(Event& event) {
   EventDispatcher dispatcher{ event };
@@ -29,37 +36,43 @@ void Zero::Application::OnEvent(Event& event) {
   dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(Application::OnWindowResized));
 
   for (auto layer{ m_LayerStack.rbegin() }; layer != m_LayerStack.rend(); ++layer) {
-    if (event.IsHandled)
-      break;
+    if (event.IsHandled) break;
     (*layer)->OnEvent(event);
   }
 }
+
 
 void Zero::Application::PushLayer(Layer* layer) {
   m_LayerStack.PushLayer(layer);
   layer->OnAttach();
 }
 
+
 void Zero::Application::PushOverlay(Layer* overlay) {
   m_LayerStack.PushOverlay(overlay);
   overlay->OnAttach();
 }
 
+
 void Zero::Application::Close() {
   m_IsRunning = false;
 }
+
 
 Zero::Application& Zero::Application::Get() {
   return *s_Instance;
 }
 
+
 const Zero::Window& Zero::Application::GetWindow() const {
   return *m_Window;
 }
 
+
 Zero::UILayer* Zero::Application::GetUILayer() const {
   return m_UILayer;
 }
+
 
 void Zero::Application::Run() {
   while (m_IsRunning) {
@@ -82,10 +95,12 @@ void Zero::Application::Run() {
   }
 }
 
+
 bool Zero::Application::OnWindowClosed(WindowClosedEvent& event) {
   m_IsRunning = false;
   return true;
 }
+
 
 bool Zero::Application::OnWindowResized(WindowResizedEvent& event) {
   const glm::ivec2 size{ event.GetSize() };

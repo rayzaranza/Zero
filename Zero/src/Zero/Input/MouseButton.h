@@ -1,18 +1,21 @@
 #pragma once
 
+
 namespace Zero {
-  enum class MouseButton : uint8_t {
-    ONE = 0,
-    TWO = 1,
-    THREE = 2,
-    FOUR = 3,
-    FIVE = 4,
-    SIX = 5,
-    SEVEN = 6,
-    EIGHT = 7,
-    LAST = EIGHT,
-    LEFT = ONE,
-    RIGHT = TWO,
-    MIDDLE = THREE
-  };
+
+enum class MouseButton : uint8_t {
+  ONE = 0,
+  TWO = 1,
+  THREE = 2,
+  FOUR = 3,
+  FIVE = 4,
+  SIX = 5,
+  SEVEN = 6,
+  EIGHT = 7,
+  LAST = EIGHT,
+  LEFT = ONE,
+  RIGHT = TWO,
+  MIDDLE = THREE
+};
+
 }

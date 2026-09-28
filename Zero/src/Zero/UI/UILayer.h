@@ -7,6 +7,7 @@ class UILayer : public Layer {
 public:
   UILayer();
   ~UILayer() = default;
+
   virtual void OnAttach() override;
   virtual void OnDetach() override;
   virtual void OnUIRender() override;
@@ -14,6 +15,8 @@ public:
   void Begin();
   void End();
   void SetIsBlockingEvents(const bool isBlocking);
+  void SetDarkThemeColors();
+
 private:
   float m_Time;
   bool m_IsBlockingEvents{ true };

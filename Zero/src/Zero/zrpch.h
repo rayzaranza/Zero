@@ -15,6 +15,6 @@
 #include "Zero/Profiler/Profiler.h"
 
 #ifdef ZR_PLATFORM_WINDOWS
-# define NOMINMAX
-# include <Windows.h>
+#define NOMINMAX
+#include <Windows.h>
 #endif
