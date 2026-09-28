@@ -14,6 +14,9 @@ public:
   void DrawComponents(Entity entity);
 
 private:
+  void DrawPropertiesPanel();
+  void DrawSceneHierarchyPanel();
+
   Ref<Scene> m_Context;
   Entity m_SelectionContext{};
 };
