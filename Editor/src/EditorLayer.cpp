@@ -128,6 +128,18 @@ void Zero::EditorLayer::OnUIRender() {
     ImGui::DockSpace(dockSpaceId, ImVec2{ 0.0f, 0.0f }, dockSpaceFlags);
   }
 
+  style.WindowMinSize.x = minWindowWidth;
+
+  if (ImGui::BeginMenuBar()) {
+    if (ImGui::BeginMenu("File")) {
+      if (ImGui::MenuItem("Exit")) {
+        Application::Get().Close();
+      }
+      ImGui::EndMenu();
+    }
+    ImGui::EndMenuBar();
+  }
+
   m_HierarchyPanel.OnUIRender();
   RenderSettingsPanel();
   RenderViewportPanel();
