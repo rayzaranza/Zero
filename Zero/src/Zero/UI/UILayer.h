@@ -15,6 +15,7 @@ public:
   void Begin();
   void End();
   void SetIsBlockingEvents(const bool isBlocking);
+  void SetDarkThemeColors();
 
 private:
   float m_Time;

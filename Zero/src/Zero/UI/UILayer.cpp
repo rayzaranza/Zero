@@ -32,6 +32,8 @@ void Zero::UILayer::OnAttach() {
     style.Colors[ImGuiCol_WindowBg].w = 1.0f;
   }
 
+  SetDarkThemeColors();
+
   const Application& application{ Application::Get() };
   GLFWwindow* window{ application.GetWindow().GetWindowHandle() };
   ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -85,4 +87,37 @@ void Zero::UILayer::End() {
 
 void Zero::UILayer::SetIsBlockingEvents(const bool isBlocking) {
   m_IsBlockingEvents = isBlocking;
+}
+
+
+void Zero::UILayer::SetDarkThemeColors() {
+  auto& colors{ ImGui::GetStyle().Colors };
+
+  colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
+
+  constexpr ImVec4 BACKGROUND_DEFAULT{ 0.2f, 0.205f, 0.21f, 1.0f };
+  constexpr ImVec4 BACKGROUND_LIGHTER{ 0.3f, 0.305f, 0.31f, 1.0f };
+  constexpr ImVec4 BACKGROUND_DARKER{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
+  colors[ImGuiCol_Header] = BACKGROUND_DEFAULT;
+  colors[ImGuiCol_HeaderHovered] = BACKGROUND_LIGHTER;
+  colors[ImGuiCol_HeaderActive] = BACKGROUND_DARKER;
+
+  colors[ImGuiCol_Button] = BACKGROUND_DEFAULT;
+  colors[ImGuiCol_ButtonHovered] = BACKGROUND_LIGHTER;
+  colors[ImGuiCol_ButtonActive] = BACKGROUND_DARKER;
+
+  colors[ImGuiCol_FrameBg] = BACKGROUND_DEFAULT;
+  colors[ImGuiCol_FrameBgHovered] = BACKGROUND_LIGHTER;
+  colors[ImGuiCol_FrameBgActive] = BACKGROUND_DARKER;
+
+  colors[ImGuiCol_Tab] = BACKGROUND_DARKER;
+  colors[ImGuiCol_TabHovered] = ImVec4{ 0.38f, 0.3805f, 0.381f, 1.0f };
+  colors[ImGuiCol_TabActive] = ImVec4{ 0.28f, 0.2805f, 0.281f, 1.0f };
+  colors[ImGuiCol_TabUnfocused] = BACKGROUND_DARKER;
+  colors[ImGuiCol_TabUnfocusedActive] = BACKGROUND_DEFAULT;
+
+  colors[ImGuiCol_TitleBg] = BACKGROUND_DARKER;
+  colors[ImGuiCol_TitleBgActive] = BACKGROUND_DARKER;
+  colors[ImGuiCol_TitleBgCollapsed] = BACKGROUND_DARKER;
 }
