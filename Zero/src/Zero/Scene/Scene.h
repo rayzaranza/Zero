@@ -23,6 +23,7 @@ private:
   entt::registry m_Registry;
   glm::uvec2 m_ViewportSize{ 0u };
   friend class Entity;
+  friend class SceneSerializer;
   friend class SceneHierarchyPanel;
 };
 

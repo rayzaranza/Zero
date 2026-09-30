@@ -16,7 +16,7 @@ void Zero::SceneCamera::SetOrthographic(float size, float nearClip, float farCli
 }
 
 
-void Zero::SceneCamera::SetPerpective(float verticalFOV, float nearClip, float farClip) {
+void Zero::SceneCamera::SetPerspective(float verticalFOV, float nearClip, float farClip) {
   m_ProjectionType = ProjectionType::Perspective;
   m_PerspectiveFOV = verticalFOV;
   m_PerspectiveNearClip = nearClip;

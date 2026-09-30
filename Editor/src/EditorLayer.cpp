@@ -1,10 +1,12 @@
 #include "EditorLayer.h"
+#include <Zero/Scene/SceneSerializer.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 
 Zero::EditorLayer::EditorLayer()
   : Layer{ "EditorLayer" }
-  , m_CameraController{ Application::Get().GetWindow().GetAspectRatio() } {
+  , m_CameraController{ Application::Get().GetWindow().GetAspectRatio() }
+  , m_Framebuffer{ Framebuffer::Create({ .Size{ 1280u, 720u } }) } {
 }
 
 
@@ -13,10 +15,11 @@ Zero::EditorLayer::~EditorLayer() {
 
 
 void Zero::EditorLayer::OnAttach() {
-  m_Texture = Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
   m_TextureCheckerboard = Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png");
-  m_Framebuffer = Framebuffer::Create({ .Size{ 1280u, 720u } });
   m_ActiveScene = CreateRef<Scene>();
+
+  #if 0
+  m_Texture = Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
   m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
   m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
 
@@ -42,12 +45,14 @@ void Zero::EditorLayer::OnAttach() {
       constexpr float speed{ 5.0f };
       if (Input::IsKeyPressed(KeyCode::A)) {
         translation.x -= speed * deltaTime;
-      } else if (Input::IsKeyPressed(KeyCode::D)) {
+      }
+      else if (Input::IsKeyPressed(KeyCode::D)) {
         translation.x += speed * deltaTime;
       }
       if (Input::IsKeyPressed(KeyCode::W)) {
         translation.y += speed * deltaTime;
-      } else if (Input::IsKeyPressed(KeyCode::S)) {
+      }
+      else if (Input::IsKeyPressed(KeyCode::S)) {
         translation.y -= speed * deltaTime;
       }
     }
@@ -55,6 +60,8 @@ void Zero::EditorLayer::OnAttach() {
 
   m_CameraEntityA.AddComponent<NativeScriptComponent>().Bind<CameraController>();
   m_CameraEntityB.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+  #endif
+
   m_HierarchyPanel.SetContext(m_ActiveScene);
 }
 
@@ -135,8 +142,17 @@ void Zero::EditorLayer::OnUIRender() {
 
   style.WindowMinSize.x = minWindowWidth;
 
+  SceneSerializer serializer{ m_ActiveScene };
   if (ImGui::BeginMenuBar()) {
     if (ImGui::BeginMenu("File")) {
+      if (ImGui::MenuItem("Serialize")) {
+        serializer.Serialize("D:/Zero/Editor/assets/scenes/Example.zr");
+      }
+
+      if (ImGui::MenuItem("Deserialize")) {
+        serializer.Deserialize("D:/Zero/Editor/assets/scenes/Example.zr");
+      }
+
       if (ImGui::MenuItem("Exit")) {
         Application::Get().Close();
       }

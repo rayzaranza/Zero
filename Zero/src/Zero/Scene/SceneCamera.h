@@ -6,7 +6,7 @@ namespace Zero {
 
 class SceneCamera : public Camera {
 public:
-  enum class ProjectionType { Perspective = 0, Orthographic = 1 };
+  enum class ProjectionType : int { Perspective = 0, Orthographic = 1 };
 
   SceneCamera();
   virtual ~SceneCamera() = default;
@@ -18,7 +18,7 @@ public:
   float GetAspectRatio() const;
 
   void SetOrthographic(float size, float nearClip, float farClip);
-  void SetPerpective(float verticalFOV, float nearClip, float farClip);
+  void SetPerspective(float verticalFOV, float nearClip, float farClip);
   void SetOrthographicSize(const float size);
   float GetOrthographicSize() const;
   void SetOrthographicNearClip(const float nearClip);
