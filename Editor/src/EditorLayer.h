@@ -6,6 +6,7 @@
 
 namespace Zero {
 
+
 class EditorLayer : public Layer {
 public:
   EditorLayer();
@@ -36,7 +37,8 @@ private:
   bool m_IsMainCameraActive{ true };
   bool m_IsViewportFocused{ false };
   bool m_IsViewportHovered{ false };
-  SceneHierarchyPanel m_HierarchyPanel;
+  SceneHierarchyPanel m_SceneHierarchyPanel;
 };
+
 
 }

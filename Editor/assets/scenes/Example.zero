@@ -13,7 +13,7 @@ Entities:
     TagComponent:
       Tag: Quad B
     TransformComponent:
-      Translation: [3.3, 2.2, 0]
+      Translation: [3.5, 2.2, 1.3]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     SpriteComponent:
@@ -22,7 +22,7 @@ Entities:
     TagComponent:
       Tag: Camera A
     TransformComponent:
-      Translation: [0, 0, 0]
+      Translation: [4.7, 0, 0.6]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:

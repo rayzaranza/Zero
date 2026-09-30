@@ -1,0 +1,38 @@
+Scene: Untitled
+Entities:
+  - Entity: 12383763562457
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0.8, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.7853982
+        PerspectiveNearClip: 1000
+        PerspectiveFarClip: 1000
+        OrthographicSize: 10
+        OrthographicNearClip: -1
+        OrthographicFarClip: 1
+      IsMain: true
+      IsAspectRatioFixed: false
+  - Entity: 12383763562457
+    TagComponent:
+      Tag: Quad 1
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 0, 0, 1]
+  - Entity: 12383763562457
+    TagComponent:
+      Tag: Quad 2
+    TransformComponent:
+      Translation: [-1.6, 1.6, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [0.61464465, 0.21940929, 1, 1]

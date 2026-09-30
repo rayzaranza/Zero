@@ -5,6 +5,7 @@
 
 namespace Zero {
 
+
 class Editor : public Application {
 public:
   Editor() : Application{ "Zero Editor" } {
@@ -16,5 +17,6 @@ public:
 Application* CreateApplication() {
   return new Editor();
 }
+
 
 }
