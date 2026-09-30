@@ -3,55 +3,63 @@
 #include "Zero/Input/KeyCode.h"
 
 
-namespace Zero {
+namespace Zero
+{
 
-class KeyEvent : public Event {
-protected:
-  KeyEvent(const KeyCode keyCode);
+class KeyEvent : public Event
+{
+  protected:
+    KeyEvent(const KeyCode keyCode);
 
-public:
-  KeyCode GetKeyCode() const;
-  virtual int32_t GetCategoryFlags() const override;
+  public:
+    KeyCode GetKeyCode() const;
+    virtual int32_t GetCategoryFlags() const override;
 
-protected:
-  KeyCode m_KeyCode{};
+  protected:
+    KeyCode m_KeyCode{};
 };
 
 
-class KeyPressedEvent : public KeyEvent {
-public:
-  KeyPressedEvent(const KeyCode keyCode, const int32_t repeatCount);
+class KeyPressedEvent : public KeyEvent
+{
+  public:
+    KeyPressedEvent(const KeyCode keyCode, const int32_t repeatCount);
 
-  int32_t GetRepeatCount() const;
-  static EventType GetStaticType();
-  virtual EventType GetEventType() const override;
-  virtual const char* GetName() const override;
-  virtual std::string ToString() const override;
+  public:
+    int32_t GetRepeatCount() const;
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual std::string ToString() const override;
 
-private:
-  int32_t m_RepeatCount;
+  private:
+    int32_t m_RepeatCount;
 };
 
 
-class KeyReleasedEvent : public KeyEvent {
-public:
-  KeyReleasedEvent(const KeyCode keyCode);
+class KeyReleasedEvent : public KeyEvent
+{
+  public:
+    KeyReleasedEvent(const KeyCode keyCode);
 
-  static EventType GetStaticType();
-  virtual EventType GetEventType() const override;
-  virtual const char* GetName() const override;
-  virtual std::string ToString() const override;
+  public:
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual std::string ToString() const override;
 };
 
 
-class KeyTypedEvent : public KeyEvent {
-public:
-  KeyTypedEvent(const KeyCode keyCode);
+class KeyTypedEvent : public KeyEvent
+{
+  public:
+    KeyTypedEvent(const KeyCode keyCode);
 
-  static EventType GetStaticType();
-  virtual EventType GetEventType() const override;
-  virtual const char* GetName() const override;
-  virtual std::string ToString() const override;
+  public:
+    static EventType GetStaticType();
+    virtual EventType GetEventType() const override;
+    virtual const char* GetName() const override;
+    virtual std::string ToString() const override;
 };
 
 }
