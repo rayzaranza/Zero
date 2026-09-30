@@ -23,47 +23,47 @@ void Zero::EditorLayer::OnAttach()
     m_ActiveScene = CreateRef<Scene>();
 
 #if 0
-  m_Texture = Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
-  m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
-  m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
+    m_Texture = Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
+    m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
+    m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
 
-  Entity quadB{ m_ActiveScene->CreateEntity("Quad B") };
-  quadB.AddComponent<SpriteComponent>(glm::vec4{ 1.0f, 0.0f, 0.2f, 1.0f });
-  m_CameraEntityA = m_ActiveScene->CreateEntity("Camera A");
-  m_CameraEntityA.AddComponent<CameraComponent>();
+    Entity quadB{ m_ActiveScene->CreateEntity("Quad B") };
+    quadB.AddComponent<SpriteComponent>(glm::vec4{ 1.0f, 0.0f, 0.2f, 1.0f });
+    m_CameraEntityA = m_ActiveScene->CreateEntity("Camera A");
+    m_CameraEntityA.AddComponent<CameraComponent>();
 
-  m_CameraEntityB = m_ActiveScene->CreateEntity("Camera B");
-  CameraComponent& cameraComponentB{ m_CameraEntityB.AddComponent<CameraComponent>() };
-  cameraComponentB.IsMain = false;
+    m_CameraEntityB = m_ActiveScene->CreateEntity("Camera B");
+    CameraComponent& cameraComponentB{ m_CameraEntityB.AddComponent<CameraComponent>() };
+    cameraComponentB.IsMain = false;
 
-  class CameraController : public ScriptableEntity {
-  public:
-    void OnCreate() {
-    }
+    class CameraController : public ScriptableEntity {
+    public:
+        void OnCreate() {
+        }
 
-    void OnDestroy() {
-    }
+        void OnDestroy() {
+        }
 
-    void OnUpdate(const DeltaTime deltaTime) {
-      glm::vec3& translation{ GetComponent<TransformComponent>().Translation };
-      constexpr float speed{ 5.0f };
-      if (Input::IsKeyPressed(KeyCode::A)) {
-        translation.x -= speed * deltaTime;
-      }
-      else if (Input::IsKeyPressed(KeyCode::D)) {
-        translation.x += speed * deltaTime;
-      }
-      if (Input::IsKeyPressed(KeyCode::W)) {
-        translation.y += speed * deltaTime;
-      }
-      else if (Input::IsKeyPressed(KeyCode::S)) {
-        translation.y -= speed * deltaTime;
-      }
-    }
-  };
+        void OnUpdate(const DeltaTime deltaTime) {
+            glm::vec3& translation{ GetComponent<TransformComponent>().Translation };
+            constexpr float speed{ 5.0f };
+            if (Input::IsKeyPressed(KeyCode::A)) {
+                translation.x -= speed * deltaTime;
+            }
+            else if (Input::IsKeyPressed(KeyCode::D)) {
+                translation.x += speed * deltaTime;
+            }
+            if (Input::IsKeyPressed(KeyCode::W)) {
+                translation.y += speed * deltaTime;
+            }
+            else if (Input::IsKeyPressed(KeyCode::S)) {
+                translation.y -= speed * deltaTime;
+            }
+        }
+    };
 
-  m_CameraEntityA.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-  m_CameraEntityB.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+    m_CameraEntityA.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+    m_CameraEntityB.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 #endif
 
     m_SceneHierarchyPanel.SetContext(m_ActiveScene);
@@ -121,8 +121,8 @@ void Zero::EditorLayer::OnUIRender()
         ImGui::SetNextWindowViewport(viewport->ID);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-        windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-                       ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+        windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+                       ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
     }
 
     if (dockSpaceFlags & ImGuiDockNodeFlags_PassthruCentralNode)
@@ -158,33 +158,17 @@ void Zero::EditorLayer::OnUIRender()
         {
             if (ImGui::MenuItem("New", "Ctrl+N"))
             {
-                m_ActiveScene = CreateRef<Scene>();
-                m_ActiveScene->OnViewportResize(m_ViewportSize);
-                m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+                NewScene();
             }
 
             if (ImGui::MenuItem("Open...", "Ctrl+O"))
             {
-                const std::string filePath{ FileDialog::OpenFile("Zero Scene (*.zero)\0*.zero\0") };
-                if (!filePath.empty())
-                {
-                    m_ActiveScene = CreateRef<Scene>();
-                    m_ActiveScene->OnViewportResize(m_ViewportSize);
-                    m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-
-                    SceneSerializer serializer{ m_ActiveScene };
-                    serializer.Deserialize(filePath);
-                }
+                OpenScene();
             }
 
             if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
             {
-                const std::string filePath{ FileDialog::SaveFile("Zero Scene (*.zero)\0*.zero\0") };
-                if (!filePath.empty())
-                {
-                    SceneSerializer serializer{ m_ActiveScene };
-                    serializer.Serialize(filePath);
-                }
+                SaveSceneAs();
             }
 
             if (ImGui::MenuItem("Exit", "Ctrl+Q"))
@@ -216,11 +200,27 @@ void Zero::EditorLayer::OnEvent(Event& event)
 
 bool Zero::EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 {
-    if (event.GetKeyCode() == KeyCode::ESCAPE)
+    const bool isControlPressed{ Input::IsKeyPressed(KeyCode::LEFT_CONTROL) || Input::IsKeyPressed(KeyCode::RIGHT_CONTROL) };
+    const bool isShiftPressed{ Input::IsKeyPressed(KeyCode::LEFT_SHIFT) || Input::IsKeyPressed(KeyCode::RIGHT_SHIFT) };
+
+    if (event.GetKeyCode() == KeyCode::N && isControlPressed)
     {
-        Application::Get().Close();
+        NewScene();
         return true;
     }
+
+    if (event.GetKeyCode() == KeyCode::O && isControlPressed)
+    {
+        OpenScene();
+        return true;
+    }
+
+    if (event.GetKeyCode() == KeyCode::S && isControlPressed && isShiftPressed)
+    {
+        SaveSceneAs();
+        return true;
+    }
+
     return false;
 }
 
@@ -236,8 +236,7 @@ void Zero::EditorLayer::RenderViewportPanel()
 
     const ImVec2 viewportPanelSize{ ImGui::GetContentRegionAvail() };
     m_ViewportSize = { static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y) };
-    ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), viewportPanelSize, ImVec2{ 0.0f, 1.0f },
-                 ImVec2{ 1.0f, 0.0f });
+    ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
     ImGui::End();
     ImGui::PopStyleVar();
 }
@@ -252,4 +251,38 @@ void Zero::EditorLayer::RenderSettingsPanel()
     ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
     ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
     ImGui::End();
+}
+
+
+void Zero::EditorLayer::NewScene()
+{
+    m_ActiveScene = CreateRef<Scene>();
+    m_ActiveScene->OnViewportResize(m_ViewportSize);
+    m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+}
+
+
+void Zero::EditorLayer::OpenScene()
+{
+    const std::string filePath{ FileDialog::OpenFile("Zero Scene (*.zero)\0*.zero\0") };
+    if (!filePath.empty())
+    {
+        m_ActiveScene = CreateRef<Scene>();
+        m_ActiveScene->OnViewportResize(m_ViewportSize);
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        SceneSerializer serializer{ m_ActiveScene };
+        serializer.Deserialize(filePath);
+    }
+}
+
+
+void Zero::EditorLayer::SaveSceneAs() const
+{
+    const std::string filePath{ FileDialog::SaveFile("Zero Scene (*.zero)\0*.zero\0") };
+    if (!filePath.empty())
+    {
+        SceneSerializer serializer{ m_ActiveScene };
+        serializer.Serialize(filePath);
+    }
 }

@@ -2,24 +2,6 @@ Scene: Untitled
 Entities:
   - Entity: 12383763562457
     TagComponent:
-      Tag: Quad 2
-    TransformComponent:
-      Translation: [2.1, 1.6, -10.5]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteComponent:
-      Color: [0, 0.7848103, 1, 1]
-  - Entity: 12383763562457
-    TagComponent:
-      Tag: Quad 1
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    SpriteComponent:
-      Color: [1, 0, 0, 1]
-  - Entity: 12383763562457
-    TagComponent:
       Tag: Camera
     TransformComponent:
       Translation: [0.8, 0, 6.8]
@@ -36,3 +18,21 @@ Entities:
         OrthographicFarClip: 1
       IsMain: true
       IsAspectRatioFixed: false
+  - Entity: 12383763562457
+    TagComponent:
+      Tag: Quad 1
+    TransformComponent:
+      Translation: [0, -0.3, 5.2]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [1, 0, 0, 1]
+  - Entity: 12383763562457
+    TagComponent:
+      Tag: Quad 2
+    TransformComponent:
+      Translation: [2.1, 1.6, -10.5]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteComponent:
+      Color: [0, 0.7848103, 1, 1]
