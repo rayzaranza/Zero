@@ -4,14 +4,17 @@
 #include <imgui.h>
 
 
-namespace Zero {
+namespace Zero
+{
 
 
-class EditorLayer : public Layer {
+class EditorLayer : public Layer
+{
 public:
   EditorLayer();
   ~EditorLayer();
 
+  public:
   virtual void OnAttach() override;
   virtual void OnDetach() override;
   virtual void OnUpdate(const DeltaTime deltaTime) override;
@@ -24,6 +27,7 @@ private:
   void RenderViewportPanel();
   void RenderSettingsPanel();
 
+  private:
   CameraOrthographicController m_CameraController;
   Ref<Framebuffer> m_Framebuffer{};
   Ref<Texture2D> m_Texture;
