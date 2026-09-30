@@ -125,6 +125,9 @@ add_library(Zero
     "${ZR_SRC}/Scene/ScriptableEntity.cpp"
     "${ZR_SRC}/Scene/SceneSerializer.h"
     "${ZR_SRC}/Scene/SceneSerializer.cpp"
+
+    "${ZR_SRC}/Utils/Utils.h"
+    "${ZR_SRC}/Utils/Utils.Windows.cpp"
 )
 
 target_include_directories(Zero
