@@ -3,8 +3,7 @@
 #include <entt/entt.hpp>
 
 
-namespace Zero
-{
+namespace Zero {
 
 
 class Entity;
@@ -22,6 +21,7 @@ class Scene
     void OnViewportResize(const glm::uvec2& size);
     Entity CreateEntity(const std::string& name = "Entity");
     void DestroyEntity(Entity entity);
+    Entity GetMainCameraEntity();
 
   private:
     entt::registry m_Registry;
