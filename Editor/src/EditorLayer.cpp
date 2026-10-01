@@ -1,13 +1,16 @@
 #include "EditorLayer.h"
+#include <ImGuizmo.h>
+#include <Zero/Math/Math.h>
 #include <Zero/Scene/SceneSerializer.h>
 #include <Zero/Utils/Utils.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 
 Zero::EditorLayer::EditorLayer()
-    : Layer{ "EditorLayer" },
-      m_CameraController{ Application::Get().GetWindow().GetAspectRatio() },
-      m_Framebuffer{ Framebuffer::Create({ .Size{ 1280u, 720u } }) }
+    : Layer{ "EditorLayer" }
+    , m_CameraController{ Application::Get().GetWindow().GetAspectRatio() }
+    , m_Framebuffer{ Framebuffer::Create({ .Size{ 1280u, 720u } }) }
+    , m_GizmoType{ ImGuizmo::OPERATION::TRANSLATE }
 {
 }
 
@@ -21,51 +24,6 @@ void Zero::EditorLayer::OnAttach()
 {
     m_TextureCheckerboard = Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png");
     m_ActiveScene = CreateRef<Scene>();
-
-#if 0
-    m_Texture = Texture2D::Create("D:/Zero/Sandbox/assets/textures/test.jpg");
-    m_QuadEntity = m_ActiveScene->CreateEntity("Quad");
-    m_QuadEntity.AddComponent<SpriteComponent>(glm::vec4{ 0.1f, 1.0f, 0.0f, 1.0f });
-
-    Entity quadB{ m_ActiveScene->CreateEntity("Quad B") };
-    quadB.AddComponent<SpriteComponent>(glm::vec4{ 1.0f, 0.0f, 0.2f, 1.0f });
-    m_CameraEntityA = m_ActiveScene->CreateEntity("Camera A");
-    m_CameraEntityA.AddComponent<CameraComponent>();
-
-    m_CameraEntityB = m_ActiveScene->CreateEntity("Camera B");
-    CameraComponent& cameraComponentB{ m_CameraEntityB.AddComponent<CameraComponent>() };
-    cameraComponentB.IsMain = false;
-
-    class CameraController : public ScriptableEntity {
-    public:
-        void OnCreate() {
-        }
-
-        void OnDestroy() {
-        }
-
-        void OnUpdate(const DeltaTime deltaTime) {
-            glm::vec3& translation{ GetComponent<TransformComponent>().Translation };
-            constexpr float speed{ 5.0f };
-            if (Input::IsKeyPressed(KeyCode::A)) {
-                translation.x -= speed * deltaTime;
-            }
-            else if (Input::IsKeyPressed(KeyCode::D)) {
-                translation.x += speed * deltaTime;
-            }
-            if (Input::IsKeyPressed(KeyCode::W)) {
-                translation.y += speed * deltaTime;
-            }
-            else if (Input::IsKeyPressed(KeyCode::S)) {
-                translation.y -= speed * deltaTime;
-            }
-        }
-    };
-
-    m_CameraEntityA.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-    m_CameraEntityB.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-#endif
-
     m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 }
 
@@ -200,25 +158,38 @@ void Zero::EditorLayer::OnEvent(Event& event)
 
 bool Zero::EditorLayer::OnKeyPressed(KeyPressedEvent& event)
 {
+    const KeyCode keyCode{ event.GetKeyCode() };
     const bool isControlPressed{ Input::IsKeyPressed(KeyCode::LEFT_CONTROL) || Input::IsKeyPressed(KeyCode::RIGHT_CONTROL) };
     const bool isShiftPressed{ Input::IsKeyPressed(KeyCode::LEFT_SHIFT) || Input::IsKeyPressed(KeyCode::RIGHT_SHIFT) };
 
-    if (event.GetKeyCode() == KeyCode::N && isControlPressed)
+    if (keyCode == KeyCode::N && isControlPressed)
     {
         NewScene();
-        return true;
     }
-
-    if (event.GetKeyCode() == KeyCode::O && isControlPressed)
+    else if (keyCode == KeyCode::O && isControlPressed)
     {
         OpenScene();
-        return true;
     }
-
-    if (event.GetKeyCode() == KeyCode::S && isControlPressed && isShiftPressed)
+    else if (keyCode == KeyCode::S && isControlPressed && isShiftPressed)
     {
         SaveSceneAs();
-        return true;
+    }
+
+    if (keyCode == KeyCode::Q)
+    {
+        m_GizmoType = -1;
+    }
+    else if (keyCode == KeyCode::W)
+    {
+        m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
+    }
+    else if (keyCode == KeyCode::E)
+    {
+        m_GizmoType = ImGuizmo::OPERATION::ROTATE;
+    }
+    else if (keyCode == KeyCode::R)
+    {
+        m_GizmoType = ImGuizmo::OPERATION::SCALE;
     }
 
     return false;
@@ -237,6 +208,52 @@ void Zero::EditorLayer::RenderViewportPanel()
     const ImVec2 viewportPanelSize{ ImGui::GetContentRegionAvail() };
     m_ViewportSize = { static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y) };
     ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+
+    Entity selectedEntity{ m_SceneHierarchyPanel.GetSelectedEntity() };
+
+    if (selectedEntity && m_GizmoType != -1)
+    {
+        ImGuizmo::SetOrthographic(false);
+        ImGuizmo::SetDrawlist();
+
+        const float windowWidth{ static_cast<float>(ImGui::GetWindowWidth()) };
+        const float windowHeight{ static_cast<float>(ImGui::GetWindowHeight()) };
+        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+        Entity cameraEntity{ m_ActiveScene->GetMainCameraEntity() };
+        Camera& camera{ cameraEntity.GetComponent<CameraComponent>().Camera };
+        const glm::mat4 projection{ camera.GetProjection() };
+        const glm::mat4 cameraView{ glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform()) };
+
+        TransformComponent& transformComponent{ selectedEntity.GetComponent<TransformComponent>() };
+        glm::mat4 transform{ transformComponent.GetTransform() };
+
+        const bool isSnapping{ Input::IsKeyPressed(KeyCode::LEFT_CONTROL) };
+        const float snapIncrement{ m_GizmoType == ImGuizmo::OPERATION::ROTATE ? 45.0f : 0.5f };
+        const float snapIncrements[3]{ snapIncrement, snapIncrement, snapIncrement };
+
+        ImGuizmo::Manipulate(glm::value_ptr(cameraView),
+            glm::value_ptr(projection),
+            static_cast<ImGuizmo::OPERATION>(m_GizmoType),
+            ImGuizmo::LOCAL,
+            glm::value_ptr(transform),
+            nullptr,
+            isSnapping ? snapIncrements : nullptr);
+
+        if (ImGuizmo::IsUsing())
+        {
+            glm::vec3 translation{};
+            glm::vec3 rotation{};
+            glm::vec3 scale{};
+            Math::DecomposeTransform(transform, translation, rotation, scale);
+
+            const glm::vec3 deltaRotation{ rotation - transformComponent.Rotation };
+            transformComponent.Translation = translation;
+            transformComponent.Rotation += deltaRotation;
+            transformComponent.Scale = scale;
+        }
+    }
+
     ImGui::End();
     ImGui::PopStyleVar();
 }
@@ -245,6 +262,7 @@ void Zero::EditorLayer::RenderViewportPanel()
 void Zero::EditorLayer::RenderSettingsPanel()
 {
     const RenderStats& stats{ Renderer2D::GetStats() };
+
     ImGui::Begin("Renderer2D Stats");
     ImGui::Text("Draw Calls: %d", stats.DrawCalls);
     ImGui::Text("Quads: %d", stats.QuadCount);
