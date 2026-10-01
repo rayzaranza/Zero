@@ -2,8 +2,9 @@
 #include <Zero.h>
 
 
-class Sandbox : public Zero::Application {
-public:
-  Sandbox();
-  ~Sandbox() = default;
+class Sandbox : public Zero::Application
+{
+  public:
+    Sandbox();
+    ~Sandbox() = default;
 };

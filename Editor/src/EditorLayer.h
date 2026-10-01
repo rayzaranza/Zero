@@ -4,8 +4,7 @@
 #include <imgui.h>
 
 
-namespace Zero
-{
+namespace Zero {
 
 
 class EditorLayer : public Layer

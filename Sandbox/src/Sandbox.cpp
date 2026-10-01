@@ -3,11 +3,13 @@
 #include <Zero/Core/EntryPoint.h>
 
 
-Sandbox::Sandbox() {
-  PushLayer(new Sandbox2D());
+Sandbox::Sandbox()
+{
+    PushLayer(new Sandbox2D());
 }
 
 
-Zero::Application* Zero::CreateApplication() {
-  return new Sandbox();
+Zero::Application* Zero::CreateApplication()
+{
+    return new Sandbox();
 }

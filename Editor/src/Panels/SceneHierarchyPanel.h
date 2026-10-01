@@ -2,8 +2,7 @@
 #include <Zero.h>
 
 
-namespace Zero
-{
+namespace Zero {
 
 
 class SceneHierarchyPanel
@@ -12,6 +11,7 @@ class SceneHierarchyPanel
     SceneHierarchyPanel() = default;
     SceneHierarchyPanel(const Ref<Scene>& context);
 
+  public:
     void SetContext(const Ref<Scene>& context);
     void OnUIRender();
     void DrawEntityNode(Entity entity);
@@ -21,6 +21,7 @@ class SceneHierarchyPanel
     void DrawPropertiesPanel();
     void DrawSceneHierarchyPanel();
 
+  private:
     Ref<Scene> m_Context;
     Entity m_SelectionContext;
 };
