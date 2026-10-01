@@ -308,8 +308,13 @@ void Zero::SceneHierarchyPanel::DrawComponents(Entity entity)
         }
     });
 
-    DrawComponent<SpriteComponent>(
-        "Sprite", entity, [](SpriteComponent& sprite) { ImGui::ColorEdit4("Color", glm::value_ptr(sprite.Color)); });
+    DrawComponent<SpriteComponent>("Sprite", entity, [](auto& sprite) { ImGui::ColorEdit4("Color", glm::value_ptr(sprite.Color)); });
+}
+
+
+Zero::Entity Zero::SceneHierarchyPanel::GetSelectedEntity() const
+{
+    return m_SelectionContext;
 }
 
 

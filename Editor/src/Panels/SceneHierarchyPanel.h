@@ -16,6 +16,7 @@ class SceneHierarchyPanel
     void OnUIRender();
     void DrawEntityNode(Entity entity);
     void DrawComponents(Entity entity);
+    Entity GetSelectedEntity() const;
 
   private:
     void DrawPropertiesPanel();
