@@ -1,143 +1,145 @@
-﻿find_package(glad CONFIG REQUIRED)
+﻿include(FetchContent)
+
+find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(Stb REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
-find_package(Stb REQUIRED)
 find_package(yaml-cpp CONFIG REQUIRED)
+find_package(imguizmo CONFIG REQUIRED)
 
-include(FetchContent)
 FetchContent_Declare(EnTT
   GIT_REPOSITORY https://github.com/skypjack/entt
   GIT_TAG 85c6bba014049b5de8fad49d25424df2f1f6a8c1
 )
+
 FetchContent_MakeAvailable(EnTT)
 
-set(ZR_SRC "src/Zero")
 
-add_library(Zero
-  STATIC
+set(SRC "src/Zero")
+
+add_library(Zero STATIC
     "src/Zero.h"
-    "${ZR_SRC}/Core/Core.h"
-    "${ZR_SRC}/Core/EntryPoint.h"
-    "${ZR_SRC}/Core/Types.h"
+    "${SRC}/Core/Core.h"
+    "${SRC}/Core/EntryPoint.h"
+    "${SRC}/Core/Types.h" 
 
-    "${ZR_SRC}/Math/Math.h"
-    "${ZR_SRC}/Math/Math.cpp"
+    "${SRC}/Math/Math.h"
+    "${SRC}/Math/Math.cpp"
 
-    "${ZR_SRC}/Application/Application.h"
-	  "${ZR_SRC}/Application/Application.cpp"
+    "${SRC}/Application/Application.h"
+    "${SRC}/Application/Application.cpp"
 
-    "${ZR_SRC}/Logger/Logger.h"
-    "${ZR_SRC}/Logger/Logger.cpp"
+    "${SRC}/Logger/Logger.h"
+    "${SRC}/Logger/Logger.cpp"
 
-    "${ZR_SRC}/Input/Input.h"
-    "${ZR_SRC}/Input/Input.cpp"
-    "${ZR_SRC}/Input/KeyCode.h"
-    "${ZR_SRC}/Input/MouseButton.h"
+    "${SRC}/Input/Input.h"
+    "${SRC}/Input/Input.cpp"
+    "${SRC}/Input/KeyCode.h"
+    "${SRC}/Input/MouseButton.h"
 
-    "${ZR_SRC}/Window/Window.h"
-    "${ZR_SRC}/Window/Window.cpp"
+    "${SRC}/Window/Window.h"
+    "${SRC}/Window/Window.cpp"
 
-    "${ZR_SRC}/Event/Event.h"
-    "${ZR_SRC}/Event/Event.cpp"
-    "${ZR_SRC}/Event/KeyEvent.h"
-    "${ZR_SRC}/Event/KeyEvent.cpp"
-    "${ZR_SRC}/Event/MouseEvent.h"
-    "${ZR_SRC}/Event/MouseEvent.cpp"
-    "${ZR_SRC}/Event/ApplicationEvent.h"
-    "${ZR_SRC}/Event/ApplicationEvent.cpp"
+    "${SRC}/Event/Event.h"
+    "${SRC}/Event/Event.cpp"
+    "${SRC}/Event/KeyEvent.h"
+    "${SRC}/Event/KeyEvent.cpp"
+    "${SRC}/Event/MouseEvent.h"
+    "${SRC}/Event/MouseEvent.cpp"
+    "${SRC}/Event/ApplicationEvent.h"
+    "${SRC}/Event/ApplicationEvent.cpp"
 
-    "${ZR_SRC}/Layer/Layer.h"
-    "${ZR_SRC}/Layer/Layer.cpp"
-    "${ZR_SRC}/Layer/LayerStack.h"
-    "${ZR_SRC}/Layer/LayerStack.cpp"
-    "${ZR_SRC}/UI/UILayer.h"
-    "${ZR_SRC}/UI/UILayer.cpp"
+    "${SRC}/Layer/Layer.h"
+    "${SRC}/Layer/Layer.cpp"
+    "${SRC}/Layer/LayerStack.h"
+    "${SRC}/Layer/LayerStack.cpp"
+    "${SRC}/UI/UILayer.h"
+    "${SRC}/UI/UILayer.cpp"
 
-    "${ZR_SRC}/Renderer/Renderer.h"
-    "${ZR_SRC}/Renderer/Renderer.cpp"
-    "${ZR_SRC}/Renderer/Renderer2D.h"
-    "${ZR_SRC}/Renderer/Renderer2D.cpp"
-    "${ZR_SRC}/Renderer/RenderCommand.h"
-    "${ZR_SRC}/Renderer/RenderCommand.cpp"
-    "${ZR_SRC}/Renderer/RendererAPI.h"
-    "${ZR_SRC}/Renderer/RendererAPI.cpp"
-    "${ZR_SRC}/Renderer/RendererAPI.OpenGL.h"
-    "${ZR_SRC}/Renderer/RendererAPI.OpenGL.cpp"
+    "${SRC}/Renderer/Renderer.h"
+    "${SRC}/Renderer/Renderer.cpp"
+    "${SRC}/Renderer/Renderer2D.h"
+    "${SRC}/Renderer/Renderer2D.cpp"
+    "${SRC}/Renderer/RenderCommand.h"
+    "${SRC}/Renderer/RenderCommand.cpp"
+    "${SRC}/Renderer/RendererAPI.h"
+    "${SRC}/Renderer/RendererAPI.cpp"
+    "${SRC}/Renderer/RendererAPI.OpenGL.h"
+    "${SRC}/Renderer/RendererAPI.OpenGL.cpp"
 
-    "${ZR_SRC}/Renderer/GraphicsContext.h"
-    "${ZR_SRC}/Renderer/GraphicsContext.OpenGL.h"
-    "${ZR_SRC}/Renderer/GraphicsContext.OpenGL.cpp"
+    "${SRC}/Renderer/GraphicsContext.h"
+    "${SRC}/Renderer/GraphicsContext.OpenGL.h"
+    "${SRC}/Renderer/GraphicsContext.OpenGL.cpp"
 
-    "${ZR_SRC}/Renderer/Buffer/VertexAttribute.h"
-    "${ZR_SRC}/Renderer/Buffer/VertexAttribute.cpp"
-    "${ZR_SRC}/Renderer/Buffer/VertexBuffer.h"
-    "${ZR_SRC}/Renderer/Buffer/VertexBuffer.cpp"
-    "${ZR_SRC}/Renderer/Buffer/VertexBuffer.OpenGL.h"
-    "${ZR_SRC}/Renderer/Buffer/VertexBuffer.OpenGL.cpp"
-    "${ZR_SRC}/Renderer/Buffer/VertexBufferLayout.h"
-    "${ZR_SRC}/Renderer/Buffer/VertexBufferLayout.cpp"
-    "${ZR_SRC}/Renderer/Buffer/IndexBuffer.h"
-    "${ZR_SRC}/Renderer/Buffer/IndexBuffer.cpp"
-    "${ZR_SRC}/Renderer/Buffer/IndexBuffer.OpenGL.h"
-    "${ZR_SRC}/Renderer/Buffer/IndexBuffer.OpenGL.cpp"
-    "${ZR_SRC}/Renderer/Buffer/VertexArray.h"
-    "${ZR_SRC}/Renderer/Buffer/VertexArray.cpp"
-    "${ZR_SRC}/Renderer/Buffer/VertexArray.OpenGL.h"
-    "${ZR_SRC}/Renderer/Buffer/VertexArray.OpenGL.cpp"
+    "${SRC}/Renderer/Buffer/VertexAttribute.h"
+    "${SRC}/Renderer/Buffer/VertexAttribute.cpp"
+    "${SRC}/Renderer/Buffer/VertexBuffer.h"
+    "${SRC}/Renderer/Buffer/VertexBuffer.cpp"
+    "${SRC}/Renderer/Buffer/VertexBuffer.OpenGL.h"
+    "${SRC}/Renderer/Buffer/VertexBuffer.OpenGL.cpp"
+    "${SRC}/Renderer/Buffer/VertexBufferLayout.h"
+    "${SRC}/Renderer/Buffer/VertexBufferLayout.cpp"
+    "${SRC}/Renderer/Buffer/IndexBuffer.h"
+    "${SRC}/Renderer/Buffer/IndexBuffer.cpp"
+    "${SRC}/Renderer/Buffer/IndexBuffer.OpenGL.h"
+    "${SRC}/Renderer/Buffer/IndexBuffer.OpenGL.cpp"
+    "${SRC}/Renderer/Buffer/VertexArray.h"
+    "${SRC}/Renderer/Buffer/VertexArray.cpp"
+    "${SRC}/Renderer/Buffer/VertexArray.OpenGL.h"
+    "${SRC}/Renderer/Buffer/VertexArray.OpenGL.cpp"
 
-    "${ZR_SRC}/Renderer/Framebuffer.h"
-    "${ZR_SRC}/Renderer/Framebuffer.cpp"
-    "${ZR_SRC}/Renderer/Framebuffer.OpenGL.h"
-    "${ZR_SRC}/Renderer/Framebuffer.OpenGL.cpp"
+    "${SRC}/Renderer/Framebuffer.h"
+    "${SRC}/Renderer/Framebuffer.cpp"
+    "${SRC}/Renderer/Framebuffer.OpenGL.h"
+    "${SRC}/Renderer/Framebuffer.OpenGL.cpp"
 
-    "${ZR_SRC}/Renderer/Shader/Shader.h"
-    "${ZR_SRC}/Renderer/Shader/Shader.cpp"
-    "${ZR_SRC}/Renderer/Shader/Shader.OpenGL.h"
-    "${ZR_SRC}/Renderer/Shader/Shader.OpenGL.cpp"
+    "${SRC}/Renderer/Shader/Shader.h"
+    "${SRC}/Renderer/Shader/Shader.cpp"
+    "${SRC}/Renderer/Shader/Shader.OpenGL.h"
+    "${SRC}/Renderer/Shader/Shader.OpenGL.cpp"
 
-    "${ZR_SRC}/Renderer/Texture/Texture.h"
-    "${ZR_SRC}/Renderer/Texture/Texture.cpp"
-    "${ZR_SRC}/Renderer/Texture/SubTexture2D.h"
-    "${ZR_SRC}/Renderer/Texture/SubTexture2D.cpp"
-    "${ZR_SRC}/Renderer/Texture/Texture.OpenGL.h"
-    "${ZR_SRC}/Renderer/Texture/Texture.OpenGL.cpp"
+    "${SRC}/Renderer/Texture/Texture.h"
+    "${SRC}/Renderer/Texture/Texture.cpp"
+    "${SRC}/Renderer/Texture/SubTexture2D.h"
+    "${SRC}/Renderer/Texture/SubTexture2D.cpp"
+    "${SRC}/Renderer/Texture/Texture.OpenGL.h"
+    "${SRC}/Renderer/Texture/Texture.OpenGL.cpp"
 
-    "${ZR_SRC}/Camera/Camera.h"
-    "${ZR_SRC}/Camera/Camera.cpp"
-    "${ZR_SRC}/Camera/CameraController.h"
-    "${ZR_SRC}/Camera/CameraController.cpp"
+    "${SRC}/Camera/Camera.h"
+    "${SRC}/Camera/Camera.cpp"
+    "${SRC}/Camera/CameraController.h"
+    "${SRC}/Camera/CameraController.cpp"
 
-    "${ZR_SRC}/Time/DeltaTime.h"
-    "${ZR_SRC}/Profiler/Profiler.h"
-    "${ZR_SRC}/Profiler/Profiler.cpp"
+    "${SRC}/Time/DeltaTime.h"
+    "${SRC}/Profiler/Profiler.h"
+    "${SRC}/Profiler/Profiler.cpp"
 
-    "${ZR_SRC}/Scene/Scene.h"
-    "${ZR_SRC}/Scene/Scene.cpp"
-    "${ZR_SRC}/Scene/Components.h"
-    "${ZR_SRC}/Scene/Components.cpp"
-    "${ZR_SRC}/Scene/Entity.h"
-    "${ZR_SRC}/Scene/Entity.cpp"
-    "${ZR_SRC}/Scene/SceneCamera.h"
-    "${ZR_SRC}/Scene/SceneCamera.cpp"
-    "${ZR_SRC}/Scene/ScriptableEntity.h"
-    "${ZR_SRC}/Scene/ScriptableEntity.cpp"
-    "${ZR_SRC}/Scene/SceneSerializer.h"
-    "${ZR_SRC}/Scene/SceneSerializer.cpp"
+    "${SRC}/Scene/Scene.h"
+    "${SRC}/Scene/Scene.cpp"
+    "${SRC}/Scene/Components.h"
+    "${SRC}/Scene/Components.cpp"
+    "${SRC}/Scene/Entity.h"
+    "${SRC}/Scene/Entity.cpp"
+    "${SRC}/Scene/SceneCamera.h"
+    "${SRC}/Scene/SceneCamera.cpp"
+    "${SRC}/Scene/ScriptableEntity.h"
+    "${SRC}/Scene/ScriptableEntity.cpp"
+    "${SRC}/Scene/SceneSerializer.h"
+    "${SRC}/Scene/SceneSerializer.cpp"
 
-    "${ZR_SRC}/Utils/Utils.h"
-    "${ZR_SRC}/Utils/Utils.Windows.cpp"
+    "${SRC}/Utils/Utils.h"
+    "${SRC}/Utils/Utils.Windows.cpp"
 )
 
-target_include_directories(Zero
-  PUBLIC
+
+target_include_directories(Zero PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${Stb_INCLUDE_DIR}"
 )
 
-target_link_libraries(Zero
-  PUBLIC
+target_link_libraries(Zero PUBLIC
     glm::glm 
     glad::glad 
     glfw
@@ -145,14 +147,17 @@ target_link_libraries(Zero
     imgui::imgui
     EnTT::EnTT
     yaml-cpp::yaml-cpp
+    imguizmo::imguizmo
 )
 
-target_compile_definitions(Zero
-  PUBLIC
+target_compile_definitions(Zero PUBLIC
     ZR_ENABLE_ASSERTS
     ZR_PLATFORM_WINDOWS
     GLFW_INCLUDE_NONE
+    GLM_ENABLE_EXPERIMENTAL
     IMGUI_IMPL_OPENGL_LOADER_GLAD
 )
 
-target_precompile_headers(Zero PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/${ZR_SRC}/zrpch.h")
+target_precompile_headers(Zero PUBLIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/${SRC}/zrpch.h"
+)
