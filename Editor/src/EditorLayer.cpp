@@ -203,7 +203,7 @@ void Zero::EditorLayer::RenderViewportPanel()
 
     m_IsViewportFocused = ImGui::IsWindowFocused();
     m_IsViewportHovered = ImGui::IsWindowHovered();
-    Application::Get().GetUILayer()->SetIsBlockingEvents(!m_IsViewportFocused || !m_IsViewportHovered);
+    Application::Get().GetUILayer()->SetIsBlockingEvents(!m_IsViewportFocused && !m_IsViewportHovered);
 
     const ImVec2 viewportPanelSize{ ImGui::GetContentRegionAvail() };
     m_ViewportSize = { static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y) };
