@@ -1,4 +1,5 @@
 #pragma once
+#include "Zero/Camera/EditorCamera.h"
 #include "Zero/Time/DeltaTime.h"
 #include <entt/entt.hpp>
 
@@ -16,8 +17,10 @@ class Scene
     ~Scene();
 
   public:
-    void OnUpdate(const DeltaTime deltaTime);
-    void OnRender();
+    void OnRuntimeUpdate(const DeltaTime deltaTime);
+    void OnRuntimeRender();
+    void OnEditorUpdate(const DeltaTime deltaTime, EditorCamera& camera);
+    void OnEditorRender(EditorCamera& camera);
     void OnViewportResize(const glm::uvec2& size);
     Entity CreateEntity(const std::string& name = "Entity");
     void DestroyEntity(Entity entity);
