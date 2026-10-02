@@ -6,11 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-Zero::EditorLayer::EditorLayer()
-    : Layer{ "EditorLayer" }
-    , m_CameraController{ Application::Get().GetWindow().GetAspectRatio() }
-    , m_Framebuffer{ Framebuffer::Create({ .Size{ 1280u, 720u } }) }
-    , m_GizmoType{ ImGuizmo::OPERATION::TRANSLATE }
+Zero::EditorLayer::EditorLayer() : Layer{ "EditorLayer" }
 {
 }
 
@@ -22,7 +18,7 @@ Zero::EditorLayer::~EditorLayer()
 
 void Zero::EditorLayer::OnAttach()
 {
-    m_TextureCheckerboard = Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png");
+    m_Framebuffer = Framebuffer::Create({ .Size{ 1280u, 720u } });
     m_ActiveScene = CreateRef<Scene>();
     m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 }
@@ -35,8 +31,9 @@ void Zero::EditorLayer::OnDetach()
 
 void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime)
 {
-    if (m_ViewportSize.x > 0u && m_ViewportSize.y > 0u &&
-        (m_Framebuffer->GetSize().x != m_ViewportSize.x || m_Framebuffer->GetSize().y != m_ViewportSize.y))
+    const glm::uvec2& size{ m_Framebuffer->GetSize() };
+
+    if (m_ViewportSize.x > 0u && m_ViewportSize.y > 0u && (size.x != m_ViewportSize.x || size.y != m_ViewportSize.y))
     {
         m_Framebuffer->Resize(m_ViewportSize);
         m_CameraController.OnResize(m_ViewportSize);
