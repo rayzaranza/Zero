@@ -225,27 +225,20 @@ void Zero::EditorLayer::RenderViewportPanel()
         const float windowHeight{ static_cast<float>(ImGui::GetWindowHeight()) };
         ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-        // Entity cameraEntity{ m_ActiveScene->GetMainCameraEntity() };
-        // Camera& camera{ cameraEntity.GetComponent<CameraComponent>().Camera };
-        // const glm::mat4 cameraView{ glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform()) };
-
-        const glm::mat4 projection{ m_EditorCamera.GetProjection() };
-        const glm::mat4 view{ m_EditorCamera.GetViewMatrix() };
-
         TransformComponent& transformComponent{ selectedEntity.GetComponent<TransformComponent>() };
         glm::mat4 transform{ transformComponent.GetTransform() };
 
-        const bool isSnapping{ Input::IsKeyPressed(KeyCode::LEFT_CONTROL) };
+        const bool isSnapEnabled{ Input::IsKeyPressed(KeyCode::LEFT_CONTROL) };
         const float snapIncrement{ m_GizmoType == ImGuizmo::OPERATION::ROTATE ? 45.0f : 0.5f };
         const float snapIncrements[3]{ snapIncrement, snapIncrement, snapIncrement };
 
-        ImGuizmo::Manipulate(glm::value_ptr(view),
-            glm::value_ptr(projection),
-            static_cast<ImGuizmo::OPERATION>(m_GizmoType),
-            ImGuizmo::LOCAL,
-            glm::value_ptr(transform),
-            nullptr,
-            isSnapping ? snapIncrements : nullptr);
+        const glm::f32* view{ glm::value_ptr(m_EditorCamera.GetViewMatrix()) };
+        const glm::f32* projection{ glm::value_ptr(m_EditorCamera.GetProjection()) };
+        const float* snap{ isSnapEnabled ? snapIncrements : nullptr };
+
+        const ImGuizmo::OPERATION operation{ static_cast<ImGuizmo::OPERATION>(m_GizmoType) };
+
+        ImGuizmo::Manipulate(view, projection, operation, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap);
 
         if (ImGuizmo::IsUsing())
         {
