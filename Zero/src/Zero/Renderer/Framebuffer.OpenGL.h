@@ -18,13 +18,15 @@ class FramebufferOpenGL : public Framebuffer
     virtual void Resize(const glm::uvec2& size) override;
     virtual const FramebufferProps& GetProps() const override;
     virtual const glm::uvec2& GetSize() const override;
-    virtual uint32_t GetColorAttachmentRendererID() const override;
+    virtual uint32_t GetColorAttachmentRendererID(uint32_t index = 0u) const override;
 
   private:
     uint32_t m_RendererID{};
-    uint32_t m_ColorAttachment{};
-    uint32_t m_DepthAttachment{};
     FramebufferProps m_Props;
+    Array<FramebufferTextureProps> m_ColorAttachmentsProps{};
+    FramebufferTextureProps m_DepthAttachmentProps{ FramebufferTextureFormat::None };
+    Array<uint32_t> m_ColorAttachments{};
+    uint32_t m_DepthAttachment{};
 };
 
 

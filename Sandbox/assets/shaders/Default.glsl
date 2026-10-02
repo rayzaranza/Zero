@@ -31,6 +31,9 @@ void main()
 #type fragment
 #version 460 core
 
+layout(location = 0) out vec4 o_Color;
+layout(location = 1) out vec4 o_Color2;
+
 in vec4 v_Color;
 in vec2 v_UV;
 in float v_TextureSlot;
@@ -38,9 +41,10 @@ in vec2 v_Tiling;
 
 uniform sampler2D u_Textures[32];
 
-out vec4 o_Color;
 
 void main()
 {
     o_Color = texture(u_Textures[int(v_TextureSlot)], v_UV * v_Tiling) * v_Color;
+
+    o_Color2 = vec4(0.96f, 0.13f, 0.24f, 1.0f);
 }

@@ -31,3 +31,14 @@ Zero::Ref<Zero::Framebuffer> Zero::Framebuffer::Create(const FramebufferProps& p
         }
     }
 }
+
+
+Zero::FramebufferTextureProps::FramebufferTextureProps(FramebufferTextureFormat format) : TextureFormat{ format }
+{
+}
+
+
+Zero::FramebufferAttachmentProps::FramebufferAttachmentProps(std::initializer_list<FramebufferTextureProps> attachments)
+    : Attachments{ attachments }
+{
+}

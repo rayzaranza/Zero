@@ -21,10 +21,19 @@ Zero::EditorLayer::~EditorLayer()
 
 void Zero::EditorLayer::OnAttach()
 {
-    m_Framebuffer = Framebuffer::Create({ .Size{ 1280u, 720u } });
+    m_Framebuffer = Framebuffer::Create({
+        .Size{ 1280u, 720u },
+        .AttachmentProps{
+            FramebufferTextureFormat::RGBA8,
+            FramebufferTextureFormat::RGBA8,
+            FramebufferTextureFormat::Depth,
+        },
+    });
+
+    m_EditorCamera = EditorCamera{};
+
     m_ActiveScene = CreateRef<Scene>();
     m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-    m_EditorCamera = EditorCamera{};
 }
 
 
@@ -215,7 +224,7 @@ void Zero::EditorLayer::RenderViewportPanel()
 
     const ImVec2 viewportPanelSize{ ImGui::GetContentRegionAvail() };
     m_ViewportSize = { static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y) };
-    ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+    ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(1u), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
 
     Entity selectedEntity{ m_SceneHierarchyPanel.GetSelectedEntity() };
 
