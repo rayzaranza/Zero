@@ -1,6 +1,7 @@
 #pragma once
 #include "Panels/SceneHierarchyPanel.h"
 #include <Zero.h>
+#include <Zero/Camera/EditorCamera.h>
 #include <imgui.h>
 
 
@@ -30,21 +31,15 @@ class EditorLayer : public Layer
     void SaveSceneAs() const;
 
   private:
-    CameraOrthographicController m_CameraController;
     Ref<Framebuffer> m_Framebuffer{};
-    Ref<Texture2D> m_Texture;
-    Ref<Texture2D> m_TextureCheckerboard;
-    Array<QuadProps> m_Quads;
+    EditorCamera m_EditorCamera;
     Ref<Scene> m_ActiveScene;
-    Entity m_QuadEntity{};
-    Entity m_CameraEntityA{};
-    Entity m_CameraEntityB{};
     glm::uvec2 m_ViewportSize{ 0u, 0u };
     bool m_IsMainCameraActive{ true };
     bool m_IsViewportFocused{ false };
     bool m_IsViewportHovered{ false };
     SceneHierarchyPanel m_SceneHierarchyPanel;
-    int32_t m_GizmoType;
+    int16_t m_GizmoType{ -1 };
 };
 
 
