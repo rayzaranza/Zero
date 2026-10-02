@@ -14,7 +14,7 @@ Zero::Scene::~Scene()
 }
 
 
-void Zero::Scene::OnUpdate(const DeltaTime deltaTime)
+void Zero::Scene::OnRuntimeUpdate(const DeltaTime deltaTime)
 {
     const auto nativeScripts{ m_Registry.view<NativeScriptComponent>() };
 
@@ -28,16 +28,18 @@ void Zero::Scene::OnUpdate(const DeltaTime deltaTime)
         }
 
         nativeScript.Instance->OnUpdate(deltaTime);
-}
+    }
 }
 
 
-void Zero::Scene::OnRender()
+void Zero::Scene::OnRuntimeRender()
 {
     Camera* cameraMain{ nullptr };
     glm::mat4 cameraTransform;
 
-    for (const auto [entity, transform, camera] : m_Registry.view<TransformComponent, CameraComponent>().each())
+    const auto entitiesWithCamera{ m_Registry.view<const TransformComponent, CameraComponent>() };
+
+    for (const auto [entity, transform, camera] : entitiesWithCamera.each())
     {
         if (camera.IsMain)
         {
@@ -49,25 +51,54 @@ void Zero::Scene::OnRender()
 
     if (cameraMain)
     {
+        const auto entitiesWithSprite{ m_Registry.view<const TransformComponent, const SpriteComponent>() };
+
         Renderer2D::BeginScene(*cameraMain, cameraTransform);
-        for (const auto [entity, transform, sprite] : m_Registry.view<TransformComponent, SpriteComponent>().each())
+
+        for (const auto [entity, transform, sprite] : entitiesWithSprite.each())
         {
             Renderer2D::DrawQuad({ transform.GetTransform(), sprite.Color });
         }
+
         Renderer2D::EndScene();
     }
+}
+
+
+void Zero::Scene::OnEditorUpdate(const DeltaTime deltaTime, EditorCamera& camera)
+{
+    camera.OnUpdate(deltaTime);
+}
+
+
+void Zero::Scene::OnEditorRender(EditorCamera& camera)
+{
+    const auto entitiesWithSprite{ m_Registry.view<const TransformComponent, const SpriteComponent>() };
+
+    Renderer2D::BeginScene(camera);
+
+    for (const auto [entity, transform, sprite] : entitiesWithSprite.each())
+    {
+        Renderer2D::DrawQuad({ transform.GetTransform(), sprite.Color });
+    }
+
+    Renderer2D::EndScene();
 }
 
 
 void Zero::Scene::OnViewportResize(const glm::uvec2& size)
 {
     m_ViewportSize = size;
-    m_Registry.view<CameraComponent>().each([=](auto entity, CameraComponent& cameraComponent) {
+
+    const auto cameras{ m_Registry.view<CameraComponent>() };
+
+    for (auto [entity, cameraComponent] : cameras.each())
+    {
         if (!cameraComponent.IsAspectRatioFixed)
         {
             cameraComponent.Camera.SetViewportSize(size);
         }
-    });
+    }
 }
 
 

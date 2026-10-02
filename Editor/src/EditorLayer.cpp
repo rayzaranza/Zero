@@ -6,11 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-Zero::EditorLayer::EditorLayer()
-    : Layer{ "EditorLayer" }
-    , m_CameraController{ Application::Get().GetWindow().GetAspectRatio() }
-    , m_Framebuffer{ Framebuffer::Create({ .Size{ 1280u, 720u } }) }
-    , m_GizmoType{ ImGuizmo::OPERATION::TRANSLATE }
+Zero::EditorLayer::EditorLayer() : Layer{ "EditorLayer" }
 {
 }
 
@@ -22,9 +18,10 @@ Zero::EditorLayer::~EditorLayer()
 
 void Zero::EditorLayer::OnAttach()
 {
-    m_TextureCheckerboard = Texture2D::Create("D:/Zero/Sandbox/assets/textures/Checkerboard.png");
+    m_Framebuffer = Framebuffer::Create({ .Size{ 1280u, 720u } });
     m_ActiveScene = CreateRef<Scene>();
     m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+    m_EditorCamera = EditorCamera{};
 }
 
 
@@ -35,30 +32,29 @@ void Zero::EditorLayer::OnDetach()
 
 void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime)
 {
-    if (m_ViewportSize.x > 0u && m_ViewportSize.y > 0u &&
-        (m_Framebuffer->GetSize().x != m_ViewportSize.x || m_Framebuffer->GetSize().y != m_ViewportSize.y))
+    const glm::uvec2& size{ m_Framebuffer->GetSize() };
+
+    if (m_ViewportSize.x > 0u && m_ViewportSize.y > 0u && (size.x != m_ViewportSize.x || size.y != m_ViewportSize.y))
     {
         m_Framebuffer->Resize(m_ViewportSize);
-        m_CameraController.OnResize(m_ViewportSize);
+        m_EditorCamera.SetViewportSize(m_ViewportSize);
         m_ActiveScene->OnViewportResize(m_ViewportSize);
     }
 
-    if (m_IsViewportFocused)
-    {
-        m_CameraController.OnUpdate(deltaTime);
-    }
-
-    m_ActiveScene->OnUpdate(deltaTime);
+    m_ActiveScene->OnEditorUpdate(deltaTime, m_EditorCamera);
 }
 
 
 void Zero::EditorLayer::OnRender()
 {
     Renderer2D::ResetStats();
+
     m_Framebuffer->Bind();
+
     RenderCommand::SetClearColor({ 0.02f, 0.02f, 0.022f, 1.0f });
     RenderCommand::Clear();
-    m_ActiveScene->OnRender();
+
+    m_ActiveScene->OnEditorRender(m_EditorCamera);
     m_Framebuffer->Unbind();
 }
 
@@ -153,7 +149,8 @@ void Zero::EditorLayer::OnUIRender()
 
 void Zero::EditorLayer::OnEvent(Event& event)
 {
-    m_CameraController.OnEvent(event);
+    m_EditorCamera.OnEvent(event);
+
     EventDispatcher dispatcher{ event };
     dispatcher.Dispatch<KeyPressedEvent>(ZR_BIND_FUNCTION(EditorLayer::OnKeyPressed));
 }
@@ -195,6 +192,11 @@ bool Zero::EditorLayer::OnKeyPressed(KeyPressedEvent& event)
         m_GizmoType = ImGuizmo::OPERATION::SCALE;
     }
 
+    if (keyCode == KeyCode::C)
+    {
+        m_EditorCamera.EnableRotation(!m_EditorCamera.GetIsRotationEnabled());
+    }
+
     return false;
 }
 
@@ -223,10 +225,12 @@ void Zero::EditorLayer::RenderViewportPanel()
         const float windowHeight{ static_cast<float>(ImGui::GetWindowHeight()) };
         ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-        Entity cameraEntity{ m_ActiveScene->GetMainCameraEntity() };
-        Camera& camera{ cameraEntity.GetComponent<CameraComponent>().Camera };
-        const glm::mat4 projection{ camera.GetProjection() };
-        const glm::mat4 cameraView{ glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform()) };
+        // Entity cameraEntity{ m_ActiveScene->GetMainCameraEntity() };
+        // Camera& camera{ cameraEntity.GetComponent<CameraComponent>().Camera };
+        // const glm::mat4 cameraView{ glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform()) };
+
+        const glm::mat4 projection{ m_EditorCamera.GetProjection() };
+        const glm::mat4 view{ m_EditorCamera.GetViewMatrix() };
 
         TransformComponent& transformComponent{ selectedEntity.GetComponent<TransformComponent>() };
         glm::mat4 transform{ transformComponent.GetTransform() };
@@ -235,7 +239,7 @@ void Zero::EditorLayer::RenderViewportPanel()
         const float snapIncrement{ m_GizmoType == ImGuizmo::OPERATION::ROTATE ? 45.0f : 0.5f };
         const float snapIncrements[3]{ snapIncrement, snapIncrement, snapIncrement };
 
-        ImGuizmo::Manipulate(glm::value_ptr(cameraView),
+        ImGuizmo::Manipulate(glm::value_ptr(view),
             glm::value_ptr(projection),
             static_cast<ImGuizmo::OPERATION>(m_GizmoType),
             ImGuizmo::LOCAL,
@@ -292,13 +296,13 @@ void Zero::EditorLayer::OpenScene()
         return;
     }
 
-        m_ActiveScene = CreateRef<Scene>();
-        m_ActiveScene->OnViewportResize(m_ViewportSize);
-        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+    m_ActiveScene = CreateRef<Scene>();
+    m_ActiveScene->OnViewportResize(m_ViewportSize);
+    m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 
-        SceneSerializer serializer{ m_ActiveScene };
-        serializer.Deserialize(filePath);
-    }
+    SceneSerializer serializer{ m_ActiveScene };
+    serializer.Deserialize(filePath);
+}
 
 
 void Zero::EditorLayer::SaveSceneAs() const
@@ -310,6 +314,6 @@ void Zero::EditorLayer::SaveSceneAs() const
         return;
     }
 
-        SceneSerializer serializer{ m_ActiveScene };
-        serializer.Serialize(filePath);
-    }
+    SceneSerializer serializer{ m_ActiveScene };
+    serializer.Serialize(filePath);
+}

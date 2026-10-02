@@ -2,6 +2,7 @@
 #include "Texture/SubTexture2D.h"
 #include "Texture/Texture.h"
 #include "Zero/Camera/Camera.h"
+#include "Zero/Camera/EditorCamera.h"
 
 
 namespace Zero {
@@ -22,49 +23,50 @@ static constexpr glm::vec3 QUAD_VERTEX_POSITIONS[4]{
 
 struct QuadProps
 {
-  glm::mat4 Transform{ 1.0f };
-  glm::vec4 Color{ 1.0f };
-  Ref<Texture2D> Texture{ nullptr };
-  Ref<SubTexture2D> SubTexture{ nullptr };
-  glm::vec2 Tiling{ 1.0f };
+    glm::mat4 Transform{ 1.0f };
+    glm::vec4 Color{ 1.0f };
+    Ref<Texture2D> Texture{ nullptr };
+    Ref<SubTexture2D> SubTexture{ nullptr };
+    glm::vec2 Tiling{ 1.0f };
 };
 
 
 struct QuadVertex
 {
-  glm::vec3 Position{ 0.0f };
-  glm::vec4 Color{ 1.0f };
-  glm::vec2 UV{ 0.0f };
-  float TextureSlot{ 0.0f };
-  glm::vec2 Tiling{ 1.0f };
+    glm::vec3 Position{ 0.0f };
+    glm::vec4 Color{ 1.0f };
+    glm::vec2 UV{ 0.0f };
+    float TextureSlot{ 0.0f };
+    glm::vec2 Tiling{ 1.0f };
 };
 
 
 struct RenderStats
 {
-  uint32_t DrawCalls{ 0u };
-  uint32_t QuadCount{ 0u };
+    uint32_t DrawCalls{ 0u };
+    uint32_t QuadCount{ 0u };
 
-  uint32_t GetTotalVertexCount() const;
-  uint32_t GetTotalIndexCount() const;
+    uint32_t GetTotalVertexCount() const;
+    uint32_t GetTotalIndexCount() const;
 };
 
 
 class Renderer2D
 {
-public:
-  static void Initialize();
-  static void Destroy();
-  static void BeginScene(const Camera& camera, const glm::mat4& transform = glm::mat4{ 1.0f });
-  static void BeginScene(const CameraOrthographic& camera);
-  static void EndScene();
-  static void Flush();
-  static void DrawQuad(const QuadProps& quad);
-  static void ResetStats();
-  static const RenderStats& GetStats();
+  public:
+    static void Initialize();
+    static void Destroy();
+    static void BeginScene(const Camera& camera, const glm::mat4& transform = glm::mat4{ 1.0f });
+    static void BeginScene(const EditorCamera& camera);
+    static void BeginScene(const CameraOrthographic& camera);
+    static void EndScene();
+    static void Flush();
+    static void DrawQuad(const QuadProps& quad);
+    static void ResetStats();
+    static const RenderStats& GetStats();
 
-private:
-  static void FlushAndReset();
+  private:
+    static void FlushAndReset();
 };
 
 
