@@ -18,7 +18,8 @@ void Zero::Scene::OnUpdate(const DeltaTime deltaTime)
 {
     const auto nativeScripts{ m_Registry.view<NativeScriptComponent>() };
 
-    nativeScripts.each([=](auto entity, NativeScriptComponent& nativeScript) {
+    for (const auto [entity, nativeScript] : nativeScripts.each())
+    {
         if (!nativeScript.Instance)
         {
             nativeScript.Instance = nativeScript.InstantiateScript();
@@ -27,7 +28,7 @@ void Zero::Scene::OnUpdate(const DeltaTime deltaTime)
         }
 
         nativeScript.Instance->OnUpdate(deltaTime);
-    });
+}
 }
 
 
@@ -73,8 +74,10 @@ void Zero::Scene::OnViewportResize(const glm::uvec2& size)
 Zero::Entity Zero::Scene::CreateEntity(const std::string& name)
 {
     Entity entity{ m_Registry.create(), this };
+
     entity.AddComponent<TransformComponent>();
     entity.AddComponent<TagComponent>(name);
+
     return entity;
 }
 

@@ -27,7 +27,7 @@ void Zero::Renderer::OnWindowResized(const glm::uvec2& size) {
 
 
 void Zero::Renderer::BeginScene(CameraOrthographic& camera) {
-  s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
+  s_SceneData->ViewProjectionMatrix = camera.GetViewProjection();
 }
 
 

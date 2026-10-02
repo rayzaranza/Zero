@@ -8,7 +8,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-struct Renderer2DData {
+struct Renderer2DData
+{
   Zero::Ref<Zero::VertexArray> QuadVertexArray{};
   Zero::Ref<Zero::VertexBuffer> QuadVertexBuffer{};
   Zero::Ref<Zero::Shader> QuadShader{};
@@ -19,28 +20,25 @@ struct Renderer2DData {
   Zero::FixedArray<Zero::Ref<Zero::Texture2D>, Zero::MAX_TEXTURE_SLOTS> Textures{};
   uint32_t TextureSlotIndex{ 1u };
   Zero::RenderStats Stats{};
-};
+} static s_Data{};
 
 
-static Renderer2DData s_Data{};
-
-
-void Zero::Renderer2D::Initialize() {
+void Zero::Renderer2D::Initialize()
+{
   s_Data.QuadVertexArray = VertexArray::Create();
   s_Data.QuadVertexBuffer = VertexBuffer::Create(MAX_VERTICES * sizeof(QuadVertex));
-  s_Data.QuadVertexBuffer->SetLayout(
-    { { VertexAttributeType::Vector3, "a_Position" },
+    s_Data.QuadVertexBuffer->SetLayout({ { VertexAttributeType::Vector3, "a_Position" },
       { VertexAttributeType::Vector4, "a_Color" },
       { VertexAttributeType::Vector2, "a_UV" },
       { VertexAttributeType::Float, "a_TextureSlot" },
-      { VertexAttributeType::Vector2, "a_Tiling" } }
-  );
+        { VertexAttributeType::Vector2, "a_Tiling" } });
   s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
   s_Data.QuadVertexBufferBase = new QuadVertex[MAX_VERTICES];
   uint32_t* quadIndices{ new uint32_t[MAX_INDICES] };
   uint32_t offset{ 0u };
-  for (uint32_t i{ 0u }; i < MAX_INDICES; i += QUAD_INDEX_COUNT) {
+    for (uint32_t i{ 0u }; i < MAX_INDICES; i += QUAD_INDEX_COUNT)
+    {
     quadIndices[i + 0u] = offset + 0u;
     quadIndices[i + 1u] = offset + 1u;
     quadIndices[i + 2u] = offset + 2u;
@@ -60,7 +58,8 @@ void Zero::Renderer2D::Initialize() {
   s_Data.Textures[DEFAULT_TEXTURE_SLOT_INDEX] = s_Data.DefaultTexture;
 
   int32_t textureSamplers[MAX_TEXTURE_SLOTS]{};
-  for (uint32_t i{ 0u }; i < MAX_TEXTURE_SLOTS; ++i) {
+    for (uint32_t i{ 0u }; i < MAX_TEXTURE_SLOTS; ++i)
+    {
     textureSamplers[i] = i;
   }
 
@@ -70,7 +69,8 @@ void Zero::Renderer2D::Initialize() {
 }
 
 
-void Zero::Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform) {
+void Zero::Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
+{
   s_Data.QuadShader->Bind();
   s_Data.QuadShader->SetMatrix4("u_ViewProjectionMatrix", camera.GetProjection() * glm::inverse(transform));
   s_Data.QuadShader->SetMatrix4("u_ModelMatrix", { 1.0f });
@@ -82,7 +82,7 @@ void Zero::Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transfo
 
 void Zero::Renderer2D::BeginScene(const CameraOrthographic& camera) {
   s_Data.QuadShader->Bind();
-  s_Data.QuadShader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjectionMatrix());
+    s_Data.QuadShader->SetMatrix4("u_ViewProjectionMatrix", camera.GetViewProjection());
   s_Data.QuadShader->SetMatrix4("u_ModelMatrix", { 1.0f });
   s_Data.QuadIndexCount = 0u;
   s_Data.QuadVertexBufferPointer = s_Data.QuadVertexBufferBase;
@@ -90,28 +90,36 @@ void Zero::Renderer2D::BeginScene(const CameraOrthographic& camera) {
 }
 
 
-static glm::vec3 GetTansformedVertexPosition(const uint32_t index, const glm::mat4& transform) {
+static glm::vec3 GetTansformedVertexPosition(const uint32_t index, const glm::mat4& transform)
+{
   const glm::vec4 position{ Zero::QUAD_VERTEX_POSITIONS[index], 1.0f };
   const glm::vec4 result{ transform * position };
   return glm::vec3{ result.x, result.y, result.z };
 }
 
 
-void Zero::Renderer2D::DrawQuad(const QuadProps& quad) {
-  if (s_Data.QuadIndexCount >= MAX_INDICES) {
+void Zero::Renderer2D::DrawQuad(const QuadProps& quad)
+{
+    if (s_Data.QuadIndexCount >= MAX_INDICES)
+    {
     FlushAndReset();
   }
 
   float textureIndex{ 0.0f };
   const Ref<Texture2D> texture{ quad.SubTexture ? quad.SubTexture->GetTexture() : quad.Texture };
-  if (texture) {
-    for (uint32_t i{ 1u }; i < s_Data.TextureSlotIndex; i++) {
-      if (s_Data.Textures[i]->GetRendererID() == texture->GetRendererID()) {
+    if (texture)
+    {
+        for (uint32_t i{ 1u }; i < s_Data.TextureSlotIndex; i++)
+        {
+            if (s_Data.Textures[i]->GetRendererID() == texture->GetRendererID())
+            {
         textureIndex = static_cast<float>(i);
         break;
       }
     }
-    if (textureIndex == 0.0f) {
+
+        if (textureIndex == 0.0f)
+        {
       textureIndex = static_cast<float>(s_Data.TextureSlotIndex);
       s_Data.Textures[s_Data.TextureSlotIndex] = texture;
       s_Data.TextureSlotIndex++;
@@ -120,7 +128,8 @@ void Zero::Renderer2D::DrawQuad(const QuadProps& quad) {
 
   const glm::vec2* uvs{ quad.SubTexture ? quad.SubTexture->GetUVs() : QUAD_VERTEX_UVS };
 
-  for (uint32_t i{ 0u }; i < 4u; ++i) {
+    for (uint32_t i{ 0u }; i < 4u; ++i)
+    {
     *s_Data.QuadVertexBufferPointer = QuadVertex{
       .Position{ GetTansformedVertexPosition(i, quad.Transform) },
       .Color{ quad.Color },
@@ -136,12 +145,15 @@ void Zero::Renderer2D::DrawQuad(const QuadProps& quad) {
 }
 
 
-void Zero::Renderer2D::Flush() {
-  if (s_Data.QuadIndexCount == 0u) {
+void Zero::Renderer2D::Flush()
+{
+    if (s_Data.QuadIndexCount == 0u)
+    {
     return;
   }
 
-  for (uint32_t i{ 0u }; i < s_Data.TextureSlotIndex; i++) {
+    for (uint32_t i{ 0u }; i < s_Data.TextureSlotIndex; i++)
+    {
     s_Data.Textures[i]->Bind(i);
   }
 
@@ -150,20 +162,21 @@ void Zero::Renderer2D::Flush() {
 }
 
 
-void Zero::Renderer2D::EndScene() {
-  uint32_t dataSize{
-    static_cast<uint32_t>((uint8_t*)s_Data.QuadVertexBufferPointer - (uint8_t*)s_Data.QuadVertexBufferBase)
-  };
+void Zero::Renderer2D::EndScene()
+{
+    uint32_t dataSize{ static_cast<uint32_t>((uint8_t*)s_Data.QuadVertexBufferPointer - (uint8_t*)s_Data.QuadVertexBufferBase) };
   s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
   Flush();
 }
 
 
-void Zero::Renderer2D::Destroy() {
+void Zero::Renderer2D::Destroy()
+{
 }
 
 
-void Zero::Renderer2D::FlushAndReset() {
+void Zero::Renderer2D::FlushAndReset()
+{
   EndScene();
   s_Data.QuadIndexCount = 0u;
   s_Data.QuadVertexBufferPointer = s_Data.QuadVertexBufferBase;
@@ -171,21 +184,25 @@ void Zero::Renderer2D::FlushAndReset() {
 }
 
 
-void Zero::Renderer2D::ResetStats() {
+void Zero::Renderer2D::ResetStats()
+{
   memset(&s_Data.Stats, 0u, sizeof(RenderStats));
 }
 
 
-const Zero::RenderStats& Zero::Renderer2D::GetStats() {
+const Zero::RenderStats& Zero::Renderer2D::GetStats()
+{
   return s_Data.Stats;
 }
 
 
-uint32_t Zero::RenderStats::GetTotalVertexCount() const {
+uint32_t Zero::RenderStats::GetTotalVertexCount() const
+{
   return QuadCount * QUAD_VERTEX_COUNT;
 }
 
 
-uint32_t Zero::RenderStats::GetTotalIndexCount() const {
+uint32_t Zero::RenderStats::GetTotalIndexCount() const
+{
   return QuadCount * QUAD_INDEX_COUNT;
 }

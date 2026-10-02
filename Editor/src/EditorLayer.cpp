@@ -68,17 +68,20 @@ void Zero::EditorLayer::OnUIRender()
     static bool isOpen{ true };
     static bool isFullscreenPersistant{ true };
     static bool isFullscreen{ isFullscreenPersistant };
+
     static ImGuiDockNodeFlags dockSpaceFlags{ ImGuiDockNodeFlags_None };
     static ImGuiWindowFlags windowFlags{ ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking };
 
     if (isFullscreen)
     {
         ImGuiViewport* viewport{ ImGui::GetMainViewport() };
+
         ImGui::SetNextWindowPos(viewport->Pos);
         ImGui::SetNextWindowSize(viewport->Size);
         ImGui::SetNextWindowViewport(viewport->ID);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
         windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
                        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
     }
@@ -242,9 +245,9 @@ void Zero::EditorLayer::RenderViewportPanel()
 
         if (ImGuizmo::IsUsing())
         {
-            glm::vec3 translation{};
-            glm::vec3 rotation{};
-            glm::vec3 scale{};
+            glm::vec3 translation;
+            glm::vec3 rotation;
+            glm::vec3 scale;
             Math::DecomposeTransform(transform, translation, rotation, scale);
 
             const glm::vec3 deltaRotation{ rotation - transformComponent.Rotation };
@@ -283,8 +286,12 @@ void Zero::EditorLayer::NewScene()
 void Zero::EditorLayer::OpenScene()
 {
     const std::string filePath{ FileDialog::OpenFile("Zero Scene (*.zero)\0*.zero\0") };
-    if (!filePath.empty())
+
+    if (filePath.empty())
     {
+        return;
+    }
+
         m_ActiveScene = CreateRef<Scene>();
         m_ActiveScene->OnViewportResize(m_ViewportSize);
         m_SceneHierarchyPanel.SetContext(m_ActiveScene);
@@ -292,15 +299,17 @@ void Zero::EditorLayer::OpenScene()
         SceneSerializer serializer{ m_ActiveScene };
         serializer.Deserialize(filePath);
     }
-}
 
 
 void Zero::EditorLayer::SaveSceneAs() const
 {
     const std::string filePath{ FileDialog::SaveFile("Zero Scene (*.zero)\0*.zero\0") };
-    if (!filePath.empty())
+
+    if (filePath.empty())
     {
+        return;
+    }
+
         SceneSerializer serializer{ m_ActiveScene };
         serializer.Serialize(filePath);
     }
-}
