@@ -29,6 +29,8 @@ class EditorCamera : public Camera
     glm::quat GetOrientation() const;
     float GetPitch() const;
     float GetYaw() const;
+    void EnableRotation(bool enable);
+    bool GetIsRotationEnabled() const;
 
   private:
     void UpdateProjection();
@@ -55,6 +57,7 @@ class EditorCamera : public Camera
     float m_Distance{ 10.0f };
     float m_Pitch{ 0.0f };
     float m_Yaw{ 0.0f };
+    bool m_IsRotationEnabled{ true };
 };
 
 

@@ -26,7 +26,7 @@ void Zero::EditorCamera::OnUpdate(DeltaTime deltaTime)
         {
             Pan(mouseDelta);
         }
-        else if (Input::IsMouseButtonPressed(MouseButton::LEFT))
+        else if (m_IsRotationEnabled && Input::IsMouseButtonPressed(MouseButton::LEFT))
         {
             Rotate(mouseDelta);
         }
@@ -131,6 +131,7 @@ void Zero::EditorCamera::UpdateProjection()
 void Zero::EditorCamera::UpdateView()
 {
     m_Position = CalculatePosition();
+
     glm::quat orientation{ GetOrientation() };
     m_ViewMatrix = glm::translate(glm::mat4{ 1.0f }, m_Position) * glm::toMat4(orientation);
     m_ViewMatrix = glm::inverse(m_ViewMatrix);
@@ -143,6 +144,18 @@ bool Zero::EditorCamera::OnMouseScroll(MouseScrolledEvent& event)
     Zoom(delta);
     UpdateView();
     return false;
+}
+
+
+void Zero::EditorCamera::EnableRotation(bool enable)
+{
+    m_IsRotationEnabled = enable;
+}
+
+
+bool Zero::EditorCamera::GetIsRotationEnabled() const
+{
+    return m_IsRotationEnabled;
 }
 
 
@@ -186,10 +199,10 @@ glm::vec3 Zero::EditorCamera::CalculatePosition() const
 glm::vec2 Zero::EditorCamera::GetPanSpeed() const
 {
     const float x{ std::min(m_ViewportSize.x / 1000.0f, 2.4f) };
-    const float y{ std::min(m_ViewportSize.y / 1000.0f, 2.4f) };
-
     const float xFactor{ 0.0366f * (x * x) - 0.1778f * x + 0.3021f };
-    const float yFactor{ 0.0366f * (y * y) - 0.1778f * x + 0.3021f };
+
+    const float y{ std::min(m_ViewportSize.y / 1000.0f, 2.4f) };
+    const float yFactor{ 0.0366f * (y * y) - 0.1778f * y + 0.3021f };
 
     return glm::vec2{ xFactor, yFactor };
 }

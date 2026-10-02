@@ -192,6 +192,11 @@ bool Zero::EditorLayer::OnKeyPressed(KeyPressedEvent& event)
         m_GizmoType = ImGuizmo::OPERATION::SCALE;
     }
 
+    if (keyCode == KeyCode::C)
+    {
+        m_EditorCamera.EnableRotation(!m_EditorCamera.GetIsRotationEnabled());
+    }
+
     return false;
 }
 
