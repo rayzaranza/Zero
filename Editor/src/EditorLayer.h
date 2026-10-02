@@ -1,8 +1,8 @@
 #pragma once
-#include "Panels/SceneHierarchyPanel.h"
+#include "./Panels/SceneHierarchyPanel.h"
+
 #include <Zero.h>
 #include <Zero/Camera/EditorCamera.h>
-#include <imgui.h>
 
 
 namespace Zero {

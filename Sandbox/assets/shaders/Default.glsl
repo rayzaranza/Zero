@@ -15,15 +15,18 @@ out vec2 v_UV;
 out float v_TextureSlot;
 out vec2 v_Tiling;
 
-void main() {
-  v_Color = a_Color;
-  v_TextureSlot = a_TextureSlot;
-  v_Tiling = a_Tiling;
-  v_UV = a_UV;
-  gl_Position = u_ViewProjectionMatrix * u_ModelMatrix * vec4(a_Position, 1.0f);
+void main()
+{
+    v_Color = a_Color;
+    v_TextureSlot = a_TextureSlot;
+    v_Tiling = a_Tiling;
+    v_UV = a_UV;
+    gl_Position = u_ViewProjectionMatrix * u_ModelMatrix * vec4(a_Position, 1.0f);
 }
 
+
 //========================================================================================================
+
 
 #type fragment
 #version 460 core
@@ -37,6 +40,7 @@ uniform sampler2D u_Textures[32];
 
 out vec4 o_Color;
 
-void main() {
-  o_Color = texture(u_Textures[int(v_TextureSlot)], v_UV * v_Tiling) * v_Color;
+void main()
+{
+    o_Color = texture(u_Textures[int(v_TextureSlot)], v_UV * v_Tiling) * v_Color;
 }

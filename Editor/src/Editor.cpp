@@ -1,4 +1,5 @@
-#include "EditorLayer.h"
+#include "./EditorLayer.h"
+
 #include <Zero.h>
 #include <Zero/Core/EntryPoint.h>
 

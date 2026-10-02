@@ -1,5 +1,5 @@
 #pragma once
-#include "GraphicsContext.h"
+#include "Zero/Renderer/GraphicsContext.h"
 
 
 struct GLFWwindow;
@@ -7,16 +7,20 @@ struct GLFWwindow;
 
 namespace Zero {
 
-class GraphicsContextOpenGL : public GraphicsContext {
-public:
-  GraphicsContextOpenGL(GLFWwindow* windowHandle);
-  ~GraphicsContextOpenGL();
 
-  virtual void Initialize() override;
-  virtual void SwapBuffers() override;
+class GraphicsContextOpenGL : public GraphicsContext
+{
+  public:
+    GraphicsContextOpenGL(GLFWwindow* windowHandle);
+    ~GraphicsContextOpenGL();
 
-private:
-  GLFWwindow* m_WindowHandle;
+  public:
+    virtual void Initialize() override;
+    virtual void SwapBuffers() override;
+
+  private:
+    GLFWwindow* m_WindowHandle;
 };
+
 
 }

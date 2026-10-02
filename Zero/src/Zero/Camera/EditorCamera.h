@@ -1,5 +1,5 @@
 #pragma once
-#include "Camera.h"
+#include "Zero/Camera/Camera.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Event/MouseEvent.h"
 #include "Zero/Time/DeltaTime.h"

@@ -1,20 +1,24 @@
-#include "Event.h"
+#include "Zero/Event/Event.h"
 
 
-std::string Zero::Event::ToString() const {
-  return GetName();
+std::string Zero::Event::ToString() const
+{
+    return GetName();
 }
 
 
-bool Zero::Event::IsInCategory(EventCategory category) const {
-  return GetCategoryFlags() & category;
+bool Zero::Event::IsInCategory(EventCategory category) const
+{
+    return GetCategoryFlags() & category;
 }
 
 
-Zero::EventDispatcher::EventDispatcher(Event& event) : m_Event{ event } {
+Zero::EventDispatcher::EventDispatcher(Event& event) : m_Event{ event }
+{
 }
 
 
-std::ostream& Zero::operator<<(std::ostream& stream, const Event& event) {
-  return stream << event.ToString();
+std::ostream& Zero::operator<<(std::ostream& stream, const Event& event)
+{
+    return stream << event.ToString();
 }

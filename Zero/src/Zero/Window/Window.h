@@ -2,14 +2,14 @@
 #include "Zero/Core/Core.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Renderer/GraphicsContext.h"
+
 #include <glm/glm.hpp>
 
 
 struct GLFWwindow;
 
 
-namespace Zero
-{
+namespace Zero {
 
 
 struct WindowProps
@@ -26,6 +26,7 @@ class Window
     Window(const WindowProps& props);
     ~Window();
 
+  public:
     const glm::uvec2& GetSize() const;
     GLFWwindow* GetWindowHandle() const;
     void SetEventCallback(const Function<void(Event&)>& callback);

@@ -1,9 +1,10 @@
-#include "Utils.h"
-#include <GLFW/glfw3.h>
-#include <commdlg.h>
-#define GLFW_EXPOSE_NATIVE_WIN32
+#include "Zero/Utils/Utils.h"
 #include "Zero/Application/Application.h"
+
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
+#include <commdlg.h>
 
 
 std::string Zero::FileDialog::OpenFile(const char* filter)

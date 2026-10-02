@@ -1,7 +1,8 @@
-#include "Renderer2D.h"
-#include "Buffer/IndexBuffer.h"
-#include "RenderCommand.h"
+#include "Zero/Renderer/Renderer2D.h"
+#include "Zero/Renderer/Buffer/IndexBuffer.h"
+#include "Zero/Renderer/RenderCommand.h"
 #include "Zero/Math/Math.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 

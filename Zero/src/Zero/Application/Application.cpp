@@ -1,7 +1,8 @@
-#include "Application.h"
+#include "Zero/Application/Application.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Input/Input.h"
 #include "Zero/Renderer/Renderer.h"
+
 #include <GLFW/glfw3.h>
 
 
@@ -32,13 +33,17 @@ Zero::Application::~Application()
 void Zero::Application::OnEvent(Event& event)
 {
     EventDispatcher dispatcher{ event };
+
     dispatcher.Dispatch<WindowClosedEvent>(ZR_BIND_FUNCTION(Application::OnWindowClosed));
     dispatcher.Dispatch<WindowResizedEvent>(ZR_BIND_FUNCTION(Application::OnWindowResized));
 
     for (auto layer{ m_LayerStack.rbegin() }; layer != m_LayerStack.rend(); ++layer)
     {
         if (event.IsHandled)
+        {
             break;
+        }
+
         (*layer)->OnEvent(event);
     }
 }
@@ -93,15 +98,25 @@ void Zero::Application::Run()
         if (!m_IsMinimized)
         {
             for (Layer* layer : m_LayerStack)
+            {
                 layer->OnUpdate(deltaTime);
+            }
+
             for (Layer* layer : m_LayerStack)
+            {
                 layer->OnRender();
+            }
 
             m_UILayer->Begin();
+
             for (Layer* layer : m_LayerStack)
+            {
                 layer->OnUIRender();
+            }
+
             m_UILayer->End();
         }
+
         m_Window->OnUpdate();
     }
 }
@@ -117,6 +132,7 @@ bool Zero::Application::OnWindowClosed(WindowClosedEvent& event)
 bool Zero::Application::OnWindowResized(WindowResizedEvent& event)
 {
     const glm::ivec2 size{ event.GetSize() };
+
     if (size.x == 0 || size.y == 0)
     {
         m_IsMinimized = true;
@@ -125,5 +141,6 @@ bool Zero::Application::OnWindowResized(WindowResizedEvent& event)
 
     Renderer::OnWindowResized(size);
     m_IsMinimized = false;
+
     return false;
 }

@@ -1,10 +1,9 @@
 #pragma once
-
-#include "Buffer/VertexArray.h"
-#include "Buffer/VertexBuffer.h"
-#include "Shader/Shader.h"
-#include "Texture/SubTexture2D.h"
-#include "Texture/Texture.h"
+#include "Zero/Renderer/Shader/Shader.h"
+#include "Zero/Renderer/Buffer/VertexArray.h"
+#include "Zero/Renderer/Buffer/VertexBuffer.h"
+#include "Zero/Renderer/Texture/Texture.h"
+#include "Zero/Renderer/Texture/SubTexture2D.h"
 #include "Zero/Camera/Camera.h"
 #include "Zero/Camera/EditorCamera.h"
 

@@ -1,5 +1,6 @@
-#include "Sandbox.h"
-#include "Sandbox2D.h"
+#include "./Sandbox.h"
+#include "./Sandbox2D.h"
+
 #include <Zero/Core/EntryPoint.h>
 
 

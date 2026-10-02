@@ -1,5 +1,6 @@
-#include "EditorCamera.h"
+#include "Zero/Camera/EditorCamera.h"
 #include "Zero/Input/Input.h"
+
 #include <glm/gtx/quaternion.hpp>
 
 
@@ -143,6 +144,7 @@ bool Zero::EditorCamera::OnMouseScroll(MouseScrolledEvent& event)
     const float delta{ event.GetOffset().y };
     Zoom(delta);
     UpdateView();
+
     return false;
 }
 
@@ -218,5 +220,6 @@ float Zero::EditorCamera::GetZoomSpeed() const
 {
     const float distance{ std::max(m_Distance * 0.2f, 0.0f) };
     const float speed{ std::min(distance * distance, 100.0f) };
+
     return speed;
 }
