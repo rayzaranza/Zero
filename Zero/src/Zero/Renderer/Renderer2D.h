@@ -1,4 +1,8 @@
 #pragma once
+
+#include "Buffer/VertexArray.h"
+#include "Buffer/VertexBuffer.h"
+#include "Shader/Shader.h"
 #include "Texture/SubTexture2D.h"
 #include "Texture/Texture.h"
 #include "Zero/Camera/Camera.h"
@@ -48,6 +52,21 @@ struct RenderStats
 
     uint32_t GetTotalVertexCount() const;
     uint32_t GetTotalIndexCount() const;
+};
+
+
+struct Renderer2DData
+{
+    Ref<VertexArray> QuadVertexArray{};
+    Ref<VertexBuffer> QuadVertexBuffer{};
+    Ref<Shader> QuadShader{};
+    Ref<Texture2D> DefaultTexture{};
+    uint32_t QuadIndexCount{ 0u };
+    QuadVertex* QuadVertexBufferBase{ nullptr };
+    QuadVertex* QuadVertexBufferPointer{ nullptr };
+    FixedArray<Ref<Texture2D>, MAX_TEXTURE_SLOTS> Textures{};
+    uint32_t TextureSlotIndex{ 1u };
+    RenderStats Stats{};
 };
 
 

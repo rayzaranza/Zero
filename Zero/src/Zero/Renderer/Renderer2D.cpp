@@ -1,26 +1,11 @@
 #include "Renderer2D.h"
 #include "Buffer/IndexBuffer.h"
-#include "Buffer/VertexArray.h"
-#include "Buffer/VertexBuffer.h"
 #include "RenderCommand.h"
-#include "Shader/Shader.h"
 #include "Zero/Math/Math.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 
-struct Renderer2DData
-{
-    Zero::Ref<Zero::VertexArray> QuadVertexArray{};
-    Zero::Ref<Zero::VertexBuffer> QuadVertexBuffer{};
-    Zero::Ref<Zero::Shader> QuadShader{};
-    Zero::Ref<Zero::Texture2D> DefaultTexture{};
-    uint32_t QuadIndexCount{ 0u };
-    Zero::QuadVertex* QuadVertexBufferBase{ nullptr };
-    Zero::QuadVertex* QuadVertexBufferPointer{ nullptr };
-    Zero::FixedArray<Zero::Ref<Zero::Texture2D>, Zero::MAX_TEXTURE_SLOTS> Textures{};
-    uint32_t TextureSlotIndex{ 1u };
-    Zero::RenderStats Stats{};
-} static s_Data{};
+static Zero::Renderer2DData s_Data{};
 
 
 void Zero::Renderer2D::Initialize()
