@@ -4,8 +4,7 @@
 #include <imgui.h>
 
 
-namespace Zero
-{
+namespace Zero {
 
 
 class EditorLayer : public Layer
@@ -45,6 +44,7 @@ class EditorLayer : public Layer
     bool m_IsViewportFocused{ false };
     bool m_IsViewportHovered{ false };
     SceneHierarchyPanel m_SceneHierarchyPanel;
+    int32_t m_GizmoType;
 };
 
 

@@ -2,8 +2,7 @@
 #include "Zero/Camera/Camera.h"
 
 
-namespace Zero
-{
+namespace Zero {
 
 
 class SceneCamera : public Camera

@@ -25,6 +25,7 @@ void Zero::SceneSerializer::SerializeEntity(YAML::Emitter& out, Entity entity)
     if (entity.HasComponent<TransformComponent>())
     {
         const TransformComponent& transform{ entity.GetComponent<TransformComponent>() };
+
         out << YAML::Key << "TransformComponent";
         out << YAML::BeginMap;
         out << YAML::Key << "Translation" << YAML::Value << transform.Translation;
@@ -37,6 +38,7 @@ void Zero::SceneSerializer::SerializeEntity(YAML::Emitter& out, Entity entity)
     {
         const CameraComponent& cameraComponent{ entity.GetComponent<CameraComponent>() };
         const SceneCamera& camera{ cameraComponent.Camera };
+
         out << YAML::Key << "CameraComponent";
         out << YAML::BeginMap;
         out << YAML::Key << "Camera" << YAML::Value;
@@ -74,11 +76,12 @@ void Zero::SceneSerializer::Serialize(const std::string& filePath)
     out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
 
     m_Scene->m_Registry.view<entt::entity>().each([&](entt::entity entityID) {
-        Entity entity{ entityID, m_Scene.get() };
+        const Entity entity{ entityID, m_Scene.get() };
         if (!entity)
         {
             return;
         }
+
         SerializeEntity(out, entity);
     });
 
@@ -91,7 +94,7 @@ void Zero::SceneSerializer::Serialize(const std::string& filePath)
 
 bool Zero::SceneSerializer::Deserialize(const std::string& filePath)
 {
-    std::ifstream stream{ filePath };
+    const std::ifstream stream{ filePath };
     std::stringstream stringStream{};
     stringStream << stream.rdbuf();
     const YAML::Node& data{ YAML::Load(stringStream.str()) };
@@ -174,7 +177,15 @@ bool Zero::SceneSerializer::DeserializeRuntime(const std::string& filePath)
 }
 
 
-YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& vector)
+YAML::Emitter& Zero::operator<<(YAML::Emitter& out, const glm::vec2& vector)
+{
+    out << YAML::Flow;
+    out << YAML::BeginSeq << vector.x << vector.y << YAML::EndSeq;
+    return out;
+}
+
+
+YAML::Emitter& Zero::operator<<(YAML::Emitter& out, const glm::vec3& vector)
 {
     out << YAML::Flow;
     out << YAML::BeginSeq << vector.x << vector.y << vector.z << YAML::EndSeq;
@@ -182,7 +193,7 @@ YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& vector)
 }
 
 
-YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec4& vector)
+YAML::Emitter& Zero::operator<<(YAML::Emitter& out, const glm::vec4& vector)
 {
     out << YAML::Flow;
     out << YAML::BeginSeq << vector.x << vector.y << vector.z << vector.w << YAML::EndSeq;

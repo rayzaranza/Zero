@@ -6,6 +6,7 @@
 
 namespace Zero {
 
+
 static constexpr uint32_t MAX_QUADS{ 20000u };
 static constexpr uint32_t QUAD_VERTEX_COUNT{ 4u };
 static constexpr uint32_t QUAD_INDEX_COUNT{ 6u };
@@ -13,21 +14,14 @@ static constexpr uint32_t MAX_VERTICES{ MAX_QUADS * QUAD_VERTEX_COUNT };
 static constexpr uint32_t MAX_INDICES{ MAX_QUADS * QUAD_INDEX_COUNT };
 static constexpr uint32_t MAX_TEXTURE_SLOTS{ 32u };
 static constexpr uint32_t DEFAULT_TEXTURE_SLOT_INDEX{ 0u };
+static constexpr glm::vec2 QUAD_VERTEX_UVS[4]{ { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 static constexpr glm::vec3 QUAD_VERTEX_POSITIONS[4]{
-  { -0.5f, -0.5f, 0.0f },
-  { 0.5f, -0.5f, 0.0f },
-  { 0.5f, 0.5f, 0.0f },
-  { -0.5f, 0.5f, 0.0f },
-};
-static constexpr glm::vec2 QUAD_VERTEX_UVS[4]{
-  { 0.0f, 0.0f },
-  { 1.0f, 0.0f },
-  { 1.0f, 1.0f },
-  { 0.0f, 1.0f },
+    { -0.5f, -0.5f, 0.0f }, { 0.5f, -0.5f, 0.0f }, { 0.5f, 0.5f, 0.0f }, { -0.5f, 0.5f, 0.0f }
 };
 
 
-struct QuadProps {
+struct QuadProps
+{
   glm::mat4 Transform{ 1.0f };
   glm::vec4 Color{ 1.0f };
   Ref<Texture2D> Texture{ nullptr };
@@ -36,7 +30,8 @@ struct QuadProps {
 };
 
 
-struct QuadVertex {
+struct QuadVertex
+{
   glm::vec3 Position{ 0.0f };
   glm::vec4 Color{ 1.0f };
   glm::vec2 UV{ 0.0f };
@@ -45,7 +40,8 @@ struct QuadVertex {
 };
 
 
-struct RenderStats {
+struct RenderStats
+{
   uint32_t DrawCalls{ 0u };
   uint32_t QuadCount{ 0u };
 
@@ -54,7 +50,8 @@ struct RenderStats {
 };
 
 
-class Renderer2D {
+class Renderer2D
+{
 public:
   static void Initialize();
   static void Destroy();
@@ -69,5 +66,6 @@ public:
 private:
   static void FlushAndReset();
 };
+
 
 }

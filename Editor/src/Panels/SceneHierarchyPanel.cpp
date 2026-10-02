@@ -16,8 +16,7 @@ void Zero::SceneHierarchyPanel::SetContext(const Ref<Scene>& context)
 }
 
 
-static void DrawVector3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f,
-                               float columnWidth = 100.0f)
+static void DrawVector3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
 {
     ImGuiIO& io{ ImGui::GetIO() };
     auto fontBold{ io.Fonts->Fonts[0] };
@@ -157,6 +156,7 @@ void Zero::SceneHierarchyPanel::DrawEntityNode(Entity entity)
     }
 
     bool isEntityDeleted{ false };
+
     if (ImGui::BeginPopupContextItem())
     {
         if (ImGui::MenuItem("Destroy Entity"))
@@ -174,6 +174,7 @@ void Zero::SceneHierarchyPanel::DrawEntityNode(Entity entity)
     if (isEntityDeleted)
     {
         m_Context->DestroyEntity(entity);
+
         if (m_SelectionContext == entity)
         {
             m_SelectionContext = {};
@@ -184,13 +185,13 @@ void Zero::SceneHierarchyPanel::DrawEntityNode(Entity entity)
 
 void Zero::SceneHierarchyPanel::DrawComponents(Entity entity)
 {
-
     if (entity.HasComponent<TagComponent>())
     {
         std::string& tag{ entity.GetComponent<TagComponent>().Tag };
         char buffer[256];
         memset(buffer, 0, sizeof(buffer));
         strcpy_s(buffer, sizeof(buffer), tag.c_str());
+
         if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
         {
             tag = std::string(buffer);
@@ -212,11 +213,13 @@ void Zero::SceneHierarchyPanel::DrawComponents(Entity entity)
             m_SelectionContext.AddComponent<CameraComponent>();
             ImGui::CloseCurrentPopup();
         }
+
         if (ImGui::MenuItem("Sprite"))
         {
             m_SelectionContext.AddComponent<SpriteComponent>();
             ImGui::CloseCurrentPopup();
         }
+
         ImGui::EndPopup();
     }
 
@@ -241,32 +244,38 @@ void Zero::SceneHierarchyPanel::DrawComponents(Entity entity)
             for (int i{ 0 }; i < 2; ++i)
             {
                 bool isSelected{ currentProjectionTypeString == projectionTypeStrings[i] };
+
                 if (ImGui::Selectable(projectionTypeStrings[i], isSelected))
                 {
                     currentProjectionTypeString = projectionTypeStrings[i];
                     camera.SetProjectionType(static_cast<SceneCamera::ProjectionType>(i));
                 }
+
                 if (isSelected)
                 {
                     ImGui::SetItemDefaultFocus();
                 }
             }
+
             ImGui::EndCombo();
         }
 
         if (camera.GetProjectionType() == SceneCamera::ProjectionType::Perspective)
         {
             float perspectiveVerticalFOV{ glm::degrees(camera.GetPerspectiveVerticalFOV()) };
+            float perspectiveNearClip{ camera.GetPerspectiveNearClip() };
+            float perspectiveFarClip{ camera.GetPerspectiveFarClip() };
+
             if (ImGui::DragFloat("Vertical FOV", &perspectiveVerticalFOV))
             {
                 camera.SetPerspectiveVerticalFOV(glm::radians(perspectiveVerticalFOV));
             }
-            float perspectiveNearClip{ camera.GetPerspectiveNearClip() };
+
             if (ImGui::DragFloat("Near", &perspectiveNearClip))
             {
                 camera.SetPerspectiveNearClip(perspectiveNearClip);
             }
-            float perspectiveFarClip{ camera.GetPerspectiveFarClip() };
+
             if (ImGui::DragFloat("Far", &perspectiveFarClip))
             {
                 camera.SetPerspectiveFarClip(perspectiveFarClip);
@@ -276,26 +285,36 @@ void Zero::SceneHierarchyPanel::DrawComponents(Entity entity)
         if (camera.GetProjectionType() == SceneCamera::ProjectionType::Orthographic)
         {
             float orthographicSize{ camera.GetOrthographicSize() };
+            float orthographicNearClip{ camera.GetOrthographicNearClip() };
+            float orthographicFarClip{ camera.GetOrthographicFarClip() };
+
+
             if (ImGui::DragFloat("Size", &orthographicSize))
             {
                 camera.SetOrthographicSize(orthographicSize);
             }
-            float orthographicNearClip{ camera.GetOrthographicNearClip() };
+
             if (ImGui::DragFloat("Near", &orthographicNearClip))
             {
                 camera.SetOrthographicNearClip(orthographicNearClip);
             }
-            float orthographicFarClip{ camera.GetOrthographicFarClip() };
+
             if (ImGui::DragFloat("Far", &orthographicFarClip))
             {
                 camera.SetOrthographicFarClip(orthographicFarClip);
             }
+
             ImGui::Checkbox("Fixed Aspect Ratio", &cameraComponent.IsAspectRatioFixed);
         }
     });
 
-    DrawComponent<SpriteComponent>(
-        "Sprite", entity, [](SpriteComponent& sprite) { ImGui::ColorEdit4("Color", glm::value_ptr(sprite.Color)); });
+    DrawComponent<SpriteComponent>("Sprite", entity, [](auto& sprite) { ImGui::ColorEdit4("Color", glm::value_ptr(sprite.Color)); });
+}
+
+
+Zero::Entity Zero::SceneHierarchyPanel::GetSelectedEntity() const
+{
+    return m_SelectionContext;
 }
 
 

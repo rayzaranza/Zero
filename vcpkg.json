@@ -13,6 +13,7 @@
         "opengl3-binding"
       ]
     },
+    "imguizmo",
     "spdlog",
     "stb",
     "yaml-cpp"

@@ -16,15 +16,19 @@ Zero::Scene::~Scene()
 
 void Zero::Scene::OnUpdate(const DeltaTime deltaTime)
 {
-    m_Registry.view<NativeScriptComponent>().each([=](auto entity, NativeScriptComponent& nativeScript) {
+    const auto nativeScripts{ m_Registry.view<NativeScriptComponent>() };
+
+    for (const auto [entity, nativeScript] : nativeScripts.each())
+    {
         if (!nativeScript.Instance)
         {
             nativeScript.Instance = nativeScript.InstantiateScript();
             nativeScript.Instance->m_Entity = Entity{ entity, this };
             nativeScript.Instance->OnCreate();
         }
+
         nativeScript.Instance->OnUpdate(deltaTime);
-    });
+}
 }
 
 
@@ -70,8 +74,10 @@ void Zero::Scene::OnViewportResize(const glm::uvec2& size)
 Zero::Entity Zero::Scene::CreateEntity(const std::string& name)
 {
     Entity entity{ m_Registry.create(), this };
+
     entity.AddComponent<TransformComponent>();
     entity.AddComponent<TagComponent>(name);
+
     return entity;
 }
 
@@ -79,4 +85,18 @@ Zero::Entity Zero::Scene::CreateEntity(const std::string& name)
 void Zero::Scene::DestroyEntity(Entity entity)
 {
     m_Registry.destroy(entity);
+}
+
+
+Zero::Entity Zero::Scene::GetMainCameraEntity()
+{
+    for (auto [entity, camera] : m_Registry.view<const CameraComponent>().each())
+    {
+        if (camera.IsMain)
+        {
+            return Entity{ entity, this };
+        }
+    }
+
+    return {};
 }

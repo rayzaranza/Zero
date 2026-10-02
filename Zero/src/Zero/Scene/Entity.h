@@ -3,8 +3,7 @@
 #include <entt/entt.hpp>
 
 
-namespace Zero
-{
+namespace Zero {
 
 
 class Entity

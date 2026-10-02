@@ -1,17 +1,16 @@
 #pragma once
 #include "Scene.h"
-#define YAML_CPP_STATIC_DEFINE
 #include <yaml-cpp/yaml.h>
 
 
-namespace Zero
-{
+namespace Zero {
 
 class SceneSerializer
 {
   public:
     SceneSerializer(const Ref<Scene>& scene);
 
+  public:
     void SerializeEntity(YAML::Emitter& out, Entity entity);
     void Serialize(const std::string& filePath);
     bool Deserialize(const std::string& filePath);
@@ -22,15 +21,16 @@ class SceneSerializer
     Ref<Scene> m_Scene;
 };
 
-}
 
-
+YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec2& vector);
 YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& vector);
 YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec4& vector);
 
 
-namespace YAML
-{
+}
+
+
+namespace YAML {
 
 
 template <>

@@ -1,30 +1,42 @@
 #include "Layer.h"
 
 
-Zero::Layer::Layer(const std::string& name) : m_Name{ name } {
+Zero::Layer::Layer(const std::string& name) : m_Name{ name }
+{
 }
 
 
-void Zero::Layer::OnAttach() {
+const std::string& Zero::Layer::GetName() const
+{
+    return m_Name;
 }
 
 
-void Zero::Layer::OnDetach() {
+void Zero::Layer::OnAttach()
+{
 }
 
 
-void Zero::Layer::OnRender() {
+void Zero::Layer::OnDetach()
+{
 }
 
 
-void Zero::Layer::OnUIRender() {
+void Zero::Layer::OnUpdate(const DeltaTime deltaTime)
+{
 }
 
 
-void Zero::Layer::OnEvent(Event& event) {
+void Zero::Layer::OnRender()
+{
 }
 
 
-const std::string& Zero::Layer::GetName() const {
-  return m_Name;
+void Zero::Layer::OnUIRender()
+{
+}
+
+
+void Zero::Layer::OnEvent(Event& event)
+{
 }

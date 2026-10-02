@@ -23,7 +23,7 @@ public:
 
   const glm::mat4& GetViewMatrix() const;
   const glm::mat4& GetProjectionMatrix() const;
-  const glm::mat4& GetViewProjectionMatrix() const;
+  const glm::mat4& GetViewProjection() const;
   const glm::vec3& GetPosition() const;
   float GetRotation() const;
   void SetPosition(const glm::vec3& position);
