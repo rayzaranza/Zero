@@ -41,13 +41,31 @@ void Zero::VertexArrayOpenGL::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuf
     int32_t location{ 0 };
     for (const VertexAttribute& attribute : layout)
     {
+        const uint32_t type{ GetOpenGLTypeFromAttributeType(attribute.Type) };
+        const void* offset{ reinterpret_cast<const void*>(static_cast<uintptr_t>(attribute.Offset)) };
+        const int32_t isNormalized{ attribute.IsNormalized ? GL_TRUE : GL_FALSE };
+
         glEnableVertexAttribArray(location);
-        glVertexAttribPointer(location,
-            attribute.ComponentCount,
-            GetOpenGLTypeFromAttributeType(attribute.Type),
-            attribute.IsNormalized ? GL_TRUE : GL_FALSE,
-            layout.GetStride(),
-            reinterpret_cast<const void*>(static_cast<uintptr_t>(attribute.Offset)));
+
+        switch (attribute.Type)
+        {
+            case VertexAttributeType::Int:
+            case VertexAttributeType::Vector2i:
+            case VertexAttributeType::Vector3i:
+            case VertexAttributeType::Vector4i:
+            case VertexAttributeType::Boolean:
+            {
+                glVertexAttribIPointer(location, attribute.ComponentCount, type, layout.GetStride(), offset);
+                break;
+            }
+
+            default:
+            {
+                glVertexAttribPointer(location, attribute.ComponentCount, type, isNormalized, layout.GetStride(), offset);
+                break;
+            }
+        }
+
         location++;
     }
 
@@ -79,33 +97,24 @@ uint32_t GetOpenGLTypeFromAttributeType(const Zero::VertexAttributeType type)
 {
     switch (type)
     {
+        case Zero::VertexAttributeType::Boolean:  return GL_BOOL;
+
         case Zero::VertexAttributeType::Float:
         case Zero::VertexAttributeType::Vector2:
         case Zero::VertexAttributeType::Vector3:
         case Zero::VertexAttributeType::Vector4:
         case Zero::VertexAttributeType::Matrix3:
-        case Zero::VertexAttributeType::Matrix4:
-        {
-            return GL_FLOAT;
-        }
+        case Zero::VertexAttributeType::Matrix4:  return GL_FLOAT;
 
         case Zero::VertexAttributeType::Int:
         case Zero::VertexAttributeType::Vector2i:
         case Zero::VertexAttributeType::Vector3i:
-        case Zero::VertexAttributeType::Vector4i:
-        {
-            return GL_INT;
-        }
-
-        case Zero::VertexAttributeType::Boolean:
-        {
-            return GL_BOOL;
-        }
+        case Zero::VertexAttributeType::Vector4i: return GL_INT;
 
         default:
         {
             ZR_CORE_ASSERT(false, "Unknown Vertex Attribute Type");
-            return 0;
+            return 0u;
         }
     }
 }
