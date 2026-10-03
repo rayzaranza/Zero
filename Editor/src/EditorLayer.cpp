@@ -188,6 +188,7 @@ void Zero::EditorLayer::OnEvent(Event& event)
 
     EventDispatcher dispatcher{ event };
     dispatcher.Dispatch<KeyPressedEvent>(ZR_BIND_FUNCTION(EditorLayer::OnKeyPressed));
+    dispatcher.Dispatch<MouseButtonPressedEvent>(ZR_BIND_FUNCTION(EditorLayer::OnMouseButtonPressed));
 }
 
 
@@ -210,26 +211,26 @@ bool Zero::EditorLayer::OnKeyPressed(KeyPressedEvent& event)
         SaveSceneAs();
     }
 
-    if (keyCode == KeyCode::Q)
+    switch (keyCode)
     {
-        m_GizmoType = -1;
-    }
-    else if (keyCode == KeyCode::W)
-    {
-        m_GizmoType = ImGuizmo::OPERATION::TRANSLATE;
-    }
-    else if (keyCode == KeyCode::E)
-    {
-        m_GizmoType = ImGuizmo::OPERATION::ROTATE;
-    }
-    else if (keyCode == KeyCode::R)
-    {
-        m_GizmoType = ImGuizmo::OPERATION::SCALE;
+        case KeyCode::Q: m_GizmoType = -1; break;
+        case KeyCode::W: m_GizmoType = ImGuizmo::OPERATION::TRANSLATE; break;
+        case KeyCode::E: m_GizmoType = ImGuizmo::OPERATION::ROTATE; break;
+        case KeyCode::R: m_GizmoType = ImGuizmo::OPERATION::SCALE; break;
     }
 
-    if (keyCode == KeyCode::C)
+    return false;
+}
+
+
+bool Zero::EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& event)
+{
+    if (event.GetMouseButton() == MouseButton::LEFT)
     {
-        m_EditorCamera.EnableRotation(!m_EditorCamera.GetIsRotationEnabled());
+        if (m_IsViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(KeyCode::LEFT_ALT))
+        {
+            m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+        }
     }
 
     return false;

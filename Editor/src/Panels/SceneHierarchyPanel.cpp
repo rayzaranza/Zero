@@ -319,6 +319,12 @@ Zero::Entity Zero::SceneHierarchyPanel::GetSelectedEntity() const
 }
 
 
+void Zero::SceneHierarchyPanel::SetSelectedEntity(Entity entity)
+{
+    m_SelectionContext = entity;
+}
+
+
 void Zero::SceneHierarchyPanel::DrawPropertiesPanel()
 {
     ImGui::Begin("Properties");
