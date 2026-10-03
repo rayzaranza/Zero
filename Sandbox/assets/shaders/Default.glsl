@@ -4,14 +4,14 @@
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec4 a_Color;
 layout(location = 2) in vec2 a_UV;
-layout(location = 3) in float a_TextureSlot;
+layout(location = 3) in int a_TextureSlot;
 layout(location = 4) in vec2 a_Tiling;
 
 uniform mat4 u_ViewProjectionMatrix;
 
 out vec4 v_Color;
 out vec2 v_UV;
-out float v_TextureSlot;
+out flat int v_TextureSlot;
 out vec2 v_Tiling;
 
 void main()
@@ -35,13 +35,13 @@ layout(location = 1) out int o_Color2;
 
 in vec4 v_Color;
 in vec2 v_UV;
-in float v_TextureSlot;
+in flat int v_TextureSlot;
 in vec2 v_Tiling;
 
 uniform sampler2D u_Textures[32];
 
 void main()
 {
-    o_Color = texture(u_Textures[int(v_TextureSlot)], v_UV * v_Tiling) * v_Color;
+    o_Color = texture(u_Textures[v_TextureSlot], v_UV * v_Tiling) * v_Color;
     o_Color2 = 50;
 }

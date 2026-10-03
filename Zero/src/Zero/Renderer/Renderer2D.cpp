@@ -18,7 +18,7 @@ void Zero::Renderer2D::Initialize()
         { VertexAttributeType::Vector3, "a_Position" },
         { VertexAttributeType::Vector4, "a_Color" },
         { VertexAttributeType::Vector2, "a_UV" },
-        { VertexAttributeType::Float, "a_TextureSlot" },
+        { VertexAttributeType::Int, "a_TextureSlot" },
         { VertexAttributeType::Vector2, "a_Tiling" },
     });
 
@@ -100,23 +100,23 @@ void Zero::Renderer2D::DrawQuad(const QuadProps& quad)
         FlushAndReset();
     }
 
-    float textureIndex{ 0.0f };
+    uint32_t textureIndex{ 0u };
     const Ref<Texture2D> texture{ quad.SubTexture ? quad.SubTexture->GetTexture() : quad.Texture };
 
     if (texture)
     {
-        for (uint32_t i{ 1u }; i < s_Data.TextureSlotIndex; i++)
+        for (uint32_t index{ 1u }; index < s_Data.TextureSlotIndex; ++index)
         {
-            if (s_Data.Textures[i]->GetRendererID() == texture->GetRendererID())
+            if (s_Data.Textures[index]->GetRendererID() == texture->GetRendererID())
             {
-                textureIndex = static_cast<float>(i);
+                textureIndex = index;
                 break;
             }
         }
 
-        if (textureIndex == 0.0f)
+        if (textureIndex == 0u)
         {
-            textureIndex = static_cast<float>(s_Data.TextureSlotIndex);
+            textureIndex = s_Data.TextureSlotIndex;
             s_Data.Textures[s_Data.TextureSlotIndex] = texture;
             s_Data.TextureSlotIndex++;
         }

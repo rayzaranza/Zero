@@ -39,7 +39,7 @@ struct QuadVertex
     glm::vec3 Position{ 0.0f };
     glm::vec4 Color{ 1.0f };
     glm::vec2 UV{ 0.0f };
-    float TextureSlot{ 0.0f };
+    uint32_t TextureSlot{ 0u };
     glm::vec2 Tiling{ 1.0f };
 };
 
