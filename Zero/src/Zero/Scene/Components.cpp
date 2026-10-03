@@ -1,4 +1,5 @@
-#include "Components.h"
+#include "Zero/Scene/Components.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 

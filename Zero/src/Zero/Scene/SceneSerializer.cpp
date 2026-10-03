@@ -1,6 +1,7 @@
-#include "SceneSerializer.h"
-#include "Components.h"
-#include "Entity.h"
+#include "Zero/Scene/SceneSerializer.h"
+#include "Zero/Scene/Components.h"
+#include "Zero/Scene/Entity.h"
+
 #include <fstream>
 
 

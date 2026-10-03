@@ -1,10 +1,10 @@
 #pragma once
-#include "Event.h"
+#include "Zero/Event/Event.h"
 #include "Zero/Input/KeyCode.h"
 
 
-namespace Zero
-{
+namespace Zero {
+
 
 class KeyEvent : public Event
 {
@@ -61,5 +61,6 @@ class KeyTypedEvent : public KeyEvent
     virtual const char* GetName() const override;
     virtual std::string ToString() const override;
 };
+
 
 }

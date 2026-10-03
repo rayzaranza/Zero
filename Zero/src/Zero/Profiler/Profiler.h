@@ -9,63 +9,70 @@
 
 namespace Zero {
 
-struct ProfileResult {
-  std::string Name{};
-  int64_t Start{};
-  int64_t End{};
-  uint64_t ThreadID{};
+
+struct ProfileResult
+{
+    std::string Name{};
+    int64_t Start{};
+    int64_t End{};
+    uint64_t ThreadID{};
 };
 
 
-struct ProfilerSession {
-  std::string Name{};
+struct ProfilerSession
+{
+    std::string Name{};
 };
 
 
-class Profiler {
-public:
-  Profiler();
+class Profiler
+{
+  public:
+    Profiler();
 
-  void BeginSession(const std::string& name, const std::string& filePath = "results.json");
-  void EndSession();
-  void WriteProfile(const ProfileResult& result);
-  void WriteHeader();
-  void WriteFooter();
-  static Profiler& Get();
+  public:
+    void BeginSession(const std::string& name, const std::string& filePath = "results.json");
+    void EndSession();
+    void WriteProfile(const ProfileResult& result);
+    void WriteHeader();
+    void WriteFooter();
+    static Profiler& Get();
 
-private:
-  ProfilerSession* m_CurrentSession;
-  std::ofstream m_OutputStream{};
-  int32_t m_ProfileCount;
+  private:
+    ProfilerSession* m_CurrentSession;
+    std::ofstream m_OutputStream{};
+    int32_t m_ProfileCount;
 };
 
 
-class ProfilerTimer {
-private:
-  using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
+class ProfilerTimer
+{
+  private:
+    using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
 
-public:
-  ProfilerTimer(const std::string& name);
-  ~ProfilerTimer();
-  void Stop();
+  public:
+    ProfilerTimer(const std::string& name);
+    ~ProfilerTimer();
+    void Stop();
 
-private:
-  std::string m_Name;
-  bool m_IsStopped;
-  TimePoint m_StartTime;
+  private:
+    std::string m_Name;
+    bool m_IsStopped;
+    TimePoint m_StartTime;
 };
+
 
 }
 
 
 #ifdef ZR_ENABLE_PROFILER
-#   define ZR_PROFILE_BEGIN_SESSION(name, filePath) ::Zero::Profiler::Get().BeginSession(name, filePath)
-#   define ZR_PROFILE_END_SESSION() ::Zero::Profiler::Get().EndSession()
-#   define ZR_PROFILE_SCOPE(name) ::Zero::ProfilerTimer timer##__LINE__(name)
-#   define ZR_PROFILE_FUNCTION() ZR_PROFILE_SCOPE(__FUNCSIG__)
+#define ZR_PROFILE_BEGIN_SESSION(name, filePath) ::Zero::Profiler::Get().BeginSession(name, filePath)
+#define ZR_PROFILE_END_SESSION() ::Zero::Profiler::Get().EndSession()
+#define ZR_PROFILE_SCOPE(name) ::Zero::ProfilerTimer timer##__LINE__(name)
+#define ZR_PROFILE_FUNCTION() ZR_PROFILE_SCOPE(__FUNCSIG__)
 #else
-#   define ZR_PROFILE_BEGIN_SESSION(name, filePath)
-#   define ZR_PROFILE_END_SESSION()
-#   define ZR_PROFILE_SCOPE(name)
-#   define ZR_PROFILE_FUNCTION()
+#define ZR_PROFILE_BEGIN_SESSION(name, filePath)
+#define ZR_PROFILE_END_SESSION()
+#define ZR_PROFILE_SCOPE(name)
+#define ZR_PROFILE_FUNCTION()
 #endif

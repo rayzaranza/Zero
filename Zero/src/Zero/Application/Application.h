@@ -14,36 +14,43 @@ int main(int argc, char** argv);
 
 namespace Zero {
 
-class Application {
-public:
-  Application(const std::string& name = "Zero");
-  virtual ~Application();
 
-  void Run();
-  void OnEvent(Event& event);
-  void PushLayer(Layer* layer);
-  void PushOverlay(Layer* overlay);
-  void Close();
-  static Application& Get();
-  const Window& GetWindow() const;
-  UILayer* GetUILayer() const;
+class Application
+{
+  public:
+    Application(const std::string& name = "Zero");
+    virtual ~Application();
 
-private:
-  bool OnWindowClosed(WindowClosedEvent& event);
-  bool OnWindowResized(WindowResizedEvent& event);
+  public:
+    void Run();
+    void OnEvent(Event& event);
+    void PushLayer(Layer* layer);
+    void PushOverlay(Layer* overlay);
+    void Close();
+    static Application& Get();
+    const Window& GetWindow() const;
+    Window& GetWindow();
+    UILayer* GetUILayer() const;
 
-  Scope<Window> m_Window;
-  bool m_IsRunning;
-  bool m_IsMinimized;
-  LayerStack m_LayerStack;
-  UILayer* m_UILayer;
-  float m_LastFrameTime;
-  static Application* s_Instance;
+  private:
+    bool OnWindowClosed(WindowClosedEvent& event);
+    bool OnWindowResized(WindowResizedEvent& event);
 
-  friend int ::main(int argc, char** argv);
+  private:
+    Scope<Window> m_Window;
+    bool m_IsRunning;
+    bool m_IsMinimized;
+    LayerStack m_LayerStack;
+    UILayer* m_UILayer;
+    float m_LastFrameTime;
+    static Application* s_Instance;
+
+  private:
+    friend int ::main(int argc, char** argv);
 };
 
 
 Application* CreateApplication();
+
 
 }

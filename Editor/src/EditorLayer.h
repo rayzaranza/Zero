@@ -1,8 +1,8 @@
 #pragma once
-#include "Panels/SceneHierarchyPanel.h"
+#include "./Panels/SceneHierarchyPanel.h"
+
 #include <Zero.h>
 #include <Zero/Camera/EditorCamera.h>
-#include <imgui.h>
 
 
 namespace Zero {
@@ -40,6 +40,8 @@ class EditorLayer : public Layer
     bool m_IsViewportHovered{ false };
     SceneHierarchyPanel m_SceneHierarchyPanel;
     int16_t m_GizmoType{ -1 };
+    glm::vec2 m_ViewportBounds[2];
+    Entity m_HoveredEntity{};
 };
 
 

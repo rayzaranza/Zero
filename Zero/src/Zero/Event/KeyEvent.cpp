@@ -1,9 +1,10 @@
-#include "KeyEvent.h"
+#include "Zero/Event/KeyEvent.h"
 
 
-//=====================================================================================================================================
-//  Key Event
-//=====================================================================================================================================
+//====================================================================
+// Key Event
+//====================================================================
+
 Zero::KeyEvent::KeyEvent(const KeyCode keyCode) : m_KeyCode{ keyCode }
 {
 }
@@ -21,41 +22,42 @@ int32_t Zero::KeyEvent::GetCategoryFlags() const
 }
 
 
-//=====================================================================================================================================
-//  Key Pressed Event
-//=====================================================================================================================================
+//======================================================================================
+// Key Pressed Event
+//======================================================================================
+
 Zero::KeyPressedEvent::KeyPressedEvent(const KeyCode keyCode, const int32_t repeatCount)
-    : KeyEvent{ keyCode },
-      m_RepeatCount{ repeatCount }
+    : KeyEvent{ keyCode }
+    , m_RepeatCount{ repeatCount }
 {
 }
 
 
-inline int32_t Zero::KeyPressedEvent::GetRepeatCount() const
+int32_t Zero::KeyPressedEvent::GetRepeatCount() const
 {
     return m_RepeatCount;
 }
 
 
-inline Zero::EventType Zero::KeyPressedEvent::GetStaticType()
+Zero::EventType Zero::KeyPressedEvent::GetStaticType()
 {
     return EventType::KeyPressed;
 }
 
 
-inline Zero::EventType Zero::KeyPressedEvent::GetEventType() const
+Zero::EventType Zero::KeyPressedEvent::GetEventType() const
 {
     return GetStaticType();
 }
 
 
-inline const char* Zero::KeyPressedEvent::GetName() const
+const char* Zero::KeyPressedEvent::GetName() const
 {
     return "KeyPressed";
 }
 
 
-inline std::string Zero::KeyPressedEvent::ToString() const
+std::string Zero::KeyPressedEvent::ToString() const
 {
     std::stringstream stream{};
     stream << "KeyPressedEvent: " << static_cast<char>(m_KeyCode) << " (repeats: " << m_RepeatCount << ")";
@@ -63,9 +65,10 @@ inline std::string Zero::KeyPressedEvent::ToString() const
 }
 
 
-//=====================================================================================================================================
+//===================================================================================
 //  Key Released Event
-//=====================================================================================================================================
+//===================================================================================
+
 Zero::KeyReleasedEvent::KeyReleasedEvent(const KeyCode keyCode) : KeyEvent{ keyCode }
 {
 }
@@ -97,9 +100,10 @@ std::string Zero::KeyReleasedEvent::ToString() const
 }
 
 
-//=====================================================================================================================================
+//==============================================================================
 //  Key Typed Event
-//=====================================================================================================================================
+//==============================================================================
+
 Zero::KeyTypedEvent::KeyTypedEvent(const KeyCode keyCode) : KeyEvent{ keyCode }
 {
 }

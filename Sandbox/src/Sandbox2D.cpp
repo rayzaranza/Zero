@@ -1,4 +1,5 @@
-#include "Sandbox2D.h"
+#include "./Sandbox2D.h"
+
 #include <imgui.h>
 
 
@@ -56,6 +57,7 @@ void Sandbox2D::OnUIRender()
 void Sandbox2D::OnEvent(Zero::Event& event)
 {
     m_CameraController.OnEvent(event);
+
     Zero::EventDispatcher dispatcher{ event };
     dispatcher.Dispatch<Zero::KeyPressedEvent>(ZR_BIND_FUNCTION(Sandbox2D::OnKeyPressed));
 }

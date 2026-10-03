@@ -1,5 +1,5 @@
 #pragma once
-#include "Entity.h"
+#include "Zero/Scene/Entity.h"
 
 
 namespace Zero {
@@ -9,6 +9,8 @@ class ScriptableEntity
 {
   public:
     virtual ~ScriptableEntity() = default;
+
+  public:
     template <typename T> T& GetComponent();
 
   protected:

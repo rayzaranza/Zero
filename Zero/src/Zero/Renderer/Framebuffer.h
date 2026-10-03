@@ -4,23 +4,62 @@
 
 namespace Zero {
 
-struct FramebufferProps {
-  glm::uvec2 Size{ 1280u, 720u };
-  uint32_t Samples{ 1u };
-  bool SwapChainTarget{ false };
+
+enum class FramebufferTextureFormat : uint8_t
+{
+    None,
+    RGBA8,
+    RED_INTEGER,
+    DEPTH24_STENCIL8,
+    Depth = DEPTH24_STENCIL8,
 };
 
 
-class Framebuffer {
-public:
-  virtual ~Framebuffer() = default;
-  virtual void Bind() const = 0;
-  virtual void Unbind() const = 0;
-  virtual void Resize(const glm::uvec2& size) = 0;
-  virtual uint32_t GetColorAttachmentRendererID() const = 0;
-  virtual const FramebufferProps& GetProps() const = 0;
-  virtual const glm::uvec2& GetSize() const = 0;
-  static Ref<Framebuffer> Create(const FramebufferProps& props);
+struct FramebufferTextureProps
+{
+    FramebufferTextureFormat TextureFormat{ FramebufferTextureFormat::None };
+
+    FramebufferTextureProps() = default;
+    FramebufferTextureProps(FramebufferTextureFormat format);
 };
+
+
+struct FramebufferAttachmentProps
+{
+    Array<FramebufferTextureProps> Attachments{};
+
+    FramebufferAttachmentProps() = default;
+    FramebufferAttachmentProps(std::initializer_list<FramebufferTextureProps> attachments);
+};
+
+
+struct FramebufferProps
+{
+    glm::uvec2 Size{ 1280u, 720u };
+    FramebufferAttachmentProps AttachmentProps;
+    uint32_t Samples{ 1u };
+    bool SwapChainTarget{ false };
+};
+
+
+class Framebuffer
+{
+  public:
+    virtual ~Framebuffer() = default;
+
+  public:
+    static Ref<Framebuffer> Create(const FramebufferProps& props);
+
+  public:
+    virtual void Bind() const = 0;
+    virtual void Unbind() const = 0;
+    virtual void Resize(const glm::uvec2& size) = 0;
+    virtual uint32_t GetColorAttachmentRendererID(uint32_t index = 0u) const = 0;
+    virtual const FramebufferProps& GetProps() const = 0;
+    virtual const glm::uvec2& GetSize() const = 0;
+    virtual int ReadPixel(uint32_t attachmentIndex, const glm::ivec2& position) = 0;
+    virtual void ClearColorAttachment(uint32_t index, int value) = 0;
+};
+
 
 }

@@ -1,6 +1,6 @@
-#include "Scene.h"
-#include "Components.h"
-#include "Entity.h"
+#include "Zero/Scene/Scene.h"
+#include "Zero/Scene/Components.h"
+#include "Zero/Scene/Entity.h"
 #include "Zero/Renderer/Renderer2D.h"
 
 
@@ -51,13 +51,12 @@ void Zero::Scene::OnRuntimeRender()
 
     if (cameraMain)
     {
-        const auto entitiesWithSprite{ m_Registry.view<const TransformComponent, const SpriteComponent>() };
-
         Renderer2D::BeginScene(*cameraMain, cameraTransform);
 
+        const auto entitiesWithSprite{ m_Registry.view<const TransformComponent, const SpriteComponent>() };
         for (const auto [entity, transform, sprite] : entitiesWithSprite.each())
         {
-            Renderer2D::DrawQuad({ transform.GetTransform(), sprite.Color });
+            Renderer2D::DrawQuad({ .Transform{ transform.GetTransform() }, .Color{ sprite.Color } });
         }
 
         Renderer2D::EndScene();
@@ -73,13 +72,16 @@ void Zero::Scene::OnEditorUpdate(const DeltaTime deltaTime, EditorCamera& camera
 
 void Zero::Scene::OnEditorRender(EditorCamera& camera)
 {
-    const auto entitiesWithSprite{ m_Registry.view<const TransformComponent, const SpriteComponent>() };
-
     Renderer2D::BeginScene(camera);
 
+    const auto entitiesWithSprite{ m_Registry.view<const TransformComponent, const SpriteComponent>() };
     for (const auto [entity, transform, sprite] : entitiesWithSprite.each())
     {
-        Renderer2D::DrawQuad({ transform.GetTransform(), sprite.Color });
+        Renderer2D::DrawQuad({
+            .Transform{ transform.GetTransform() },
+            .Color{ sprite.Color },
+            .EntityID{ static_cast<int32_t>(entity) },
+        });
     }
 
     Renderer2D::EndScene();
@@ -91,7 +93,6 @@ void Zero::Scene::OnViewportResize(const glm::uvec2& size)
     m_ViewportSize = size;
 
     const auto cameras{ m_Registry.view<CameraComponent>() };
-
     for (auto [entity, cameraComponent] : cameras.each())
     {
         if (!cameraComponent.IsAspectRatioFixed)
@@ -105,7 +106,6 @@ void Zero::Scene::OnViewportResize(const glm::uvec2& size)
 Zero::Entity Zero::Scene::CreateEntity(const std::string& name)
 {
     Entity entity{ m_Registry.create(), this };
-
     entity.AddComponent<TransformComponent>();
     entity.AddComponent<TagComponent>(name);
 

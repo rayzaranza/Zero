@@ -1,36 +1,42 @@
 #pragma once
+
 //======================================================================================
-//  Core
+// Core
 //======================================================================================
+
 #include "Zero/Application/Application.h"
 #include "Zero/Core/Types.h"
 #include "Zero/Logger/Logger.h"
 #include "Zero/Time/DeltaTime.h"
 
 //======================================================================================
-//  Event
+// Event
 //======================================================================================
+
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Event/Event.h"
 #include "Zero/Event/KeyEvent.h"
 #include "Zero/Event/MouseEvent.h"
 
 //======================================================================================
-//  Input
+// Input
 //======================================================================================
+
 #include "Zero/Input/Input.h"
 #include "Zero/Input/KeyCode.h"
 #include "Zero/Input/MouseButton.h"
 
 //======================================================================================
-//  Layer
+// Layer
 //======================================================================================
+
 #include "Zero/Layer/Layer.h"
 #include "Zero/UI/UILayer.h"
 
 //======================================================================================
-//  Renderer
+// Renderer
 //======================================================================================
+
 #include "Zero/Renderer/Buffer/IndexBuffer.h"
 #include "Zero/Renderer/Buffer/VertexArray.h"
 #include "Zero/Renderer/Buffer/VertexBuffer.h"
@@ -44,19 +50,22 @@
 #include "Zero/Renderer/Texture/Texture.h"
 
 //======================================================================================
-//  Camera
+// Camera
 //======================================================================================
+
 #include "Zero/Camera/Camera.h"
 #include "Zero/Camera/CameraController.h"
 
 //======================================================================================
-//  Math
+// Math
 //======================================================================================
+
 #include "Zero/Math/Math.h"
 
 //======================================================================================
-//  Scene
+// Scene
 //======================================================================================
+
 #include "Zero/Scene/Components.h"
 #include "Zero/Scene/Entity.h"
 #include "Zero/Scene/Scene.h"

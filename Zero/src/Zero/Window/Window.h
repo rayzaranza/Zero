@@ -2,20 +2,21 @@
 #include "Zero/Core/Core.h"
 #include "Zero/Event/ApplicationEvent.h"
 #include "Zero/Renderer/GraphicsContext.h"
+
 #include <glm/glm.hpp>
 
 
 struct GLFWwindow;
 
 
-namespace Zero
-{
+namespace Zero {
 
 
 struct WindowProps
 {
     std::string Title{ "Zero" };
     glm::uvec2 Size{ 1920u, 1080u };
+    float Scale{ 1.0f };
     Function<void(Event&)> EventCallback{};
 };
 
@@ -26,6 +27,7 @@ class Window
     Window(const WindowProps& props);
     ~Window();
 
+  public:
     const glm::uvec2& GetSize() const;
     GLFWwindow* GetWindowHandle() const;
     void SetEventCallback(const Function<void(Event&)>& callback);
@@ -33,10 +35,14 @@ class Window
     void OnUpdate();
     void Initialize();
     void Destroy();
+    void SetScale(float scale);
+    float GetScale() const;
 
   private:
     void SetCallbacks();
     static void ErrorCallback(const int32_t error, const char* description);
+
+  private:
     GLFWwindow* m_WindowHandle;
     GraphicsContext* m_RendererContext;
     WindowProps m_Props;

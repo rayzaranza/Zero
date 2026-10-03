@@ -1,6 +1,9 @@
 #pragma once
-#include "Texture/SubTexture2D.h"
-#include "Texture/Texture.h"
+#include "Zero/Renderer/Shader/Shader.h"
+#include "Zero/Renderer/Buffer/VertexArray.h"
+#include "Zero/Renderer/Buffer/VertexBuffer.h"
+#include "Zero/Renderer/Texture/Texture.h"
+#include "Zero/Renderer/Texture/SubTexture2D.h"
 #include "Zero/Camera/Camera.h"
 #include "Zero/Camera/EditorCamera.h"
 
@@ -28,6 +31,7 @@ struct QuadProps
     Ref<Texture2D> Texture{ nullptr };
     Ref<SubTexture2D> SubTexture{ nullptr };
     glm::vec2 Tiling{ 1.0f };
+    int32_t EntityID{ -1 };
 };
 
 
@@ -36,8 +40,9 @@ struct QuadVertex
     glm::vec3 Position{ 0.0f };
     glm::vec4 Color{ 1.0f };
     glm::vec2 UV{ 0.0f };
-    float TextureSlot{ 0.0f };
+    uint32_t TextureSlot{ 0u };
     glm::vec2 Tiling{ 1.0f };
+    int32_t EntityID{ -1 };
 };
 
 
@@ -48,6 +53,21 @@ struct RenderStats
 
     uint32_t GetTotalVertexCount() const;
     uint32_t GetTotalIndexCount() const;
+};
+
+
+struct Renderer2DData
+{
+    Ref<VertexArray> QuadVertexArray{};
+    Ref<VertexBuffer> QuadVertexBuffer{};
+    Ref<Shader> QuadShader{};
+    Ref<Texture2D> DefaultTexture{};
+    uint32_t QuadIndexCount{ 0u };
+    QuadVertex* QuadVertexBufferBase{ nullptr };
+    QuadVertex* QuadVertexBufferPointer{ nullptr };
+    FixedArray<Ref<Texture2D>, MAX_TEXTURE_SLOTS> Textures{};
+    uint32_t TextureSlotIndex{ 1u };
+    RenderStats Stats{};
 };
 
 
@@ -67,6 +87,8 @@ class Renderer2D
 
   private:
     static void FlushAndReset();
+    static void StartBatch();
+    static void SetQuadMatrices(const glm::mat4& projection);
 };
 
 

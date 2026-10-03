@@ -40,3 +40,6 @@ PackArguments:
     BinPack: OnePerLine
 
 AlignAfterOpenBracket: false
+
+SortIncludes:
+    Enabled: false

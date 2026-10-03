@@ -115,6 +115,7 @@ add_library(Zero STATIC
     "${SRC}/Camera/EditorCamera.cpp"
 
     "${SRC}/Time/DeltaTime.h"
+    "${SRC}/Time/DeltaTime.cpp"
     "${SRC}/Profiler/Profiler.h"
     "${SRC}/Profiler/Profiler.cpp"
 

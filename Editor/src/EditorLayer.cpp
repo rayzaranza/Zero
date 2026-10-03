@@ -1,8 +1,11 @@
-#include "EditorLayer.h"
-#include <ImGuizmo.h>
+#include "./EditorLayer.h"
+
 #include <Zero/Math/Math.h>
 #include <Zero/Scene/SceneSerializer.h>
 #include <Zero/Utils/Utils.h>
+
+#include <imgui.h>
+#include <ImGuizmo.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -18,10 +21,19 @@ Zero::EditorLayer::~EditorLayer()
 
 void Zero::EditorLayer::OnAttach()
 {
-    m_Framebuffer = Framebuffer::Create({ .Size{ 1280u, 720u } });
+    m_Framebuffer = Framebuffer::Create({
+        .Size{ 1920u, 1080u },
+        .AttachmentProps{
+            FramebufferTextureFormat::RGBA8,
+            FramebufferTextureFormat::RED_INTEGER,
+            FramebufferTextureFormat::Depth,
+        },
+    });
+
+    m_EditorCamera = EditorCamera{};
+
     m_ActiveScene = CreateRef<Scene>();
     m_SceneHierarchyPanel.SetContext(m_ActiveScene);
-    m_EditorCamera = EditorCamera{};
 }
 
 
@@ -32,6 +44,14 @@ void Zero::EditorLayer::OnDetach()
 
 void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime)
 {
+    m_ActiveScene->OnEditorUpdate(deltaTime, m_EditorCamera);
+}
+
+
+void Zero::EditorLayer::OnRender()
+{
+    m_Framebuffer->Bind();
+
     const glm::uvec2& size{ m_Framebuffer->GetSize() };
 
     if (m_ViewportSize.x > 0u && m_ViewportSize.y > 0u && (size.x != m_ViewportSize.x || size.y != m_ViewportSize.y))
@@ -41,20 +61,38 @@ void Zero::EditorLayer::OnUpdate(const DeltaTime deltaTime)
         m_ActiveScene->OnViewportResize(m_ViewportSize);
     }
 
-    m_ActiveScene->OnEditorUpdate(deltaTime, m_EditorCamera);
-}
-
-
-void Zero::EditorLayer::OnRender()
-{
     Renderer2D::ResetStats();
-
-    m_Framebuffer->Bind();
 
     RenderCommand::SetClearColor({ 0.02f, 0.02f, 0.022f, 1.0f });
     RenderCommand::Clear();
 
+    m_Framebuffer->ClearColorAttachment(1u, -1);
+
     m_ActiveScene->OnEditorRender(m_EditorCamera);
+
+    ImVec2 mousePositionRaw{ ImGui::GetMousePos() };
+    mousePositionRaw.x -= m_ViewportBounds[0].x;
+    mousePositionRaw.y -= m_ViewportBounds[0].y;
+    const glm::uvec2 viewportSize{ m_ViewportBounds[1] - m_ViewportBounds[0] };
+    mousePositionRaw.y = viewportSize.y - mousePositionRaw.y;
+
+    glm::ivec2 mouse{ static_cast<int32_t>(mousePositionRaw.x), static_cast<int32_t>(mousePositionRaw.y) };
+
+    if ((mouse.x >= 0 && mouse.y >= 0) &&
+        (mouse.x < static_cast<int32_t>(viewportSize.x) && mouse.y < static_cast<int32_t>(viewportSize.y)))
+    {
+        int32_t pixelData{ m_Framebuffer->ReadPixel(1u, mouse) };
+
+        if (pixelData == -1)
+        {
+            m_HoveredEntity = Entity{};
+        }
+        else
+        {
+            m_HoveredEntity = Entity{ static_cast<entt::entity>(pixelData), m_ActiveScene.get() };
+        }
+    }
+
     m_Framebuffer->Unbind();
 }
 
@@ -62,8 +100,8 @@ void Zero::EditorLayer::OnRender()
 void Zero::EditorLayer::OnUIRender()
 {
     static bool isOpen{ true };
-    static bool isFullscreenPersistant{ true };
-    static bool isFullscreen{ isFullscreenPersistant };
+    static const bool isFullscreenPersistant{ true };
+    static const bool isFullscreen{ isFullscreenPersistant };
 
     static ImGuiDockNodeFlags dockSpaceFlags{ ImGuiDockNodeFlags_None };
     static ImGuiWindowFlags windowFlags{ ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking };
@@ -99,7 +137,7 @@ void Zero::EditorLayer::OnUIRender()
     ImGuiIO& io{ ImGui::GetIO() };
     ImGuiStyle& style{ ImGui::GetStyle() };
     const float minWindowWidth{ style.WindowMinSize.x };
-    style.WindowMinSize.x = 256.0f;
+    style.WindowMinSize.x = 300.0f;
 
     if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
     {
@@ -117,17 +155,14 @@ void Zero::EditorLayer::OnUIRender()
             {
                 NewScene();
             }
-
             if (ImGui::MenuItem("Open...", "Ctrl+O"))
             {
                 OpenScene();
             }
-
             if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
             {
                 SaveSceneAs();
             }
-
             if (ImGui::MenuItem("Exit", "Ctrl+Q"))
             {
                 Application::Get().Close();
@@ -206,13 +241,24 @@ void Zero::EditorLayer::RenderViewportPanel()
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
     ImGui::Begin("Viewport");
 
+    const ImVec2 viewportOffset{ ImGui::GetCursorPos() };
+
     m_IsViewportFocused = ImGui::IsWindowFocused();
     m_IsViewportHovered = ImGui::IsWindowHovered();
     Application::Get().GetUILayer()->SetIsBlockingEvents(!m_IsViewportFocused && !m_IsViewportHovered);
 
+    ImVec2 minBound{ ImGui::GetWindowPos() };
+
+    minBound.x += viewportOffset.x;
+    minBound.y += viewportOffset.y;
+
     const ImVec2 viewportPanelSize{ ImGui::GetContentRegionAvail() };
     m_ViewportSize = { static_cast<uint32_t>(viewportPanelSize.x), static_cast<uint32_t>(viewportPanelSize.y) };
     ImGui::Image(m_Framebuffer->GetColorAttachmentRendererID(), viewportPanelSize, ImVec2{ 0.0f, 1.0f }, ImVec2{ 1.0f, 0.0f });
+
+    ImVec2 maxBound{ minBound.x + viewportPanelSize.x, minBound.y + viewportPanelSize.y };
+    m_ViewportBounds[0] = { minBound.x, minBound.y };
+    m_ViewportBounds[1] = { maxBound.x, maxBound.y };
 
     Entity selectedEntity{ m_SceneHierarchyPanel.GetSelectedEntity() };
 
@@ -225,27 +271,20 @@ void Zero::EditorLayer::RenderViewportPanel()
         const float windowHeight{ static_cast<float>(ImGui::GetWindowHeight()) };
         ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
-        // Entity cameraEntity{ m_ActiveScene->GetMainCameraEntity() };
-        // Camera& camera{ cameraEntity.GetComponent<CameraComponent>().Camera };
-        // const glm::mat4 cameraView{ glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform()) };
-
-        const glm::mat4 projection{ m_EditorCamera.GetProjection() };
-        const glm::mat4 view{ m_EditorCamera.GetViewMatrix() };
-
         TransformComponent& transformComponent{ selectedEntity.GetComponent<TransformComponent>() };
         glm::mat4 transform{ transformComponent.GetTransform() };
 
-        const bool isSnapping{ Input::IsKeyPressed(KeyCode::LEFT_CONTROL) };
+        const bool isSnapEnabled{ Input::IsKeyPressed(KeyCode::LEFT_CONTROL) };
         const float snapIncrement{ m_GizmoType == ImGuizmo::OPERATION::ROTATE ? 45.0f : 0.5f };
         const float snapIncrements[3]{ snapIncrement, snapIncrement, snapIncrement };
 
-        ImGuizmo::Manipulate(glm::value_ptr(view),
-            glm::value_ptr(projection),
-            static_cast<ImGuizmo::OPERATION>(m_GizmoType),
-            ImGuizmo::LOCAL,
-            glm::value_ptr(transform),
-            nullptr,
-            isSnapping ? snapIncrements : nullptr);
+        const glm::f32* view{ glm::value_ptr(m_EditorCamera.GetViewMatrix()) };
+        const glm::f32* projection{ glm::value_ptr(m_EditorCamera.GetProjection()) };
+        const float* snap{ isSnapEnabled ? snapIncrements : nullptr };
+
+        const ImGuizmo::OPERATION operation{ static_cast<ImGuizmo::OPERATION>(m_GizmoType) };
+
+        ImGuizmo::Manipulate(view, projection, operation, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, snap);
 
         if (ImGuizmo::IsUsing())
         {
@@ -268,13 +307,23 @@ void Zero::EditorLayer::RenderViewportPanel()
 
 void Zero::EditorLayer::RenderSettingsPanel()
 {
-    const RenderStats& stats{ Renderer2D::GetStats() };
-
     ImGui::Begin("Renderer2D Stats");
+
+    std::string name{ "None" };
+    if (m_HoveredEntity && m_HoveredEntity.HasComponent<TagComponent>())
+    {
+        name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
+    }
+
+    ImGui::Text("Hovered Entity: %s", name.c_str());
+
+    const RenderStats& stats{ Renderer2D::GetStats() };
     ImGui::Text("Draw Calls: %d", stats.DrawCalls);
     ImGui::Text("Quads: %d", stats.QuadCount);
     ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
     ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+
     ImGui::End();
 }
 
@@ -290,7 +339,6 @@ void Zero::EditorLayer::NewScene()
 void Zero::EditorLayer::OpenScene()
 {
     const std::string filePath{ FileDialog::OpenFile("Zero Scene (*.zero)\0*.zero\0") };
-
     if (filePath.empty())
     {
         return;
@@ -308,7 +356,6 @@ void Zero::EditorLayer::OpenScene()
 void Zero::EditorLayer::SaveSceneAs() const
 {
     const std::string filePath{ FileDialog::SaveFile("Zero Scene (*.zero)\0*.zero\0") };
-
     if (filePath.empty())
     {
         return;

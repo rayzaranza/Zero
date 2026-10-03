@@ -1,6 +1,6 @@
 #pragma once
-#include "SceneCamera.h"
-#include "ScriptableEntity.h"
+#include "Zero/Scene/SceneCamera.h"
+#include "Zero/Scene/ScriptableEntity.h"
 
 
 namespace Zero {

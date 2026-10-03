@@ -11,6 +11,7 @@
 
 namespace Zero {
 
+
 template <typename T> using Array = std::vector<T>;
 template <typename T, size_t S> using FixedArray = std::array<T, S>;
 template <typename K, typename V> using Map = std::unordered_map<K, V>;
@@ -24,18 +25,19 @@ template <typename T> using WeakRef = std::weak_ptr<T>;
 template <typename T, typename... TArgs> constexpr Ref<T> CreateRef(TArgs&&... args);
 template <typename T, typename... TArgs> constexpr Scope<T> CreateScope(TArgs&&... args);
 
+
 }
 
 
 template <typename T, typename... TArgs>
-constexpr Zero::Scope<T> Zero::CreateScope(TArgs&&... args) {
-  return std::make_unique<T>(std::forward<TArgs>(args)...);
+constexpr Zero::Scope<T> Zero::CreateScope(TArgs&&... args)
+{
+    return std::make_unique<T>(std::forward<TArgs>(args)...);
 };
 
 
 template <typename T, typename... TArgs>
-constexpr Zero::Ref<T> Zero::CreateRef(TArgs&&... args) {
-  return std::make_shared<T>(std::forward<TArgs>(args)...);
+constexpr Zero::Ref<T> Zero::CreateRef(TArgs&&... args)
+{
+    return std::make_shared<T>(std::forward<TArgs>(args)...);
 }
-
-
