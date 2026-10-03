@@ -19,6 +19,8 @@ class FramebufferOpenGL : public Framebuffer
     virtual const FramebufferProps& GetProps() const override;
     virtual const glm::uvec2& GetSize() const override;
     virtual uint32_t GetColorAttachmentRendererID(uint32_t index = 0u) const override;
+    virtual int ReadPixel(uint32_t attachmentIndex, const glm::ivec2& position) override;
+    virtual void ClearColorAttachment(uint32_t index, int value) override;
 
   private:
     uint32_t m_RendererID{};

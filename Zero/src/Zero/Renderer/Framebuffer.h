@@ -9,6 +9,7 @@ enum class FramebufferTextureFormat : uint8_t
 {
     None,
     RGBA8,
+    RED_INTEGER,
     DEPTH24_STENCIL8,
     Depth = DEPTH24_STENCIL8,
 };
@@ -56,6 +57,8 @@ class Framebuffer
     virtual uint32_t GetColorAttachmentRendererID(uint32_t index = 0u) const = 0;
     virtual const FramebufferProps& GetProps() const = 0;
     virtual const glm::uvec2& GetSize() const = 0;
+    virtual int ReadPixel(uint32_t attachmentIndex, const glm::ivec2& position) = 0;
+    virtual void ClearColorAttachment(uint32_t index, int value) = 0;
 };
 
 

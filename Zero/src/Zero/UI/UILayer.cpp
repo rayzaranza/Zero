@@ -16,6 +16,8 @@ Zero::UILayer::UILayer() : Layer{ "UILayer" }, m_Time{ 0.0f }
 
 void Zero::UILayer::OnAttach()
 {
+    Window& window{ Application::Get().GetWindow() };
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
@@ -30,7 +32,14 @@ void Zero::UILayer::OnAttach()
     io.FontDefault = io.Fonts->AddFontFromFileTTF("D:/Zero/Editor/assets/fonts/Rubik/Rubik-Regular.ttf", fontSize);
 
     ImGui::StyleColorsDark();
+
+    GLFWwindow* windowHandle{ window.GetWindowHandle() };
+    float xScale, yScale;
+    glfwGetWindowContentScale(windowHandle, &xScale, &yScale);
+
     ImGuiStyle& style{ ImGui::GetStyle() };
+    style.ScaleAllSizes(yScale);
+    style.FontScaleDpi = yScale;
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -40,9 +49,7 @@ void Zero::UILayer::OnAttach()
 
     SetDarkThemeColors();
 
-    const Application& application{ Application::Get() };
-    GLFWwindow* window{ application.GetWindow().GetWindowHandle() };
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(windowHandle, true);
     ImGui_ImplOpenGL3_Init("#version 460 core");
 }
 

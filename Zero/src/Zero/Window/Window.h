@@ -16,6 +16,7 @@ struct WindowProps
 {
     std::string Title{ "Zero" };
     glm::uvec2 Size{ 1920u, 1080u };
+    float Scale{ 1.0f };
     Function<void(Event&)> EventCallback{};
 };
 
@@ -34,10 +35,14 @@ class Window
     void OnUpdate();
     void Initialize();
     void Destroy();
+    void SetScale(float scale);
+    float GetScale() const;
 
   private:
     void SetCallbacks();
     static void ErrorCallback(const int32_t error, const char* description);
+
+  private:
     GLFWwindow* m_WindowHandle;
     GraphicsContext* m_RendererContext;
     WindowProps m_Props;

@@ -14,7 +14,7 @@ Zero::Application::Application(const std::string& name) : m_IsRunning{ true }, m
     ZR_CORE_ASSERT(s_Instance == nullptr, "Application already exists");
     s_Instance = this;
 
-    m_Window = CreateScope<Window>(WindowProps{ .Title{ "Zero Editor" }, .Size{ 1280u, 720u } });
+    m_Window = CreateScope<Window>(WindowProps{ .Title{ "Zero Editor" }, .Size{ 1920u, 1080u } });
     m_Window->SetEventCallback(ZR_BIND_FUNCTION(Application::OnEvent));
 
     m_UILayer = new UILayer();
@@ -72,6 +72,12 @@ void Zero::Application::Close()
 Zero::Application& Zero::Application::Get()
 {
     return *s_Instance;
+}
+
+
+Zero::Window& Zero::Application::GetWindow()
+{
+    return *m_Window;
 }
 
 

@@ -40,6 +40,7 @@ class EditorLayer : public Layer
     bool m_IsViewportHovered{ false };
     SceneHierarchyPanel m_SceneHierarchyPanel;
     int16_t m_GizmoType{ -1 };
+    glm::vec2 m_ViewportBounds[2];
 };
 
 

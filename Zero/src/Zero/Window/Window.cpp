@@ -52,13 +52,10 @@ void Zero::Window::Initialize()
     ZR_CORE_ASSERT(glfwInitSuccess, "Failed to initialize GLFW");
     glfwSetErrorCallback(ErrorCallback);
 
-    int32_t monitorCount{};
-    GLFWmonitor** monitors = glfwGetMonitors(&monitorCount);
-
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_AUTO_ICONIFY, GLFW_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
 
     m_WindowHandle = glfwCreateWindow(m_Props.Size.x, m_Props.Size.y, m_Props.Title.c_str(), nullptr, nullptr);
 
@@ -69,7 +66,6 @@ void Zero::Window::Initialize()
     glfwSwapInterval(0);
 
     SetCallbacks();
-    SendWindowToSecondMonitor(m_WindowHandle, m_Props.Size);
     ZR_CORE_LOG("Window created: {} ({}, {})", m_Props.Title, m_Props.Size.x, m_Props.Size.y);
 }
 
@@ -78,6 +74,18 @@ void Zero::Window::Destroy()
 {
     glfwDestroyWindow(m_WindowHandle);
     glfwTerminate();
+}
+
+
+float Zero::Window::GetScale() const
+{
+    return m_Props.Scale;
+}
+
+
+void Zero::Window::SetScale(float scale)
+{
+    m_Props.Scale = scale;
 }
 
 
@@ -186,5 +194,5 @@ void SendWindowToSecondMonitor(GLFWwindow* window, const glm::ivec2& size)
     const GLFWvidmode* mode{ glfwGetVideoMode(monitor) };
     glm::ivec2 position{};
     glfwGetMonitorPos(monitor, &position.x, &position.y);
-    glfwSetWindowPos(window, position.x + (mode->width - size.x) / 2, position.y + (mode->height - size.y) / 2 - 24);
+    glfwSetWindowPos(window, position.x + (mode->width - size.x) / 2, position.y + (mode->height - size.y) / 2);
 }

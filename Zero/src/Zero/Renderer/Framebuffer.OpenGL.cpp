@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 
 
-namespace Utils {
+namespace Zero::Utils {
 
 
 static GLenum GetTextureTarget(bool isMultisampled)
@@ -12,20 +12,14 @@ static GLenum GetTextureTarget(bool isMultisampled)
 }
 
 
-static bool IsDepthFormat(Zero::FramebufferTextureFormat format)
+static bool IsDepthFormat(FramebufferTextureFormat format)
 {
     switch (format)
     {
-        case Zero::FramebufferTextureFormat::DEPTH24_STENCIL8:
-        {
-            return true;
-        }
-
-        default:
-        {
-            return false;
-        }
+        case FramebufferTextureFormat::DEPTH24_STENCIL8: return true;
     }
+
+    return false;
 }
 
 
@@ -41,17 +35,18 @@ static void BindTexture(bool isMultisampled, uint32_t id)
 }
 
 
-static void AttachColorTexture(uint32_t id, uint32_t samples, GLenum format, const glm::uvec2& size, int32_t index)
+static void AttachColorTexture(
+    uint32_t id, uint32_t samples, GLenum internalFormat, GLenum format, const glm::uvec2& size, int32_t index)
 {
     const bool isMultisampled{ samples > 1u };
 
     if (isMultisampled)
     {
-        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, format, size.x, size.y, GL_FALSE);
+        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, internalFormat, size.x, size.y, GL_FALSE);
     }
     else
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, format, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, size.x, size.y, 0, format, GL_UNSIGNED_BYTE, nullptr);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -64,17 +59,17 @@ static void AttachColorTexture(uint32_t id, uint32_t samples, GLenum format, con
 }
 
 
-static void AttachDepthTexture(uint32_t id, uint32_t samples, GLenum format, GLenum attachmentType, const glm::uvec2& size)
+static void AttachDepthTexture(uint32_t id, uint32_t samples, GLenum internalFormat, GLenum attachmentType, const glm::uvec2& size)
 {
     const bool isMultisampled{ samples > 1u };
 
     if (isMultisampled)
     {
-        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, format, size.x, size.y, GL_FALSE);
+        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, samples, internalFormat, size.x, size.y, GL_FALSE);
     }
     else
     {
-        glTexStorage2D(GL_TEXTURE_2D, 1, format, size.x, size.y);
+        glTexStorage2D(GL_TEXTURE_2D, 1, internalFormat, size.x, size.y);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -87,7 +82,22 @@ static void AttachDepthTexture(uint32_t id, uint32_t samples, GLenum format, GLe
 }
 
 
+static GLenum GetOpenGLTextureFormat(FramebufferTextureFormat format)
+{
+    switch (format)
+    {
+        case FramebufferTextureFormat::RGBA8:       return GL_RGBA8;
+        case FramebufferTextureFormat::RED_INTEGER: return GL_RED_INTEGER;
+    }
+
+    return 0;
 }
+
+
+}
+
+
+//====================================================================================================================================================================
 
 
 static constexpr uint32_t MAX_FRAMEBUFFER_SIZE{ 8192u };
@@ -149,7 +159,13 @@ void Zero::FramebufferOpenGL::Invalidate()
             {
                 case FramebufferTextureFormat::RGBA8:
                 {
-                    Utils::AttachColorTexture(m_ColorAttachments[i], m_Props.Samples, GL_RGBA8, m_Props.Size, i);
+                    Utils::AttachColorTexture(m_ColorAttachments[i], m_Props.Samples, GL_RGBA8, GL_RGBA, m_Props.Size, i);
+                    break;
+                }
+
+                case FramebufferTextureFormat::RED_INTEGER:
+                {
+                    Utils::AttachColorTexture(m_ColorAttachments[i], m_Props.Samples, GL_R32I, GL_RED_INTEGER, m_Props.Size, i);
                     break;
                 }
             }
@@ -233,4 +249,27 @@ uint32_t Zero::FramebufferOpenGL::GetColorAttachmentRendererID(uint32_t index) c
     ZR_CORE_ASSERT(index < m_ColorAttachments.size(), "");
 
     return m_ColorAttachments[index];
+}
+
+
+int Zero::FramebufferOpenGL::ReadPixel(uint32_t attachmentIndex, const glm::ivec2& position)
+{
+    ZR_CORE_ASSERT(attachmentIndex < m_ColorAttachments.size(), "");
+
+    glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
+
+    int pixelData;
+    glReadPixels(position.x, position.y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
+
+    return pixelData;
+}
+
+
+void Zero::FramebufferOpenGL::ClearColorAttachment(uint32_t index, int value)
+{
+    ZR_CORE_ASSERT(index < m_ColorAttachments.size(), "");
+
+    FramebufferTextureProps& props{ m_ColorAttachmentsProps[index] };
+
+    glClearTexImage(m_ColorAttachments[index], 0, Utils::GetOpenGLTextureFormat(props.TextureFormat), GL_INT, &value);
 }

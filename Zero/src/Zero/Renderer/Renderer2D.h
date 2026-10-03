@@ -85,6 +85,8 @@ class Renderer2D
 
   private:
     static void FlushAndReset();
+    static void StartBatch();
+    static void SetQuadMatrices(const glm::mat4& projection);
 };
 
 

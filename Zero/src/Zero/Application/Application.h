@@ -29,6 +29,7 @@ class Application
     void Close();
     static Application& Get();
     const Window& GetWindow() const;
+    Window& GetWindow();
     UILayer* GetUILayer() const;
 
   private:
