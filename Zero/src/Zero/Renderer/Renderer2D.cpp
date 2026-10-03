@@ -20,6 +20,7 @@ void Zero::Renderer2D::Initialize()
         { VertexAttributeType::Vector2, "a_UV" },
         { VertexAttributeType::Int, "a_TextureSlot" },
         { VertexAttributeType::Vector2, "a_Tiling" },
+        { VertexAttributeType::Int, "a_EntityID" },
     });
 
     s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
@@ -132,6 +133,7 @@ void Zero::Renderer2D::DrawQuad(const QuadProps& quad)
             .UV{ uvs[i] },
             .TextureSlot{ textureIndex },
             .Tiling{ quad.Tiling },
+            .EntityID{ quad.EntityID },
         };
 
         ++s_Data.QuadVertexBufferPointer;

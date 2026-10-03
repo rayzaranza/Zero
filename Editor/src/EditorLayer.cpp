@@ -73,18 +73,24 @@ void Zero::EditorLayer::OnRender()
     ImVec2 mousePositionRaw{ ImGui::GetMousePos() };
     mousePositionRaw.x -= m_ViewportBounds[0].x;
     mousePositionRaw.y -= m_ViewportBounds[0].y;
-
     const glm::uvec2 viewportSize{ m_ViewportBounds[1] - m_ViewportBounds[0] };
-
     mousePositionRaw.y = viewportSize.y - mousePositionRaw.y;
 
-    glm::ivec2 mousePosition{ static_cast<int>(mousePositionRaw.x), static_cast<int>(mousePositionRaw.y) };
+    glm::ivec2 mouse{ static_cast<int32_t>(mousePositionRaw.x), static_cast<int32_t>(mousePositionRaw.y) };
 
-    if ((mousePosition.x >= 0 && mousePosition.y >= 0) &&
-        (mousePosition.x < static_cast<int>(viewportSize.x) && mousePosition.y < static_cast<int>(viewportSize.y)))
+    if ((mouse.x >= 0 && mouse.y >= 0) &&
+        (mouse.x < static_cast<int32_t>(viewportSize.x) && mouse.y < static_cast<int32_t>(viewportSize.y)))
     {
-        const int pixelData{ m_Framebuffer->ReadPixel(1u, mousePosition) };
-        ZR_CORE_WARN("Pixel Data = {0}", pixelData);
+        int32_t pixelData{ m_Framebuffer->ReadPixel(1u, mouse) };
+
+        if (pixelData == -1)
+        {
+            m_HoveredEntity = Entity{};
+        }
+        else
+        {
+            m_HoveredEntity = Entity{ static_cast<entt::entity>(pixelData), m_ActiveScene.get() };
+        }
     }
 
     m_Framebuffer->Unbind();
@@ -149,17 +155,14 @@ void Zero::EditorLayer::OnUIRender()
             {
                 NewScene();
             }
-
             if (ImGui::MenuItem("Open...", "Ctrl+O"))
             {
                 OpenScene();
             }
-
             if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
             {
                 SaveSceneAs();
             }
-
             if (ImGui::MenuItem("Exit", "Ctrl+Q"))
             {
                 Application::Get().Close();
@@ -304,13 +307,23 @@ void Zero::EditorLayer::RenderViewportPanel()
 
 void Zero::EditorLayer::RenderSettingsPanel()
 {
-    const RenderStats& stats{ Renderer2D::GetStats() };
-
     ImGui::Begin("Renderer2D Stats");
+
+    std::string name{ "None" };
+    if (m_HoveredEntity && m_HoveredEntity.HasComponent<TagComponent>())
+    {
+        name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
+    }
+
+    ImGui::Text("Hovered Entity: %s", name.c_str());
+
+    const RenderStats& stats{ Renderer2D::GetStats() };
     ImGui::Text("Draw Calls: %d", stats.DrawCalls);
     ImGui::Text("Quads: %d", stats.QuadCount);
     ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
     ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
+
     ImGui::End();
 }
 
@@ -326,7 +339,6 @@ void Zero::EditorLayer::NewScene()
 void Zero::EditorLayer::OpenScene()
 {
     const std::string filePath{ FileDialog::OpenFile("Zero Scene (*.zero)\0*.zero\0") };
-
     if (filePath.empty())
     {
         return;
@@ -344,7 +356,6 @@ void Zero::EditorLayer::OpenScene()
 void Zero::EditorLayer::SaveSceneAs() const
 {
     const std::string filePath{ FileDialog::SaveFile("Zero Scene (*.zero)\0*.zero\0") };
-
     if (filePath.empty())
     {
         return;

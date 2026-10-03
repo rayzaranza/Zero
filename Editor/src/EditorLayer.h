@@ -41,6 +41,7 @@ class EditorLayer : public Layer
     SceneHierarchyPanel m_SceneHierarchyPanel;
     int16_t m_GizmoType{ -1 };
     glm::vec2 m_ViewportBounds[2];
+    Entity m_HoveredEntity{};
 };
 
 

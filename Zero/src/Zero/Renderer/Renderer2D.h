@@ -31,6 +31,7 @@ struct QuadProps
     Ref<Texture2D> Texture{ nullptr };
     Ref<SubTexture2D> SubTexture{ nullptr };
     glm::vec2 Tiling{ 1.0f };
+    int32_t EntityID{ -1 };
 };
 
 
@@ -41,6 +42,7 @@ struct QuadVertex
     glm::vec2 UV{ 0.0f };
     uint32_t TextureSlot{ 0u };
     glm::vec2 Tiling{ 1.0f };
+    int32_t EntityID{ -1 };
 };
 
 
