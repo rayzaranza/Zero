@@ -24,6 +24,7 @@ class EditorLayer : public Layer
 
   private:
     bool OnKeyPressed(KeyPressedEvent& event);
+    bool OnMouseButtonPressed(MouseButtonPressedEvent& event);
     void RenderViewportPanel();
     void RenderSettingsPanel();
     void NewScene();
