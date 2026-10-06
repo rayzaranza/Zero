@@ -1,0 +1,57 @@
+BasedOnStyle: Microsoft
+Language: Cpp
+Standard: Latest
+
+UseTab: Never
+IndentWidth: 4
+ContinuationIndentWidth: 4
+ConstructorInitializerIndentWidth: 4
+
+ColumnLimit: 148
+
+PointerAlignment: Left
+ReferenceAlignment: Left
+SeparateDefinitionBlocks: Leave
+MaxEmptyLinesToKeep: 2
+
+BreakTemplateDeclarations: Leave
+FixNamespaceComments: false
+
+IndentCaseLabels: true
+IndentAccessModifiers: false
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Always
+AccessModifierOffset: -2
+
+AllowShortCaseLabelsOnASingleLine: true
+AlignConsecutiveShortCaseStatements:
+    Enabled: true
+    AcrossEmptyLines: true
+    AcrossComments: true
+    AlignCaseColons: false
+
+Cpp11BracedListStyle: "false"
+
+BraceWrapping:
+    AfterCaseLabel: true
+    AfterNamespace: false
+    AfterClass: true
+    AfterStruct: true
+
+SpaceBeforeCpp11BracedList: true
+SpaceAfterTemplateKeyword: true
+SpaceAfterOperatorKeyword: true
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeAssignmentOperators: true
+
+BreakConstructorInitializers: BeforeComma
+PackConstructorInitializers: CurrentLine
+
+BinPackArguments: false
+
+AlignAfterOpenBracket: false
+
+SortIncludes:
+    Enabled: false
+
+IndentPPDirectives: BeforeHash
