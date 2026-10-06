@@ -5,7 +5,6 @@
 
 namespace Zero {
 
-
 class Logger
 {
   public:
@@ -15,7 +14,6 @@ class Logger
   private:
     static Ref<spdlog::logger> s_Logger;
 };
-
 
 }
 

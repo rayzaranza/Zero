@@ -2,7 +2,6 @@
   "name": "zero",
   "version": "0.1.0",
   "dependencies": [
-    "fmt",
     "glm",
     "glfw3",
     "glad",

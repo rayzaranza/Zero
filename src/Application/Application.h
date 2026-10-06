@@ -6,19 +6,18 @@
 
 namespace Zero {
 
-
 class Application
 {
   public:
     Application();
     ~Application();
 
+  public:
     void Run() const;
 
   private:
     Scope<Window> m_Window { nullptr };
     bool m_IsRunning { true };
 };
-
 
 }

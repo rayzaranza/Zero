@@ -2,27 +2,21 @@
 #include "../Logger/Logger.h"
 
 
-namespace Zero {
-
-
-Application::Application() : m_Window { CreateScope<Window>() }
+Zero::Application::Application() : m_Window { CreateScope<Window>() }
 {
 }
 
 
-Application::~Application()
+Zero::Application::~Application()
 {
     Z_LOG("Application destroyed");
 }
 
 
-void Application::Run() const
+void Zero::Application::Run() const
 {
     while (m_IsRunning)
     {
         m_Window->Update();
     }
-}
-
-
 }

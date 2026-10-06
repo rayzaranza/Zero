@@ -2,15 +2,11 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 
 
-namespace Zero {
+Zero::Ref<spdlog::logger> Zero::Logger::s_Logger {};
 
 
-Ref<spdlog::logger> Logger::s_Logger {};
-
-
-void Logger::Init()
+void Zero::Logger::Init()
 {
-
     spdlog::set_pattern("%^ %T | %v%$");
 
     s_Logger = spdlog::stdout_color_mt("Zero");
@@ -18,10 +14,7 @@ void Logger::Init()
 }
 
 
-Ref<spdlog::logger>& Logger::GetLogger()
+Zero::Ref<spdlog::logger>& Zero::Logger::GetLogger()
 {
     return s_Logger;
-}
-
-
 }

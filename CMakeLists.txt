@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(zero LANGUAGES CXX C)
 
-find_package(fmt CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
@@ -26,7 +25,6 @@ add_executable(zero
 
 target_link_libraries(zero
         PRIVATE
-        fmt::fmt
         glm::glm
         glad::glad
         glfw

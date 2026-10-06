@@ -3,13 +3,10 @@
 #include <GLFW/glfw3.h>
 
 
-namespace Zero {
-
-
 static void ErrorCallback(int error, const char* description);
 
 
-Window::Window(const WindowProps& props) : m_Props { props }
+Zero::Window::Window(const WindowProps& props) : m_Props { props }
 {
     glfwSetErrorCallback(ErrorCallback);
 
@@ -35,16 +32,14 @@ Window::Window(const WindowProps& props) : m_Props { props }
 }
 
 
-Window::~Window()
+Zero::Window::~Window()
 {
-    if (m_WindowHandle != nullptr)
-        glfwDestroyWindow(m_WindowHandle);
-
+    glfwDestroyWindow(m_WindowHandle);
     glfwTerminate();
 }
 
 
-void Window::Update() const
+void Zero::Window::Update() const
 {
     glfwPollEvents();
     glfwSwapBuffers(m_WindowHandle);
@@ -54,7 +49,4 @@ void Window::Update() const
 void ErrorCallback(int error, const char* description)
 {
     std::println("GLFW Error: {0} {1}\n", error, description);
-}
-
-
 }
