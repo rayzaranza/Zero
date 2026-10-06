@@ -22,7 +22,7 @@ template <typename T, typename... TArgs>
 constexpr Scope<T> CreateScope(TArgs&&... args);
 
 
-} // Zero
+}
 
 
 template <typename T, typename... TArgs>

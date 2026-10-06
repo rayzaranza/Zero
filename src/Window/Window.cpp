@@ -57,4 +57,4 @@ void ErrorCallback(int error, const char* description)
 }
 
 
-} // Zero
+}

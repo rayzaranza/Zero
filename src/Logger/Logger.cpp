@@ -24,4 +24,4 @@ Ref<spdlog::logger>& Logger::GetLogger()
 }
 
 
-} // Zero
+}

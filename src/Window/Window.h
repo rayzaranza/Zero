@@ -13,7 +13,7 @@ namespace Zero {
 struct WindowProps
 {
     std::string Title { "Window" };
-    glm::ivec2 Size { 1920, 1080 }; 
+    glm::ivec2 Size { 1920, 1080 };
 };
 
 
@@ -31,4 +31,4 @@ class Window
 };
 
 
-} // Zero
+}

@@ -17,7 +17,7 @@ class Logger
 };
 
 
-} // Zero
+}
 
 
 #define Z_LOG(...) ::Zero::Logger::GetLogger()->trace(__VA_ARGS__)

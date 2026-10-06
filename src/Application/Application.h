@@ -20,5 +20,5 @@ class Application
     bool m_IsRunning { true };
 };
 
- 
-} // Zero
+
+}
