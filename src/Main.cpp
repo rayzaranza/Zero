@@ -1,9 +1,13 @@
-#include <memory>
 #include "Application/Application.h"
+#include "Logger/Logger.h"
 
 
 int main()
 {
-    const auto application { Zero::CreateScope<Zero::Application>() };
+    Zero::Logger::Init();
+
+    Zero::Application* application { new Zero::Application {} };
     application->Run();
+
+    delete application;
 }
