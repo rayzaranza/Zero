@@ -37,6 +37,7 @@ BraceWrapping:
     AfterNamespace: false
     AfterClass: true
     AfterStruct: true
+    SplitEmptyFunction: false
 
 SpaceBeforeCpp11BracedList: true
 SpaceAfterTemplateKeyword: true

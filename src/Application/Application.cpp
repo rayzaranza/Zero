@@ -2,8 +2,9 @@
 #include "../Logger/Logger.h"
 
 
-Zero::Application::Application() : m_Window { CreateScope<Window>() }
+Zero::Application::Application() : m_Window { Window::Create({ "Zero", { 1920, 1080 } }) }
 {
+    Z_LOG("Application created");
 }
 
 

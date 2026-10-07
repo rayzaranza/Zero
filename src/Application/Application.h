@@ -16,7 +16,7 @@ class Application
     void Run() const;
 
   private:
-    Scope<Window> m_Window { nullptr };
+    Scope<Window> m_Window;
     bool m_IsRunning { true };
 };
 
